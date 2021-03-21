@@ -1382,7 +1382,7 @@ bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+s exec pidof signal-desktop || signal-desktop
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
-bindsym $mod+Return exec oneterminal
+bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
 #rofi instead of dmenu
 bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
@@ -2250,6 +2250,36 @@ e dbg.bep=main
     1.  [gdb python](https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands)
 
 
+## python
+
+
+### pdb
+
+<https://docs.python.org/3/library/pdb.html> The official python debugger [/home/rgr/development/projects/Python/debugging/pdb](file:///home/rgr/development/projects/Python/debugging/pdb)
+
+
+### ipdb
+
+<https://pypi.org/project/ipdb/>
+
+1.  installing
+
+    ```bash
+    pip install ipdb
+    ```
+
+2.  Better Python Debugging
+
+    <https://hasil-sharma.github.io/2017-05-13-python-ipdb/>
+
+3.  ~/.ipdb
+
+    ```conf
+    # Maintained in linux-init-files.org
+    context=5
+    ```
+
+
 # PGP/GNUPG/GPG
 
 
@@ -2615,14 +2645,16 @@ fi
 #Maintained in linux-init-files.org
 
 sessionname="${1:-OneTerminal}"
+sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2}"
+tflags="${3}"
 
 title="${ONETERM_TITLE:-${sessionname}}"
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 WID=`xdotool search --name "^${title}$" | head -1`
 if [ -z "$WID" ]; then
-    terminator -T "${title}" -p "${profile}" -e "tmux new-session -A -s ${sessionname} ${script}" &
+    terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}" &
 else
     if ! tmux has-session -t  "${sessionname}"; then
         tmux attach -t "${sessionname}"
