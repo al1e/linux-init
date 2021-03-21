@@ -2644,7 +2644,7 @@ fi
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
 
-sessionname="${1:-OneTerminal}"
+sessionname="${1:-`pwd`}"
 sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2}"
 tflags="${3}"
@@ -2654,13 +2654,14 @@ profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 WID=`xdotool search --name "^${title}$" | head -1`
 if [ -z "$WID" ]; then
-    terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}" &
+    terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
 else
     if ! tmux has-session -t  "${sessionname}"; then
         tmux attach -t "${sessionname}"
     fi
     xdotool windowactivate $WID
 fi
+exit 0
 ```
 
 
