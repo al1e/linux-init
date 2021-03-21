@@ -364,23 +364,7 @@ Differnt monitors have different resolutions and hence DPI
     xrandr-connected | head -n 1 | awk '{print $1}'
     ```
 
-5.  ~/bin/xrandr-first
-
-    first display
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    # if a laptop then this will be it.
-    export XRANDR_FIRST=$(xrandr-connected | head -n 1 | awk '{print $1}')
-    echo "$XRANDR_FIRST"
-    ```
-
-    ```bash
-    xrandr-first
-    ```
-
-6.  ~/bin/xrandr-disconnected
+5.  ~/bin/xrandr-disconnected
 
     list disconnected
 
@@ -390,7 +374,7 @@ Differnt monitors have different resolutions and hence DPI
     xrandr -q | grep -w "disconnected" | awk '{print $1}'
     ```
 
-7.  ~/bin/xrandr-disconnected-off
+6.  ~/bin/xrandr-disconnected-off
 
     turn off all disconnected
 
@@ -400,7 +384,7 @@ Differnt monitors have different resolutions and hence DPI
     xargs -I {} xrandr --output {} --off <<< $(xrandr-disconnected)
     ```
 
-8.  ~/bin/xrandr-connected-external
+7.  ~/bin/xrandr-connected-external
 
     ```bash
     #!/usr/bin/bash
@@ -409,7 +393,7 @@ Differnt monitors have different resolutions and hence DPI
     echo "$XRANDR_EXTERNAL"
     ```
 
-9.  ~/bin/xrandr-connected-primary
+8.  ~/bin/xrandr-connected-primary
 
     set the primary display to arg1 else set first in list thats on
 
@@ -423,13 +407,13 @@ Differnt monitors have different resolutions and hence DPI
     echo "${primary}"
     ```
 
-10. ~/bin/xrandr-laptop-id
+9.  ~/bin/xrandr-laptop-id
 
     ```bash
     xrandr-connected | grep -i "^[el]"
     ```
 
-11. ~/bin/xrandr-laptop
+10. ~/bin/xrandr-laptop
 
     ```bash
     #!/usr/bin/bash
@@ -456,7 +440,7 @@ Differnt monitors have different resolutions and hence DPI
     fi
     ```
 
-12. ~/bin/xrandr-multi
+11. ~/bin/xrandr-multi
 
     ```bash
     #!/usr/bin/bash
@@ -487,7 +471,7 @@ Differnt monitors have different resolutions and hence DPI
 
     ```
 
-13. ~/bin/xrandr-mancave
+12. ~/bin/xrandr-mancave
 
     ```bash
     #!/usr/bin/bash
@@ -509,7 +493,7 @@ Differnt monitors have different resolutions and hence DPI
     fi
     ```
 
-14. ~/bin/xrandr-smart-connect
+13. ~/bin/xrandr-smart-connect
 
     connect to richie's monitors by default if we can
 
@@ -534,7 +518,7 @@ Differnt monitors have different resolutions and hence DPI
     fi
     ```
 
-15. connect/disconnect daemon
+14. connect/disconnect daemon
 
     Note these are not used now in favour of the [srandr](https://github.com/jceb/srandrd) daemon
 

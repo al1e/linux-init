@@ -382,22 +382,9 @@
        # Maintained in linux-init-files.org
        xrandr-connected | head -n 1 | awk '{print $1}'
      #+end_src
-**** ~/bin/xrandr-first
-     first display
-     #+name: xrandr-first
-     #+begin_src bash :tangle "~/bin/xrandr-first"
-       #!/usr/bin/bash
-       # Maintained in linux-init-files.org
-       # if a laptop then this will be it.
-       export XRANDR_FIRST=$(xrandr-connected | head -n 1 | awk '{print $1}')
-       echo "$XRANDR_FIRST"
-     #+end_src
-     #+begin_src bash :export both
-       xrandr-first
-     #+end_src
 
      #+RESULTS:
-     : eDP-1
+     : eDP1
 
 **** ~/bin/xrandr-disconnected
      list disconnected
