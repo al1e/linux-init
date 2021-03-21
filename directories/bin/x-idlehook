@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+
+xidlehook \
+    `# Don't lock when there's a fullscreen application` \
+    --not-when-fullscreen \
+    `# Don't lock when there's audio playing` \
+    --not-when-audio \
+    --timer ${XIDLEHOOK_KBD:-60}\
+    'pre-blank' \
+    'post-blank' \
+    --timer ${XIDLEHOOK_DIM:-120}\
+    'xbacklight -set 5' \
+    'post-blank' \
+    --timer ${XIDLEHOOK_BLANK:-1200}\
+    'xbacklight -set 0' \
+    'post-blank' \
+    --timer ${XIDLEHOOK_LOCK:-2400}\
+    '(pre-lock && x-lock-utils lock)' \
+    '(post-blank && post-lock)' \
+    --timer ${XIDLEHOOK_SUSPEND:-3600}\
+    'systemctl suspend' \
+    ''

@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+session="${1:-voltron}"
+if ! tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -d -s "${session}" &> /dev/null
+    voltron-panes-h "${session}"
+fi
+echo "${session}"

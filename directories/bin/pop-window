@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+WID=`xdotool search --name "^${title}$" | head -1`
+[ -z "${WID}" ] || xdotool windowactivate "${WID}"

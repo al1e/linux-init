@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+primary="${1-$(xrandr-connected-active|head -n 1)}"
+existingprimary="$(xrandr -q | grep -w "primary" | awk '{print $1}')"
+[ "${existingprimary}" != "${primary}" ] &&
+    xrandr --output "${primary}" --primary
+echo "${primary}"

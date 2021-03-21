@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+if [ $# -eq 0 ]
+then
+    mbsync -a
+else
+    mbsync "$@"
+fi
+pidof mu > /dev/null || mu index

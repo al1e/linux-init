@@ -1,0 +1,2 @@
+notify-send "CRITICALLY LOW battery level warning. Suspending."
+sleep 5 && systemctl suspend
