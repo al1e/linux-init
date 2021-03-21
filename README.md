@@ -2581,7 +2581,7 @@ then
 else
     mbsync "$@"
 fi
-pidof mu > /dev/null || mu index
+pidof mu &> /dev/null || mu index
 ```
 
 

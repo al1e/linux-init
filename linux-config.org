@@ -2885,7 +2885,7 @@
      else
          mbsync "$@"
      fi
-     pidof mu > /dev/null || mu index
+     pidof mu &> /dev/null || mu index
    #+end_src
 ** CANCELLED Mutt                                                 :CANCELLED:
    CLOSED: [2021-03-21 Sun 12:49]
