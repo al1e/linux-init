@@ -2,11 +2,11 @@
 #Maintained in linux-init-files.org
 
 sessionname="${1:-`pwd`}"
+title="${ONETERM_TITLE:-${sessionname}}"
 sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2}"
 tflags="${3}"
 
-title="${ONETERM_TITLE:-${sessionname}}"
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 WID=`xdotool search --name "^${title}$" | head -1`

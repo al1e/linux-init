@@ -669,11 +669,12 @@
      export ARDUINO_SDK_PATH="${HOME}"/Dropbox/homefiles/development/arduino/arduinoSDK
      export CMAKE_EXPORT_COMPILE_COMMANDS=1
 
-     export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"
+     export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
      #alias man=eman
 
-     export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
+     export PYENV_ROOT="${HOME}"/.pyenv
+     export PATH="${HOME}"/bin:"${HOME}"/.local/bin:"${HOME}"/.cargo/bin:./node_modules/.bin:"${HOME}"/.pyenv/bin:"${PATH}"
 
      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
      export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -2949,11 +2950,11 @@
       #Maintained in linux-init-files.org
 
       sessionname="${1:-`pwd`}"
+      title="${ONETERM_TITLE:-${sessionname}}"
       sessionname="${sessionname//[^[:alnum:]]/}"
       script="${2}"
       tflags="${3}"
 
-      title="${ONETERM_TITLE:-${sessionname}}"
       profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
       WID=`xdotool search --name "^${title}$" | head -1`

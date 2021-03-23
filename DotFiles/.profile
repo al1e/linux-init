@@ -30,11 +30,12 @@ export SHELL=/usr/bin/zsh
 export ARDUINO_SDK_PATH="${HOME}"/Dropbox/homefiles/development/arduino/arduinoSDK
 export CMAKE_EXPORT_COMPILE_COMMANDS=1
 
-export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"
+export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
+export PYENV_ROOT="${HOME}"/.pyenv
+export PATH="${HOME}"/bin:"${HOME}"/.local/bin:"${HOME}"/.cargo/bin:./node_modules/.bin:"${HOME}"/.pyenv/bin:"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
