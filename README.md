@@ -82,7 +82,7 @@ exec dbus-launch --sh-syntax --exit-with-session i3
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-logger -t "startup-initfile"  XPROFILE
+logger -t "startup-initfile"  XSESSIONRC
 xhost +
 
 xset s off
@@ -615,7 +615,26 @@ This IS working with startx but not with gdm3 i3
 If using startx on debian this is taken care of by the system XSession loading everyhing in /etc/X11/Xsession.d. see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 
 
-# Bash related
+# Bash Startup Files
+
+<https://linuxize.com/post/bashrc-vs-bash-profile/> ,-&#x2014;
+
+| Bash Startup Files                                                                                                                                                                                                                                                                                                |
+| When invoked as an interactive login shell, Bash looks for the *etc/profile file, and if the file exists , it runs the commands listed in the file. Then Bash searches for ~*.bash\_profile, ~/.bash\_login, and ~/.profile files, in the listed order, and executes commands from the first readable file found. |
+| When Bash is invoked as an interactive non-login shell, it reads and executes commands from ~/.bashrc, if that file exists, and it is readable.                                                                                                                                                                   |
+| Difference Between .bashrc and .bash\_profile                                                                                                                                                                                                                                                                     |
+| .bash\_profile is read and executed when Bash is invoked as an interactive login shell, while .bashrc is executed for an interactive non-login shell.                                                                                                                                                             |
+| Use .bash\_profile to run commands that should run only once, such as customizing the $PATH environment variable .                                                                                                                                                                                                |
+| Put the commands that should run every time you launch a new shell in the .bashrc file. This include your aliases and functions , custom prompts, history customizations , and so on.                                                                                                                             |
+| Typically, ~/.bash\_profile contains lines like below that source the .bashrc file. This means each time you log in to the terminal, both files are read and executed.                                                                                                                                            |
+| if [ -f ~/.bashrc ]; then                                                                                                                                                                                                                                                                                         |
+| . ~/.bashrc                                                                                                                                                                                                                                                                                                       |
+| fi                                                                                                                                                                                                                                                                                                                |
+| Copy                                                                                                                                                                                                                                                                                                              |
+| Most Linux distributions are using ~/.profile instead of ~/.bash\_profile. The ~/.profile file is read by all shells, while ~/.bash\_profile only by Bash.                                                                                                                                                        |
+| If any startup file is not present on your system, you can create it.                                                                                                                                                                                                                                             |
+
+\`-&#x2014;
 
 
 ## ~/.profile
@@ -894,9 +913,9 @@ logger -t "startup-initfile"  ZLOGIN
     ```bash
     # Maintained in linux-init-files.org
     logger -t "startup-initfile"  ZPROFILE
-    if [ -f ~/.profile ]; then
-        emulate sh -c '. ~/.profile'
-    fi
+    # if [ -f ~/.profile ]; then
+    #     emulate sh -c '. ~/.profile'
+    # fi
     ```
 
 2.  etc/zsh/zprofile

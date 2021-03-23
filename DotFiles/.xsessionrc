@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-logger -t "startup-initfile"  XPROFILE
+logger -t "startup-initfile"  XSESSIONRC
 xhost +
 
 xset s off
