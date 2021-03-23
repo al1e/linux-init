@@ -687,6 +687,8 @@ post-lock
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
+eval "$(pyenv init -)"
+
 ```
 
 
@@ -872,7 +874,6 @@ bindkey "^[[6~" history-beginning-search-forward
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 # DEFAULT_USER means we dont show user and host in normal shell prompt
 DEFAULT_USER=$USER
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 ```
 
