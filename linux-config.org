@@ -660,6 +660,9 @@
 
 
 **  ~/.profile
+   :PROPERTIES:
+   :ID:       a0ce8c14-82b5-468b-b942-5ca9cdc4d832
+   :END:
 
    #+begin_src bash :tangle "DotFiles/.profile"
      # Maintained in linux-init-files.org
@@ -715,6 +718,9 @@
    #+end_src
 
 ** ~/.bash_profile
+   :PROPERTIES:
+   :ID:       606c1aee-d313-42f6-a174-3f9e9fa97548
+   :END:
 
    #+begin_src bash :tangle "DotFiles/.bash_profile"
      # Maintained in linux-init-files.org
@@ -2282,7 +2288,7 @@
      e scr.utf8.curvy=true
      e dbg.bep=main
    #+end_src
-* Debuggers                                                       :debuggers:
+* Programming Related                                           :programming:
 ** gdb                                                                  :gdb:
 *** scripts
 **** ~/.gdbinit
@@ -2624,26 +2630,34 @@
      - State "TODO"       from              [2021-03-14 Sun 00:40]
      :END:
 ***** [[https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands][gdb python]]
+*** python                                                           :python:
 ** python
-*** pdb
-    https://docs.python.org/3/library/pdb.html
-    The official python debugger
-    [[/home/rgr/development/projects/Python/debugging/pdb][/home/rgr/development/projects/Python/debugging/pdb]]
+*** pyvenv install  https://github.com/pyenv/pyenv#installation
+    [[id:606c1aee-d313-42f6-a174-3f9e9fa97548][Eval]] pyenv init from bash_profile in order to set python version
+    #+begin_src bash
+      eval "$(pyenv init -)"
+    #+end_src
+    Added to PATH in [[id:a0ce8c14-82b5-468b-b942-5ca9cdc4d832][~/.profile]]
+*** Debuggers                                                     :debuggers:
+**** pdb                                                                :pdb:
+     https://docs.python.org/3/library/pdb.html
+     The official python debugger
+     [[/home/rgr/development/projects/Python/debugging/pdb][/home/rgr/development/projects/Python/debugging/pdb]]
 
-*** ipdb
-   https://pypi.org/project/ipdb/
+**** ipdb                                                              :ipdb:
+    https://pypi.org/project/ipdb/
 
-**** installing
-     #+begin_src bash
-       pip install ipdb
-     #+end_src
-**** Better Python Debugging
-     https://hasil-sharma.github.io/2017-05-13-python-ipdb/
-**** ~/.ipdb
-     #+begin_src conf :tangle "DotFiles/.ipdb"
-       # Maintained in linux-init-files.org
-       context=5
-     #+end_src
+***** installing
+      #+begin_src bash
+        pip install ipdb
+      #+end_src
+***** Better Python Debugging
+      https://hasil-sharma.github.io/2017-05-13-python-ipdb/
+***** ~/.ipdb
+      #+begin_src conf :tangle "DotFiles/.ipdb"
+        # Maintained in linux-init-files.org
+        context=5
+      #+end_src
 * PGP/GNUPG/GPG
 ** ~/.gnupg/gpg.conf
    #+begin_src gpg :tangle "~/.gnupg/gpg.conf"

@@ -637,6 +637,8 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
+<a id="org1f156d9"></a>
+
 ## ~/.profile
 
 ```bash
@@ -692,6 +694,8 @@ fi
 
 ```
 
+
+<a id="org0637032"></a>
 
 ## ~/.bash\_profile
 
@@ -1923,7 +1927,7 @@ e dbg.bep=main
 ```
 
 
-# Debuggers     :debuggers:
+# Programming Related     :programming:
 
 
 ## gdb     :gdb:
@@ -2271,34 +2275,49 @@ e dbg.bep=main
     1.  [gdb python](https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands)
 
 
+### python     :python:
+
+
 ## python
 
 
-### pdb
+### pyvenv install  <https://github.com/pyenv/pyenv#installation>
 
-<https://docs.python.org/3/library/pdb.html> The official python debugger [/home/rgr/development/projects/Python/debugging/pdb](file:///home/rgr/development/projects/Python/debugging/pdb)
+[Eval](#org0637032) pyenv init from bash\_profile in order to set python version
+
+```bash
+eval "$(pyenv init -)"
+```
+
+Added to PATH in [~/.profile](#org1f156d9)
 
 
-### ipdb
+### Debuggers     :debuggers:
 
-<https://pypi.org/project/ipdb/>
+1.  pdb     :pdb:
 
-1.  installing
+    <https://docs.python.org/3/library/pdb.html> The official python debugger [/home/rgr/development/projects/Python/debugging/pdb](file:///home/rgr/development/projects/Python/debugging/pdb)
 
-    ```bash
-    pip install ipdb
-    ```
+2.  ipdb     :ipdb:
 
-2.  Better Python Debugging
+    <https://pypi.org/project/ipdb/>
 
-    <https://hasil-sharma.github.io/2017-05-13-python-ipdb/>
+    1.  installing
 
-3.  ~/.ipdb
+        ```bash
+        pip install ipdb
+        ```
 
-    ```conf
-    # Maintained in linux-init-files.org
-    context=5
-    ```
+    2.  Better Python Debugging
+
+        <https://hasil-sharma.github.io/2017-05-13-python-ipdb/>
+
+    3.  ~/.ipdb
+
+        ```conf
+        # Maintained in linux-init-files.org
+        context=5
+        ```
 
 
 # PGP/GNUPG/GPG
