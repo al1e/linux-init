@@ -9,6 +9,7 @@ post-lock
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # export USER_STARTX_NO_LOGOUT_ON_QUIT=""
 [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ] && [ -f ~/.START_X ] && {

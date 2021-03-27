@@ -734,6 +734,7 @@
      systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
      dropbox-start-once async
      eval "$(pyenv init -)"
+     eval "$(pyenv virtualenv-init -)"
 
    #+end_src
 ** ~/.bashrc
@@ -926,9 +927,12 @@
      #+begin_src bash :tangle "~/.config/zsh/.zprofile"
        # Maintained in linux-init-files.org
        logger -t "startup-initfile"  ZPROFILE
-       # if [ -f ~/.profile ]; then
-       #     emulate sh -c '. ~/.profile'
-       # fi
+       if [ -f ~/.profile ]; then
+           emulate sh -c '. ~/.profile'
+       fi
+       eval "$(pyenv init -)"
+       eval "$(pyenv virtualenv-init -)"
+
      #+end_src
 **** etc/zsh/zprofile
      #+begin_src bash :tangle "etc/zsh/zshprofile"
@@ -2374,7 +2378,7 @@
        end
 
        #### Initialise utility extensions
-               define ext-init
+       define ext-init
        gef-init
        voltron-init
        end
@@ -2382,7 +2386,7 @@
      #+end_src
 **** python
 ***** STARTED ~/bin/gdb-scripts/tmux-pane-tty.py
-      SCHEDULED: <2021-03-20 Sat>
+      SCHEDULED: <2021-03-29 Mon>
       :LOGBOOK:
       - State "STARTED"    from              [2021-03-14 Sun 01:17]
       :END:
@@ -2625,7 +2629,7 @@
 
 *** python                                                           :python:
 **** TODO 00:40 time to look into python inside gdb
-     SCHEDULED: <2021-03-23 Tue>
+     SCHEDULED: <2021-04-01 Thu>
      :LOGBOOK:
      - State "TODO"       from              [2021-03-14 Sun 00:40]
      :END:

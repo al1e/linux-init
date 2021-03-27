@@ -79,7 +79,7 @@ voltron init
 end
 
 #### Initialise utility extensions
-        define ext-init
+define ext-init
 gef-init
 voltron-init
 end
