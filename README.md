@@ -637,7 +637,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgee9f9c0"></a>
+<a id="org7a4e77a"></a>
 
 ## ~/.profile
 
@@ -690,7 +690,7 @@ fi
 ```
 
 
-<a id="org91eb2ef"></a>
+<a id="org6962ef1"></a>
 
 ## ~/.bash\_profile
 
@@ -2285,14 +2285,14 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org91eb2ef) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org6962ef1) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgee9f9c0)
+    Added to PATH in [~/.profile](#org7a4e77a)
 
 
 ### Debuggers     :debuggers:
@@ -2689,7 +2689,7 @@ fi
 
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
-sessionname="${sessionname//[^[:alnum:]]/}"
+#sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2:-"zsh"}"
 tflags="${3}"
 

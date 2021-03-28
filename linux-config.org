@@ -2994,7 +2994,7 @@
 
       sessionname="${1:-`pwd`}"
       title="${ONETERM_TITLE:-${sessionname}}"
-      sessionname="${sessionname//[^[:alnum:]]/}"
+      #sessionname="${sessionname//[^[:alnum:]]/}"
       script="${2:-"zsh"}"
       tflags="${3}"
 
