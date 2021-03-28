@@ -637,7 +637,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org1f156d9"></a>
+<a id="orgee9f9c0"></a>
 
 ## ~/.profile
 
@@ -667,8 +667,6 @@ export VISUAL="emacsclient -c"
 export HISTSIZE=2056
 export HISTCONTROL=ignoreboth:erasedups
 
-export SHELL=/usr/bin/zsh
-
 # export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
 
 export ARDUINO_SDK_PATH="${HOME}"/Dropbox/homefiles/development/arduino/arduinoSDK
@@ -678,8 +676,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PYENV_ROOT="${HOME}"/.pyenv
-export PATH="${HOME}"/bin:"${HOME}"/.local/bin:"${HOME}"/.cargo/bin:./node_modules/.bin:"${HOME}"/.pyenv/bin:"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/.local/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -690,16 +687,15 @@ then
 fi
 
 
-[ -f ~/.bash_profile.local ] && . ~/.bash_profile.local
-
 ```
 
 
-<a id="org0637032"></a>
+<a id="org91eb2ef"></a>
 
 ## ~/.bash\_profile
 
 ```bash
+#!/usr/bin/bash
 # Maintained in linux-init-files.org
 logger -t "startup-initfile"  BASH_PROFILE
 
@@ -710,14 +706,13 @@ post-lock
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
-eval "$(pyenv init -)"
-
 ```
 
 
 ## ~/.bashrc
 
 ```bash
+#!/usr/bin/bash
 # Maintained in linux-init-files.org
 logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -917,9 +912,9 @@ logger -t "startup-initfile"  ZLOGIN
     ```bash
     # Maintained in linux-init-files.org
     logger -t "startup-initfile"  ZPROFILE
-    # if [ -f ~/.profile ]; then
-    #     emulate sh -c '. ~/.profile'
-    # fi
+    if [ -f ~/.profile ]; then
+        emulate sh -c '. ~/.profile'
+    fi
     ```
 
 2.  etc/zsh/zprofile
@@ -2019,7 +2014,7 @@ e dbg.bep=main
     end
 
     #### Initialise utility extensions
-            define ext-init
+    define ext-init
     gef-init
     voltron-init
     end
@@ -2281,15 +2276,23 @@ e dbg.bep=main
 ## python
 
 
-### pyvenv install  <https://github.com/pyenv/pyenv#installation>
+### pyvenv  <https://github.com/pyenv/pyenv#installation>
 
-[Eval](#org0637032) pyenv init from bash\_profile in order to set python version
+1.  add pyenv to path
 
-```bash
-eval "$(pyenv init -)"
-```
+    ```bash
+    export PYENV_ROOT="${HOME}/.pyenv"
+    export PATH="${HOME}/.pyenv/bin":"${PATH}"
+    ```
 
-Added to PATH in [~/.profile](#org1f156d9)
+2.  [Eval](#org91eb2ef) pyenv init from bash\_profile in order to set python version
+
+    ```bash
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    ```
+
+    Added to PATH in [~/.profile](#orgee9f9c0)
 
 
 ### Debuggers     :debuggers:
@@ -2687,7 +2690,7 @@ fi
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
 sessionname="${sessionname//[^[:alnum:]]/}"
-script="${2}"
+script="${2:-"zsh"}"
 tflags="${3}"
 
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
@@ -3280,6 +3283,7 @@ x-backlight-persist restore
 ## ~/.bash\_profile
 
 ```bash
+[ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
 # export USER_STARTX_NO_LOGOUT_ON_QUIT=""
 [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ] && [ -f ~/.START_X ] && {
     echo "Auto starting via startx with USER_STARTX_NO_LOGOUT_ON_QUIT:${USER_STARTX_NO_LOGOUT_ON_QUIT}"
@@ -3291,5 +3295,5 @@ x-backlight-persist restore
 ## Late addition to ~/.profile
 
 ```bash
-[ -f  ~/.profile.local ] && . ~/.profile.local
+[ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
 ```

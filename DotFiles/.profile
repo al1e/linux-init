@@ -23,8 +23,6 @@ export VISUAL="emacsclient -c"
 export HISTSIZE=2056
 export HISTCONTROL=ignoreboth:erasedups
 
-export SHELL=/usr/bin/zsh
-
 # export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
 
 export ARDUINO_SDK_PATH="${HOME}"/Dropbox/homefiles/development/arduino/arduinoSDK
@@ -34,8 +32,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PYENV_ROOT="${HOME}"/.pyenv
-export PATH="${HOME}"/bin:"${HOME}"/.local/bin:"${HOME}"/.cargo/bin:./node_modules/.bin:"${HOME}"/.pyenv/bin:"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/.local/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -45,9 +42,9 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
-
-[ -f ~/.bash_profile.local ] && . ~/.bash_profile.local
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
 export USER_STARTX_START=
 
-[ -f  ~/.profile.local ] && . ~/.profile.local
+[ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"

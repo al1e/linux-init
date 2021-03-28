@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # Maintained in linux-init-files.org
 logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
