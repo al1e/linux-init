@@ -637,7 +637,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org7a4e77a"></a>
+<a id="orgb15a621"></a>
 
 ## ~/.profile
 
@@ -690,7 +690,7 @@ fi
 ```
 
 
-<a id="org6962ef1"></a>
+<a id="org61df8c4"></a>
 
 ## ~/.bash\_profile
 
@@ -1036,6 +1036,9 @@ set-window-option -g window-status-style fg=colour244
 set-window-option -g window-status-style bg=default
 set-window-option -g window-status-current-style fg=colour166
 set-window-option -g window-status-current-style bg=default
+
+set-option -g default-shell /bin/zsh
+
 ```
 
 
@@ -2265,10 +2268,6 @@ e dbg.bep=main
 
 ### python     :python:
 
-1.  TODO 00:40 time to look into python inside gdb
-
-    1.  [gdb python](https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands)
-
 
 ### python     :python:
 
@@ -2285,14 +2284,14 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org6962ef1) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org61df8c4) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org7a4e77a)
+    Added to PATH in [~/.profile](#orgb15a621)
 
 
 ### Debuggers     :debuggers:
@@ -2690,7 +2689,7 @@ fi
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
 #sessionname="${sessionname//[^[:alnum:]]/}"
-script="${2:-"zsh"}"
+script="${2}"
 tflags="${3}"
 
 profile="${ONETERM_PROFILE:-"$(hostname)"}"

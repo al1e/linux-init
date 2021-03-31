@@ -4,7 +4,7 @@
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
 #sessionname="${sessionname//[^[:alnum:]]/}"
-script="${2:-"zsh"}"
+script="${2}"
 tflags="${3}"
 
 profile="${ONETERM_PROFILE:-"$(hostname)"}"

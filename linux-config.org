@@ -1018,6 +1018,9 @@
       set-window-option -g window-status-style bg=default
       set-window-option -g window-status-current-style fg=colour166
       set-window-option -g window-status-current-style bg=default
+
+      set-option -g default-shell /bin/zsh
+
     #+end_src
 *** keys
     #+begin_src conf
@@ -2619,9 +2622,10 @@
      #+end_src
 
 *** python                                                           :python:
-**** TODO 00:40 time to look into python inside gdb
+**** SOMEDAY 00:40 time to look into python inside gdb              :WAITING:
      SCHEDULED: <2021-04-01 Thu>
      :LOGBOOK:
+     - State "SOMEDAY"    from "TODO"       [2021-03-29 Mon 22:51]
      - State "TODO"       from              [2021-03-14 Sun 00:40]
      :END:
 ***** [[https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands][gdb python]]
@@ -2995,7 +2999,7 @@
       sessionname="${1:-`pwd`}"
       title="${ONETERM_TITLE:-${sessionname}}"
       #sessionname="${sessionname//[^[:alnum:]]/}"
-      script="${2:-"zsh"}"
+      script="${2}"
       tflags="${3}"
 
       profile="${ONETERM_PROFILE:-"$(hostname)"}"
