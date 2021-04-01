@@ -69,6 +69,7 @@
     #+end_src
 *** master branch, no commit
     :PROPERTIES:
+    :ID:       61a6869c-68e0-4be9-b2ab-1254389118b0
     :END:
     #+begin_src bash :tangle ".git/hooks/pre-commit"
       #!/bin/sh
@@ -262,10 +263,6 @@
    See [[https://github.com/jD91mZM2/xidlehook][xidlehook]]. Better handling of idle things. Dont dim or blank when watching a video or in full screen.
    [[https://gitlab.com/wavexx/acpilight
    ][acpilight]] provides a better xbacklight.*
-*** TODO [#B] look into only time suspend if on battery
-    :LOGBOOK:
-    - State "TODO"       from              [2020-12-22 Tue 20:19]
-    :END:
 *** ~/bin/x-idlehook
     #+begin_src bash :tangle "~/bin/x-idlehook"
       #!/usr/bin/bash
@@ -410,6 +407,9 @@
        echo "$XRANDR_EXTERNAL"
      #+end_src
 **** ~/bin/xrandr-connected-primary
+     :PROPERTIES:
+     :ID:       c58034ed-1c87-4740-aa7d-256676b74926
+     :END:
      set the primary display to  arg1 else set first in list thats on
      #+begin_src bash :tangle "~/bin/xrandr-connected-primary"
        #!/usr/bin/bash
@@ -422,14 +422,14 @@
      #+end_src
 **** ~/bin/xrandr-laptop-id
      :PROPERTIES:
-     :CUSTOM_ID: xrandr-laptop-id
+     :ID:       207b09f0-f98d-4c5f-bd55-07262cb092d9
      :END:
      #+begin_src bash :tangle ~/bin/xrandr-laptop-id
        xrandr-connected | grep -i "^[el]"
      #+end_src
 **** ~/bin/xrandr-laptop
      :PROPERTIES:
-     :CUSTOM_ID: xrandr-laptop
+     :ID:       0a82acba-d53d-453a-8ab9-f1ab8233b093
      :END:
      #+begin_src bash :tangle "~/bin/xrandr-laptop"
        #!/usr/bin/bash
@@ -613,20 +613,6 @@
       #+end_src
 
 
-
-* TODO PAM Environment
-  Ended up giving up on this. PAM is a configuration nightmare.
-  :LOGBOOK:
-  - Note taken on [2020-12-07 Mo 07:04] \\
-    doesnt work with zsh
-  - State "TODO"       from              [2020-12-07 Mo 07:03]
-  :END:
-  This IS working with startx but not with gdm3 i3
-** ~/.pam_environment
-   #+begin_src conf :tangle "DotFiles/.pam_environment"
-     # Maintained in linux-init-files.org
-     # PATH           DEFAULT=@{HOME}/bin:@{HOME}/.local/bin:@{HOME}/.cargo/bin:/usr/local/bin:/bin:/usr/bin:/usr/games:/usr/local/bin/X11:/usr/bin/X11
-   #+end_src
 
 * User system services
 *** gpg-agent
@@ -992,6 +978,7 @@
 ** ~/.tmux.conf
    :PROPERTIES:
    :header-args:conf: :tangle "DotFiles/.tmux.conf"
+   :ID:       639d3b72-c669-415e-b141-606764cc7b75
    :END:
 *** start
     #+begin_src conf
@@ -1113,6 +1100,7 @@
 ** i3wm config
    :PROPERTIES:
    :header-args:conf: :tangle "~/.config/i3/config"
+   :ID:       834da4bb-cc3f-4b6d-8201-c04c0d07981d
    :END:
 *** general
     #+begin_src conf
@@ -1382,7 +1370,7 @@
     #+end_src
 *** i3 bar
     :PROPERTIES:
-    # :header-args:conf: :tangle no
+    :ID:       d930fa7e-59c1-44ec-a8aa-522f05e50c13
     :END:
     #+begin_src conf
       # i3bar
@@ -1402,6 +1390,7 @@
 **** polybar integration into i3
      :PROPERTIES:
      :header-args:conf: :tangle no
+     :ID:       39f8dc37-dba8-4b0d-831f-feeee812cfde
      :END:
      #+begin_src conf
        exec_always --no-startup-id $HOME/bin/polybar-launch
@@ -1983,6 +1972,7 @@
 **** config
      :PROPERTIES:
      :header-args:conf: :tangle "~/.config/i3blocks/config"
+     :ID:       20c2b7d9-7111-46c4-8965-63db28dea79d
      :END:
 
      #+begin_src conf
@@ -2380,7 +2370,6 @@
      #+end_src
 **** python
 ***** STARTED ~/bin/gdb-scripts/tmux-pane-tty.py
-      SCHEDULED: <2021-03-29 Mon>
       :LOGBOOK:
       - State "STARTED"    from              [2021-03-14 Sun 01:17]
       :END:
@@ -2623,7 +2612,6 @@
 
 *** python                                                           :python:
 **** SOMEDAY 00:40 time to look into python inside gdb              :WAITING:
-     SCHEDULED: <2021-04-01 Thu>
      :LOGBOOK:
      - State "SOMEDAY"    from "TODO"       [2021-03-29 Mon 22:51]
      - State "TODO"       from              [2021-03-14 Sun 00:40]
@@ -2774,7 +2762,7 @@
    [[https://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]], a Maildir based email client for Emacs, is configured in my [[https://github.com/rileyrg/Emacs-Customisations][emacs-config]]
 ** Maildir sync using [[https://wiki.archlinux.org/index.php/Isync][mbsync]] inspired by the [[https://www.youtube.com/watch?v=yZRyEhi4y44&ab_channel=SystemCrafters&loop=0][SystemCrafters]] video.
    :PROPERTIES:
-   :CUSTOM_ID: mbsync-mu4e-config
+   :ID:       5ac21a2f-8701-416b-913c-a7bd2109bcf1
    :END:
    maildir sync using mbsync
 *** install isync and mu4e
@@ -3101,7 +3089,7 @@
    #+end_src
 ** ~/bin/extract-debug-info
    :PROPERTIES:
-   :CUSTOM_ID: extract-debug-info
+   :ID:       85b07326-301b-480e-a908-f00e6c498b9a
    :END:
    strip debug info and store elsewhere
    #+begin_src bash :tangle "~/bin/extract-debug-info"
@@ -3497,13 +3485,3 @@
    #+begin_src bash :tangle "DotFiles/.profile"
      [ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
    #+end_src
-* OPEN git testing
-  :LOGBOOK:
-  - State "OPEN"       from              [2021-01-01 Fri 09:03] \\
-    git playgrounf not exported
-  :END:
-** l1
-*** l1.1
-*** l1.2
-*** l1.3
-    ***
