@@ -59,6 +59,7 @@ exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/curre
 exec --no-startup-id nm-applet
 
 # change focus
+bindsym $mod+o focus left
 bindsym $mod+j focus left
 bindsym $mod+k focus down
 bindsym $mod+l focus up

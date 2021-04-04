@@ -1170,6 +1170,7 @@
 *** i3 workspace
     #+begin_src conf
       # change focus
+      bindsym $mod+o focus left
       bindsym $mod+j focus left
       bindsym $mod+k focus down
       bindsym $mod+l focus up

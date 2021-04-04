@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orge8b97d7"></a>
+<a id="orgab50ca0"></a>
 
 ## ~/.profile
 
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org7366684"></a>
+<a id="org9d01629"></a>
 
 ## ~/.bash\_profile
 
@@ -1187,6 +1187,7 @@ Written to find the tty for a pane in order to redirect gef context source to a 
 ### i3 workspace
 
     # change focus
+    bindsym $mod+o focus left
     bindsym $mod+j focus left
     bindsym $mod+k focus down
     bindsym $mod+l focus up
@@ -2196,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org7366684) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org9d01629) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2204,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orge8b97d7)
+    Added to PATH in [~/.profile](#orgab50ca0)
 
 
 ### Debuggers     :debuggers:
