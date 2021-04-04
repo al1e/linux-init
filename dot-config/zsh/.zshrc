@@ -121,3 +121,6 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 # DEFAULT_USER means we dont show user and host in normal shell prompt
 DEFAULT_USER=$USER
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

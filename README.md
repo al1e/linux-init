@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orgbea5f3c"></a>
+<a id="orge8b97d7"></a>
 
 ## ~/.profile
 
@@ -687,7 +687,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 
     #alias man=eman
 
-    export PATH="${HOME}/bin":"${HOME}/.local/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
+    export PATH="${HOME}/bin":"${HOME}/bin/emacs/bin":"${HOME}/.local/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
 
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org2501639"></a>
+<a id="org7366684"></a>
 
 ## ~/.bash\_profile
 
@@ -2196,12 +2196,15 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org2501639) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7366684) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orgbea5f3c)
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+
+    Added to PATH in [~/.profile](#orge8b97d7)
 
 
 ### Debuggers     :debuggers:
