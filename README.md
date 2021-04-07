@@ -98,11 +98,8 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
 
     [ -f "${HOME}"/.config/user-dirs.dir ] && . "${HOME}"/.config/user-dirs.dir || true
 
-    [ -f "${HOME}"/.xsessionrc.local ] && . "${HOME}"/.xsessionrc.local || true
-
     # command -v srandrd && srandrd xrandr-smart-connect
     [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
-    start-pulseaudio-x11
 
 
     xss-lock -- x-lock-utils lock &
@@ -110,7 +107,7 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
     (post-lock && post-blank) &
     (sleep 2 && gpg-cache)&
 
-    xrandr-smart-connect
+    [ -f "${HOME}"/.xsessionrc.local ] && . "${HOME}"/.xsessionrc.local || true
 
 
 ## ~/.xsessionrc.local
@@ -649,7 +646,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orgcaf5e9c"></a>
+<a id="org5898de7"></a>
 
 ## ~/.profile
 
@@ -698,7 +695,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="orgdc1e7bd"></a>
+<a id="org2c5ba5a"></a>
 
 ## ~/.bash\_profile
 
@@ -2197,7 +2194,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#orgdc1e7bd) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2c5ba5a) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2205,7 +2202,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orgcaf5e9c)
+    Added to PATH in [~/.profile](#org5898de7)
 
 
 ### Debuggers     :debuggers:
@@ -2809,7 +2806,7 @@ restart pulseaudio
         git commit -a -m "$commitmsg"
         git push -f
     else
-        echo "Warning: No git config file found. Aborting.";exit;
+        echo "test Warning: No git config file found. Aborting.";exit;
     fi
 
 

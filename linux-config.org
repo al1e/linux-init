@@ -158,11 +158,8 @@
 
      [ -f "${HOME}"/.config/user-dirs.dir ] && . "${HOME}"/.config/user-dirs.dir || true
 
-     [ -f "${HOME}"/.xsessionrc.local ] && . "${HOME}"/.xsessionrc.local || true
-
      # command -v srandrd && srandrd xrandr-smart-connect
      [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
-     start-pulseaudio-x11
 
 
      xss-lock -- x-lock-utils lock &
@@ -170,7 +167,7 @@
      (post-lock && post-blank) &
      (sleep 2 && gpg-cache)&
 
-     xrandr-smart-connect
+     [ -f "${HOME}"/.xsessionrc.local ] && . "${HOME}"/.xsessionrc.local || true
 
    #+end_src
 ** ~/.xsessionrc.local
