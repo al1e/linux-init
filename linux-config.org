@@ -3184,24 +3184,7 @@
      fi
    #+end_src
 ** ~/bin/resgithub
-   reset github as if it's newly born. ALL history will be lost.
-   #+begin_src bash :tangle "~/bin/resgithub"
-     #!/bin/bash
-     #Maintained in linux-init-files.org
-     tfile=$(mktemp /tmp/config.XXXXXXXXX)
-     commitmsg=${1:-"git repository initialised"}
-     if [ -f .git/config ]; then
-         mv .git/config "$tfile"
-         rm -rf .git
-         git init .
-         mv "$tfile" .git/config
-         git add .
-         git commit -a -m "$commitmsg"
-         git push -f
-     else
-         echo "Warning: No git config file found. Aborting.";exit;
-     fi
-   #+end_src
+   [[https://github.com/rileyrg/resgithub][resgithub.sh - reset local and remote git repo]]
 ** ~/bin/sharemouse
    #+begin_src bash :tangle "~/bin/sharemouse"
      #!/usr/bin/bash

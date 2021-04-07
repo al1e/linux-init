@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orgeaf7dba"></a>
+<a id="orgbce26e7"></a>
 
 ## ~/.profile
 
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org39832b0"></a>
+<a id="orgacc45a5"></a>
 
 ## ~/.bash\_profile
 
@@ -2197,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org39832b0) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgacc45a5) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2205,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orgeaf7dba)
+    Added to PATH in [~/.profile](#orgbce26e7)
 
 
 ### Debuggers     :debuggers:
@@ -2786,27 +2786,6 @@ restart pulseaudio
         echo "add --f to force deletion of conflicted copies"
         find ~/Dropbox/ -path "*(*'s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -print
         find ~/Dropbox/ -path "*(*s in Konflikt stehende Kopie [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -print
-    fi
-
-
-## ~/bin/resgithub
-
-reset github as if it's newly born. ALL history will be lost.
-
-    #!/bin/bash
-    #Maintained in linux-init-files.org
-    tfile=$(mktemp /tmp/config.XXXXXXXXX)
-    commitmsg=${1:-"git repository initialised"}
-    if [ -f .git/config ]; then
-        mv .git/config "$tfile"
-        rm -rf .git
-        git init .
-        mv "$tfile" .git/config
-        git add .
-        git commit -a -m "$commitmsg"
-        git push -f
-    else
-        echo "Warning: No git config file found. Aborting.";exit;
     fi
 
 
