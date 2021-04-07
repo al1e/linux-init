@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orgbce26e7"></a>
+<a id="orgcaf5e9c"></a>
 
 ## ~/.profile
 
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="orgacc45a5"></a>
+<a id="orgdc1e7bd"></a>
 
 ## ~/.bash\_profile
 
@@ -2197,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#orgacc45a5) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgdc1e7bd) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2205,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orgbce26e7)
+    Added to PATH in [~/.profile](#orgcaf5e9c)
 
 
 ### Debuggers     :debuggers:
@@ -2786,6 +2786,30 @@ restart pulseaudio
         echo "add --f to force deletion of conflicted copies"
         find ~/Dropbox/ -path "*(*'s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -print
         find ~/Dropbox/ -path "*(*s in Konflikt stehende Kopie [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -print
+    fi
+
+
+## ~/bin/resgithub.sh
+
+[resgithub.sh - reset local and remote git repo](https://github.com/rileyrg/resgithub)
+
+    #!/usr/bin/bash
+    #Maintained in resgithub.org
+    tconfig=$(mktemp)
+    texclude=$(mktemp)
+    commitmsg=${1:-"git repository initialised"}
+    if [ -f .git/config ]; then
+        cp .git/config "$tconfig"
+        cp .git/info/exclude "$texclude"
+        rm -rf .git
+        git init .
+        mv "$tconfig" .git/config
+        mv "$texclude" .git/info/exclude
+        git add .
+        git commit -a -m "$commitmsg"
+        git push -f
+    else
+        echo "Warning: No git config file found. Aborting.";exit;
     fi
 
 
