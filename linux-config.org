@@ -1,6 +1,6 @@
 #+TITLE: linux init  configuration
-#+AUTHOR: Richard G. Riley
-#+EMAIL: rileyrg at g mail dot com
+#+AUTHOR: rileyrg
+#+EMAIL: rileyrg at g m x dot de
 
 #+LANGUAGE: en
 #+STARTUP: overview
@@ -58,14 +58,20 @@
    Keep all config and scripts in a single org file for documentation. Use org tangling for exporting them.
 ** GIT
 *** ~/.gitconfig
+    :PROPERTIES:
+    :header-args:bash: :tangle no
+    :END:
     global git settings
-    #+begin_src conf :tangle "DotFiles/.gitconfig"
+    NB - NOT Exported as lots of things want to update it
+    #+begin_src conf :tangle no
       # Maintained in linux-init-files.org
       [user]
-      name = Richard G. Riley
+      name = rileyrg
       email = rileyrg@gmx.de
       [push]
       default = current
+      [github]
+      user = rileyrg
     #+end_src
 *** master branch, no commit
     :PROPERTIES:

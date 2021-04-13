@@ -15,13 +15,16 @@ Keep all config and scripts in a single org file for documentation. Use org tang
 ### ~/.gitconfig
 
 global git settings
+NB - NOT Exported as lots of things want to update it
 
     # Maintained in linux-init-files.org
     [user]
-    name = Richard G. Riley
+    name = rileyrg
     email = rileyrg@gmx.de
     [push]
     default = current
+    [github]
+    user = rileyrg
 
 
 ### master branch, no commit
@@ -646,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="org5898de7"></a>
+<a id="orgf1ad5b5"></a>
 
 ## ~/.profile
 
@@ -695,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org2c5ba5a"></a>
+<a id="org4f59776"></a>
 
 ## ~/.bash\_profile
 
@@ -2194,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org2c5ba5a) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org4f59776) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2202,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#org5898de7)
+    Added to PATH in [~/.profile](#orgf1ad5b5)
 
 
 ### Debuggers     :debuggers:
