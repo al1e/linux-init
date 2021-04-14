@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+export DEBIAN_FRONTEND=noninteractive
+sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y

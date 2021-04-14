@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="orgf1ad5b5"></a>
+<a id="org4f86cc9"></a>
 
 ## ~/.profile
 
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org4f59776"></a>
+<a id="org12f1d84"></a>
 
 ## ~/.bash\_profile
 
@@ -2197,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org4f59776) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org12f1d84) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2205,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#orgf1ad5b5)
+    Added to PATH in [~/.profile](#org4f86cc9)
 
 
 ### Debuggers     :debuggers:
@@ -2624,6 +2624,29 @@ if it exists jump to it else start it
         my-iface-active-query "GENERAL.STATE"
 
 
+## ~/bin/confirm-suspend
+
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    delay=10;
+    message="Almost out of juice."
+    while [ "$#" -gt 0 ]; do
+        case $1 in
+            -d|--delay) delay="${2}";shift;;
+            -m|--message) message="${2} ";shift;;
+            *) echo "Unknown parameter passed: $1"; exit 1 ;;
+        esac
+        shift
+    done
+
+    zenity --question --text="${message}Proceed to suspend in ${delay}s?"
+    if [ $? = 0 ]; then
+        sleep "$delay" && systemctl suspend
+    else
+        exit
+    fi
+
+
 ## ~/bin/dropbox-start-once
 
     #!/usr/bin/bash
@@ -2829,27 +2852,14 @@ Only log to syslog if MY\_LOGGER -T "STARTUP-INITFILE" \_ON is set
     [ -z "${MY_LOGGER} -T "STARTUP-INITFILE" _ON" ] || /usr/bin/logger -t "startup-initfile"  "$@"
 
 
-## ~/bin/confirm-suspend
+## ~/bin/upd
+
+update sw
 
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    delay=10;
-    message="Almost out of juice."
-    while [ "$#" -gt 0 ]; do
-        case $1 in
-            -d|--delay) delay="${2}";shift;;
-            -m|--message) message="${2} ";shift;;
-            *) echo "Unknown parameter passed: $1"; exit 1 ;;
-        esac
-        shift
-    done
-
-    zenity --question --text="${message}Proceed to suspend in ${delay}s?"
-    if [ $? = 0 ]; then
-        sleep "$delay" && systemctl suspend
-    else
-        exit
-    fi
+    # Maintained in linux-init-files.org
+    export DEBIAN_FRONTEND=noninteractive
+    sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
 
 
 ## XMG Neo 15 Specifics

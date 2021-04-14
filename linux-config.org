@@ -3031,6 +3031,28 @@
        my-iface-active-query "GENERAL.STATE"
      #+end_src
 
+** ~/bin/confirm-suspend
+   #+begin_src bash :tangle "~/bin/confirm-suspend"
+     #!/usr/bin/bash
+     #Maintained in linux-init-files.org
+     delay=10;
+     message="Almost out of juice."
+     while [ "$#" -gt 0 ]; do
+         case $1 in
+             -d|--delay) delay="${2}";shift;;
+             -m|--message) message="${2} ";shift;;
+             ,*) echo "Unknown parameter passed: $1"; exit 1 ;;
+         esac
+         shift
+     done
+
+     zenity --question --text="${message}Proceed to suspend in ${delay}s?"
+     if [ $? = 0 ]; then
+         sleep "$delay" && systemctl suspend
+     else
+         exit
+     fi
+   #+end_src
 ** ~/bin/dropbox-start-once
    #+begin_src bash :tangle "~/bin/dropbox-start-once"
      #!/usr/bin/bash
@@ -3205,27 +3227,13 @@
      # Maintained in linux-init-files.org
      [ -z "${MY_LOGGER} -T "STARTUP-INITFILE" _ON" ] || /usr/bin/logger -t "startup-initfile"  "$@"
    #+end_src
-** ~/bin/confirm-suspend
-   #+begin_src bash :tangle "~/bin/confirm-suspend"
+** ~/bin/upd
+   update sw
+   #+begin_src bash :tangle "~/bin/upd"
      #!/usr/bin/bash
-     #Maintained in linux-init-files.org
-     delay=10;
-     message="Almost out of juice."
-     while [ "$#" -gt 0 ]; do
-         case $1 in
-             -d|--delay) delay="${2}";shift;;
-             -m|--message) message="${2} ";shift;;
-             ,*) echo "Unknown parameter passed: $1"; exit 1 ;;
-         esac
-         shift
-     done
-
-     zenity --question --text="${message}Proceed to suspend in ${delay}s?"
-     if [ $? = 0 ]; then
-         sleep "$delay" && systemctl suspend
-     else
-         exit
-     fi
+     # Maintained in linux-init-files.org
+     export DEBIAN_FRONTEND=noninteractive
+     sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
    #+end_src
 ** XMG Neo 15 Specifics
 *** ~/bin/xmg-neo-rgb-kbd-lights
