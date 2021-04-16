@@ -105,8 +105,8 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
     [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-    xss-lock -- x-lock-utils lock &
-    x-idlehook &
+    #xss-lock -- x-lock-utils lock &
+    #x-idlehook &
     (post-lock && post-blank) &
     (sleep 2 && gpg-cache)&
 
@@ -649,7 +649,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
 \`-&#x2014;
 
 
-<a id="org4f86cc9"></a>
+<a id="org1d23275"></a>
 
 ## ~/.profile
 
@@ -698,7 +698,7 @@ see [/usr/share/doc/gnupg/examples](file:///usr/share/doc/gnupg/examples)
     fi
 
 
-<a id="org12f1d84"></a>
+<a id="org8f20e4d"></a>
 
 ## ~/.bash\_profile
 
@@ -1629,8 +1629,8 @@ Written to find the tty for a pane in order to redirect gef context source to a 
                 fi
             else
                 if command -v dropbox > /dev/null; then
-                    echo "Starting Dropbox.."
-                    dropbox start &> /dev/null &
+                    echo "Restart Dropbox.."
+                    #dropbox start &> /dev/null &
                 fi
             fi
 
@@ -2197,7 +2197,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         export PYENV_ROOT="${HOME}/.pyenv"
         export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
-2.  [Eval](#org12f1d84) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org8f20e4d) pyenv init from bash\_profile in order to set python version
 
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -2205,7 +2205,7 @@ Reverse engineering packges [radare2](https://radare.gitbooks.io/radare2book/con
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
 
-    Added to PATH in [~/.profile](#org4f86cc9)
+    Added to PATH in [~/.profile](#org1d23275)
 
 
 ### Debuggers     :debuggers:

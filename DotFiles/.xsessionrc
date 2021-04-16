@@ -29,8 +29,8 @@ esac
 [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-xss-lock -- x-lock-utils lock &
-x-idlehook &
+#xss-lock -- x-lock-utils lock &
+#x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&
 

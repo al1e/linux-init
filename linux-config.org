@@ -168,8 +168,8 @@
      [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-     xss-lock -- x-lock-utils lock &
-     x-idlehook &
+     #xss-lock -- x-lock-utils lock &
+     #x-idlehook &
      (post-lock && post-blank) &
      (sleep 2 && gpg-cache)&
 
@@ -2074,8 +2074,8 @@
             fi
         else
             if command -v dropbox > /dev/null; then
-                echo "Starting Dropbox.."
-                dropbox start &> /dev/null &
+                echo "Restart Dropbox.."
+                #dropbox start &> /dev/null &
             fi
         fi
       #+end_src
