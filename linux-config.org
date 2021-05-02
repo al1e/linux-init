@@ -169,7 +169,7 @@
 
 
      #xss-lock -- x-lock-utils lock &
-     #x-idlehook &
+     x-idlehook &
      (post-lock && post-blank) &
      (sleep 2 && gpg-cache)&
 
@@ -279,7 +279,7 @@
           --timer ${XIDLEHOOK_KBD:-60}\
           'pre-blank' \
           'post-blank' \
-          --timer ${XIDLEHOOK_DIM:-120}\
+          --timer ${XIDLEHOOK_DIM:-1200}\
           'xbacklight -set 5' \
           'post-blank' \
           --timer ${XIDLEHOOK_BLANK:-1200}\

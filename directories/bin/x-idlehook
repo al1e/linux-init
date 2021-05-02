@@ -9,7 +9,7 @@ xidlehook \
     --timer ${XIDLEHOOK_KBD:-60}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-120}\
+    --timer ${XIDLEHOOK_DIM:-1200}\
     'xbacklight -set 5' \
     'post-blank' \
     --timer ${XIDLEHOOK_BLANK:-1200}\

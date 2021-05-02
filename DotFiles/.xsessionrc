@@ -30,7 +30,7 @@ esac
 
 
 #xss-lock -- x-lock-utils lock &
-#x-idlehook &
+x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&
 
