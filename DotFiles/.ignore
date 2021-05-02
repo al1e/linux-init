@@ -1,9 +1,5 @@
 # Maintained in linux-init-files.org
-!*
+*~
 .git
 cache
 .cache
-auto-save
-history
-undohist
-*.md

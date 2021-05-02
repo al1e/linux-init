@@ -201,7 +201,7 @@
      Xft.dpi:       108
      #endif
      #ifdef SRVR_thinkpadx270
-     Xft.dpi:       177
+     Xft.dpi:       96
      #endif
      #ifdef SRVR_xmgneo
      Xft.dpi:       188
@@ -1333,7 +1333,7 @@
       bindsym Print exec gnome-screenshot -i
 
       bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-      bindsym $mod+Shift+f exec google-chrome --disable-session-crashed-bubble
+      bindsym $mod+Shift+f exec google-chrome --lang=en --disable-session-crashed-bubble
       bindsym $mod+Control+a exec pavucontrol
       bindsym $mod+Control+Shift+a exec pulse-restart
       bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -2158,14 +2158,10 @@
 ** ~/.ignore
    #+begin_src conf :tangle "DotFiles/.ignore"
      # Maintained in linux-init-files.org
-     !*
+     *~
      .git
      cache
      .cache
-     auto-save
-     history
-     undohist
-     *.md
    #+end_src
 ** ~/.ripgreprc
    #+begin_src conf :tangle "DotFiles/.ripgreprc"
@@ -2621,7 +2617,6 @@
      - State "TODO"       from              [2021-03-14 Sun 00:40]
      :END:
 ***** [[https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands][gdb python]]
-*** python                                                           :python:
 ** python
 *** pyvenv  https://github.com/pyenv/pyenv#installation
 **** add pyenv to path

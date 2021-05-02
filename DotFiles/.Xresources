@@ -8,7 +8,7 @@ Xft.dpi:       104
 Xft.dpi:       108
 #endif
 #ifdef SRVR_thinkpadx270
-Xft.dpi:       177
+Xft.dpi:       96
 #endif
 #ifdef SRVR_xmgneo
 Xft.dpi:       188
