@@ -90,17 +90,21 @@ xhost +
 xset s off
 xset -dpms
 
+xrdb -merge ~/.xresources
+
 # .xsessionrc.local for this type of thing
 case "$(hostname)" in
     "thinkpadt460")
         # disable trackpad
         xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
+        picom --backend glx --vsync &
         ;;
     "thinkpadx270")
+        picom --backend glx --vsync &
         ;;
     "xmgneo")
         # xrandr --output eDP-1 --mode 2560x1440 --rate 165 #--scale 0.8x0.8
-        # picom --backend glx --vsync &
+        picom --backend glx --vsync &
         ;;
     *)
         # picom --backend glx --vsync &
@@ -114,7 +118,7 @@ esac
 
 
 #xss-lock -- x-lock-utils lock &
-#x-idlehook &
+x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&
 
@@ -145,6 +149,14 @@ logger -t "startup-initfile"  XSESSIONRC-LOCAL
 ```conf
 ! Use a truetype font and size.
 *.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
+Xft.autohint: 0
+Xft.antialias: 1
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.dpi: 96
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+
 ! Fonts {{{
 #ifdef SRVR_thinkpadt460
 Xft.dpi:       104
@@ -174,7 +186,6 @@ Just a gathering place of locky/suspendy type things&#x2026;
 lock() {
     logger -t "x-lock-utils"  lock
     pre-lock
-    #         i3lock -c 000000 -n
     xbacklight -set 5
     xset dpms 5 0 0
     i3lock -n -c 000000
@@ -211,6 +222,12 @@ case "$1" in
     shutdown)
         systemctl poweroff
         ;;
+    screenoff)
+        xset dpms force off
+        ;;
+    screenoff)
+        xset dpms force off
+        ;;
     *)
         lock
         ;;
@@ -239,7 +256,7 @@ xidlehook \
     --timer ${XIDLEHOOK_KBD:-60}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-120}\
+    --timer ${XIDLEHOOK_DIM:-1200}\
     'xbacklight -set 5' \
     'post-blank' \
     --timer ${XIDLEHOOK_BLANK:-1200}\
@@ -618,7 +635,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org4687359"></a>
+<a id="orgb655ffc"></a>
 
 ## ~/.profile
 
@@ -671,7 +688,7 @@ fi
 ```
 
 
-<a id="org23315ab"></a>
+<a id="orge0bbf2f"></a>
 
 ## ~/.bash\_profile
 
@@ -1120,7 +1137,7 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 ```
 
 
-# I3 window manager
+# I3 window manager     :i3:i3wm:
 
 
 ## i3wm config
@@ -1381,7 +1398,7 @@ bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+h exec pidof hexchat || hexchat
-bindsym $mod+Control+l exec (sleep 1 && xset dpms force off) #triggers xss-lock
+bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) ;; xsslock disabled
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2259,7 +2276,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org23315ab) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orge0bbf2f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2271,7 +2288,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org4687359)
+    Added to PATH in [~/.profile](#orgb655ffc)
 
 
 ### Debuggers     :debuggers:
@@ -2341,7 +2358,7 @@ export USER_STARTX_START=
 ## DONE lock when lid closed
 
 
-### ~/.config/systemd/user/lidlock.service
+### TODO ~/.config/systemd/user/lidlock.service
 
 ```conf
 # Maintained in linux-init-files.org

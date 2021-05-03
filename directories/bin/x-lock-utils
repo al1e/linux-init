@@ -4,7 +4,6 @@
 lock() {
     logger -t "x-lock-utils"  lock
     pre-lock
-    #         i3lock -c 000000 -n
     xbacklight -set 5
     xset dpms 5 0 0
     i3lock -n -c 000000
@@ -40,6 +39,12 @@ case "$1" in
         ;;
     shutdown)
         systemctl poweroff
+        ;;
+    screenoff)
+        xset dpms force off
+        ;;
+    screenoff)
+        xset dpms force off
         ;;
     *)
         lock

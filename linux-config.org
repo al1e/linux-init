@@ -145,17 +145,21 @@
      xset s off
      xset -dpms
 
+     xrdb -merge ~/.xresources
+
      # .xsessionrc.local for this type of thing
      case "$(hostname)" in
          "thinkpadt460")
              # disable trackpad
              xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
+             picom --backend glx --vsync &
              ;;
          "thinkpadx270")
+             picom --backend glx --vsync &
              ;;
          "xmgneo")
              # xrandr --output eDP-1 --mode 2560x1440 --rate 165 #--scale 0.8x0.8
-             # picom --backend glx --vsync &
+             picom --backend glx --vsync &
              ;;
          ,*)
              # picom --backend glx --vsync &
@@ -193,6 +197,14 @@
    #+begin_src conf :tangle "DotFiles/.Xresources"
      ! Use a truetype font and size.
      ,*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
+     Xft.autohint: 0
+     Xft.antialias: 1
+     Xft.hinting: true
+     Xft.hintstyle: hintslight
+     Xft.dpi: 96
+     Xft.rgba: rgb
+     Xft.lcdfilter: lcddefault
+
      ! Fonts {{{
      #ifdef SRVR_thinkpadt460
      Xft.dpi:       104
@@ -218,7 +230,6 @@
      lock() {
          logger -t "x-lock-utils"  lock
          pre-lock
-         #         i3lock -c 000000 -n
          xbacklight -set 5
          xset dpms 5 0 0
          i3lock -n -c 000000
@@ -254,6 +265,12 @@
              ;;
          shutdown)
              systemctl poweroff
+             ;;
+         screenoff)
+             xset dpms force off
+             ;;
+         screenoff)
+             xset dpms force off
              ;;
          ,*)
              lock
@@ -1099,7 +1116,7 @@
      window="${3:-0}"
      tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tty}' | awk '/pane_index:'"${pane_index}"'/ {print $2 }'
    #+end_src
-* I3 window manager
+* I3 window manager                                                 :i3:i3wm:
 ** i3wm config
    :PROPERTIES:
    :header-args:conf: :tangle "~/.config/i3/config"
@@ -1344,7 +1361,7 @@
       bindsym $mod+Control+g exec oneterminal "gdb"
       bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
       bindsym $mod+Control+h exec pidof hexchat || hexchat
-      bindsym $mod+Control+l exec (sleep 1 && xset dpms force off) #triggers xss-lock
+      bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) ;; xsslock disabled
       bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
       bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
       bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2691,7 +2708,12 @@
      not working - xsslock seems to be the way
    - State "TODO"       from              [2020-12-05 Sa 09:36]
    :END:
-*** ~/.config/systemd/user/lidlock.service
+*** TODO ~/.config/systemd/user/lidlock.service
+    :LOGBOOK:
+    - Note taken on [2021-05-03 Mon 11:22] \\
+      not sure if this is used or not
+    - State "TODO"       from              [2021-05-03 Mon 11:21]
+    :END:
     #+begin_src conf :tangle "~/.config/systemd/user/lidlock.service"
       # Maintained in linux-init-files.org
       [Unit]
