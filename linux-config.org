@@ -1361,8 +1361,6 @@
       bindsym $mod+Control+g exec oneterminal "gdb"
       bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
       bindsym $mod+Control+h exec pidof hexchat || hexchat
-      bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) # xsslock disabled
-      bindsym $mod+Control+s exec (sleep 1 && xset dpms force off)
       bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
       bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
       bindsym $mod+Control+Shift+p exec htop-regexp
@@ -1375,8 +1373,9 @@
     #+end_src
 *** i3 exit
     #+begin_src conf
-      set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+      set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
       mode "$mode_system" {
+      bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
       bindsym l exec --no-startup-id x-lock-utils lock, mode "default"
       bindsym e exec --no-startup-id x-lock-utils logout, mode "default"
       bindsym s exec --no-startup-id x-lock-utils suspend, mode "default"

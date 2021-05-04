@@ -35,7 +35,7 @@ case "$1" in
         systemctl suspend && i3lock -n -c 000000
         ;;
     hibernate)
-        systemctl hibernate
+        systemctl hibernate i3lock -n -c 000000
         ;;
     reboot)
         systemctl reboot

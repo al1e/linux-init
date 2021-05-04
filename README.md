@@ -635,7 +635,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org8efb11b"></a>
+<a id="org7ed4534"></a>
 
 ## ~/.profile
 
@@ -688,7 +688,7 @@ fi
 ```
 
 
-<a id="org7b4e64f"></a>
+<a id="orgd0f0064"></a>
 
 ## ~/.bash\_profile
 
@@ -1398,8 +1398,6 @@ bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+h exec pidof hexchat || hexchat
-bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) # xsslock disabled
-bindsym $mod+Control+s exec (sleep 1 && xset dpms force off)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -1415,8 +1413,9 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-s
 ### i3 exit
 
 ```conf
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
+bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
 bindsym l exec --no-startup-id x-lock-utils lock, mode "default"
 bindsym e exec --no-startup-id x-lock-utils logout, mode "default"
 bindsym s exec --no-startup-id x-lock-utils suspend, mode "default"
@@ -2276,7 +2275,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7b4e64f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgd0f0064) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2288,7 +2287,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org8efb11b)
+    Added to PATH in [~/.profile](#org7ed4534)
 
 
 ### Debuggers     :debuggers:
