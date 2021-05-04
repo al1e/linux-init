@@ -9,15 +9,15 @@ xidlehook \
     --timer ${XIDLEHOOK_KBD:-60}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-1200}\
+    --timer ${XIDLEHOOK_DIM:-60}\
     'xbacklight -set 5' \
     'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-1200}\
-    'xbacklight -set 0' \
-    'post-blank' \
-    --timer ${XIDLEHOOK_LOCK:-2400}\
-    '(pre-lock && x-lock-utils lock)' \
-    '(post-blank && post-lock)' \
-    --timer ${XIDLEHOOK_SUSPEND:-3600}\
-    'systemctl suspend' \
-    ''
+    --timer ${XIDLEHOOK_BLANK:-60}\
+    'xset dpms force off' \
+    'post-blank' # \
+    # --timer ${XIDLEHOOK_LOCK:-2400}\
+    # '(pre-lock && x-lock-utils lock)' \
+    # '(post-blank && post-lock)' \
+    # --timer ${XIDLEHOOK_SUSPEND:-3600}\
+    # 'systemctl suspend' \
+    # ''

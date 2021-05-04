@@ -152,7 +152,7 @@
          "thinkpadt460")
              # disable trackpad
              xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
-             picom --backend glx --vsync &
+             # picom --backend glx --vsync &
              ;;
          "thinkpadx270")
              picom --backend glx --vsync &
@@ -296,18 +296,18 @@
           --timer ${XIDLEHOOK_KBD:-60}\
           'pre-blank' \
           'post-blank' \
-          --timer ${XIDLEHOOK_DIM:-1200}\
+          --timer ${XIDLEHOOK_DIM:-60}\
           'xbacklight -set 5' \
           'post-blank' \
-          --timer ${XIDLEHOOK_BLANK:-1200}\
-          'xbacklight -set 0' \
-          'post-blank' \
-          --timer ${XIDLEHOOK_LOCK:-2400}\
-          '(pre-lock && x-lock-utils lock)' \
-          '(post-blank && post-lock)' \
-          --timer ${XIDLEHOOK_SUSPEND:-3600}\
-          'systemctl suspend' \
-          ''
+          --timer ${XIDLEHOOK_BLANK:-60}\
+          'xset dpms force off' \
+          'post-blank' # \
+          # --timer ${XIDLEHOOK_LOCK:-2400}\
+          # '(pre-lock && x-lock-utils lock)' \
+          # '(post-blank && post-lock)' \
+          # --timer ${XIDLEHOOK_SUSPEND:-3600}\
+          # 'systemctl suspend' \
+          # ''
     #+end_src
 ** ~/bin/rnv
    enable force of nvidia driver - run with nvidia
@@ -1206,7 +1206,7 @@
       bindsym $mod+Shift+j move left
       bindsym $mod+Shift+k move down
       bindsym $mod+Shift+l move up
-      bindsym $mod+Shift+odiaeresis move right
+      bindsym $mod+Shift+ö move right
 
       # alternatively, you can use the cursor keys:
       bindsym $mod+Shift+Left move left
@@ -1361,11 +1361,11 @@
       bindsym $mod+Control+g exec oneterminal "gdb"
       bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
       bindsym $mod+Control+h exec pidof hexchat || hexchat
-      bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) ;; xsslock disabled
+      bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) # xsslock disabled
+      bindsym $mod+Control+s exec (sleep 1 && xset dpms force off)
       bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
       bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
       bindsym $mod+Control+Shift+p exec htop-regexp
-      bindsym $mod+Control+s exec pidof signal-desktop || signal-desktop
       bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
       bindsym $mod+Return exec oneterminal "i3wmterm" ""
 

@@ -97,7 +97,7 @@ case "$(hostname)" in
     "thinkpadt460")
         # disable trackpad
         xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
-        picom --backend glx --vsync &
+        # picom --backend glx --vsync &
         ;;
     "thinkpadx270")
         picom --backend glx --vsync &
@@ -256,18 +256,18 @@ xidlehook \
     --timer ${XIDLEHOOK_KBD:-60}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-1200}\
+    --timer ${XIDLEHOOK_DIM:-60}\
     'xbacklight -set 5' \
     'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-1200}\
-    'xbacklight -set 0' \
-    'post-blank' \
-    --timer ${XIDLEHOOK_LOCK:-2400}\
-    '(pre-lock && x-lock-utils lock)' \
-    '(post-blank && post-lock)' \
-    --timer ${XIDLEHOOK_SUSPEND:-3600}\
-    'systemctl suspend' \
-    ''
+    --timer ${XIDLEHOOK_BLANK:-60}\
+    'xset dpms force off' \
+    'post-blank' # \
+    # --timer ${XIDLEHOOK_LOCK:-2400}\
+    # '(pre-lock && x-lock-utils lock)' \
+    # '(post-blank && post-lock)' \
+    # --timer ${XIDLEHOOK_SUSPEND:-3600}\
+    # 'systemctl suspend' \
+    # ''
 ```
 
 
@@ -635,7 +635,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgb655ffc"></a>
+<a id="org9fa0cc2"></a>
 
 ## ~/.profile
 
@@ -688,7 +688,7 @@ fi
 ```
 
 
-<a id="orge0bbf2f"></a>
+<a id="org2155aff"></a>
 
 ## ~/.bash\_profile
 
@@ -1234,7 +1234,7 @@ bindsym $mod+Right focus right
 bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
 bindsym $mod+Shift+l move up
-bindsym $mod+Shift+odiaeresis move right
+bindsym $mod+Shift+ö move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -1398,11 +1398,11 @@ bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+h exec pidof hexchat || hexchat
-bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) ;; xsslock disabled
+bindsym $mod+Control+l exec (sleep 1 && xset dpms force off && i3lock -n -c 000000) # xsslock disabled
+bindsym $mod+Control+s exec (sleep 1 && xset dpms force off)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
-bindsym $mod+Control+s exec pidof signal-desktop || signal-desktop
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
@@ -2276,7 +2276,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orge0bbf2f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2155aff) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2288,7 +2288,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgb655ffc)
+    Added to PATH in [~/.profile](#org9fa0cc2)
 
 
 ### Debuggers     :debuggers:
