@@ -227,15 +227,18 @@
      #!/usr/bin/bash
      # Maintained in linux-init-files.org
 
+     # lock() {
+     #     logger -t "x-lock-utils"  lock
+     #     pre-lock
+     #     xbacklight -set 5
+     #     xset dpms 5 0 0
+     #     i3lock -n -c 000000
+     #     xset -dpms
+     #     x-backlight-persist restore
+     #     post-lock
+     # }
      lock() {
-         logger -t "x-lock-utils"  lock
-         pre-lock
-         xbacklight -set 5
-         xset dpms 5 0 0
-         i3lock -n -c 000000
-         xset -dpms
-         x-backlight-persist restore
-         post-lock
+         xset dpms force off && i3lock -n -c 000000
      }
 
      lock_gpg_clear() {
@@ -255,19 +258,16 @@
              i3-msg exit
              ;;
          suspend)
-             systemctl suspend
+             systemctl suspend && i3lock -n -c 000000
              ;;
          hibernate)
-             systemctl hibernate
+             systemctl hibernate i3lock -n -c 000000
              ;;
          reboot)
              systemctl reboot
              ;;
          shutdown)
              systemctl poweroff
-             ;;
-         screenoff)
-             xset dpms force off
              ;;
          screenoff)
              xset dpms force off

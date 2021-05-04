@@ -183,15 +183,18 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 
+# lock() {
+#     logger -t "x-lock-utils"  lock
+#     pre-lock
+#     xbacklight -set 5
+#     xset dpms 5 0 0
+#     i3lock -n -c 000000
+#     xset -dpms
+#     x-backlight-persist restore
+#     post-lock
+# }
 lock() {
-    logger -t "x-lock-utils"  lock
-    pre-lock
-    xbacklight -set 5
-    xset dpms 5 0 0
-    i3lock -n -c 000000
-    xset -dpms
-    x-backlight-persist restore
-    post-lock
+    xset dpms force off && i3lock -n -c 000000
 }
 
 lock_gpg_clear() {
@@ -211,19 +214,16 @@ case "$1" in
         i3-msg exit
         ;;
     suspend)
-        systemctl suspend
+        systemctl suspend && i3lock -n -c 000000
         ;;
     hibernate)
-        systemctl hibernate
+        systemctl hibernate i3lock -n -c 000000
         ;;
     reboot)
         systemctl reboot
         ;;
     shutdown)
         systemctl poweroff
-        ;;
-    screenoff)
-        xset dpms force off
         ;;
     screenoff)
         xset dpms force off
@@ -635,7 +635,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org9fa0cc2"></a>
+<a id="org8efb11b"></a>
 
 ## ~/.profile
 
@@ -688,7 +688,7 @@ fi
 ```
 
 
-<a id="org2155aff"></a>
+<a id="org7b4e64f"></a>
 
 ## ~/.bash\_profile
 
@@ -2276,7 +2276,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org2155aff) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7b4e64f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2288,7 +2288,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org9fa0cc2)
+    Added to PATH in [~/.profile](#org8efb11b)
 
 
 ### Debuggers     :debuggers:
