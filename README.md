@@ -300,7 +300,11 @@ save() {
 }
 
 get() {
-    echo $(xbacklight -get);
+    if command -v brightnessctl; then
+        echo $(brightnessctl g)
+    else
+        echo $(xbacklight -get);
+    fi
 }
 
 restore() {
@@ -312,10 +316,12 @@ restore() {
 
 case "$1" in
     save)
+        command -v brightnessctl && brightnessctl -s && exit 0
         save
         [ -n "$2" ] && xbacklight -set "$2"
         ;;
     restore)
+        command -v brightnessctl && brightnessctl -r && exit 0
         restore
         ;;
     get)
@@ -638,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org38a96b8"></a>
+<a id="org2540fea"></a>
 
 ## ~/.profile
 
@@ -691,7 +697,7 @@ fi
 ```
 
 
-<a id="orgd4b61ca"></a>
+<a id="orgc9aae97"></a>
 
 ## ~/.bash\_profile
 
@@ -1377,9 +1383,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 ### i3 screen
 
 ```conf
-exec brightnessctl -r
-bindsym XF86MonBrightnessUp   exec brightnessctl s +10 && brightnessctl -s
-bindsym XF86MonBrightnessDown exec brightnessctl s 10- && brightnessctl -s
+exec command -v brightnessctl && brightnessctl -r
+bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s
+bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s
 ```
 
 
@@ -2279,7 +2285,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgd4b61ca) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgc9aae97) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2291,7 +2297,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org38a96b8)
+    Added to PATH in [~/.profile](#org2540fea)
 
 
 ### Debuggers     :debuggers:

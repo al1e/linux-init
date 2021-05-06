@@ -8,7 +8,11 @@ save() {
 }
 
 get() {
-    echo $(xbacklight -get);
+    if command -v brightnessctl; then
+        echo $(brightnessctl g)
+    else
+        echo $(xbacklight -get);
+    fi
 }
 
 restore() {
@@ -20,10 +24,12 @@ restore() {
 
 case "$1" in
     save)
+        command -v brightnessctl && brightnessctl -s && exit 0
         save
         [ -n "$2" ] && xbacklight -set "$2"
         ;;
     restore)
+        command -v brightnessctl && brightnessctl -r && exit 0
         restore
         ;;
     get)

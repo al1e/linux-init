@@ -332,7 +332,11 @@
      }
 
      get() {
-         echo $(xbacklight -get);
+         if command -v brightnessctl; then
+             echo $(brightnessctl g)
+         else
+             echo $(xbacklight -get);
+         fi
      }
 
      restore() {
@@ -344,10 +348,12 @@
 
      case "$1" in
          save)
+             command -v brightnessctl && brightnessctl -s && exit 0
              save
              [ -n "$2" ] && xbacklight -set "$2"
              ;;
          restore)
+             command -v brightnessctl && brightnessctl -r && exit 0
              restore
              ;;
          get)
@@ -1343,9 +1349,9 @@
     #+end_src
 *** i3 screen
     #+begin_src conf
-      exec brightnessctl -r
-      bindsym XF86MonBrightnessUp   exec brightnessctl s +10 && brightnessctl -s
-      bindsym XF86MonBrightnessDown exec brightnessctl s 10- && brightnessctl -s
+      exec command -v brightnessctl && brightnessctl -r
+      bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s
+      bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s
     #+end_src
 *** i3 apps
     #+begin_src conf
