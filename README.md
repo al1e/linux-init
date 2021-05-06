@@ -99,12 +99,15 @@ case "$(hostname)" in
         xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
         # picom --backend glx --vsync &
         ;;
+    "thinkpadt14s")
+        #picom --backend glx --vsync &
+        ;;
     "thinkpadx270")
-        picom --backend glx --vsync &
+        #picom --backend glx --vsync &
         ;;
     "xmgneo")
         # xrandr --output eDP-1 --mode 2560x1440 --rate 165 #--scale 0.8x0.8
-        picom --backend glx --vsync &
+        #picom --backend glx --vsync &
         ;;
     *)
         # picom --backend glx --vsync &
@@ -635,7 +638,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org7ed4534"></a>
+<a id="org38a96b8"></a>
 
 ## ~/.profile
 
@@ -688,7 +691,7 @@ fi
 ```
 
 
-<a id="orgd0f0064"></a>
+<a id="orgd4b61ca"></a>
 
 ## ~/.bash\_profile
 
@@ -1374,8 +1377,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 ### i3 screen
 
 ```conf
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 && x-backlight-persist save && post-blank
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && x-backlight-persist save
+exec brightnessctl -r
+bindsym XF86MonBrightnessUp   exec brightnessctl s +10 && brightnessctl -s
+bindsym XF86MonBrightnessDown exec brightnessctl s 10- && brightnessctl -s
 ```
 
 
@@ -1410,7 +1414,7 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-s
 ```
 
 
-### i3 exit
+### i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 
 ```conf
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
@@ -2275,7 +2279,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgd0f0064) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgd4b61ca) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2287,7 +2291,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org7ed4534)
+    Added to PATH in [~/.profile](#org38a96b8)
 
 
 ### Debuggers     :debuggers:

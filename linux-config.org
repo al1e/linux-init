@@ -1343,8 +1343,9 @@
     #+end_src
 *** i3 screen
     #+begin_src conf
-      bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 && x-backlight-persist save && post-blank
-      bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && x-backlight-persist save
+      exec brightnessctl -r
+      bindsym XF86MonBrightnessUp   exec brightnessctl s +10 && brightnessctl -s
+      bindsym XF86MonBrightnessDown exec brightnessctl s 10- && brightnessctl -s
     #+end_src
 *** i3 apps
     #+begin_src conf

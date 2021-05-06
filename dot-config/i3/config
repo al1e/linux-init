@@ -203,8 +203,9 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 && x-backlight-persist save && post-blank
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && x-backlight-persist save
+exec brightnessctl -r
+bindsym XF86MonBrightnessUp   exec brightnessctl s +10 && brightnessctl -s
+bindsym XF86MonBrightnessDown exec brightnessctl s 10- && brightnessctl -s
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 
