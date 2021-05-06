@@ -204,8 +204,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 exec command -v brightnessctl && brightnessctl -r
-bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s
-bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s
+bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 

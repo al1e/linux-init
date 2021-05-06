@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org2540fea"></a>
+<a id="org01f7937"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="orgc9aae97"></a>
+<a id="org2218ac2"></a>
 
 ## ~/.bash\_profile
 
@@ -709,7 +709,6 @@ logger -t "startup-initfile"  BASH_PROFILE
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-post-lock
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
@@ -1384,8 +1383,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 
 ```conf
 exec command -v brightnessctl && brightnessctl -r
-bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s
-bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s
+bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
 ```
 
 
@@ -2285,7 +2284,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgc9aae97) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2218ac2) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2297,7 +2296,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org2540fea)
+    Added to PATH in [~/.profile](#org01f7937)
 
 
 ### Debuggers     :debuggers:

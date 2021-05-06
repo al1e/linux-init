@@ -740,7 +740,6 @@
      [ -f ~/.profile ] && . ~/.profile || true
      [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-     post-lock
      ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
      systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
      dropbox-start-once async
@@ -1350,8 +1349,8 @@
 *** i3 screen
     #+begin_src conf
       exec command -v brightnessctl && brightnessctl -r
-      bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s
-      bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s
+      bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+      bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
     #+end_src
 *** i3 apps
     #+begin_src conf
