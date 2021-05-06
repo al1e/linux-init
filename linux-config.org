@@ -154,12 +154,15 @@
              xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
              # picom --backend glx --vsync &
              ;;
+         "thinkpadt14s")
+             #picom --backend glx --vsync &
+             ;;
          "thinkpadx270")
-             picom --backend glx --vsync &
+             #picom --backend glx --vsync &
              ;;
          "xmgneo")
              # xrandr --output eDP-1 --mode 2560x1440 --rate 165 #--scale 0.8x0.8
-             picom --backend glx --vsync &
+             #picom --backend glx --vsync &
              ;;
          ,*)
              # picom --backend glx --vsync &
@@ -1371,7 +1374,7 @@
       bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
     #+end_src
-*** i3 exit
+*** i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
     #+begin_src conf
       set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
       mode "$mode_system" {
