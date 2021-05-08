@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgab48d9d"></a>
+<a id="org24f6aa5"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="orga742464"></a>
+<a id="org1668440"></a>
 
 ## ~/.bash\_profile
 
@@ -1612,36 +1612,44 @@ bindsym Escape mode "default"
 
     ```conf
 
+    [time]
+    command=date +"%a %d/%m/%Y %I:%M %P"
+    interval=60
+
     [weather]
     command=curl -s 'wttr.in/{Grömitz}?format=3'
 
     interval=900
     color=#A4C2F4
 
-    [battery]
-    command=/usr/share/i3blocks/battery
-    interval=60
-
     [power_draw]
     command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=10
 
+    [battery]
+    command=/usr/share/i3blocks/battery
+    color=#00a000
+    interval=60
+
     [cpu_usage]
     command=/usr/share/i3blocks/cpu_usage
+    color=#00a000
     interval=5
 
     [memory]
     command=echo "M:$(/usr/share/i3blocks/memory)"
+    color=#00a000
     interval=10
 
     [disk]
     command=echo "D:$(/usr/share/i3blocks/disk)"
+    color=#00a000
     interval=10
 
     [uptime]
     command=uptime -p
     interval=60
-    color=#505050
+    color=#00a000
 
     [ssid]
     command=echo "SSID:$(my-iface-active-ssid)"
@@ -1655,6 +1663,7 @@ bindsym Escape mode "default"
 
     [iface]
     command=/usr/share/i3blocks/iface
+    color=#00a000
     interval=60
 
     ```
@@ -1667,11 +1676,6 @@ bindsym Escape mode "default"
     # interval=1
     # command=i3blocks-cpu
     # min_width=⣾⣄ 100.00%
-
-    [time]
-    command=date +"%d/%m/%Y %H:%M"
-    interval=60
-    color=#e2b007
 
     [volume]
     command=echo "V:$(/usr/share/i3blocks/volume)"
@@ -1703,11 +1707,6 @@ bindsym Escape mode "default"
         if pidof dropbox > /dev/null ; then
             stat=$(dropbox status | sed -n 1p)
             echo "DB:${stat}"; echo "";
-            if (( $(wc -w <<< $stat) == 1 )); then
-                echo "#004000";
-            else
-                echo "#800000";
-            fi
         else
             if command -v dropbox > /dev/null; then
                 echo "Restart Dropbox.."
@@ -2300,7 +2299,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orga742464) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org1668440) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2312,7 +2311,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgab48d9d)
+    Added to PATH in [~/.profile](#org24f6aa5)
 
 
 ### Debuggers     :debuggers:

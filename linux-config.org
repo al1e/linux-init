@@ -2112,11 +2112,6 @@
         if pidof dropbox > /dev/null ; then
             stat=$(dropbox status | sed -n 1p)
             echo "DB:${stat}"; echo "";
-            if (( $(wc -w <<< $stat) == 1 )); then
-                echo "#004000";
-            else
-                echo "#800000";
-            fi
         else
             if command -v dropbox > /dev/null; then
                 echo "Restart Dropbox.."
