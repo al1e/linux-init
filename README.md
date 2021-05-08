@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org0bc524c"></a>
+<a id="orga862497"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="orga1b83ff"></a>
+<a id="orge6e5f15"></a>
 
 ## ~/.bash\_profile
 
@@ -1603,7 +1603,7 @@ bindsym Escape mode "default"
     [dropbox]
     interval=15
     command=echo  "$(my-i3b-db-status)"
-    color=#1010E0
+    color=#ffd700
     ```
 
     ```bash
@@ -1625,10 +1625,11 @@ bindsym Escape mode "default"
     [power_draw]
     command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=1
+    color=#ce2029
 
     [battery]
     command=my-i3b-battery-status
-    color=#00a000
+    color=#ff8300
     interval=60
 
     [cpu_usage]
@@ -2299,7 +2300,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orga1b83ff) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orge6e5f15) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2311,7 +2312,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org0bc524c)
+    Added to PATH in [~/.profile](#orga862497)
 
 
 ### Debuggers     :debuggers:

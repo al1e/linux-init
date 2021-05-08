@@ -2008,7 +2008,7 @@
        [dropbox]
        interval=15
        command=echo  "$(my-i3b-db-status)"
-       color=#1010E0
+       color=#ffd700
      #+end_src
 
      #+begin_src bash
@@ -2035,10 +2035,11 @@
        [power_draw]
        command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
        interval=1
+       color=#ffd700
 
        [battery]
        command=my-i3b-battery-status
-       color=#00a000
+       color=#ff8300
        interval=60
 
        [cpu_usage]
