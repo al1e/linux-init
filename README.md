@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org01f7937"></a>
+<a id="orgab48d9d"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="org2218ac2"></a>
+<a id="orga742464"></a>
 
 ## ~/.bash\_profile
 
@@ -1611,6 +1611,7 @@ bindsym Escape mode "default"
     ```
 
     ```conf
+
     [weather]
     command=curl -s 'wttr.in/{Grömitz}?format=3'
 
@@ -1618,23 +1619,28 @@ bindsym Escape mode "default"
     color=#A4C2F4
 
     [battery]
-    command=echo "$(my-i3b-battery-status)"
+    command=/usr/share/i3blocks/battery
     interval=60
-    color=#b01010
 
-    # [disk]
-    # command=echo "D:$(/usr/share/i3blocks/disk)"
-    # interval=600
-    # color=#003000
+    [power_draw]
+    command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+    interval=10
 
-    # [memory]
-    # command=echo "M:$(/usr/share/i3blocks/memory)"
-    # interval=30
-    # color=#003000
+    [cpu_usage]
+    command=/usr/share/i3blocks/cpu_usage
+    interval=5
+
+    [memory]
+    command=echo "M:$(/usr/share/i3blocks/memory)"
+    interval=10
+
+    [disk]
+    command=echo "D:$(/usr/share/i3blocks/disk)"
+    interval=10
 
     [uptime]
     command=uptime -p
-    interval=300
+    interval=60
     color=#505050
 
     [ssid]
@@ -1647,10 +1653,20 @@ bindsym Escape mode "default"
     interval=30
     color=#008000
 
-    [ipaddr]
-    command=echo "@$(my-iface-active-ipaddr)"
-    interval=30
-    color=#009000
+    [iface]
+    command=/usr/share/i3blocks/iface
+    interval=60
+
+    ```
+
+    <https://github.com/qntfrd/i3-blocks-cpuGraph>
+
+    ```conf
+
+    # [cpu_usage]
+    # interval=1
+    # command=i3blocks-cpu
+    # min_width=⣾⣄ 100.00%
 
     [time]
     command=date +"%d/%m/%Y %H:%M"
@@ -2284,7 +2300,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org2218ac2) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orga742464) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2296,7 +2312,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org01f7937)
+    Added to PATH in [~/.profile](#orgab48d9d)
 
 
 ### Debuggers     :debuggers:
