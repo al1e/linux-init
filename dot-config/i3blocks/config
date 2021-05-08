@@ -15,17 +15,17 @@ color=#A4C2F4
 
 [power_draw]
 command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-interval=10
+interval=1
 
 [battery]
-command=/usr/share/i3blocks/battery
+command=my-i3b-battery-status
 color=#00a000
 interval=60
 
 [cpu_usage]
 command=/usr/share/i3blocks/cpu_usage
 color=#00a000
-interval=5
+interval=1
 
 [memory]
 command=echo "M:$(/usr/share/i3blocks/memory)"

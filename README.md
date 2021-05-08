@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org24f6aa5"></a>
+<a id="orgec31c14"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="org1668440"></a>
+<a id="orgf40e078"></a>
 
 ## ~/.bash\_profile
 
@@ -1624,17 +1624,17 @@ bindsym Escape mode "default"
 
     [power_draw]
     command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-    interval=10
+    interval=1
 
     [battery]
-    command=/usr/share/i3blocks/battery
+    command=my-i3b-battery-status
     color=#00a000
     interval=60
 
     [cpu_usage]
     command=/usr/share/i3blocks/cpu_usage
     color=#00a000
-    interval=5
+    interval=1
 
     [memory]
     command=echo "M:$(/usr/share/i3blocks/memory)"
@@ -2299,7 +2299,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org1668440) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgf40e078) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2311,7 +2311,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org24f6aa5)
+    Added to PATH in [~/.profile](#orgec31c14)
 
 
 ### Debuggers     :debuggers:
