@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgec31c14"></a>
+<a id="org0bc524c"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="orgf40e078"></a>
+<a id="orga1b83ff"></a>
 
 ## ~/.bash\_profile
 
@@ -1693,9 +1693,9 @@ bindsym Escape mode "default"
         #Maintained in linux-init-files.org
         b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
         if [ -z "$b" ]; then
-            echo "charged";echo ""; echo "#004400";
+            echo "charged";
         else
-            echo $b;echo "";echo "#FF0000";
+            echo $b;
         fi
         ```
 
@@ -2299,7 +2299,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgf40e078) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orga1b83ff) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2311,7 +2311,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgec31c14)
+    Added to PATH in [~/.profile](#org0bc524c)
 
 
 ### Debuggers     :debuggers:

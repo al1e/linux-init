@@ -2100,9 +2100,9 @@
         #Maintained in linux-init-files.org
         b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
         if [ -z "$b" ]; then
-            echo "charged";echo ""; echo "#004400";
+            echo "charged";
         else
-            echo $b;echo "";echo "#FF0000";
+            echo $b;
         fi
       #+end_src
 ***** ~/bin/my-i3b-db-status
