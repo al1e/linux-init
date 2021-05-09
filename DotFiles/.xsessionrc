@@ -6,7 +6,7 @@ xhost +
 xset s off
 xset -dpms
 
-xrdb -merge ~/.xresources
+xrdb -merge ~/.Xresources
 
 # .xsessionrc.local for this type of thing
 case "$(hostname)" in

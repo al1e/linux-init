@@ -90,7 +90,7 @@ xhost +
 xset s off
 xset -dpms
 
-xrdb -merge ~/.xresources
+xrdb -merge ~/.Xresources
 
 # .xsessionrc.local for this type of thing
 case "$(hostname)" in
@@ -120,7 +120,7 @@ esac
 [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-#xss-lock -- x-lock-utils lock &
+xss-lock -- i3lock -n -c 000000 &
 x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&
@@ -168,6 +168,9 @@ Xft.dpi:       104
 Xft.dpi:       108
 #endif
 #ifdef SRVR_thinkpadx270
+Xft.dpi:       96
+#endif
+#ifdef SRVR_thinkpadt14s
 Xft.dpi:       96
 #endif
 #ifdef SRVR_xmgneo
@@ -256,15 +259,15 @@ xidlehook \
     --not-when-fullscreen \
     `# Don't lock when there's audio playing` \
     --not-when-audio \
-    --timer ${XIDLEHOOK_KBD:-60}\
+    --timer ${XIDLEHOOK_KBD:-300}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-60}\
+    --timer ${XIDLEHOOK_DIM:-300}\
     'xbacklight -set 5' \
     'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-60}\
+    --timer ${XIDLEHOOK_BLANK:-300}\
     'xset dpms force off' \
-    'post-blank' # \
+    'post-blank'
     # --timer ${XIDLEHOOK_LOCK:-2400}\
     # '(pre-lock && x-lock-utils lock)' \
     # '(post-blank && post-lock)' \
@@ -644,7 +647,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org564e8e5"></a>
+<a id="orgcdaf794"></a>
 
 ## ~/.profile
 
@@ -697,7 +700,7 @@ fi
 ```
 
 
-<a id="org38614ac"></a>
+<a id="org9614e57"></a>
 
 ## ~/.bash\_profile
 
@@ -2296,7 +2299,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org38614ac) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org9614e57) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2308,7 +2311,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org564e8e5)
+    Added to PATH in [~/.profile](#orgcdaf794)
 
 
 ### Debuggers     :debuggers:
