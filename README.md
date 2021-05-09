@@ -644,7 +644,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga862497"></a>
+<a id="org564e8e5"></a>
 
 ## ~/.profile
 
@@ -697,7 +697,7 @@ fi
 ```
 
 
-<a id="orge6e5f15"></a>
+<a id="org38614ac"></a>
 
 ## ~/.bash\_profile
 
@@ -1445,7 +1445,7 @@ bindsym $mod+Control+q mode "$mode_system"
 # i3bar
 bar {
 status_command i3blocks
-font pango:JetBrains Sans Mono 8
+font pango:JetBrains Sans Mono 10
 position top
 #mode hide
 hidden_state hide
@@ -1612,25 +1612,21 @@ bindsym Escape mode "default"
 
     ```conf
 
-    [time]
-    command=date +"%a %d/%m/%Y %I:%M %P"
-    interval=60
-
-    [weather]
-    command=curl -s 'wttr.in/{Grömitz}?format=3'
-
-    interval=900
-    color=#A4C2F4
-
     [power_draw]
     command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=1
-    color=#ce2029
+    #color=#ffd700
+    color=#00a000
 
-    [battery]
-    command=my-i3b-battery-status
-    color=#ff8300
-    interval=60
+    #[battery]
+    #command=my-i3b-battery-status
+    #color=#ff8300
+    #interval=60
+
+    [bat0]
+    command=/usr/share/i3blocks/battery bat0
+    color=#00a000
+    interval=30
 
     [cpu_usage]
     command=/usr/share/i3blocks/cpu_usage
@@ -1657,31 +1653,31 @@ bindsym Escape mode "default"
     interval=30
     color=#00a000
 
-    [ssidQ]
-    command=echo "($(my-iface-active-quality)%)"
-    interval=30
-    color=#008000
+    #[ssidQ]
+    #command=echo "($(my-iface-active-quality)%)"
+    #interval=30
+    #color=#008000
 
     [iface]
     command=/usr/share/i3blocks/iface
     color=#00a000
     interval=60
 
-    ```
-
-    <https://github.com/qntfrd/i3-blocks-cpuGraph>
-
-    ```conf
-
-    # [cpu_usage]
-    # interval=1
-    # command=i3blocks-cpu
-    # min_width=⣾⣄ 100.00%
 
     [volume]
     command=echo "V:$(/usr/share/i3blocks/volume)"
     interval=1
     color=#FF8300
+
+    [time]
+    command=date +"%a %d/%m/%Y %I:%M %P"
+    interval=60
+
+    [weather]
+    command=curl -s 'wttr.in/{Grömitz}?format=3'
+
+    interval=900
+    color=#A4C2F4
 
     ```
 
@@ -2300,7 +2296,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orge6e5f15) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org38614ac) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2312,7 +2308,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga862497)
+    Added to PATH in [~/.profile](#org564e8e5)
 
 
 ### Debuggers     :debuggers:

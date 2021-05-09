@@ -3,25 +3,21 @@ interval=15
 command=echo  "$(my-i3b-db-status)"
 color=#ffd700
 
-[time]
-command=date +"%a %d/%m/%Y %I:%M %P"
-interval=60
-
-[weather]
-command=curl -s 'wttr.in/{Grömitz}?format=3'
-
-interval=900
-color=#A4C2F4
-
 [power_draw]
 command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
 interval=1
-color=#ffd700
+#color=#ffd700
+color=#00a000
 
-[battery]
-command=my-i3b-battery-status
-color=#ff8300
-interval=60
+#[battery]
+#command=my-i3b-battery-status
+#color=#ff8300
+#interval=60
+
+[bat0]
+command=/usr/share/i3blocks/battery bat0
+color=#00a000
+interval=30
 
 [cpu_usage]
 command=/usr/share/i3blocks/cpu_usage
@@ -48,22 +44,28 @@ command=echo "SSID:$(my-iface-active-ssid)"
 interval=30
 color=#00a000
 
-[ssidQ]
-command=echo "($(my-iface-active-quality)%)"
-interval=30
-color=#008000
+#[ssidQ]
+#command=echo "($(my-iface-active-quality)%)"
+#interval=30
+#color=#008000
 
 [iface]
 command=/usr/share/i3blocks/iface
 color=#00a000
 interval=60
 
-# [cpu_usage]
-# interval=1
-# command=i3blocks-cpu
-# min_width=⣾⣄ 100.00%
 
 [volume]
 command=echo "V:$(/usr/share/i3blocks/volume)"
 interval=1
 color=#FF8300
+
+[time]
+command=date +"%a %d/%m/%Y %I:%M %P"
+interval=60
+
+[weather]
+command=curl -s 'wttr.in/{Grömitz}?format=3'
+
+interval=900
+color=#A4C2F4
