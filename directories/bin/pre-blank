@@ -1,3 +1,4 @@
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
+command -v brightnessctl && brightnessctl -s
 [ -f ~/.pre-blank ]  && . ~/.pre-blank

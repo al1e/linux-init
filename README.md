@@ -120,7 +120,8 @@ esac
 [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-xss-lock -- i3lock -n -c 000000 &
+# leave to local machine
+# xss-lock -- i3lock -n -c 000000 &
 x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&
@@ -259,13 +260,13 @@ xidlehook \
     --not-when-fullscreen \
     `# Don't lock when there's audio playing` \
     --not-when-audio \
-    --timer ${XIDLEHOOK_KBD:-300}\
+    --timer ${XIDLEHOOK_KBD:-60}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-300}\
-    'xbacklight -set 5' \
+    --timer ${XIDLEHOOK_DIM:-180}\
+    'command -v brightnessctl && brightnessctl s 10' \
     'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-300}\
+    --timer ${XIDLEHOOK_BLANK:-120}\
     'xset dpms force off' \
     'post-blank'
     # --timer ${XIDLEHOOK_LOCK:-2400}\
@@ -647,7 +648,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgcdaf794"></a>
+<a id="orgc1d66d6"></a>
 
 ## ~/.profile
 
@@ -700,7 +701,7 @@ fi
 ```
 
 
-<a id="org9614e57"></a>
+<a id="org2952e40"></a>
 
 ## ~/.bash\_profile
 
@@ -1607,13 +1608,6 @@ bindsym Escape mode "default"
     interval=15
     command=echo  "$(my-i3b-db-status)"
     color=#ffd700
-    ```
-
-    ```bash
-    curl -s 'wttr.in/{Hamburg,Lubeck,Grömitz}?format=3'
-    ```
-
-    ```conf
 
     [power_draw]
     command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
@@ -1630,6 +1624,12 @@ bindsym Escape mode "default"
     command=/usr/share/i3blocks/battery bat0
     color=#00a000
     interval=30
+
+    [brightness]
+    command=my-i3b-brightness
+    color=#00a000
+    interval=2
+
 
     [cpu_usage]
     command=/usr/share/i3blocks/cpu_usage
@@ -1712,6 +1712,21 @@ bindsym Escape mode "default"
                 echo "Restart Dropbox.."
                 #dropbox start &> /dev/null &
             fi
+        fi
+        ```
+
+    3.  ~/bin/my-i3b-brightness
+
+        return the brightness %
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-init-files.org
+        #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
+        if command -v brightnessctl &> /dev/null; then
+            echo "B:$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+        else
+            echo "N/A"
         fi
         ```
 
@@ -2299,7 +2314,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org9614e57) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2952e40) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2311,7 +2326,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgcdaf794)
+    Added to PATH in [~/.profile](#orgc1d66d6)
 
 
 ### Debuggers     :debuggers:
@@ -2815,7 +2830,7 @@ fi
 if pidof dropbox > /dev/null ; then
     echo "Dropbox is already running"
 else
-    if command -v dropbox > /dev/null; then
+    if command -v dropbox &> /dev/null; then
         echo "Starting Dropbox.."
         if [ "$1" = "async" ]; then
             dropbox start &> /dev/null &
@@ -2853,7 +2868,7 @@ pgrep -x emacs > /dev/null && ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-f=$(command -v fortune >/dev/null && fortune || echo "I don't need to study a subject to have my own truths. Because own truths ARE a thing in 2020.")
+f=$(command -v fortune &>/dev/null && fortune || echo "I don't need to study a subject to have my own truths. Because own truths ARE a thing in 2020.")
 if [ "$1" = "t" ]
 then
     echo $f | xclip -i -selection clipboard
@@ -3280,7 +3295,6 @@ fi
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-x-backlight-persist restore
 [ -f "${HOME}"/.post-lock  ]  && . "${HOME}"/.post-lock
 ```
 
@@ -3297,6 +3311,7 @@ x-backlight-persist restore
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
+command -v brightnessctl && brightnessctl -s
 [ -f ~/.pre-blank ]  && . ~/.pre-blank
 ```
 
@@ -3307,7 +3322,7 @@ x-backlight-persist restore
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
 [ -f ~/.post-blank ]  && . ~/.post-blank
-x-backlight-persist restore
+command -v brightnessctl && brightnessctl -r
 ```
 
 

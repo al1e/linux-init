@@ -19,6 +19,12 @@ command=/usr/share/i3blocks/battery bat0
 color=#00a000
 interval=30
 
+[brightness]
+command=my-i3b-brightness
+color=#00a000
+interval=2
+
+
 [cpu_usage]
 command=/usr/share/i3blocks/cpu_usage
 color=#00a000

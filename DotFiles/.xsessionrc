@@ -36,7 +36,8 @@ esac
 [ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
 
 
-xss-lock -- i3lock -n -c 000000 &
+# leave to local machine
+# xss-lock -- i3lock -n -c 000000 &
 x-idlehook &
 (post-lock && post-blank) &
 (sleep 2 && gpg-cache)&

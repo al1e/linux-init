@@ -3,7 +3,7 @@
 if pidof dropbox > /dev/null ; then
     echo "Dropbox is already running"
 else
-    if command -v dropbox > /dev/null; then
+    if command -v dropbox &> /dev/null; then
         echo "Starting Dropbox.."
         if [ "$1" = "async" ]; then
             dropbox start &> /dev/null &
