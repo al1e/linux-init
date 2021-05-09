@@ -6,15 +6,15 @@ xidlehook \
     --not-when-fullscreen \
     `# Don't lock when there's audio playing` \
     --not-when-audio \
-    --timer ${XIDLEHOOK_KBD:-60}\
+    --timer ${XIDLEHOOK_KBD:-300}\
     'pre-blank' \
     'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-60}\
+    --timer ${XIDLEHOOK_DIM:-300}\
     'xbacklight -set 5' \
     'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-60}\
+    --timer ${XIDLEHOOK_BLANK:-300}\
     'xset dpms force off' \
-    'post-blank' # \
+    'post-blank'
     # --timer ${XIDLEHOOK_LOCK:-2400}\
     # '(pre-lock && x-lock-utils lock)' \
     # '(post-blank && post-lock)' \
