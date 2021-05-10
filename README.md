@@ -648,7 +648,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgc1d66d6"></a>
+<a id="orgbbb8554"></a>
 
 ## ~/.profile
 
@@ -701,7 +701,7 @@ fi
 ```
 
 
-<a id="org2952e40"></a>
+<a id="orgeb7d002"></a>
 
 ## ~/.bash\_profile
 
@@ -1610,7 +1610,7 @@ bindsym Escape mode "default"
     color=#ffd700
 
     [power_draw]
-    command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+    command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=1
     #color=#ffd700
     color=#00a000
@@ -1621,33 +1621,27 @@ bindsym Escape mode "default"
     #interval=60
 
     [bat0]
-    command=/usr/share/i3blocks/battery bat0
+    command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
     color=#00a000
     interval=30
 
-    [brightness]
-    command=my-i3b-brightness
-    color=#00a000
-    interval=2
-
-
     [cpu_usage]
-    command=/usr/share/i3blocks/cpu_usage
+    command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
     color=#00a000
     interval=1
 
     [memory]
-    command=echo "M:$(/usr/share/i3blocks/memory)"
+    command=echo "Mem:$(/usr/share/i3blocks/memory)"
     color=#00a000
     interval=10
 
-    [disk]
-    command=echo "D:$(/usr/share/i3blocks/disk)"
-    color=#00a000
-    interval=10
+    # [disk]
+    # command=echo "D:$(/usr/share/i3blocks/disk)"
+    # color=#00a000
+    # interval=10
 
     [uptime]
-    command=uptime -p
+    command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
     interval=60
     color=#00a000
 
@@ -1666,21 +1660,24 @@ bindsym Escape mode "default"
     color=#00a000
     interval=60
 
+    [weather]
+    command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+    interval=900
+    color=#A4C2F4
+
+    [time]
+    command=date +"%a, %d %b: %I:%M"
+    interval=60
+
+    [brightness]
+    command=echo "Br:$(my-i3b-brightness)"
+    color=#FF8300
+    interval=2
 
     [volume]
     command=echo "V:$(/usr/share/i3blocks/volume)"
     interval=1
     color=#FF8300
-
-    [time]
-    command=date +"%a %d/%m/%Y %I:%M %P"
-    interval=60
-
-    [weather]
-    command=curl -s 'wttr.in/{Grömitz}?format=3'
-
-    interval=900
-    color=#A4C2F4
 
     ```
 
@@ -1724,7 +1721,7 @@ bindsym Escape mode "default"
         #Maintained in linux-init-files.org
         #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
         if command -v brightnessctl &> /dev/null; then
-            echo "B:$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+            echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
         else
             echo "N/A"
         fi
@@ -2314,7 +2311,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org2952e40) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgeb7d002) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2326,7 +2323,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgc1d66d6)
+    Added to PATH in [~/.profile](#orgbbb8554)
 
 
 ### Debuggers     :debuggers:

@@ -4,10 +4,9 @@ command=echo  "$(my-i3b-db-status)"
 color=#ffd700
 
 [power_draw]
-command=echo "P:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
 interval=1
-#color=#ffd700
-color=#00a000
+color=#ffffff
 
 #[battery]
 #command=my-i3b-battery-status
@@ -15,40 +14,34 @@ color=#00a000
 #interval=60
 
 [bat0]
-command=/usr/share/i3blocks/battery bat0
+command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
 color=#00a000
 interval=30
 
-[brightness]
-command=my-i3b-brightness
-color=#00a000
-interval=2
-
-
 [cpu_usage]
-command=/usr/share/i3blocks/cpu_usage
+command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
 color=#00a000
 interval=1
 
 [memory]
-command=echo "M:$(/usr/share/i3blocks/memory)"
+command=echo "Mem:$(/usr/share/i3blocks/memory)"
 color=#00a000
 interval=10
 
-[disk]
-command=echo "D:$(/usr/share/i3blocks/disk)"
-color=#00a000
-interval=10
+# [disk]
+# command=echo "D:$(/usr/share/i3blocks/disk)"
+# color=#00a000
+# interval=10
 
 [uptime]
-command=uptime -p
+command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 interval=60
 color=#00a000
 
 [ssid]
 command=echo "SSID:$(my-iface-active-ssid)"
 interval=30
-color=#00a000
+color=#ffffff
 
 #[ssidQ]
 #command=echo "($(my-iface-active-quality)%)"
@@ -60,18 +53,21 @@ command=/usr/share/i3blocks/iface
 color=#00a000
 interval=60
 
+[weather]
+command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+interval=900
+color=#A4C2F4
+
+[time]
+command=date +"%a, %d %b: %I:%M"
+interval=60
+
+[brightness]
+command=echo "Br:$(my-i3b-brightness)"
+color=#FF8300
+interval=2
 
 [volume]
 command=echo "V:$(/usr/share/i3blocks/volume)"
 interval=1
 color=#FF8300
-
-[time]
-command=date +"%a %d/%m/%Y %I:%M %P"
-interval=60
-
-[weather]
-command=curl -s 'wttr.in/{Grömitz}?format=3'
-
-interval=900
-color=#A4C2F4
