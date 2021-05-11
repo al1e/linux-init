@@ -648,7 +648,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbbb8554"></a>
+<a id="orgbb824da"></a>
 
 ## ~/.profile
 
@@ -701,7 +701,7 @@ fi
 ```
 
 
-<a id="orgeb7d002"></a>
+<a id="org798510f"></a>
 
 ## ~/.bash\_profile
 
@@ -1406,7 +1406,7 @@ bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
-bindsym $mod+Control+f exec thunar
+bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
@@ -1612,8 +1612,7 @@ bindsym Escape mode "default"
     [power_draw]
     command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=1
-    #color=#ffd700
-    color=#00a000
+    color=#ffffff
 
     #[battery]
     #command=my-i3b-battery-status
@@ -1648,7 +1647,7 @@ bindsym Escape mode "default"
     [ssid]
     command=echo "SSID:$(my-iface-active-ssid)"
     interval=30
-    color=#00a000
+    color=#ffffff
 
     #[ssidQ]
     #command=echo "($(my-iface-active-quality)%)"
@@ -2311,7 +2310,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgeb7d002) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org798510f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2323,7 +2322,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbbb8554)
+    Added to PATH in [~/.profile](#orgbb824da)
 
 
 ### Debuggers     :debuggers:

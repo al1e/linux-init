@@ -218,7 +218,7 @@ bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
-bindsym $mod+Control+f exec thunar
+bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
