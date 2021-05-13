@@ -59,7 +59,7 @@ interval=900
 color=#A4C2F4
 
 [time]
-command=date +"%a, %d %b: %I:%M"
+command=date +"%a, %d %b: %H:%M"
 interval=60
 
 [brightness]
