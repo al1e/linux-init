@@ -747,6 +747,11 @@
      ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
      systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
      dropbox-start-once async
+
+     # disable tracker
+     gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+     gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+
    #+end_src
 ** ~/.bashrc
    #+begin_src bash :tangle "DotFiles/.bashrc"
@@ -2013,6 +2018,11 @@
        interval=15
        command=echo  "$(my-i3b-db-status)"
        color=#ffd700
+
+       [kernel]
+       command=echo "$(uname -sr)"
+       interval=1
+       color=#ffffff
 
        [power_draw]
        command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"

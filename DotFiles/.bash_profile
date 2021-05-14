@@ -9,6 +9,10 @@ logger -t "startup-initfile"  BASH_PROFILE
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
 
+# disable tracker
+gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
