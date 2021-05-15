@@ -43,15 +43,20 @@ command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 interval=60
 color=#00a000
 
+[bluetooth]
+command=echo "$(my-i3b-bluetooth)"
+interval=30
+color=#ffffff
+
 [ssid]
 command=echo "SSID:$(my-iface-active-ssid)"
 interval=30
 color=#ffffff
 
-#[ssidQ]
-#command=echo "($(my-iface-active-quality)%)"
-#interval=30
-#color=#008000
+[ssidQ]
+command=echo "($(my-iface-active-quality)%)"
+interval=30
+color=#008000
 
 [iface]
 command=/usr/share/i3blocks/iface

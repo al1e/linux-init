@@ -648,7 +648,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org836dc5f"></a>
+<a id="org57262a0"></a>
 
 ## ~/.profile
 
@@ -701,7 +701,7 @@ fi
 ```
 
 
-<a id="orga175b23"></a>
+<a id="org1fa77e4"></a>
 
 ## ~/.bash\_profile
 
@@ -1663,15 +1663,20 @@ bindsym Escape mode "default"
     interval=60
     color=#00a000
 
+    [bluetooth]
+    command=echo "$(my-i3b-bluetooth)"
+    interval=30
+    color=#ffffff
+
     [ssid]
     command=echo "SSID:$(my-iface-active-ssid)"
     interval=30
     color=#ffffff
 
-    #[ssidQ]
-    #command=echo "($(my-iface-active-quality)%)"
-    #interval=30
-    #color=#008000
+    [ssidQ]
+    command=echo "($(my-iface-active-quality)%)"
+    interval=30
+    color=#008000
 
     [iface]
     command=/usr/share/i3blocks/iface
@@ -1730,7 +1735,61 @@ bindsym Escape mode "default"
         fi
         ```
 
-    3.  ~/bin/my-i3b-brightness
+    3.  ~/bin/my-i3b-bluetooth
+
+        Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
+
+        ```bash
+        #!/usr/bin/env bash
+
+
+        get_from_file() {
+            dev=$1
+            name=
+            if [ ! -f /tmp/bt-devices.txt ]; then
+                touch /tmp/bt-devices.txt
+                echo ""
+                return
+            fi
+            for i in `cat /tmp/bt-devices.txt`; do
+                d=`echo $i | awk -F:: '{print $1}'`
+                if [ $d = $dev ]; then
+                    name=`echo $i | awk -F:: '{print $2}'`
+                fi
+            done
+            echo "${name}"
+        }
+
+        store_file() {
+            dev=$1
+            name="${2}"
+            echo "$dev::${name}" >> /tmp/bt-devices.txt
+        }
+
+        connections=`hcitool con | sed -n 2p`
+        if [ ! -z "$connections" ]; then
+            # We have a connection, we want to get the name from a file if we've had
+            # it from there before because getting the name of the device connected
+            # is very slow and costly.
+            dev=`echo $connections | awk '{print $3}'`
+            name=`get_from_file $dev`
+            if [ -z "$name" ]; then
+                name=`hcitool name $dev | awk '{print $1}'`
+                if [ ! -z "${name}" ]; then
+                    store_file $dev "${name}"
+                fi
+            fi
+            echo " $name"
+            echo " $name"
+            echo "#83AF40\n"
+            # echo "#859900\n"
+        else
+            echo ""
+            echo ""
+        fi
+        ```
+
+    4.  ~/bin/my-i3b-brightness
 
         return the brightness %
 
@@ -2329,7 +2388,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orga175b23) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org1fa77e4) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2341,7 +2400,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org836dc5f)
+    Added to PATH in [~/.profile](#org57262a0)
 
 
 ### Debuggers     :debuggers:
