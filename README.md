@@ -648,7 +648,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbb824da"></a>
+<a id="org836dc5f"></a>
 
 ## ~/.profile
 
@@ -701,7 +701,7 @@ fi
 ```
 
 
-<a id="org798510f"></a>
+<a id="orga175b23"></a>
 
 ## ~/.bash\_profile
 
@@ -716,6 +716,11 @@ logger -t "startup-initfile"  BASH_PROFILE
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
+
+# disable tracker
+gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+
 ```
 
 
@@ -1014,6 +1019,14 @@ logger -t "startup-initfile"  ADD_USER_PATHS
 # Tmux     :tmux:
 
 
+## ~/.profile
+
+```bash
+export FZF_TMUX_OPTS=1
+export FZF_TMUX_OPTS="-d 40%"
+```
+
+
 ## ~/.tmux.conf
 
 
@@ -1119,6 +1132,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'sainnhe/tmux-fzf'
 
 run -b '~/.tmux/plugins/tpm/tpm'
 
@@ -1609,6 +1623,11 @@ bindsym Escape mode "default"
     command=echo  "$(my-i3b-db-status)"
     color=#ffd700
 
+    [kernel]
+    command=echo "$(uname -sr)"
+    interval=1
+    color=#ffffff
+
     [power_draw]
     command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
     interval=1
@@ -1665,7 +1684,7 @@ bindsym Escape mode "default"
     color=#A4C2F4
 
     [time]
-    command=date +"%a, %d %b: %I:%M"
+    command=date +"%a, %d %b: %H:%M"
     interval=60
 
     [brightness]
@@ -2310,7 +2329,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org798510f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orga175b23) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2322,7 +2341,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbb824da)
+    Added to PATH in [~/.profile](#org836dc5f)
 
 
 ### Debuggers     :debuggers:

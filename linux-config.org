@@ -1012,6 +1012,15 @@
      #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
    #+end_src
 * Tmux                                                                 :tmux:
+** ~/.profile
+   :PROPERTIES:
+   :header-args:bash: :tangle "DotFiles/.profile"
+   :END:
+   #+begin_src bash
+     export FZF_TMUX_OPTS=1
+     export FZF_TMUX_OPTS="-d 40%"
+   #+end_src
+
 ** ~/.tmux.conf
    :PROPERTIES:
    :header-args:conf: :tangle "DotFiles/.tmux.conf"
@@ -1112,6 +1121,7 @@
       set -g @plugin 'tmux-plugins/tmux-sensible'
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'tmux-plugins/tmux-resurrect'
+      set -g @plugin 'sainnhe/tmux-fzf'
 
       run -b '~/.tmux/plugins/tpm/tpm'
 

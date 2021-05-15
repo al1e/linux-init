@@ -42,6 +42,9 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
+export FZF_TMUX_OPTS=1
+export FZF_TMUX_OPTS="-d 40%"
+
 export PYENV_ROOT="${HOME}/.pyenv"
 export PATH="${HOME}/.pyenv/bin":"${PATH}"
 
