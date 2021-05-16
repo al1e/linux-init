@@ -201,7 +201,8 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #     post-lock
 # }
 lock() {
-    xset dpms force off && i3lock -n -c 000000
+    #xset dpms force off && i3lock -n -c 000000
+    xset dpms force off && i3lock-fancy
 }
 
 lock_gpg_clear() {
@@ -221,10 +222,10 @@ case "$1" in
         i3-msg exit
         ;;
     suspend)
-        systemctl suspend && i3lock -n -c 000000
+        systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate i3lock -n -c 000000
+        systemctl hibernate && lock
         ;;
     reboot)
         systemctl reboot
@@ -648,7 +649,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org57262a0"></a>
+<a id="orgfd5959e"></a>
 
 ## ~/.profile
 
@@ -701,7 +702,7 @@ fi
 ```
 
 
-<a id="org1fa77e4"></a>
+<a id="org7411794"></a>
 
 ## ~/.bash\_profile
 
@@ -2388,7 +2389,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org1fa77e4) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7411794) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2400,7 +2401,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org57262a0)
+    Added to PATH in [~/.profile](#orgfd5959e)
 
 
 ### Debuggers     :debuggers:

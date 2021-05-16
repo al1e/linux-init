@@ -12,7 +12,8 @@
 #     post-lock
 # }
 lock() {
-    xset dpms force off && i3lock -n -c 000000
+    #xset dpms force off && i3lock -n -c 000000
+    xset dpms force off && i3lock-fancy
 }
 
 lock_gpg_clear() {
@@ -32,10 +33,10 @@ case "$1" in
         i3-msg exit
         ;;
     suspend)
-        systemctl suspend && i3lock -n -c 000000
+        systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate i3lock -n -c 000000
+        systemctl hibernate && lock
         ;;
     reboot)
         systemctl reboot
