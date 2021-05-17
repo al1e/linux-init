@@ -640,7 +640,9 @@ Differnt monitors have different resolutions and hence DPI
 # Maintained in linux-init-files.org
 exec swayidle -w \
        timeout 2 '' \
-       resume 'if pgrep -x swaylock; then swaymsg "output * dpms off"; else swaymsg "output * dpms on"; fi' \
+       resume 'if ! pgrep -x swaylock; then swaymsg "output * dpms on"; fi' \
+       timeout 10 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
+       resume 'swaymsg "output * dpms on"' \
        timeout ${XIDLEHOOK_BLANK:-120} 'swaymsg "output * dpms off"' \
        resume 'swaymsg "output * dpms on"' \
        timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
@@ -689,7 +691,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgd20154b"></a>
+<a id="orgc699172"></a>
 
 ## ~/.profile
 
@@ -745,7 +747,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="org1b77389"></a>
+<a id="orge1f1868"></a>
 
 ## ~/.bash\_profile
 
@@ -2438,7 +2440,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org1b77389) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orge1f1868) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2450,7 +2452,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgd20154b)
+    Added to PATH in [~/.profile](#orgc699172)
 
 
 ### Debuggers     :debuggers:
