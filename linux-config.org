@@ -2376,6 +2376,9 @@ CLOSED: [2021-05-17 Mon 08:12]
   #Maintained in linux-init-files.org
   export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #+end_src
+#+begin_src conf :tangle "DotFiles/.profile"
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+#+end_src
 *** ~/bin/sway-display-swap
     https://i3wm.org/docs/user-contributed/swapping-workspaces.html
     #+begin_src bash :tangle ~/bin/i3-display-swap
@@ -2395,6 +2398,20 @@ CLOSED: [2021-05-17 Mon 08:12]
           fi
       done
     #+end_src
+*** kanshi
+**** ~/bin/sway-kanshi
+#+begin_src bash :tangle "~/bin/sway-kanshi"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  custom="$HOME/.config/kanshi/config-$(hostname)"
+  if [ -f  "$custom" ]; then
+      echo "using custom kanshi config: $custom"
+      kanshi -c "$custom"
+  else
+      echo "vanilla kanshi config"
+      kanshi -c "$HOME/.config/kanshi/config"
+  fi
+#+end_src
 
 * Vim
 ** ~/.vimrc

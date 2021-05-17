@@ -48,6 +48,8 @@ export FZF_TMUX_OPTS="-d 40%"
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+
 export PYENV_ROOT="${HOME}/.pyenv"
 export PATH="${HOME}/.pyenv/bin":"${PATH}"
 

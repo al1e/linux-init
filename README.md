@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org72f1e86"></a>
+<a id="org5c92065"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org8cd1c97"></a>
+<a id="orgd98b471"></a>
 
 ## ~/.bash\_profile
 
@@ -1375,6 +1375,10 @@ swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```
 
+```conf
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+```
+
 
 ### ~/bin/sway-display-swap
 
@@ -1397,6 +1401,24 @@ do
     fi
 done
 ```
+
+
+### kanshi
+
+1.  ~/bin/sway-kanshi
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    custom="$HOME/.config/kanshi/config-$(hostname)"
+    if [ -f  "$custom" ]; then
+        echo "using custom kanshi config: $custom"
+        kanshi -c "$custom"
+    else
+        echo "vanilla kanshi config"
+        kanshi -c "$HOME/.config/kanshi/config"
+    fi
+    ```
 
 
 # Vim
@@ -1953,7 +1975,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org8cd1c97) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgd98b471) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1965,7 +1987,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org72f1e86)
+    Added to PATH in [~/.profile](#org5c92065)
 
 
 ### Debuggers     :debuggers:
