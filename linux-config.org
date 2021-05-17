@@ -655,11 +655,75 @@
       #+end_src
 
 
-* Wayland Related                                                   :wayland:
+* Sway Related                                                 :sway:wayland:
+** ~/bin/sway-lock-utils
+   Just a gathering place of locky/suspendy type things...
+   #+begin_src bash :tangle "~/bin/sway-lock-utils"
+     #!/usr/bin/bash
+     # Maintained in linux-init-files.org
 
-** Sway                                                                :sway:
+     # lock() {
+     #     logger -t "x-lock-utils"  lock
+     #     pre-lock
+     #     xbacklight -set 5
+     #     xset dpms 5 0 0
+     #     i3lock -n -c 000000
+     #     xset -dpms
+     #     x-backlight-persist restore
+     #     post-lock
+     # }
+     idlelock(){
+         exec swayidle \
+              timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
+              timeout 10 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+              before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
+     }
 
-*** sway-idle-hook                                          :sleep:lock:idle:
+     lock() {
+         swaylock -i ~/Pictures/LockScreen/lock -c 000000
+     }
+
+     lock_gpg_clear() {
+         logger -t "x-lock-utils"  lock_gpg_clear
+         [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+         lock
+     }
+
+     case "$1" in
+         lock)
+             lock
+             ;;
+         lock_gpg_clear)
+             lock_gpg_clear
+             ;;
+         logout)
+             i3-msg exit
+             ;;
+         suspend)
+             systemctl suspend && lock
+             ;;
+         hibernate)
+             systemctl hibernate && lock
+             ;;
+         reboot)
+             systemctl reboot
+             ;;
+         shutdown)
+             systemctl poweroff
+             ;;
+         screenoff)
+              timeout 1 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on ";'
+             ;;
+         ,*)
+             lock
+             ;;
+     esac
+
+     exit 0
+   #+end_src
+** ~/bin/sway-idle-hook                                           :sleep:lock:idle:
 :PROPERTIES:
 :ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
 :END:
@@ -679,7 +743,7 @@
          before-sleep 'sway-lock'
 #+end_src
 
-*** sway-lock
+** ~/bin/sway-lock
 :PROPERTIES:
 :ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 :END:
@@ -1187,10 +1251,12 @@
      window="${3:-0}"
      tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tty}' | awk '/pane_index:'"${pane_index}"'/ {print $2 }'
    #+end_src
-* I3 window manager                                                 :i3:i3wm:
-** i3wm config
+* Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
+Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
+It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
+** sway config
    :PROPERTIES:
-   :header-args:conf: :tangle "~/.config/i3/config"
+   :header-args:conf: :tangle "~/.config/sway/config"
    :ID:       834da4bb-cc3f-4b6d-8201-c04c0d07981d
    :END:
 *** general
@@ -1257,7 +1323,7 @@
     #+begin_src conf
       # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
       exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-      exec --no-startup-id nm-applet --indicator
+      exec --no-startup-id waymanager
       exec --no-startup-id sway-idle-hook
       bindsym --release $mod+Control+l exec loginctl lock-session
       bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
@@ -1452,7 +1518,33 @@
 
 
     #+end_src
-*** i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
+*** CANCELLED i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:CANCELLED:
+CLOSED: [2021-05-17 Mon 08:26]
+:PROPERTIES:
+:header-args:conf: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-05-17 Mon 08:26] \\
+  sway
+:END:
+    #+begin_src conf
+
+      set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+      mode "$mode_system" {
+      bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
+      bindsym l exec --no-startup-id x-lock-utils lock, mode "default"
+      bindsym e exec --no-startup-id x-lock-utils logout, mode "default"
+      bindsym s exec --no-startup-id x-lock-utils suspend, mode "default"
+      bindsym h exec --no-startup-id x-lock-utils hibernate, mode "default"
+      bindsym r exec --no-startup-id x-lock-utils reboot, mode "default"
+      bindsym Shift+s exec --no-startup-id x-lock-utils shutdown, mode "default"
+      # back to normal: Enter or Escape
+      bindsym Return mode "default"
+      bindsym Escape mode "default"
+      }
+      bindsym $mod+Control+q mode "$mode_system"
+    #+end_src
+*** sway exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
     #+begin_src conf
 
       set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
@@ -1485,8 +1577,23 @@
       modifier $mod
       }
     #+end_src
-*** SOMEDAY i3 polybar                                              :WAITING:
+*** CANCELLED swaybar                                             :CANCELLED:
+:PROPERTIES:
+:header-args:conf: :tangle no
+:END:
+#+begin_src conf
+bar {
+     swaybar_command waybar
+}
+#+end_src
+*** CANCELLED i3 polybar                                          :CANCELLED:
+CLOSED: [2021-05-17 Mon 08:12]
+:PROPERTIES:
+:header-args:conf: :tangle no
+:END:
     :LOGBOOK:
+    - State "CANCELLED"  from "SOMEDAY"    [2021-05-17 Mon 08:12] \\
+      waybar
     - State "SOMEDAY"    from              [2021-03-13 Sa 07:58]
     :END:
 **** polybar integration into i3

@@ -1,0 +1,63 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+
+# lock() {
+#     logger -t "x-lock-utils"  lock
+#     pre-lock
+#     xbacklight -set 5
+#     xset dpms 5 0 0
+#     i3lock -n -c 000000
+#     xset -dpms
+#     x-backlight-persist restore
+#     post-lock
+# }
+idlelock(){
+    exec swayidle \
+         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
+         timeout 10 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
+}
+
+lock() {
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+}
+
+lock_gpg_clear() {
+    logger -t "x-lock-utils"  lock_gpg_clear
+    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+    lock
+}
+
+case "$1" in
+    lock)
+        lock
+        ;;
+    lock_gpg_clear)
+        lock_gpg_clear
+        ;;
+    logout)
+        i3-msg exit
+        ;;
+    suspend)
+        systemctl suspend && lock
+        ;;
+    hibernate)
+        systemctl hibernate && lock
+        ;;
+    reboot)
+        systemctl reboot
+        ;;
+    shutdown)
+        systemctl poweroff
+        ;;
+    screenoff)
+         timeout 1 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on ";'
+        ;;
+    *)
+        lock
+        ;;
+esac
+
+exit 0

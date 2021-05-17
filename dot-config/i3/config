@@ -57,7 +57,7 @@ bindsym $mod+Shift+r restart
 
 # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
 exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-exec --no-startup-id nm-applet --indicator
+exec --no-startup-id waymanager
 exec --no-startup-id sway-idle-hook
 bindsym --release $mod+Control+l exec loginctl lock-session
 bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'

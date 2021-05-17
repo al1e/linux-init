@@ -627,13 +627,81 @@ Differnt monitors have different resolutions and hence DPI
     ```
 
 
-# Wayland Related     :wayland:
+# Sway Related     :sway:wayland:
 
 
-## Sway     :sway:
+## ~/bin/sway-lock-utils
+
+Just a gathering place of locky/suspendy type things&#x2026;
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+
+# lock() {
+#     logger -t "x-lock-utils"  lock
+#     pre-lock
+#     xbacklight -set 5
+#     xset dpms 5 0 0
+#     i3lock -n -c 000000
+#     xset -dpms
+#     x-backlight-persist restore
+#     post-lock
+# }
+idlelock(){
+    exec swayidle \
+         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
+         timeout 10 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
+}
+
+lock() {
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+}
+
+lock_gpg_clear() {
+    logger -t "x-lock-utils"  lock_gpg_clear
+    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+    lock
+}
+
+case "$1" in
+    lock)
+        lock
+        ;;
+    lock_gpg_clear)
+        lock_gpg_clear
+        ;;
+    logout)
+        i3-msg exit
+        ;;
+    suspend)
+        systemctl suspend && lock
+        ;;
+    hibernate)
+        systemctl hibernate && lock
+        ;;
+    reboot)
+        systemctl reboot
+        ;;
+    shutdown)
+        systemctl poweroff
+        ;;
+    screenoff)
+         timeout 1 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on ";'
+        ;;
+    *)
+        lock
+        ;;
+esac
+
+exit 0
+```
 
 
-### sway-idle-hook     :sleep:lock:idle:
+## ~/bin/sway-idle-hook     :sleep:lock:idle:
 
 ```bash
 #!/usr/bin/bash
@@ -652,7 +720,7 @@ exec swayidle -w \
 ```
 
 
-### sway-lock
+## ~/bin/sway-lock
 
 ```bash
 #!/usr/bin/bash
@@ -691,7 +759,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbfc1116"></a>
+<a id="orga28ba6a"></a>
 
 ## ~/.profile
 
@@ -747,7 +815,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="orgf1bf6a5"></a>
+<a id="org2084fc1"></a>
 
 ## ~/.bash\_profile
 
@@ -1209,10 +1277,12 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 ```
 
 
-# I3 window manager     :i3:i3wm:
+# Sway Wayland Compositing Tile Manager     :i3:swaywm:sway:
+
+Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
 
-## i3wm config
+## sway config
 
 
 ### general
@@ -1283,7 +1353,7 @@ bindsym $mod+Shift+r restart
 ```conf
 # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
 exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-exec --no-startup-id nm-applet --indicator
+exec --no-startup-id waymanager
 exec --no-startup-id sway-idle-hook
 bindsym --release $mod+Control+l exec loginctl lock-session
 bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
@@ -1465,7 +1535,7 @@ bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
 
 bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-bindsym $mod+Shift+f exec google-chrome --lang=en --disable-session-crashed-bubble
+bindsym $mod+Shift+f exec google-chrome --enable-features=UseOzonePlatform --ozone-platform=wayland
 bindsym $mod+Control+a exec pavucontrol
 bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -1492,7 +1562,7 @@ for_window [app_id="^launcher$"] floating enable, border none, resize set width 
 ```
 
 
-### i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
+### sway exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 
 ```conf
 
@@ -2444,7 +2514,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgf1bf6a5) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2084fc1) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2456,7 +2526,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbfc1116)
+    Added to PATH in [~/.profile](#orga28ba6a)
 
 
 ### Debuggers     :debuggers:
