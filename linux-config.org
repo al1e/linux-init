@@ -1297,8 +1297,6 @@ It works with your existing i3 configuration and supports most of i3's features,
       exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
       exec --no-startup-id waymanager
       exec --no-startup-id sway-idle-hook
-      bindsym --release $mod+Control+l exec loginctl lock-session
-      bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
 
     #+end_src
 *** i3 workspace
