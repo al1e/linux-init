@@ -808,9 +808,6 @@
          export XDG_CONFIG_HOME="$HOME/.config"
      fi
 
-     export XKB_DEFAULT_LAYOUT=de
-     export XKB_DEFAULT_OPTIONS=ctrl:nocaps
-
 
    #+end_src
 
@@ -1229,6 +1226,19 @@
 * Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
+
+** swaysock                                   :swaysock:
+#+begin_src bash :tangle "DotFiles/.profile"
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+#+end_src
+
+** xkb keyboard
+#+begin_src bash :tangle "DotFiles/.profile"
+  export XKB_DEFAULT_LAYOUT=de
+  export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+#+end_src
+
+
 ** sway config
    :PROPERTIES:
    :header-args:conf: :tangle "~/.config/sway/config"

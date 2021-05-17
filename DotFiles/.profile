@@ -42,11 +42,13 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
-export XKB_DEFAULT_LAYOUT=de
-export XKB_DEFAULT_OPTIONS=ctrl:nocaps
-
 export FZF_TMUX_OPTS=1
 export FZF_TMUX_OPTS="-d 40%"
+
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+
+export XKB_DEFAULT_LAYOUT=de
+export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
 export PYENV_ROOT="${HOME}/.pyenv"
 export PATH="${HOME}/.pyenv/bin":"${PATH}"
