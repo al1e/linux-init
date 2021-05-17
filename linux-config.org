@@ -92,7 +92,7 @@
     - State "DONE"       from "TODO"       [2021-01-11 Mo 01:36]
     - State "TODO"       from              [2021-01-10 Sun 09:32]
     :END:
-* X Related
+* X Related                                                         :ARCHIVE:
   Manual setup files for startx. See http://bhepple.com/doku/doku.php?id=starting_x
 ** ~/.xinitrc
    CLOSED: [2020-12-20 Sun 13:35]
@@ -1151,6 +1151,39 @@ It works with your existing i3 configuration and supports most of i3's features,
   export XKB_DEFAULT_LAYOUT=de
   export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 #+end_src
+
+** ~/.Xdefaults
+   #+begin_src conf :tangle "DotFiles/.Xdefaults"
+     ! Use a truetype font and size.
+     ,*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
+     Xft.autohint: 0
+     Xft.antialias: 1
+     Xft.hinting: true
+     Xft.hintstyle: hintslight
+     Xft.dpi: 96
+     Xft.rgba: rgb
+     Xft.lcdfilter: lcddefault
+
+     ! Fonts {{{
+     #ifdef SRVR_thinkpadt460
+     Xft.dpi:       104
+     #endif
+     #ifdef SRVR_intelnuc
+     Xft.dpi:       108
+     #endif
+     #ifdef SRVR_thinkpadx270
+     Xft.dpi:       96
+     #endif
+     #ifdef SRVR_thinkpadt14s
+     Xft.dpi:       96
+     #endif
+     #ifdef SRVR_xmgneo
+     Xft.dpi:       188
+     #endif
+     ! }}}
+
+   #+end_src
+
 
 ** sway config
    :PROPERTIES:

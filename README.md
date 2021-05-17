@@ -37,586 +37,7 @@ fi
 ```
 
 
-# X Related
-
-Manual setup files for startx. See <http://bhepple.com/doku/doku.php?id=starting_x>
-
-
-## ~/.xinitrc
-
-I use this as a kind of placeholder to remind me that system xinitrc is doing the work.
-
-```conf
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-# Dont need that as startx will use xinitc anyway if this doesnt exist.
-rm ~/.xsession-errors
-. /etc/X11/xinit/xinitrc
-```
-
-
-## ~/.xprofile
-
-Another placeholder doing nothing as xinit launches XSession which uses .xsession and .xsessionrc on Debian
-
-```bash
-# Maintained in linux-init-files.org
-# all moved to .xsessionrc so /etc/X11/Xsession loads it
-
-```
-
-
-## ~/.xsession
-
-[/etc/X11/Xsession.d](file:///etc/X11) does the most work. It's processed by [startx](file:///usr/bin/startx)->[xinitrc](file:///etc/X11/xinit/xinitrc) which in turn calls [/etc/X11/Xsession](file:///etc/X11/Xsession)
-
-```bash
-#!/usr/bin/env bash
-# Maintained in linux-init-files.org
-
-logger -t "startup-initfile"  USER-XSESSION
-exec dbus-launch --sh-syntax --exit-with-session i3
-```
-
-
-## ~/.xsessionrc
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-logger -t "startup-initfile"  XSESSIONRC
-xhost +
-
-xset s off
-xset -dpms
-
-xrdb -merge ~/.Xresources
-
-# .xsessionrc.local for this type of thing
-case "$(hostname)" in
-    "thinkpadt460")
-        # disable trackpad
-        xinput set-prop $(xinput list --id-only "SynPS/2 Synaptics TouchPad") "Device Enabled" 0
-        # picom --backend glx --vsync &
-        ;;
-    "thinkpadt14s")
-        #picom --backend glx --vsync &
-        ;;
-    "thinkpadx270")
-        #picom --backend glx --vsync &
-        ;;
-    "xmgneo")
-        # xrandr --output eDP-1 --mode 2560x1440 --rate 165 #--scale 0.8x0.8
-        #picom --backend glx --vsync &
-        ;;
-    *)
-        # picom --backend glx --vsync &
-        ;;
-esac
-
-[ -f "${HOME}"/.config/user-dirs.dir ] && . "${HOME}"/.config/user-dirs.dir || true
-
-# command -v srandrd && srandrd xrandr-smart-connect
-[ -z "$(pidof "pulseaudio")" ] &> /dev/null  && pulseaudio -D
-
-
-# leave to local machine
-# xss-lock -- i3lock -n -c 000000 &
-x-idlehook &
-(post-lock && post-blank) &
-(sleep 2 && gpg-cache)&
-
-[ -f "${HOME}"/.xsessionrc.local ] && . "${HOME}"/.xsessionrc.local || true
-
-```
-
-
-## ~/.xsessionrc.local
-
-Add machine specifics. The xmg neo 15 [keyboard backlight repo](https://github.com/pobrn/ite8291r3-ctl) for example.
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-logger -t "startup-initfile"  XSESSIONRC-LOCAL
-# sugestions for .xsessionrc.local
-# export XIDLEHOOK_KBD=60
-# export XIDLEHOOK_DIM=120
-# export XIDLEHOOK_BLANK=600
-# export XIDLEHOOK_LOCK=7200
-# export XIDLEHOOK_SUSPEND=3600
-```
-
-
-## ~/.Xresources
-
-```conf
-! Use a truetype font and size.
-*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
-Xft.autohint: 0
-Xft.antialias: 1
-Xft.hinting: true
-Xft.hintstyle: hintslight
-Xft.dpi: 96
-Xft.rgba: rgb
-Xft.lcdfilter: lcddefault
-
-! Fonts {{{
-#ifdef SRVR_thinkpadt460
-Xft.dpi:       104
-#endif
-#ifdef SRVR_intelnuc
-Xft.dpi:       108
-#endif
-#ifdef SRVR_thinkpadx270
-Xft.dpi:       96
-#endif
-#ifdef SRVR_thinkpadt14s
-Xft.dpi:       96
-#endif
-#ifdef SRVR_xmgneo
-Xft.dpi:       188
-#endif
-! }}}
-
-```
-
-
-## ~/bin/x-lock-utils
-
-Just a gathering place of locky/suspendy type things&#x2026;
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-
-# lock() {
-#     logger -t "x-lock-utils"  lock
-#     pre-lock
-#     xbacklight -set 5
-#     xset dpms 5 0 0
-#     i3lock -n -c 000000
-#     xset -dpms
-#     x-backlight-persist restore
-#     post-lock
-# }
-lock() {
-    #xset dpms force off && i3lock -n -c 000000
-    xset dpms force off && i3lock-fancy
-}
-
-lock_gpg_clear() {
-    logger -t "x-lock-utils"  lock_gpg_clear
-    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-    lock
-}
-
-case "$1" in
-    lock)
-        lock
-        ;;
-    lock_gpg_clear)
-        lock_gpg_clear
-        ;;
-    logout)
-        i3-msg exit
-        ;;
-    suspend)
-        systemctl suspend && lock
-        ;;
-    hibernate)
-        systemctl hibernate && lock
-        ;;
-    reboot)
-        systemctl reboot
-        ;;
-    shutdown)
-        systemctl poweroff
-        ;;
-    screenoff)
-        xset dpms force off
-        ;;
-    *)
-        lock
-        ;;
-esac
-
-exit 0
-```
-
-
-## ~/bin/x-idlehook
-
-See [xidlehook](https://github.com/jD91mZM2/xidlehook). Better handling of idle things. Dont dim or blank when watching a video or in full screen. [acpilight](https://gitlab.com/wavexx/acpilight ) provides a better xbacklight.\*
-
-
-### ~/bin/x-idlehook
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-
-xidlehook \
-    `# Don't lock when there's a fullscreen application` \
-    --not-when-fullscreen \
-    `# Don't lock when there's audio playing` \
-    --not-when-audio \
-    --timer ${XIDLEHOOK_KBD:-60}\
-    'pre-blank' \
-    'post-blank' \
-    --timer ${XIDLEHOOK_DIM:-180}\
-    'command -v brightnessctl && brightnessctl s 10' \
-    'post-blank' \
-    --timer ${XIDLEHOOK_BLANK:-120}\
-    'xset dpms force off' \
-    'post-blank'
-    # --timer ${XIDLEHOOK_LOCK:-2400}\
-    # '(pre-lock && x-lock-utils lock)' \
-    # '(post-blank && post-lock)' \
-    # --timer ${XIDLEHOOK_SUSPEND:-3600}\
-    # 'systemctl suspend' \
-    # ''
-```
-
-
-## ~/bin/rnv
-
-enable force of nvidia driver - run with nvidia
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia ${@}
-```
-
-
-## ~/bin/x-backlight-persist
-
-Save and restore backlight values
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-
-save() {
-    l=$(xbacklight -get);
-    echo  $l > ~/.x-backlight-persist
-    echo $l
-}
-
-get() {
-    if command -v brightnessctl; then
-        echo $(brightnessctl g)
-    else
-        echo $(xbacklight -get);
-    fi
-}
-
-restore() {
-    b=100
-    [ -f ~/.x-backlight-persist ] && read b < ~/.x-backlight-persist
-    xbacklight -set $b
-    echo $b
-}
-
-case "$1" in
-    save)
-        command -v brightnessctl && brightnessctl -s && exit 0
-        save
-        [ -n "$2" ] && xbacklight -set "$2"
-        ;;
-    restore)
-        command -v brightnessctl && brightnessctl -r && exit 0
-        restore
-        ;;
-    get)
-        get
-        ;;
-    *)
-        save
-        ;;
-esac
-
-exit 0
-
-```
-
-
-## xrandr monitor related
-
-Differnt monitors have different resolutions and hence DPI
-
-
-### utility functions
-
-1.  xrandr-dpi-calc
-
-    org code block to calculate the DPI - pass inWidth as width in inches, else cmWidth as&#x2026;. yay!
-
-    ```emacs-lisp
-    (let*((inWidth (or (if (eq inWidth 0)(/ cmWidth 2.54) inWidth )))
-          (dpi (/ xRes inWidth)))
-      (setq rgr/monitor-DPI dpi)
-      (format "DPI of %.1f inch width screen with a horizontal pixel count of %d is: %d"
-              inWidth xRes dpi))
-    ```
-
-2.  xrandr-connected-active
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    XRANDR_CONNECTED_ACTIVE="$(xrandr --listactivemonitors | tail -n +2  | awk '{print $4}')"
-    echo "$XRANDR_CONNECTED_ACTIVE"
-    ```
-
-3.  ~/bin/xrandr-connected
-
-    list connected ids
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    export XRANDR_CONNECTED=$(xrandr -q | grep -iw "connected" | awk '{print $1}')
-    echo "$XRANDR_CONNECTED"
-    ```
-
-4.  ~/bin/xrandr-connected-first
-
-    return the id of the first display reported by xrandr
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xrandr-connected | head -n 1 | awk '{print $1}'
-    ```
-
-5.  ~/bin/xrandr-disconnected
-
-    list disconnected
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xrandr -q | grep -w "disconnected" | awk '{print $1}'
-    ```
-
-6.  ~/bin/xrandr-disconnected-off
-
-    turn off all disconnected
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xargs -I {} xrandr --output {} --off <<< $(xrandr-disconnected)
-    ```
-
-7.  ~/bin/xrandr-connected-external
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    export XRANDR_EXTERNAL="$(xrandr-connected | awk '{print $1}' | grep -i "^[hdmi|d]" | head -n 1)"
-    echo "$XRANDR_EXTERNAL"
-    ```
-
-8.  ~/bin/xrandr-connected-primary
-
-    set the primary display to arg1 else set first in list thats on
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    primary="${1-$(xrandr-connected-active|head -n 1)}"
-    existingprimary="$(xrandr -q | grep -w "primary" | awk '{print $1}')"
-    [ "${existingprimary}" != "${primary}" ] &&
-        xrandr --output "${primary}" --primary
-    echo "${primary}"
-    ```
-
-9.  ~/bin/xrandr-laptop-id
-
-    ```bash
-    xrandr-connected | grep -i "^[el]"
-    ```
-
-10. ~/bin/xrandr-laptop
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    on=${1:-"on"}
-    l="$(xrandr-laptop-id)"
-    if [ -z "$l" ]; then
-        echo "No laptop screen detected."
-    else
-        if [ "$on" = "off" ]; then
-            # echo "Turning off "${l}"."
-            # xrandr --output "$l" --off
-            e="$(xrandr-connected-external)"
-            if [ -z "$e"]; then
-                echo "No external monitor so not turning off laptop"
-            else
-                echo "Mirroring laptop ${l} to external ${e} since turning it off causés X to move at a snail's pace"
-                xrandr --output "${e}" --same-as "${l}"
-            fi
-        else
-            echo "Turning on "${l}"."
-            xrandr-smart-connect
-        fi
-    fi
-    ```
-
-11. ~/bin/xrandr-multi
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    on=${1:-"on"}
-    as_primary=${2:-"yes"}
-    extmonitor=$(xrandr-connected-external | head -n 1)
-    first=$(xrandr-connected-first)
-    if [ ! -z "$extmonitor" ] && [ "$extmonitor" != "$first" ]; then
-        echo "Detected 2nd monitor $extmonitor"
-        if [ "$on" = "on" ]; then
-            echo "Turning on $extmonitor"
-            xrandr --output "$extmonitor" --auto  --right-of "$first" &> /dev/null;
-            if [ "${as_primary}" = "yes" ]; then
-                xrandr --output "${extmonitor}" --primary
-            else
-                xrandr-connected-primary
-            fi
-        else
-            echo "Turning off  $extmonitor"
-            xrandr --output "$extmonitor" --off  &> /dev/null;
-            xrandr-connected-primary "$(xrandr-laptop-id)"  &> /dev/null
-        fi
-    else
-        echo "no addtional external monitors detected so turning off all disconnected anyway..."
-        xrandr-disconnected-off
-    fi
-
-    ```
-
-12. ~/bin/xrandr-mancave
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    on=${1:-"on"}
-    connected=${2:-$(xrandr-connected-external | head -n 1)}
-    laptop=$(xrandr-laptop-id)
-    if  [ -z "$connected" ] ;then
-        echo "Not connected to external monitor so making laptop primary"
-        xrandr-connected-primary
-    else
-        if [ "$on" = "on" ]; then
-            xrandr --output "$laptop"  --off
-            xrandr --output "$connected" --mode 2560x1440  --rate 74.6 --primary --dpi "108"
-            xrandr --output "$laptop"  --right-of "$connected" --auto # --scale "${scale:-"1x1"}"
-        else
-            xrandr-multi off
-        fi
-    fi
-    ```
-
-13. ~/bin/xrandr-smart-connect
-
-    connect to richie's monitors by default if we can
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    # turn off call disconnected displays
-    xrandr-disconnected-off
-    # try and ID the display connected and act accordingly
-    connectedmodestring="$(xrandr -q | grep -A 1 -w "connected" | grep -A 1 -i "^[hd||d]" | tail -n 1 | awk '{print $1}')"
-    if [ ! -z "$connectedmodestring" ]; then
-        case "$connectedmodestring" in
-            *2560*)
-                xrandr-mancave on
-                ;;
-            *)
-                xrandr-multi on
-                ;;
-        esac
-    else
-        xrandr-multi off
-    fi
-    ```
-
-14. connect/disconnect daemon
-
-    Note these are not used now in favour of the [srandr](https://github.com/jceb/srandrd) daemon
-
-    1.  ~/bin/xrandr-smart-connect-daemon
-
-        ```bash
-        #!/usr/bin/bash
-        # Maintained in linux-init-files.org
-        while true; do
-            sleep 5
-            [ -z "$(pidof "steam")" ] && xrandr-smart-connect &> /dev/null
-        done
-
-
-        ```
-
-    2.  ~/bin/xrandr-smart-connect-daemon-run
-
-        ```bash
-        #!/usr/bin/bash
-        # Maintained in linux-init-files.org
-        if pidof -x xrandr-smart-connect-daemon &> /dev/null; then
-            echo "$0 already running."
-            exit 1;
-        fi
-        xrandr-smart-connect-daemon &
-        ```
-
-
-### x270
-
-    DPI of 11.0 inch width screen with a horizontal pixel count of 1920 is: 174
-
-1.  ~/bin/xrandr-x270-bigtv
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xrandr-multi "$@"
-    ```
-
-2.  ~/bin/xrandr-x270-mancave
-
-        DPI of 23.6 inch width screen with a horizontal pixel count of 2560 is: 108
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xrandr-mancave "$@"
-    ```
-
-
-### XMG Neo 15
-
-1.  ~/bin/xrandr-xmgneo-bigtv
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    xrandr-multi on "$@"
-    ```
-
-2.  ~/bin/xrandr-xmgneo-mancave
-
-        DPI of 23.6 inch width screen with a horizontal pixel count of 2560 is: 108
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    dpi=188 xrandr-mancave "$@"
-    ```
+# X Related     :ARCHIVE:
 
 
 # User system services
@@ -649,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgc596bfe"></a>
+<a id="org72f1e86"></a>
 
 ## ~/.profile
 
@@ -702,7 +123,7 @@ fi
 ```
 
 
-<a id="orgbb221b9"></a>
+<a id="org8cd1c97"></a>
 
 ## ~/.bash\_profile
 
@@ -1174,6 +595,40 @@ Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window 
 ```bash
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+```
+
+
+## ~/.Xdefaults
+
+```conf
+! Use a truetype font and size.
+*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
+Xft.autohint: 0
+Xft.antialias: 1
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.dpi: 96
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+
+! Fonts {{{
+#ifdef SRVR_thinkpadt460
+Xft.dpi:       104
+#endif
+#ifdef SRVR_intelnuc
+Xft.dpi:       108
+#endif
+#ifdef SRVR_thinkpadx270
+Xft.dpi:       96
+#endif
+#ifdef SRVR_thinkpadt14s
+Xft.dpi:       96
+#endif
+#ifdef SRVR_xmgneo
+Xft.dpi:       188
+#endif
+! }}}
+
 ```
 
 
@@ -2498,7 +1953,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgbb221b9) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org8cd1c97) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2510,7 +1965,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgc596bfe)
+    Added to PATH in [~/.profile](#org72f1e86)
 
 
 ### Debuggers     :debuggers:
