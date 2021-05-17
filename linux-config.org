@@ -1434,7 +1434,7 @@
       bindsym $mod+Control+c exec conky
       bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
       bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-      bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
+      bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
       bindsym $mod+Control+g exec oneterminal "gdb"
       bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
       bindsym $mod+Control+h exec pidof hexchat || hexchat
@@ -3154,7 +3154,8 @@
 
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
-          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
+#          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty -t "${title}"  --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"

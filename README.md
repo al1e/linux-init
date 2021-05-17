@@ -691,7 +691,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga3e9ea3"></a>
+<a id="orgbfc1116"></a>
 
 ## ~/.profile
 
@@ -747,7 +747,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="org25c5406"></a>
+<a id="orgf1bf6a5"></a>
 
 ## ~/.bash\_profile
 
@@ -1472,7 +1472,7 @@ bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec gdb-run ~/development/projects/C/emacs
+bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+h exec pidof hexchat || hexchat
@@ -2444,7 +2444,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org25c5406) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgf1bf6a5) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2456,7 +2456,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga3e9ea3)
+    Added to PATH in [~/.profile](#orgbfc1116)
 
 
 ### Debuggers     :debuggers:
@@ -2848,27 +2848,28 @@ fi
 ### ~/bin/oneterminal
 
 ```bash
-#!/usr/bin/bash
-#Maintained in linux-init-files.org
+      #!/usr/bin/bash
+      #Maintained in linux-init-files.org
 
-sessionname="${1:-`pwd`}"
-title="${ONETERM_TITLE:-${sessionname}}"
-#sessionname="${sessionname//[^[:alnum:]]/}"
-script="${2}"
-tflags="${3}"
+      sessionname="${1:-`pwd`}"
+      title="${ONETERM_TITLE:-${sessionname}}"
+      #sessionname="${sessionname//[^[:alnum:]]/}"
+      script="${2}"
+      tflags="${3}"
 
-profile="${ONETERM_PROFILE:-"$(hostname)"}"
+      profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
-WID=`xdotool search --name "^${title}$" | head -1`
-if [ -z "$WID" ]; then
-    terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-else
-    if ! tmux has-session -t  "${sessionname}"; then
-        tmux attach -t "${sessionname}"
-    fi
-    xdotool windowactivate $WID
-fi
-exit 0
+      WID=`xdotool search --name "^${title}$" | head -1`
+      if [ -z "$WID" ]; then
+#          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty -t "${title}"  --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+      else
+          if ! tmux has-session -t  "${sessionname}"; then
+              tmux attach -t "${sessionname}"
+          fi
+          xdotool windowactivate $WID
+      fi
+      exit 0
 ```
 
 
