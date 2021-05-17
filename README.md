@@ -731,7 +731,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbae39c7"></a>
+<a id="orgddfcd54"></a>
 
 ## ~/.profile
 
@@ -787,7 +787,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="org7814541"></a>
+<a id="org11ce42f"></a>
 
 ## ~/.bash\_profile
 
@@ -1282,7 +1282,7 @@ mouse_warping none
 floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
-
+default_border pixel
 # Font  for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:monospace 8
@@ -1327,8 +1327,6 @@ bindsym $mod+Shift+r restart
 exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
 exec --no-startup-id waymanager
 exec --no-startup-id sway-idle-hook
-bindsym --release $mod+Control+l exec loginctl lock-session
-bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
 
 ```
 
@@ -2486,7 +2484,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7814541) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org11ce42f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2498,7 +2496,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbae39c7)
+    Added to PATH in [~/.profile](#orgddfcd54)
 
 
 ### Debuggers     :debuggers:
