@@ -691,7 +691,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgc699172"></a>
+<a id="orga3e9ea3"></a>
 
 ## ~/.profile
 
@@ -747,7 +747,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="orge1f1868"></a>
+<a id="org25c5406"></a>
 
 ## ~/.bash\_profile
 
@@ -1483,7 +1483,11 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
 #rofi instead of dmenu
-bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+# bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
+for_window [app_id="^launcher$"] floating enable, border none, resize set width 25 ppt height 20 ppt, move position 0 px 0 px
+
+
 
 ```
 
@@ -2440,7 +2444,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orge1f1868) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org25c5406) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2452,7 +2456,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgc699172)
+    Added to PATH in [~/.profile](#orga3e9ea3)
 
 
 ### Debuggers     :debuggers:
