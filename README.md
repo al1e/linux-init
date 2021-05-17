@@ -653,16 +653,19 @@ case "$1" in
         systemctl suspend && lock
         ;;
     hibernate)
-        exec systemctl hibernate && lock
+        systemctl hibernate && lock
         ;;
     reboot)
-        exec systemctl reboot
+        systemctl reboot
         ;;
     shutdown)
-        exec systemctl poweroff
+        systemctl poweroff
         ;;
-    screenoff)
-         exec swaymsg "output * dpms off"
+    blank)
+        swaymsg "output * dpms off"
+        ;;
+    unblank)
+        swaymsg "output * dpms on"
         ;;
     *)
         lock
@@ -679,14 +682,14 @@ exit 0
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 exec swayidle -w \
-       timeout 2 '' \
-       resume 'if ! pgrep -x swaylock; then swaymsg "output * dpms on"; fi' \
-       timeout 10 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
-       resume 'swaymsg "output * dpms on"' \
-       timeout ${XIDLEHOOK_BLANK:-120} 'swaymsg "output * dpms off"' \
-       resume 'swaymsg "output * dpms on"' \
+       timeout 5 '' \
+       resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
+       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+       resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+       resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
-       resume 'swaymsg "output * dpms on"' \
+       resume 'sway-lock-utils unblank' \
        lock 'sway-lock' \
        before-sleep 'sway-lock'
 ```
@@ -731,7 +734,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgddfcd54"></a>
+<a id="org1a149d3"></a>
 
 ## ~/.profile
 
@@ -787,7 +790,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="org11ce42f"></a>
+<a id="org7f7b79b"></a>
 
 ## ~/.bash\_profile
 
@@ -1538,7 +1541,7 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{termin
 
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-bindsym b exec --no-startup-id sway-lock-utils screenoff, mode "default"
+bindsym b exec --no-startup-id sway-lock-utils blank, mode "default"
 bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
 bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
 bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"
@@ -2484,7 +2487,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org11ce42f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7f7b79b) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2496,7 +2499,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgddfcd54)
+    Added to PATH in [~/.profile](#org1a149d3)
 
 
 ### Debuggers     :debuggers:

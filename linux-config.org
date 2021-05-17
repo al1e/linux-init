@@ -677,16 +677,19 @@
              systemctl suspend && lock
              ;;
          hibernate)
-             exec systemctl hibernate && lock
+             systemctl hibernate && lock
              ;;
          reboot)
-             exec systemctl reboot
+             systemctl reboot
              ;;
          shutdown)
-             exec systemctl poweroff
+             systemctl poweroff
              ;;
-         screenoff)
-              exec swaymsg "output * dpms off"
+         blank)
+             swaymsg "output * dpms off"
+             ;;
+         unblank)
+             swaymsg "output * dpms on"
              ;;
          ,*)
              lock
@@ -703,14 +706,14 @@
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   exec swayidle -w \
-         timeout 2 '' \
-         resume 'if ! pgrep -x swaylock; then swaymsg "output * dpms on"; fi' \
-         timeout 10 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
-         resume 'swaymsg "output * dpms on"' \
-         timeout ${XIDLEHOOK_BLANK:-120} 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on"' \
+         timeout 5 '' \
+         resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
+         timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+         resume 'sway-lock-utils unblank' \
+         timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+         resume 'sway-lock-utils unblank' \
          timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
-         resume 'swaymsg "output * dpms on"' \
+         resume 'sway-lock-utils unblank' \
          lock 'sway-lock' \
          before-sleep 'sway-lock'
 #+end_src
@@ -1519,7 +1522,7 @@ CLOSED: [2021-05-17 Mon 08:26]
 
       set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
       mode "$mode_system" {
-      bindsym b exec --no-startup-id sway-lock-utils screenoff, mode "default"
+      bindsym b exec --no-startup-id sway-lock-utils blank, mode "default"
       bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
       bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
       bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"

@@ -24,16 +24,19 @@ case "$1" in
         systemctl suspend && lock
         ;;
     hibernate)
-        exec systemctl hibernate && lock
+        systemctl hibernate && lock
         ;;
     reboot)
-        exec systemctl reboot
+        systemctl reboot
         ;;
     shutdown)
-        exec systemctl poweroff
+        systemctl poweroff
         ;;
-    screenoff)
-         exec swaymsg "output * dpms off"
+    blank)
+        swaymsg "output * dpms off"
+        ;;
+    unblank)
+        swaymsg "output * dpms on"
         ;;
     *)
         lock
