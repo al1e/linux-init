@@ -641,7 +641,7 @@ lock_gpg_clear() {
 
 case "$1" in
     lock)
-        lock
+        exec loginctl lock-session
         ;;
     lock_gpg_clear)
         lock_gpg_clear
@@ -653,17 +653,16 @@ case "$1" in
         systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate && lock
+        exec systemctl hibernate && lock
         ;;
     reboot)
-        systemctl reboot
+        exec systemctl reboot
         ;;
     shutdown)
-        systemctl poweroff
+        exec systemctl poweroff
         ;;
     screenoff)
-         timeout 1 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on ";'
+         exec swaymsg "output * dpms off"
         ;;
     *)
         lock
@@ -732,7 +731,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org9486485"></a>
+<a id="orgbae39c7"></a>
 
 ## ~/.profile
 
@@ -788,7 +787,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="orgf6f7d01"></a>
+<a id="org7814541"></a>
 
 ## ~/.bash\_profile
 
@@ -1526,9 +1525,9 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
 #rofi instead of dmenu
-# bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
-for_window [app_id="^launcher$"] floating enable, border none, resize set width 25 ppt height 20 ppt, move position 0 px 0 px
+bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+#bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
+#for_window [app_id="^launcher$"] floating enable, border none, resize set width 25 ppt height 20 ppt, move position 0 px 0 px
 
 
 
@@ -1541,13 +1540,13 @@ for_window [app_id="^launcher$"] floating enable, border none, resize set width 
 
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
-bindsym l exec --no-startup-id x-lock-utils lock, mode "default"
-bindsym e exec --no-startup-id x-lock-utils logout, mode "default"
-bindsym s exec --no-startup-id x-lock-utils suspend, mode "default"
-bindsym h exec --no-startup-id x-lock-utils hibernate, mode "default"
-bindsym r exec --no-startup-id x-lock-utils reboot, mode "default"
-bindsym Shift+s exec --no-startup-id x-lock-utils shutdown, mode "default"
+bindsym b exec --no-startup-id sway-lock-utils screenoff, mode "default"
+bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
+bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
+bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"
+bindsym h exec --no-startup-id sway-lock-utils hibernate, mode "default"
+bindsym r exec --no-startup-id sway-lock-utils reboot, mode "default"
+bindsym Shift+s exec --no-startup-id sway-lock-utils shutdown, mode "default"
 # back to normal: Enter or Escape
 bindsym Return mode "default"
 bindsym Escape mode "default"
@@ -2487,7 +2486,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgf6f7d01) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7814541) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2499,7 +2498,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org9486485)
+    Added to PATH in [~/.profile](#orgbae39c7)
 
 
 ### Debuggers     :debuggers:

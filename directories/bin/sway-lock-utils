@@ -12,7 +12,7 @@ lock_gpg_clear() {
 
 case "$1" in
     lock)
-        lock
+        exec loginctl lock-session
         ;;
     lock_gpg_clear)
         lock_gpg_clear
@@ -24,17 +24,16 @@ case "$1" in
         systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate && lock
+        exec systemctl hibernate && lock
         ;;
     reboot)
-        systemctl reboot
+        exec systemctl reboot
         ;;
     shutdown)
-        systemctl poweroff
+        exec systemctl poweroff
         ;;
     screenoff)
-         timeout 1 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on ";'
+         exec swaymsg "output * dpms off"
         ;;
     *)
         lock

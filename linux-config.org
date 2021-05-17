@@ -665,7 +665,7 @@
 
      case "$1" in
          lock)
-             lock
+             exec loginctl lock-session
              ;;
          lock_gpg_clear)
              lock_gpg_clear
@@ -677,17 +677,16 @@
              systemctl suspend && lock
              ;;
          hibernate)
-             systemctl hibernate && lock
+             exec systemctl hibernate && lock
              ;;
          reboot)
-             systemctl reboot
+             exec systemctl reboot
              ;;
          shutdown)
-             systemctl poweroff
+             exec systemctl poweroff
              ;;
          screenoff)
-              timeout 1 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on ";'
+              exec swaymsg "output * dpms off"
              ;;
          ,*)
              lock
@@ -1484,9 +1483,9 @@ It works with your existing i3 configuration and supports most of i3's features,
       bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
       #rofi instead of dmenu
-      # bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-      bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
-      for_window [app_id="^launcher$"] floating enable, border none, resize set width 25 ppt height 20 ppt, move position 0 px 0 px
+      bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+      #bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
+      #for_window [app_id="^launcher$"] floating enable, border none, resize set width 25 ppt height 20 ppt, move position 0 px 0 px
 
 
 
@@ -1522,13 +1521,13 @@ CLOSED: [2021-05-17 Mon 08:26]
 
       set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
       mode "$mode_system" {
-      bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
-      bindsym l exec --no-startup-id x-lock-utils lock, mode "default"
-      bindsym e exec --no-startup-id x-lock-utils logout, mode "default"
-      bindsym s exec --no-startup-id x-lock-utils suspend, mode "default"
-      bindsym h exec --no-startup-id x-lock-utils hibernate, mode "default"
-      bindsym r exec --no-startup-id x-lock-utils reboot, mode "default"
-      bindsym Shift+s exec --no-startup-id x-lock-utils shutdown, mode "default"
+      bindsym b exec --no-startup-id sway-lock-utils screenoff, mode "default"
+      bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
+      bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
+      bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"
+      bindsym h exec --no-startup-id sway-lock-utils hibernate, mode "default"
+      bindsym r exec --no-startup-id sway-lock-utils reboot, mode "default"
+      bindsym Shift+s exec --no-startup-id sway-lock-utils shutdown, mode "default"
       # back to normal: Enter or Escape
       bindsym Return mode "default"
       bindsym Escape mode "default"
