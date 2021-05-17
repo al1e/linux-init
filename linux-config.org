@@ -653,25 +653,6 @@
    #+begin_src bash :tangle "~/bin/sway-lock-utils"
      #!/usr/bin/bash
      # Maintained in linux-init-files.org
-
-     # lock() {
-     #     logger -t "x-lock-utils"  lock
-     #     pre-lock
-     #     xbacklight -set 5
-     #     xset dpms 5 0 0
-     #     i3lock -n -c 000000
-     #     xset -dpms
-     #     x-backlight-persist restore
-     #     post-lock
-     # }
-     idlelock(){
-         exec swayidle \
-              timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
-              timeout 10 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on"' \
-              before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
-     }
-
      lock() {
          swaylock -i ~/Pictures/LockScreen/lock -c 000000
      }
@@ -690,7 +671,7 @@
              lock_gpg_clear
              ;;
          logout)
-             i3-msg exit
+             swaymsg exit
              ;;
          suspend)
              systemctl suspend && lock

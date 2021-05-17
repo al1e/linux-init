@@ -200,16 +200,9 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #     x-backlight-persist restore
 #     post-lock
 # }
-idlelock(){
-    exec swayidle \
-         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
-         timeout 10 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
-}
-
 lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    #xset dpms force off && i3lock -n -c 000000
+    xset dpms force off && i3lock-fancy
 }
 
 lock_gpg_clear() {
@@ -241,8 +234,7 @@ case "$1" in
         systemctl poweroff
         ;;
     screenoff)
-         timeout 1 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on ";'
+        xset dpms force off
         ;;
     *)
         lock
@@ -253,7 +245,7 @@ exit 0
 ```
 
 
-## xidlehook for handling dim and pause prefs
+## ~/bin/x-idlehook
 
 See [xidlehook](https://github.com/jD91mZM2/xidlehook). Better handling of idle things. Dont dim or blank when watching a video or in full screen. [acpilight](https://gitlab.com/wavexx/acpilight ) provides a better xbacklight.\*
 
@@ -637,25 +629,6 @@ Just a gathering place of locky/suspendy type things&#x2026;
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-
-# lock() {
-#     logger -t "x-lock-utils"  lock
-#     pre-lock
-#     xbacklight -set 5
-#     xset dpms 5 0 0
-#     i3lock -n -c 000000
-#     xset -dpms
-#     x-backlight-persist restore
-#     post-lock
-# }
-idlelock(){
-    exec swayidle \
-         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
-         timeout 10 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
-}
-
 lock() {
     swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
@@ -674,7 +647,7 @@ case "$1" in
         lock_gpg_clear
         ;;
     logout)
-        i3-msg exit
+        swaymsg exit
         ;;
     suspend)
         systemctl suspend && lock
@@ -759,7 +732,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga28ba6a"></a>
+<a id="org9486485"></a>
 
 ## ~/.profile
 
@@ -815,7 +788,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-<a id="org2084fc1"></a>
+<a id="orgf6f7d01"></a>
 
 ## ~/.bash\_profile
 
@@ -2514,7 +2487,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org2084fc1) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgf6f7d01) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2526,7 +2499,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga28ba6a)
+    Added to PATH in [~/.profile](#org9486485)
 
 
 ### Debuggers     :debuggers:
