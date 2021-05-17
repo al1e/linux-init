@@ -49,8 +49,7 @@ export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
 # Force GTK to use wayland
-GDK_BACKEND=wayland
-CLUTTER_BACKEND=wayland
+# export GDK_BACKEND=wayland
 
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 

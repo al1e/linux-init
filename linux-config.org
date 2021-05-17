@@ -1154,8 +1154,7 @@ It works with your existing i3 configuration and supports most of i3's features,
 ** Gnome
 #+begin_src bash :tangle "DotFiles/.profile"
   # Force GTK to use wayland
-  GDK_BACKEND=wayland
-  CLUTTER_BACKEND=wayland
+  # export GDK_BACKEND=wayland
 #+end_src
 
 ** ~/.Xresources
@@ -1338,6 +1337,8 @@ It works with your existing i3 configuration and supports most of i3's features,
       set $ws8 "8:irc"
       set $ws9 "9:steam"
       set $ws10 "10"
+
+      exec 'sleep 2; swaymsg workspace 1:edit'
 
       workspace $ws3 gaps inner 0
       workspace $ws3 gaps outer 0
@@ -2448,8 +2449,8 @@ CLOSED: [2021-05-17 Mon 08:12]
   }
 
   {
-  output eDP-1 disable
   output DP-4 mode 1920x1080 position 0,0
+  output eDP-1 disable
   }
 
 #+end_src
