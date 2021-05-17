@@ -2405,19 +2405,19 @@ CLOSED: [2021-05-17 Mon 08:12]
           fi
       done
     #+end_src
-*** kanshi
+*** kanshi                                                           :kanshi:
+Monitor control with hotplug https://github.com/emersion/kanshi
 **** ~/bin/sway-kanshi
+Load a host specific kanshi file if it exists
 #+begin_src bash :tangle "~/bin/sway-kanshi"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  custom="$HOME/.config/kanshi/config-$(hostname)"
-  if [ -f  "$custom" ]; then
-      echo "using custom kanshi config: $custom" >> ~/tmp/LOG
-      kanshi -c "$custom" >> ~/tmp/LOG
-  else
-      echo "vanilla kanshi config"  >> ~/tmp/LOG
-      kanshi -c "$HOME/.config/kanshi/config" >> ~/tmp/LOG
+  config="$HOME/.config/kanshi/config-$(hostname)"
+  if [ ! -f  "$config" ]; then
+      config="$HOME/.config/kanshi/config"
   fi
+  logger -t "kanshi"  "$config"
+  kanshi -c "$config"
 #+end_src
 **** config-thinkpadt14s
 #+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"

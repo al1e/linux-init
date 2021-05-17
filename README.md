@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org2a8e026"></a>
+<a id="org746e675"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org7d2ddf1"></a>
+<a id="orgd5a8294"></a>
 
 ## ~/.bash\_profile
 
@@ -598,7 +598,15 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ```
 
 
-## ~/.Xdefaults
+## Gnome
+
+```bash
+# Force GTK to use wayland
+# export GDK_BACKEND=wayland
+```
+
+
+## ~/.Xresources
 
 ```conf
 ! Use a truetype font and size.
@@ -628,7 +636,6 @@ Xft.dpi:       96
 Xft.dpi:       188
 #endif
 ! }}}
-
 ```
 
 
@@ -701,11 +708,12 @@ bindsym $mod+Shift+r restart
 ### sway autostart
 
 ```conf
-exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-# exec --no-startup-id waymanager
-exec --no-startup-id sway-kanshi
-exec --no-startup-id sway-idle-hook
-exec --no-startup-id nm-applet --indicator
+#exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
+exec xrdb -merge ~/.Xresources
+exec_always pkill sway-kanshi; exec sway-kanshi
+exec swaybg -i ~/Pictures/Wallpapers/current
+exec sway-idle-hook
+exec nm-applet --indicator
 
 ```
 
@@ -784,6 +792,8 @@ set $ws7 "7:video"
 set $ws8 "8:irc"
 set $ws9 "9:steam"
 set $ws10 "10"
+
+exec 'sleep 2; swaymsg workspace 1:edit'
 
 workspace $ws3 gaps inner 0
 workspace $ws3 gaps outer 0
@@ -1349,9 +1359,9 @@ exec swayidle -w \
        resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
        timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
+       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
        resume 'sway-lock-utils unblank' \
        lock 'sway-lock' \
        before-sleep 'sway-lock'
@@ -1372,7 +1382,7 @@ swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
 ```
 
 ```conf
@@ -1403,21 +1413,23 @@ done
 ```
 
 
-### kanshi
+### kanshi     :kanshi:
+
+Monitor control with hotplug <https://github.com/emersion/kanshi>
 
 1.  ~/bin/sway-kanshi
+
+    Load a host specific kanshi file if it exists
 
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
-    custom="$HOME/.config/kanshi/config-$(hostname)"
-    if [ -f  "$custom" ]; then
-        echo "using custom kanshi config: $custom"
-        kanshi -c "$custom"
-    else
-        echo "vanilla kanshi config"
-        kanshi -c "$HOME/.config/kanshi/config"
+    config="$HOME/.config/kanshi/config-$(hostname)"
+    if [ ! -f  "$config" ]; then
+        config="$HOME/.config/kanshi/config"
     fi
+    logger -t "kanshi"  "$config"
+    kanshi -c "$config"
     ```
 
 2.  config-thinkpadt14s
@@ -1450,12 +1462,12 @@ done
 
     ```conf
     {
-      output eDP-1 enable mode 1920x1080  position 0,0
+    output eDP-1 enable mode 1920x1080  position 0,0
     }
 
     {
-      output eDP-1 mode 1920x1080 position 1920,0
-      output DP-4 mode 1920x1080 position 0,0
+    output DP-4 mode 1920x1080 position 0,0
+    output eDP-1 disable
     }
 
     ```
@@ -2015,7 +2027,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7d2ddf1) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgd5a8294) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2027,7 +2039,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org2a8e026)
+    Added to PATH in [~/.profile](#org746e675)
 
 
 ### Debuggers     :debuggers:
