@@ -17,6 +17,9 @@
 
 !/dot-config
 
+!/dot-config/kanshi
+!/dot-config/kanshi/*
+
 !/dot-config/i3
 !/dot-config/i3/config
 

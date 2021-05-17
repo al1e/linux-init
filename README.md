@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org5c92065"></a>
+<a id="org2a8e026"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgd98b471"></a>
+<a id="org7d2ddf1"></a>
 
 ## ~/.bash\_profile
 
@@ -701,9 +701,9 @@ bindsym $mod+Shift+r restart
 ### sway autostart
 
 ```conf
-# exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
 exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-exec --no-startup-id waymanager
+# exec --no-startup-id waymanager
+exec --no-startup-id sway-kanshi
 exec --no-startup-id sway-idle-hook
 exec --no-startup-id nm-applet --indicator
 
@@ -1420,6 +1420,46 @@ done
     fi
     ```
 
+2.  config-thinkpadt14s
+
+    ```conf
+    {
+      output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+      output eDP-1 mode 1920x1080 position 1920,0
+      output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+3.  config-thinkpadt460
+
+    ```conf
+    {
+      output eDP-1 enable mode 1366×768   position 0,0
+    }
+
+    {
+      output eDP-1 mode 1366×768  position 1920,0
+      output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+4.  config-thinkpadx270
+
+    ```conf
+    {
+      output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+      output eDP-1 mode 1920x1080 position 1920,0
+      output DP-4 mode 1920x1080 position 0,0
+    }
+
+    ```
+
 
 # Vim
 
@@ -1975,7 +2015,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgd98b471) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7d2ddf1) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1987,7 +2027,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org5c92065)
+    Added to PATH in [~/.profile](#org2a8e026)
 
 
 ### Debuggers     :debuggers:

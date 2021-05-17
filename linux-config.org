@@ -1252,9 +1252,9 @@ It works with your existing i3 configuration and supports most of i3's features,
     #+end_src
 *** sway autostart
     #+begin_src conf
-      # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
       exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-      exec --no-startup-id waymanager
+      # exec --no-startup-id waymanager
+      exec --no-startup-id sway-kanshi
       exec --no-startup-id sway-idle-hook
       exec --no-startup-id nm-applet --indicator
 
@@ -2412,7 +2412,41 @@ CLOSED: [2021-05-17 Mon 08:12]
       kanshi -c "$HOME/.config/kanshi/config"
   fi
 #+end_src
+**** config-thinkpadt14s
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
+  {
+    output eDP-1 enable mode 1920x1080  position 0,0
+  }
 
+  {
+    output eDP-1 mode 1920x1080 position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+
+**** config-thinkpadt460
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
+  {
+    output eDP-1 enable mode 1366×768   position 0,0
+  }
+
+  {
+    output eDP-1 mode 1366×768  position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+**** config-thinkpadx270
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
+  {
+    output eDP-1 enable mode 1920x1080  position 0,0
+  }
+
+  {
+    output eDP-1 mode 1920x1080 position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+  }
+
+#+end_src
 * Vim
 ** ~/.vimrc
    #+begin_src conf :tangle "DotFiles/.vimrc"
