@@ -2,9 +2,9 @@
 #Maintained in linux-init-files.org
 custom="$HOME/.config/kanshi/config-$(hostname)"
 if [ -f  "$custom" ]; then
-    echo "using custom kanshi config: $custom"
-    kanshi -c "$custom"
+    echo "using custom kanshi config: $custom" >> ~/tmp/LOG
+    kanshi -c "$custom" >> ~/tmp/LOG
 else
-    echo "vanilla kanshi config"
-    kanshi -c "$HOME/.config/kanshi/config"
+    echo "vanilla kanshi config"  >> ~/tmp/LOG
+    kanshi -c "$HOME/.config/kanshi/config" >> ~/tmp/LOG
 fi

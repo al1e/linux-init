@@ -131,7 +131,6 @@
    #+begin_src bash :tangle "DotFiles/.xsession"
      #!/usr/bin/env bash
      # Maintained in linux-init-files.org
-
      logger -t "startup-initfile"  USER-XSESSION
      exec dbus-launch --sh-syntax --exit-with-session i3
    #+end_src
@@ -1152,8 +1151,15 @@ It works with your existing i3 configuration and supports most of i3's features,
   export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 #+end_src
 
-** ~/.Xdefaults
-   #+begin_src conf :tangle "DotFiles/.Xdefaults"
+** Gnome
+#+begin_src bash :tangle "DotFiles/.profile"
+  # Force GTK to use wayland
+  GDK_BACKEND=wayland
+  CLUTTER_BACKEND=wayland
+#+end_src
+
+** ~/.Xresources
+   #+begin_src conf :tangle "DotFiles/.Xresources"
      ! Use a truetype font and size.
      ,*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
      Xft.autohint: 0
@@ -1181,7 +1187,6 @@ It works with your existing i3 configuration and supports most of i3's features,
      Xft.dpi:       188
      #endif
      ! }}}
-
    #+end_src
 
 
@@ -1252,11 +1257,12 @@ It works with your existing i3 configuration and supports most of i3's features,
     #+end_src
 *** sway autostart
     #+begin_src conf
-      exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
-      # exec --no-startup-id waymanager
-      exec --no-startup-id sway-kanshi
-      exec --no-startup-id sway-idle-hook
-      exec --no-startup-id nm-applet --indicator
+      #exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
+      exec xrdb -merge ~/.Xresources
+      exec_always pkill sway-kanshi; exec sway-kanshi
+      exec swaybg -i ~/Pictures/Wallpapers/current
+      exec sway-idle-hook
+      exec nm-applet --indicator
 
     #+end_src
 *** sway workspace
@@ -2353,9 +2359,9 @@ CLOSED: [2021-05-17 Mon 08:12]
          resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
          timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
          resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+         timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
          resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
+         timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
          resume 'sway-lock-utils unblank' \
          lock 'sway-lock' \
          before-sleep 'sway-lock'
@@ -2374,7 +2380,7 @@ CLOSED: [2021-05-17 Mon 08:12]
 #+begin_src bash :tangle "~/bin/sway-swaysock"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+  export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
 #+end_src
 #+begin_src conf :tangle "DotFiles/.profile"
   export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
@@ -2405,11 +2411,11 @@ CLOSED: [2021-05-17 Mon 08:12]
   #Maintained in linux-init-files.org
   custom="$HOME/.config/kanshi/config-$(hostname)"
   if [ -f  "$custom" ]; then
-      echo "using custom kanshi config: $custom"
-      kanshi -c "$custom"
+      echo "using custom kanshi config: $custom" >> ~/tmp/LOG
+      kanshi -c "$custom" >> ~/tmp/LOG
   else
-      echo "vanilla kanshi config"
-      kanshi -c "$HOME/.config/kanshi/config"
+      echo "vanilla kanshi config"  >> ~/tmp/LOG
+      kanshi -c "$HOME/.config/kanshi/config" >> ~/tmp/LOG
   fi
 #+end_src
 **** config-thinkpadt14s
@@ -2438,12 +2444,12 @@ CLOSED: [2021-05-17 Mon 08:12]
 **** config-thinkpadx270
 #+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
   {
-    output eDP-1 enable mode 1920x1080  position 0,0
+  output eDP-1 enable mode 1920x1080  position 0,0
   }
 
   {
-    output eDP-1 mode 1920x1080 position 1920,0
-    output DP-4 mode 1920x1080 position 0,0
+  output eDP-1 disable
+  output DP-4 mode 1920x1080 position 0,0
   }
 
 #+end_src
