@@ -11,9 +11,16 @@
 #     x-backlight-persist restore
 #     post-lock
 # }
+idlelock(){
+    exec swayidle \
+         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
+         timeout 10 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
+}
+
 lock() {
-    #xset dpms force off && i3lock -n -c 000000
-    xset dpms force off && i3lock-fancy
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -45,7 +52,8 @@ case "$1" in
         systemctl poweroff
         ;;
     screenoff)
-        xset dpms force off
+         timeout 1 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on ";'
         ;;
     *)
         lock

@@ -55,8 +55,12 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
-exec --no-startup-id nm-applet
+# exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
+exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
+exec --no-startup-id nm-applet --indicator
+exec --no-startup-id sway-idle-hook
+bindsym --release $mod+Control+l exec loginctl lock-session
+bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
 
 # change focus
 bindsym $mod+o focus left
@@ -72,10 +76,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+ö move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -230,7 +234,7 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
 #rofi instead of dmenu
-bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {

@@ -200,9 +200,16 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #     x-backlight-persist restore
 #     post-lock
 # }
+idlelock(){
+    exec swayidle \
+         timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
+         timeout 10 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
+}
+
 lock() {
-    #xset dpms force off && i3lock -n -c 000000
-    xset dpms force off && i3lock-fancy
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -234,7 +241,8 @@ case "$1" in
         systemctl poweroff
         ;;
     screenoff)
-        xset dpms force off
+         timeout 1 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on ";'
         ;;
     *)
         lock
@@ -619,6 +627,38 @@ Differnt monitors have different resolutions and hence DPI
     ```
 
 
+# Wayland Related     :wayland:
+
+
+## Sway     :sway:
+
+
+### sway-idle-hook     :sleep:lock:idle:
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+exec swayidle -w \
+       timeout 2 '' \
+       resume 'if pgrep -x swaylock; then swaymsg "output * dpms off"; else swaymsg "output * dpms on"; fi' \
+       timeout ${XIDLEHOOK_BLANK:-120} 'swaymsg "output * dpms off"' \
+       resume 'swaymsg "output * dpms on"' \
+       timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
+       resume 'swaymsg "output * dpms on"' \
+       lock 'sway-lock' \
+       before-sleep 'sway-lock'
+```
+
+
+### sway-lock
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+```
+
+
 # User system services
 
 
@@ -649,7 +689,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgfd5959e"></a>
+<a id="orgd20154b"></a>
 
 ## ~/.profile
 
@@ -698,11 +738,14 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
+export XKB_DEFAULT_LAYOUT=de
+export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+
 
 ```
 
 
-<a id="org7411794"></a>
+<a id="org1b77389"></a>
 
 ## ~/.bash\_profile
 
@@ -1236,8 +1279,13 @@ bindsym $mod+Shift+r restart
 ### i3 autostart
 
 ```conf
-exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
-exec --no-startup-id nm-applet
+# exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
+exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
+exec --no-startup-id nm-applet --indicator
+exec --no-startup-id sway-idle-hook
+bindsym --release $mod+Control+l exec loginctl lock-session
+bindsym --release $mod+Control+b exec 'swaymsg "output * dpms off"'
+
 ```
 
 
@@ -1258,10 +1306,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+ö move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -1433,7 +1481,7 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
 #rofi instead of dmenu
-bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
 ```
 
@@ -1441,6 +1489,7 @@ bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-s
 ### i3 exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 
 ```conf
+
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 bindsym b exec --no-startup-id x-lock-utils screenoff, mode "default"
@@ -2389,7 +2438,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7411794) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org1b77389) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2401,7 +2450,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgfd5959e)
+    Added to PATH in [~/.profile](#orgd20154b)
 
 
 ### Debuggers     :debuggers:
