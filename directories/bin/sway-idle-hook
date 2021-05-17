@@ -2,7 +2,7 @@
 # Maintained in linux-init-files.org
 exec swayidle -w \
        timeout 5 '' \
-       resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
+       resume 'sway-lock-utils unblank' \
        timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \

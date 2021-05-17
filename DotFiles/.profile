@@ -48,9 +48,6 @@ export FZF_TMUX_OPTS="-d 40%"
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
-# Force GTK to use wayland
-# export GDK_BACKEND=wayland
-
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 
 export PYENV_ROOT="${HOME}/.pyenv"
