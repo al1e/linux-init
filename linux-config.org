@@ -244,16 +244,9 @@
      #     x-backlight-persist restore
      #     post-lock
      # }
-     idlelock(){
-         exec swayidle \
-              timeout 100 'swaylock -i ~/Pictures/LockScreen/lock -c 000000' \
-              timeout 10 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on"' \
-              before-sleep 'swaylock -i ~/Pictures/LockScreen/lock -c 000000'
-     }
-
      lock() {
-         swaylock -i ~/Pictures/LockScreen/lock -c 000000
+         #xset dpms force off && i3lock -n -c 000000
+         xset dpms force off && i3lock-fancy
      }
 
      lock_gpg_clear() {
@@ -285,8 +278,7 @@
              systemctl poweroff
              ;;
          screenoff)
-              timeout 1 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on ";'
+             xset dpms force off
              ;;
          ,*)
              lock
@@ -295,7 +287,7 @@
 
      exit 0
    #+end_src
-** xidlehook for handling dim and pause prefs
+** ~/bin/x-idlehook
    See [[https://github.com/jD91mZM2/xidlehook][xidlehook]]. Better handling of idle things. Dont dim or blank when watching a video or in full screen.
    [[https://gitlab.com/wavexx/acpilight
    ][acpilight]] provides a better xbacklight.*
