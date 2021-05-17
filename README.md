@@ -619,91 +619,6 @@ Differnt monitors have different resolutions and hence DPI
     ```
 
 
-# Sway Related     :sway:wayland:
-
-
-## ~/bin/sway-lock-utils
-
-Just a gathering place of locky/suspendy type things&#x2026;
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000
-}
-
-lock_gpg_clear() {
-    logger -t "x-lock-utils"  lock_gpg_clear
-    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-    lock
-}
-
-case "$1" in
-    lock)
-        exec loginctl lock-session
-        ;;
-    lock_gpg_clear)
-        lock_gpg_clear
-        ;;
-    logout)
-        swaymsg exit
-        ;;
-    suspend)
-        systemctl suspend && lock
-        ;;
-    hibernate)
-        systemctl hibernate && lock
-        ;;
-    reboot)
-        systemctl reboot
-        ;;
-    shutdown)
-        systemctl poweroff
-        ;;
-    blank)
-        swaymsg "output * dpms off"
-        ;;
-    unblank)
-        swaymsg "output * dpms on"
-        ;;
-    *)
-        lock
-        ;;
-esac
-
-exit 0
-```
-
-
-## ~/bin/sway-idle-hook     :sleep:lock:idle:
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-exec swayidle -w \
-       timeout 5 '' \
-       resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
-       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
-       resume 'sway-lock-utils unblank' \
-       lock 'sway-lock' \
-       before-sleep 'sway-lock'
-```
-
-
-## ~/bin/sway-lock
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
-```
-
-
 # User system services
 
 
@@ -734,7 +649,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org1a149d3"></a>
+<a id="orgc596bfe"></a>
 
 ## ~/.profile
 
@@ -783,14 +698,11 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
-export XKB_DEFAULT_LAYOUT=de
-export XKB_DEFAULT_OPTIONS=ctrl:nocaps
-
 
 ```
 
 
-<a id="org7f7b79b"></a>
+<a id="orgbb221b9"></a>
 
 ## ~/.bash\_profile
 
@@ -1257,6 +1169,14 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
 
+## xkb keyboard
+
+```bash
+export XKB_DEFAULT_LAYOUT=de
+export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+```
+
+
 ## sway config
 
 
@@ -1323,18 +1243,19 @@ bindsym $mod+Shift+r restart
 ```
 
 
-### i3 autostart
+### sway autostart
 
 ```conf
 # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
 exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
 exec --no-startup-id waymanager
 exec --no-startup-id sway-idle-hook
+exec --no-startup-id nm-applet --indicator
 
 ```
 
 
-### i3 workspace
+### sway workspace
 
 ```conf
 # change focus
@@ -1388,7 +1309,7 @@ bindsym $mod+a focus parent
 bindsym $mod+Shift+s sticky toggle
 
 bindsym $mod+m move workspace to output left
-bindsym $mod+Control+m exec i3-display-swap
+bindsym $mod+Control+m exec sway-display-swap
 bindsym $mod+Tab workspace back_and_forth
 
 
@@ -1477,7 +1398,7 @@ bindsym $mod+r mode "resize"
 ```
 
 
-### i3 volume
+### sway volume
 
 ```conf
 
@@ -1491,7 +1412,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 ```
 
 
-### i3 screen
+### sway screen
 
 ```conf
 exec command -v brightnessctl && brightnessctl -r
@@ -1500,7 +1421,7 @@ bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 1
 ```
 
 
-### i3 apps
+### sway apps
 
 ```conf
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
@@ -1556,7 +1477,7 @@ bindsym $mod+Control+q mode "$mode_system"
 ```
 
 
-### i3 bar
+### i3 bar     :i3blocks:
 
 ```conf
 # i3bar
@@ -1714,200 +1635,293 @@ bindsym Escape mode "default"
 
 ## i3blocks
 
-1.  config
 
-    ```conf
-    [dropbox]
-    interval=15
-    command=echo  "$(my-i3b-db-status)"
-    color=#ffd700
+### config
 
-    [kernel]
-    command=echo "$(uname -sr)"
-    interval=1
-    color=#ffffff
+```conf
+[dropbox]
+interval=15
+command=echo  "$(my-i3b-db-status)"
+color=#ffd700
 
-    [power_draw]
-    command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-    interval=1
-    color=#ffffff
+[kernel]
+command=echo "$(uname -sr)"
+interval=1
+color=#ffffff
 
-    #[battery]
-    #command=my-i3b-battery-status
-    #color=#ff8300
-    #interval=60
+[power_draw]
+command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+interval=1
+color=#ffffff
 
-    [bat0]
-    command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
-    color=#00a000
-    interval=30
+#[battery]
+#command=my-i3b-battery-status
+#color=#ff8300
+#interval=60
 
-    [cpu_usage]
-    command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
-    color=#00a000
-    interval=1
+[bat0]
+command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
+color=#00a000
+interval=30
 
-    [memory]
-    command=echo "Mem:$(/usr/share/i3blocks/memory)"
-    color=#00a000
-    interval=10
+[cpu_usage]
+command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
+color=#00a000
+interval=1
 
-    # [disk]
-    # command=echo "D:$(/usr/share/i3blocks/disk)"
-    # color=#00a000
-    # interval=10
+[memory]
+command=echo "Mem:$(/usr/share/i3blocks/memory)"
+color=#00a000
+interval=10
 
-    [uptime]
-    command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
-    interval=60
-    color=#00a000
+# [disk]
+# command=echo "D:$(/usr/share/i3blocks/disk)"
+# color=#00a000
+# interval=10
 
-    [bluetooth]
-    command=echo "$(my-i3b-bluetooth)"
-    interval=30
-    color=#ffffff
+[uptime]
+command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+interval=60
+color=#00a000
 
-    [ssid]
-    command=echo "SSID:$(my-iface-active-ssid)"
-    interval=30
-    color=#ffffff
+[bluetooth]
+command=echo "$(my-i3b-bluetooth)"
+interval=30
+color=#ffffff
 
-    [ssidQ]
-    command=echo "($(my-iface-active-quality)%)"
-    interval=30
-    color=#008000
+[ssid]
+command=echo "SSID:$(my-iface-active-ssid)"
+interval=30
+color=#ffffff
 
-    [iface]
-    command=/usr/share/i3blocks/iface
-    color=#00a000
-    interval=60
+[ssidQ]
+command=echo "($(my-iface-active-quality)%)"
+interval=30
+color=#008000
 
-    [weather]
-    command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-    interval=900
-    color=#A4C2F4
+[iface]
+command=/usr/share/i3blocks/iface
+color=#00a000
+interval=60
 
-    [time]
-    command=date +"%a, %d %b: %H:%M"
-    interval=60
+[weather]
+command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+interval=900
+color=#A4C2F4
 
-    [brightness]
-    command=echo "Br:$(my-i3b-brightness)"
-    color=#FF8300
-    interval=2
+[time]
+command=date +"%a, %d %b: %H:%M"
+interval=60
 
-    [volume]
-    command=echo "V:$(/usr/share/i3blocks/volume)"
-    interval=1
-    color=#FF8300
+[brightness]
+command=echo "Br:$(my-i3b-brightness)"
+color=#FF8300
+interval=2
 
+[volume]
+command=echo "V:$(/usr/share/i3blocks/volume)"
+interval=1
+color=#FF8300
+
+```
+
+
+### i3blocks utilities
+
+1.  ~/bin/my-i3b-battery-status
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
+    if [ -z "$b" ]; then
+        echo "charged";
+    else
+        echo $b;
+    fi
     ```
 
-2.  i3blocks utilities
+2.  ~/bin/my-i3b-db-status
 
-    1.  ~/bin/my-i3b-battery-status
-
-        ```bash
-        #!/usr/bin/bash
-        #Maintained in linux-init-files.org
-        b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
-        if [ -z "$b" ]; then
-            echo "charged";
-        else
-            echo $b;
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    if pidof dropbox > /dev/null ; then
+        stat=$(dropbox status | sed -n 1p)
+        echo "DB:${stat}"; echo "";
+    else
+        if command -v dropbox > /dev/null; then
+            echo "Restart Dropbox.."
+            #dropbox start &> /dev/null &
         fi
-        ```
+    fi
+    ```
 
-    2.  ~/bin/my-i3b-db-status
+3.  ~/bin/my-i3b-bluetooth
 
-        ```bash
-        #!/usr/bin/bash
-        #Maintained in linux-init-files.org
-        if pidof dropbox > /dev/null ; then
-            stat=$(dropbox status | sed -n 1p)
-            echo "DB:${stat}"; echo "";
-        else
-            if command -v dropbox > /dev/null; then
-                echo "Restart Dropbox.."
-                #dropbox start &> /dev/null &
+    Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
+
+    ```bash
+    #!/usr/bin/env bash
+
+
+    get_from_file() {
+        dev=$1
+        name=
+        if [ ! -f /tmp/bt-devices.txt ]; then
+            touch /tmp/bt-devices.txt
+            echo ""
+            return
+        fi
+        for i in `cat /tmp/bt-devices.txt`; do
+            d=`echo $i | awk -F:: '{print $1}'`
+            if [ $d = $dev ]; then
+                name=`echo $i | awk -F:: '{print $2}'`
+            fi
+        done
+        echo "${name}"
+    }
+
+    store_file() {
+        dev=$1
+        name="${2}"
+        echo "$dev::${name}" >> /tmp/bt-devices.txt
+    }
+
+    connections=`hcitool con | sed -n 2p`
+    if [ ! -z "$connections" ]; then
+        # We have a connection, we want to get the name from a file if we've had
+        # it from there before because getting the name of the device connected
+        # is very slow and costly.
+        dev=`echo $connections | awk '{print $3}'`
+        name=`get_from_file $dev`
+        if [ -z "$name" ]; then
+            name=`hcitool name $dev | awk '{print $1}'`
+            if [ ! -z "${name}" ]; then
+                store_file $dev "${name}"
             fi
         fi
-        ```
+        echo " $name"
+        echo " $name"
+        echo "#83AF40\n"
+        # echo "#859900\n"
+    else
+        echo ""
+        echo ""
+    fi
+    ```
 
-    3.  ~/bin/my-i3b-bluetooth
+4.  ~/bin/my-i3b-brightness
 
-        Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
+    return the brightness %
 
-        ```bash
-        #!/usr/bin/env bash
-
-
-        get_from_file() {
-            dev=$1
-            name=
-            if [ ! -f /tmp/bt-devices.txt ]; then
-                touch /tmp/bt-devices.txt
-                echo ""
-                return
-            fi
-            for i in `cat /tmp/bt-devices.txt`; do
-                d=`echo $i | awk -F:: '{print $1}'`
-                if [ $d = $dev ]; then
-                    name=`echo $i | awk -F:: '{print $2}'`
-                fi
-            done
-            echo "${name}"
-        }
-
-        store_file() {
-            dev=$1
-            name="${2}"
-            echo "$dev::${name}" >> /tmp/bt-devices.txt
-        }
-
-        connections=`hcitool con | sed -n 2p`
-        if [ ! -z "$connections" ]; then
-            # We have a connection, we want to get the name from a file if we've had
-            # it from there before because getting the name of the device connected
-            # is very slow and costly.
-            dev=`echo $connections | awk '{print $3}'`
-            name=`get_from_file $dev`
-            if [ -z "$name" ]; then
-                name=`hcitool name $dev | awk '{print $1}'`
-                if [ ! -z "${name}" ]; then
-                    store_file $dev "${name}"
-                fi
-            fi
-            echo " $name"
-            echo " $name"
-            echo "#83AF40\n"
-            # echo "#859900\n"
-        else
-            echo ""
-            echo ""
-        fi
-        ```
-
-    4.  ~/bin/my-i3b-brightness
-
-        return the brightness %
-
-        ```bash
-        #!/usr/bin/bash
-        #Maintained in linux-init-files.org
-        #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
-        if command -v brightnessctl &> /dev/null; then
-            echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
-        else
-            echo "N/A"
-        fi
-        ```
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
+    if command -v brightnessctl &> /dev/null; then
+        echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+    else
+        echo "N/A"
+    fi
+    ```
 
 
-## i3 utility scripts
+## Sway Related Scripts     :sway:wayland:
 
 
-### ~/bin/i3-display-swap
+### ~/bin/sway-lock-utils
+
+Just a gathering place of locky/suspendy type things&#x2026;
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+lock() {
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+}
+
+lock_gpg_clear() {
+    logger -t "x-lock-utils"  lock_gpg_clear
+    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+    lock
+}
+
+case "$1" in
+    lock)
+        exec loginctl lock-session
+        ;;
+    lock_gpg_clear)
+        lock_gpg_clear
+        ;;
+    logout)
+        swaymsg exit
+        ;;
+    suspend)
+        systemctl suspend && lock
+        ;;
+    hibernate)
+        systemctl hibernate && lock
+        ;;
+    reboot)
+        systemctl reboot
+        ;;
+    shutdown)
+        systemctl poweroff
+        ;;
+    blank)
+        swaymsg "output * dpms off"
+        ;;
+    unblank)
+        swaymsg "output * dpms on"
+        ;;
+    *)
+        lock
+        ;;
+esac
+
+exit 0
+```
+
+
+### ~/bin/sway-idle-hook     :sleep:lock:idle:
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+exec swayidle -w \
+       timeout 5 '' \
+       resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
+       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+       resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+       resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
+       resume 'sway-lock-utils unblank' \
+       lock 'sway-lock' \
+       before-sleep 'sway-lock'
+```
+
+
+### ~/bin/sway-lock
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+```
+
+
+### ~/bin/sway-swaysock     :swaysock:
+
+```bash
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+```
+
+
+### ~/bin/sway-display-swap
 
 <https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
 
@@ -1928,9 +1942,6 @@ do
     fi
 done
 ```
-
-
-## add-ons
 
 
 # Vim
@@ -2487,7 +2498,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7f7b79b) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgbb221b9) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2499,7 +2510,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org1a149d3)
+    Added to PATH in [~/.profile](#orgc596bfe)
 
 
 ### Debuggers     :debuggers:

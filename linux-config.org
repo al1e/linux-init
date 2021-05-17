@@ -646,87 +646,6 @@
         dpi=188 xrandr-mancave "$@"
       #+end_src
 
-
-* Sway Related                                                 :sway:wayland:
-** ~/bin/sway-lock-utils
-   Just a gathering place of locky/suspendy type things...
-   #+begin_src bash :tangle "~/bin/sway-lock-utils"
-     #!/usr/bin/bash
-     # Maintained in linux-init-files.org
-     lock() {
-         swaylock -i ~/Pictures/LockScreen/lock -c 000000
-     }
-
-     lock_gpg_clear() {
-         logger -t "x-lock-utils"  lock_gpg_clear
-         [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-         lock
-     }
-
-     case "$1" in
-         lock)
-             exec loginctl lock-session
-             ;;
-         lock_gpg_clear)
-             lock_gpg_clear
-             ;;
-         logout)
-             swaymsg exit
-             ;;
-         suspend)
-             systemctl suspend && lock
-             ;;
-         hibernate)
-             systemctl hibernate && lock
-             ;;
-         reboot)
-             systemctl reboot
-             ;;
-         shutdown)
-             systemctl poweroff
-             ;;
-         blank)
-             swaymsg "output * dpms off"
-             ;;
-         unblank)
-             swaymsg "output * dpms on"
-             ;;
-         ,*)
-             lock
-             ;;
-     esac
-
-     exit 0
-   #+end_src
-** ~/bin/sway-idle-hook                                           :sleep:lock:idle:
-:PROPERTIES:
-:ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
-:END:
-#+begin_src bash :tangle "~/bin/sway-idle-hook"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  exec swayidle -w \
-         timeout 5 '' \
-         resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
-         timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-         resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
-         resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
-         resume 'sway-lock-utils unblank' \
-         lock 'sway-lock' \
-         before-sleep 'sway-lock'
-#+end_src
-
-** ~/bin/sway-lock
-:PROPERTIES:
-:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
-:END:
-#+begin_src bash :tangle "~/bin/sway-lock"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
-#+end_src
 * User system services
 *** gpg-agent
     If using startx on debian this is taken care of by the system XSession loading everyhing in /etc/X11/Xsession.d.
@@ -1227,17 +1146,11 @@
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
-** swaysock                                   :swaysock:
-#+begin_src bash :tangle "DotFiles/.profile"
-  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-#+end_src
-
 ** xkb keyboard
 #+begin_src bash :tangle "DotFiles/.profile"
   export XKB_DEFAULT_LAYOUT=de
   export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 #+end_src
-
 
 ** sway config
    :PROPERTIES:
@@ -1304,7 +1217,7 @@ It works with your existing i3 configuration and supports most of i3's features,
             bindsym $mod+Shift+r restart
 
     #+end_src
-*** i3 autostart
+*** sway autostart
     #+begin_src conf
       # exec --no-startup-id feh --image-bg black  --bg-fill ~/Pictures/Wallpapers/current
       exec --no-startup-id swaybg -i ~/Pictures/Wallpapers/current
@@ -1313,7 +1226,7 @@ It works with your existing i3 configuration and supports most of i3's features,
       exec --no-startup-id nm-applet --indicator
 
     #+end_src
-*** i3 workspace
+*** sway workspace
     #+begin_src conf
       # change focus
       bindsym $mod+o focus left
@@ -1366,7 +1279,7 @@ It works with your existing i3 configuration and supports most of i3's features,
       bindsym $mod+Shift+s sticky toggle
 
       bindsym $mod+m move workspace to output left
-      bindsym $mod+Control+m exec i3-display-swap
+      bindsym $mod+Control+m exec sway-display-swap
       bindsym $mod+Tab workspace back_and_forth
 
 
@@ -1453,7 +1366,7 @@ It works with your existing i3 configuration and supports most of i3's features,
       bindsym $mod+r mode "resize"
 
     #+end_src
-*** i3 volume
+*** sway volume
     #+begin_src conf
 
       # Use pactl to adjust volume in PulseAudio.
@@ -1464,13 +1377,13 @@ It works with your existing i3 configuration and supports most of i3's features,
       bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
       bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
     #+end_src
-*** i3 screen
+*** sway screen
     #+begin_src conf
       exec command -v brightnessctl && brightnessctl -r
       bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
       bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
     #+end_src
-*** i3 apps
+*** sway apps
     #+begin_src conf
       bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 
@@ -1546,7 +1459,7 @@ CLOSED: [2021-05-17 Mon 08:26]
       }
       bindsym $mod+Control+q mode "$mode_system"
     #+end_src
-*** i3 bar
+*** i3 bar                                                         :i3blocks:
     :PROPERTIES:
     :ID:       d930fa7e-59c1-44ec-a8aa-522f05e50c13
     :END:
@@ -2162,7 +2075,7 @@ CLOSED: [2021-05-17 Mon 08:12]
 
     #+end_src
 ** i3blocks
-**** config
+*** config
      :PROPERTIES:
      :header-args:conf: :tangle "~/.config/i3blocks/config"
      :ID:       20c2b7d9-7111-46c4-8965-63db28dea79d
@@ -2254,8 +2167,8 @@ CLOSED: [2021-05-17 Mon 08:12]
        color=#FF8300
 
      #+end_src
-**** i3blocks utilities
-***** ~/bin/my-i3b-battery-status
+*** i3blocks utilities
+**** ~/bin/my-i3b-battery-status
       #+begin_src bash :tangle "~/bin/my-i3b-battery-status"
         #!/usr/bin/bash
         #Maintained in linux-init-files.org
@@ -2266,7 +2179,7 @@ CLOSED: [2021-05-17 Mon 08:12]
             echo $b;
         fi
       #+end_src
-***** ~/bin/my-i3b-db-status
+**** ~/bin/my-i3b-db-status
       #+begin_src bash :tangle "~/bin/my-i3b-db-status"
         #!/usr/bin/bash
         #Maintained in linux-init-files.org
@@ -2280,7 +2193,7 @@ CLOSED: [2021-05-17 Mon 08:12]
             fi
         fi
       #+end_src
-***** ~/bin/my-i3b-bluetooth
+**** ~/bin/my-i3b-bluetooth
       Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
       #+begin_src bash :tangle "~/bin/my-i3b-bluetooth"
         #!/usr/bin/env bash
@@ -2331,7 +2244,7 @@ CLOSED: [2021-05-17 Mon 08:12]
             echo ""
         fi
 #+end_src
-***** ~/bin/my-i3b-brightness
+**** ~/bin/my-i3b-brightness
       return the brightness %
       #+begin_src bash :tangle "~/bin/my-i3b-brightness"
         #!/usr/bin/bash
@@ -2343,8 +2256,94 @@ CLOSED: [2021-05-17 Mon 08:12]
             echo "N/A"
         fi
       #+end_src
-** i3 utility scripts
-*** ~/bin/i3-display-swap
+
+** Sway Related Scripts                                        :sway:wayland:
+*** ~/bin/sway-lock-utils
+   Just a gathering place of locky/suspendy type things...
+   #+begin_src bash :tangle "~/bin/sway-lock-utils"
+     #!/usr/bin/bash
+     # Maintained in linux-init-files.org
+     lock() {
+         swaylock -i ~/Pictures/LockScreen/lock -c 000000
+     }
+
+     lock_gpg_clear() {
+         logger -t "x-lock-utils"  lock_gpg_clear
+         [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+         lock
+     }
+
+     case "$1" in
+         lock)
+             exec loginctl lock-session
+             ;;
+         lock_gpg_clear)
+             lock_gpg_clear
+             ;;
+         logout)
+             swaymsg exit
+             ;;
+         suspend)
+             systemctl suspend && lock
+             ;;
+         hibernate)
+             systemctl hibernate && lock
+             ;;
+         reboot)
+             systemctl reboot
+             ;;
+         shutdown)
+             systemctl poweroff
+             ;;
+         blank)
+             swaymsg "output * dpms off"
+             ;;
+         unblank)
+             swaymsg "output * dpms on"
+             ;;
+         ,*)
+             lock
+             ;;
+     esac
+
+     exit 0
+   #+end_src
+*** ~/bin/sway-idle-hook                                    :sleep:lock:idle:
+:PROPERTIES:
+:ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
+:END:
+#+begin_src bash :tangle "~/bin/sway-idle-hook"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  exec swayidle -w \
+         timeout 5 '' \
+         resume 'if ! pgrep -x swaylock; then sway-lock-utils unblank; fi' \
+         timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+         resume 'sway-lock-utils unblank' \
+         timeout ${XIDLEHOOK_BLANK:-120} 'sway-lock-utils blank' \
+         resume 'sway-lock-utils unblank' \
+         timeout ${XIDLEHOOK_LOCK:-300} 'sway-lock' \
+         resume 'sway-lock-utils unblank' \
+         lock 'sway-lock' \
+         before-sleep 'sway-lock'
+#+end_src
+
+*** ~/bin/sway-lock
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway-lock"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+#+end_src
+*** ~/bin/sway-swaysock                                            :swaysock:
+#+begin_src bash :tangle "~/bin/sway-swaysock"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+#+end_src
+*** ~/bin/sway-display-swap
     https://i3wm.org/docs/user-contributed/swapping-workspaces.html
     #+begin_src bash :tangle ~/bin/i3-display-swap
       #!/usr/bin/bash
@@ -2364,7 +2363,6 @@ CLOSED: [2021-05-17 Mon 08:12]
       done
     #+end_src
 
-** add-ons
 * Vim
 ** ~/.vimrc
    #+begin_src conf :tangle "DotFiles/.vimrc"
