@@ -1646,7 +1646,7 @@ for_window [class="steam_app*"] inhibit_idle focus
 
        [wifi]
        markup=pango
-       command=i3bm-wifi
+       command=my-i3b-wifi
        interval=60
 
        [weather]
@@ -1773,10 +1773,24 @@ for_window [class="steam_app*"] inhibit_idle focus
       #+begin_src bash :tangle "~/bin/my-i3b-volume"
         #!/usr/bin/bash
         #Maintained in linux-init-files.org
-        awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+        case $BLOCK_BUTTON in
+            1) pavucontrol &>/dev/null &
+        esac
+        exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
       #+end_src
+**** ~/bin/my-i3b-wifi
+      return the volume %
+      #+begin_src bash :tangle "~/bin/my-i3b-wifi"
+        #!/usr/bin/bash
+        #Maintained in linux-init-files.org
+        case $BLOCK_BUTTON in
+            1) oneterminal "wifi" "nmtui"  &>/dev/null &
+        esac
+        exec i3bm-wifi
+      #+end_src
+
 ** Sway Related Scripts                                        :sway:wayland:
-** ~/bin/sway-lock-utils
+*** ~/bin/sway-lock-utils
    Just a gathering place of locky/suspendy type things...
    #+begin_src bash :tangle "~/bin/sway-lock-utils"
      #!/usr/bin/bash
@@ -2814,7 +2828,8 @@ Load a host specific kanshi file if it exists
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
 #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty -t "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+#          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"

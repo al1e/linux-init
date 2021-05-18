@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org2b61c55"></a>
+<a id="org6dde822"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org2392544"></a>
+<a id="org82345eb"></a>
 
 ## ~/.bash\_profile
 
@@ -1116,7 +1116,7 @@ color=#4d4dff
 
 [wifi]
 markup=pango
-command=i3bm-wifi
+command=my-i3b-wifi
 interval=60
 
 [weather]
@@ -1257,14 +1257,30 @@ color=#FFD700
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
-    awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+    case $BLOCK_BUTTON in
+        1) pavucontrol &>/dev/null &
+    esac
+    exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+    ```
+
+6.  ~/bin/my-i3b-wifi
+
+    return the volume %
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1) oneterminal "wifi" "nmtui"  &>/dev/null &
+    esac
+    exec i3bm-wifi
     ```
 
 
 ## Sway Related Scripts     :sway:wayland:
 
 
-## ~/bin/sway-lock-utils
+### ~/bin/sway-lock-utils
 
 Just a gathering place of locky/suspendy type things&#x2026;
 
@@ -1995,7 +2011,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org2392544) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org82345eb) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2007,7 +2023,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org2b61c55)
+    Added to PATH in [~/.profile](#org6dde822)
 
 
 ### Debuggers     :debuggers:
@@ -2413,7 +2429,8 @@ fi
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
 #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty -t "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+#          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"

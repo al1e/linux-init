@@ -43,7 +43,7 @@ color=#4d4dff
 
 [wifi]
 markup=pango
-command=i3bm-wifi
+command=my-i3b-wifi
 interval=60
 
 [weather]

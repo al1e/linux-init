@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+case $BLOCK_BUTTON in
+    1) oneterminal "wifi" "nmtui"  &>/dev/null &
+esac
+exec i3bm-wifi
