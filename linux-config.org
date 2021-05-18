@@ -1207,7 +1207,7 @@ X11 apps still need resource definitions when launched under XWayland.
       exec swaybg -i ~/Pictures/Wallpapers/current
       exec sway-idle-hook
       exec nm-applet --indicator
-      exec gpg-cache
+      exec sleep 5 && gpg-cache
       exec swaymsg workspace 1:edit
 
     #+end_src
@@ -1441,7 +1441,7 @@ X11 apps still need resource definitions when launched under XWayland.
       # i3bar
       bar {
       status_command i3blocks
-      font pango:JetBrains Sans Mono 10
+      font pango:Source Sans Pro, FontAwesome 8
       position top
       #mode hide
       hidden_state hide
@@ -1601,82 +1601,65 @@ X11 apps still need resource definitions when launched under XWayland.
 
        [kernel]
        command=echo "$(uname -sr)"
-       interval=1
+       interval=once
        color=#ffffff
 
        [power_draw]
        command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-       interval=1
+       interval=5
        color=#ffffff
 
-       #[battery]
-       #command=my-i3b-battery-status
-       #color=#ff8300
-       #interval=60
-
-       [bat0]
-       command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
-       color=#00a000
-       interval=30
+       [battery]
+       markup=pango
+       command=battery-plus
+       interval=60
 
        [cpu_usage]
-       command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
-       color=#00a000
+       markup=pango
+       command=i3bm-cpu
        interval=1
 
-       [memory]
-       command=echo "Mem:$(/usr/share/i3blocks/memory)"
-       color=#00a000
-       interval=10
-
-       # [disk]
-       # command=echo "D:$(/usr/share/i3blocks/disk)"
-       # color=#00a000
-       # interval=10
+       [temperature]
+       label=T:
+       command=/usr/share/i3blocks/temperature
+       interval=60
 
        [uptime]
        command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
        interval=60
-       color=#00a000
 
        [bluetooth]
        command=echo "$(my-i3b-bluetooth)"
-       interval=30
-       color=#ffffff
+       interval=60
 
-       [ssid]
-       command=echo "SSID:$(my-iface-active-ssid)"
-       interval=30
-       color=#ffffff
-
-       [ssidQ]
-       command=echo "($(my-iface-active-quality)%)"
-       interval=30
-       color=#008000
-
-       [iface]
-       command=/usr/share/i3blocks/iface
-       color=#00a000
+       [wifi]
+       markup=pango
+       command=i3bm-wifi
        interval=60
 
        [weather]
-       command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-       interval=900
-       color=#A4C2F4
+       markup=pango
+       command=i3bm-weather
+       interval=300
+
+       # [weather]
+       # command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+       # interval=900
+       # color=#A4C2F4
 
        [time]
        command=date +"%a, %d %b: %H:%M"
        interval=60
 
        [brightness]
+       markup=pango
        command=echo "Br:$(my-i3b-brightness)"
-       color=#FF8300
-       interval=2
+       interval=10
 
        [volume]
-       command=echo "V:$(/usr/share/i3blocks/volume)"
-       interval=1
-       color=#FF8300
+       markup=pango
+       command=i3bm-volume
+       interval=10
 
      #+end_src
 *** i3blocks utilities
@@ -1770,7 +1753,7 @@ X11 apps still need resource definitions when launched under XWayland.
       #+end_src
 
 ** Sway Related Scripts                                        :sway:wayland:
-*** ~/bin/sway-lock-utils
+** ~/bin/sway-lock-utils
    Just a gathering place of locky/suspendy type things...
    #+begin_src bash :tangle "~/bin/sway-lock-utils"
      #!/usr/bin/bash
@@ -1787,7 +1770,8 @@ X11 apps still need resource definitions when launched under XWayland.
 
      case "$1" in
          lock)
-             exec loginctl lock-session
+             lock
+             #exec loginctl lock-session
              ;;
          lock_gpg_clear)
              lock_gpg_clear
@@ -3226,7 +3210,7 @@ Load a host specific kanshi file if it exists
       trans -e google -s en -t de -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
     #+end_src
 ** Security/Locking/GPG
-*** ~/bin/cache-gpg
+*** ~/bin/gpg-cache
     #+begin_src bash :tangle "~/bin/gpg-cache"
       #!/usr/bin/bash
       #Maintained in linux-init-files.org

@@ -12,7 +12,8 @@ lock_gpg_clear() {
 
 case "$1" in
     lock)
-        exec loginctl lock-session
+        lock
+        #exec loginctl lock-session
         ;;
     lock_gpg_clear)
         lock_gpg_clear

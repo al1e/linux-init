@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga1f7396"></a>
+<a id="orgff747d3"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org8f31d52"></a>
+<a id="org97b4f87"></a>
 
 ## ~/.bash\_profile
 
@@ -650,7 +650,7 @@ exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook
 exec nm-applet --indicator
-exec gpg-cache
+exec sleep 5 && gpg-cache
 exec swaymsg workspace 1:edit
 
 ```
@@ -902,7 +902,7 @@ bindsym $mod+Control+q mode "$mode_system"
 # i3bar
 bar {
 status_command i3blocks
-font pango:JetBrains Sans Mono 10
+font pango:Source Sans Pro, FontAwesome 8
 position top
 #mode hide
 hidden_state hide
@@ -1065,82 +1065,65 @@ color=#ffd700
 
 [kernel]
 command=echo "$(uname -sr)"
-interval=1
+interval=once
 color=#ffffff
 
 [power_draw]
 command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-interval=1
+interval=5
 color=#ffffff
 
-#[battery]
-#command=my-i3b-battery-status
-#color=#ff8300
-#interval=60
-
-[bat0]
-command=echo "Ba:$(/usr/share/i3blocks/battery bat0)"
-color=#00a000
-interval=30
+[battery]
+markup=pango
+command=battery-plus
+interval=60
 
 [cpu_usage]
-command= echo "CPU:$(/usr/share/i3blocks/cpu_usage)"
-color=#00a000
+markup=pango
+command=i3bm-cpu
 interval=1
 
-[memory]
-command=echo "Mem:$(/usr/share/i3blocks/memory)"
-color=#00a000
-interval=10
-
-# [disk]
-# command=echo "D:$(/usr/share/i3blocks/disk)"
-# color=#00a000
-# interval=10
+[temperature]
+label=T:
+command=/usr/share/i3blocks/temperature
+interval=60
 
 [uptime]
 command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 interval=60
-color=#00a000
 
 [bluetooth]
 command=echo "$(my-i3b-bluetooth)"
-interval=30
-color=#ffffff
+interval=60
 
-[ssid]
-command=echo "SSID:$(my-iface-active-ssid)"
-interval=30
-color=#ffffff
-
-[ssidQ]
-command=echo "($(my-iface-active-quality)%)"
-interval=30
-color=#008000
-
-[iface]
-command=/usr/share/i3blocks/iface
-color=#00a000
+[wifi]
+markup=pango
+command=i3bm-wifi
 interval=60
 
 [weather]
-command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-interval=900
-color=#A4C2F4
+markup=pango
+command=i3bm-weather
+interval=300
+
+# [weather]
+# command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+# interval=900
+# color=#A4C2F4
 
 [time]
 command=date +"%a, %d %b: %H:%M"
 interval=60
 
 [brightness]
+markup=pango
 command=echo "Br:$(my-i3b-brightness)"
-color=#FF8300
-interval=2
+interval=10
 
 [volume]
-command=echo "V:$(/usr/share/i3blocks/volume)"
-interval=1
-color=#FF8300
+markup=pango
+command=i3bm-volume
+interval=10
 
 ```
 
@@ -1249,7 +1232,7 @@ color=#FF8300
 ## Sway Related Scripts     :sway:wayland:
 
 
-### ~/bin/sway-lock-utils
+## ~/bin/sway-lock-utils
 
 Just a gathering place of locky/suspendy type things&#x2026;
 
@@ -1268,7 +1251,8 @@ lock_gpg_clear() {
 
 case "$1" in
     lock)
-        exec loginctl lock-session
+        lock
+        #exec loginctl lock-session
         ;;
     lock_gpg_clear)
         lock_gpg_clear
@@ -1983,7 +1967,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org8f31d52) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org97b4f87) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1995,7 +1979,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga1f7396)
+    Added to PATH in [~/.profile](#orgff747d3)
 
 
 ### Debuggers     :debuggers:
@@ -2921,7 +2905,7 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 ## Security/Locking/GPG
 
 
-### ~/bin/cache-gpg
+### ~/bin/gpg-cache
 
 ```bash
 #!/usr/bin/bash
