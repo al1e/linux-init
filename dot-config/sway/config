@@ -339,6 +339,8 @@ assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
 assign [class="Steam"] $ws9
 
+for_window [app_id="nmtui"] floating enable
+
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame

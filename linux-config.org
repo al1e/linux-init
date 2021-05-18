@@ -1575,6 +1575,11 @@ We dont want the PC blanking when gaming
   assign [class="discord"] $ws8
   assign [class="Steam"] $ws9
 #+end_src
+*** apps default appearance
+#+begin_src conf
+  for_window [app_id="nmtui"] floating enable
+#+end_src
+
 *** apps keybindings
 #+begin_src conf
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
