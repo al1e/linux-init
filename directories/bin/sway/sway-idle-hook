@@ -1,13 +1,13 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 exec swayidle -w \
-       timeout 5 '' \
-       resume 'sway-lock-utils unblank' \
-       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
-       resume 'sway-lock-utils unblank' \
-       lock 'sway-lock' \
-       before-sleep 'sway-lock'
+     timeout 5 '' \
+     resume 'sway-lock-utils unblank' \
+     timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+     resume 'sway-lock-utils unblank' \
+     timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+     resume 'sway-lock-utils unblank' \
+     timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+     resume 'sway-lock-utils unblank' \
+     lock 'sway-lock' \
+     before-sleep 'sway-lock'

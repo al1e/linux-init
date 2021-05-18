@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org6dde822"></a>
+<a id="org4760336"></a>
 
 ## ~/.profile
 
@@ -109,7 +109,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org82345eb"></a>
+<a id="org6dcc2b7"></a>
 
 ## ~/.bash\_profile
 
@@ -603,6 +603,13 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ## Gnome     :ARCHIVE:
 
 
+## swaysock for tmux
+
+```bash
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+```
+
+
 ## ~/.Xresources
 
 X11 apps still need resource definitions when launched under XWayland.
@@ -1065,6 +1072,200 @@ bindsym Escape mode "default"
 ```
 
 
+### Sway Related Scripts     :sway:wayland:
+
+1.  ~/bin/sway/sway-do-tool
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    id="$1"
+    [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
+    if swaymsg "[app_id=${id}] focus" &> /dev/null; then
+        echo "app_id ${id} found"
+    else
+        if  swaymsg "[class=${id}] focus" &> /dev/null; then
+            echo "class ${id} found"
+        else
+            exit 1
+        fi
+    fi
+    echo "$id"
+
+    ```
+
+2.  ~/bin/sway/sway-lock-utils
+
+    Just a gathering place of locky/suspendy type things&#x2026;
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    lock() {
+        swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    }
+
+    lock_gpg_clear() {
+        logger -t "x-lock-utils"  lock_gpg_clear
+        [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+        lock
+    }
+
+    case "$1" in
+        lock)
+            lock
+            #exec loginctl lock-session
+            ;;
+        lock_gpg_clear)
+            lock_gpg_clear
+            ;;
+        logout)
+            swaymsg exit
+            ;;
+        suspend)
+            systemctl suspend && lock
+            ;;
+        hibernate)
+            systemctl hibernate && lock
+            ;;
+        reboot)
+            systemctl reboot
+            ;;
+        shutdown)
+            systemctl poweroff
+            ;;
+        blank)
+            swaymsg "output * dpms off"
+            ;;
+        unblank)
+            swaymsg "output * dpms on"
+            ;;
+        *)
+            lock
+            ;;
+    esac
+
+    exit 0
+    ```
+
+3.  ~/bin/sway/sway-idle-hook     :sleep:lock:idle:
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    exec swayidle -w \
+         timeout 5 '' \
+         resume 'sway-lock-utils unblank' \
+         timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+         resume 'sway-lock-utils unblank' \
+         timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+         resume 'sway-lock-utils unblank' \
+         timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+         resume 'sway-lock-utils unblank' \
+         lock 'sway-lock' \
+         before-sleep 'sway-lock'
+    ```
+
+4.  ~/bin/sway/sway-lock
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+    ```
+
+5.  ~/bin/sway/sway-swaysock     :swaysock:
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
+    ```
+
+6.  ~/bin/sway/sway-display-swap
+
+    <https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+
+    DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+
+    for ROW in "${DISPLAY_CONFIG[@]}"
+    do
+        IFS=':'
+        read -ra CONFIG <<< "${ROW}"
+        if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
+            echo "moving ${CONFIG[1]} right..."
+            i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+            i3-msg -- move workspace to output right
+        fi
+    done
+    ```
+
+7.  kanshi     :kanshi:
+
+    Monitor control with hotplug <https://github.com/emersion/kanshi>
+
+    1.  ~/bin/sway/sway-kanshi
+
+        Load a host specific kanshi file if it exists
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-init-files.org
+        config="$HOME/.config/kanshi/config-$(hostname)"
+        if [ -f  "$config" ]; then
+            logger -t "kanshi"  "$config"
+            exec kanshi -c "$config"
+        else
+            logger -t "kanshi"  "default config"
+            exec kanshi
+        fi
+        ```
+
+    2.  config-thinkpadt14s
+
+        ```conf
+        {
+        output eDP-1 enable mode 1920x1080  position 0,0
+        }
+
+        {
+        output eDP-1 mode 1920x1080 position 1920,0
+        output DP-4 mode 1920x1080 position 0,0
+        }
+        ```
+
+    3.  config-thinkpadt460
+
+        ```conf
+        {
+        output eDP-1 enable mode 1366×768   position 0,0
+        }
+
+        {
+        output eDP-1 mode 1366×768  position 1920,0
+        output DP-4 mode 1920x1080 position 0,0
+        }
+        ```
+
+    4.  config-thinkpadx270
+
+        ```conf
+        {
+        output eDP-1 enable mode 1920x1080  position 0,0
+        }
+
+        {
+        output DP-4 mode 1920x1080 position 0,0
+        output eDP-1 disable
+        }
+
+        ```
+
+
 ## i3blocks
 
 
@@ -1274,186 +1475,6 @@ color=#FFD700
         1) oneterminal "wifi" "nmtui"  &>/dev/null &
     esac
     exec i3bm-wifi
-    ```
-
-
-## Sway Related Scripts     :sway:wayland:
-
-
-### ~/bin/sway-lock-utils
-
-Just a gathering place of locky/suspendy type things&#x2026;
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000
-}
-
-lock_gpg_clear() {
-    logger -t "x-lock-utils"  lock_gpg_clear
-    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-    lock
-}
-
-case "$1" in
-    lock)
-        lock
-        #exec loginctl lock-session
-        ;;
-    lock_gpg_clear)
-        lock_gpg_clear
-        ;;
-    logout)
-        swaymsg exit
-        ;;
-    suspend)
-        systemctl suspend && lock
-        ;;
-    hibernate)
-        systemctl hibernate && lock
-        ;;
-    reboot)
-        systemctl reboot
-        ;;
-    shutdown)
-        systemctl poweroff
-        ;;
-    blank)
-        swaymsg "output * dpms off"
-        ;;
-    unblank)
-        swaymsg "output * dpms on"
-        ;;
-    *)
-        lock
-        ;;
-esac
-
-exit 0
-```
-
-
-### ~/bin/sway-idle-hook     :sleep:lock:idle:
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-exec swayidle -w \
-       timeout 5 '' \
-       resume 'sway-lock-utils unblank' \
-       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
-       resume 'sway-lock-utils unblank' \
-       lock 'sway-lock' \
-       before-sleep 'sway-lock'
-```
-
-
-### ~/bin/sway-lock
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
-```
-
-
-### ~/bin/sway-swaysock     :swaysock:
-
-```bash
-#!/usr/bin/bash
-#Maintained in linux-init-files.org
-export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
-```
-
-
-### ~/bin/sway-display-swap
-
-<https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-init-files.org
-
-DISPLAY_CONFIG=($(i3-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
-
-for ROW in "${DISPLAY_CONFIG[@]}"
-do
-    IFS=':'
-    read -ra CONFIG <<< "${ROW}"
-    if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
-        echo "moving ${CONFIG[1]} right..."
-        i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-        i3-msg -- move workspace to output right
-    fi
-done
-```
-
-
-### kanshi     :kanshi:
-
-Monitor control with hotplug <https://github.com/emersion/kanshi>
-
-1.  ~/bin/sway-kanshi
-
-    Load a host specific kanshi file if it exists
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    config="$HOME/.config/kanshi/config-$(hostname)"
-    if [ -f  "$config" ]; then
-        logger -t "kanshi"  "$config"
-        exec kanshi -c "$config"
-    else
-        logger -t "kanshi"  "default config"
-        exec kanshi
-    fi
-    ```
-
-2.  config-thinkpadt14s
-
-    ```conf
-    {
-      output eDP-1 enable mode 1920x1080  position 0,0
-    }
-
-    {
-      output eDP-1 mode 1920x1080 position 1920,0
-      output DP-4 mode 1920x1080 position 0,0
-    }
-    ```
-
-3.  config-thinkpadt460
-
-    ```conf
-    {
-      output eDP-1 enable mode 1366×768   position 0,0
-    }
-
-    {
-      output eDP-1 mode 1366×768  position 1920,0
-      output DP-4 mode 1920x1080 position 0,0
-    }
-    ```
-
-4.  config-thinkpadx270
-
-    ```conf
-    {
-    output eDP-1 enable mode 1920x1080  position 0,0
-    }
-
-    {
-    output DP-4 mode 1920x1080 position 0,0
-    output eDP-1 disable
-    }
-
     ```
 
 
@@ -2011,7 +2032,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org82345eb) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org6dcc2b7) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2023,7 +2044,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org6dde822)
+    Added to PATH in [~/.profile](#org4760336)
 
 
 ### Debuggers     :debuggers:
@@ -2415,29 +2436,28 @@ fi
 ### ~/bin/oneterminal
 
 ```bash
-      #!/usr/bin/bash
-      #Maintained in linux-init-files.org
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
 
-      sessionname="${1:-`pwd`}"
-      title="${ONETERM_TITLE:-${sessionname}}"
-      #sessionname="${sessionname//[^[:alnum:]]/}"
-      script="${2}"
-      tflags="${3}"
+sessionname="${1:-`pwd`}"
+title="${ONETERM_TITLE:-${sessionname}}"
+#sessionname="${sessionname//[^[:alnum:]]/}"
+script="${2}"
+tflags="${3}"
 
-      profile="${ONETERM_PROFILE:-"$(hostname)"}"
+profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
-      WID=`xdotool search --name "^${title}$" | head -1`
-      if [ -z "$WID" ]; then
-#          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
-#          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
-      else
-          if ! tmux has-session -t  "${sessionname}"; then
-              tmux attach -t "${sessionname}"
-          fi
-          xdotool windowactivate $WID
-      fi
-      exit 0
+
+if ! sway-do-tool "$title"; then
+    #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
+    alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+    #          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
+else
+    if ! tmux has-session -t  "${sessionname}"; then
+        tmux attach -t "${sessionname}"
+    fi
+fi
+exit 0
 ```
 
 

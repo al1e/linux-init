@@ -122,5 +122,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 DEFAULT_USER=$USER
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
