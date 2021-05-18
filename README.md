@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org95126db"></a>
+<a id="org2b61c55"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org5295dfe"></a>
+<a id="org2392544"></a>
 
 ## ~/.bash\_profile
 
@@ -1355,10 +1355,6 @@ swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
 export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
 ```
 
-```conf
-export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-```
-
 
 ### ~/bin/sway-display-swap
 
@@ -1999,7 +1995,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org5295dfe) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org2392544) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2011,7 +2007,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org95126db)
+    Added to PATH in [~/.profile](#org2b61c55)
 
 
 ### Debuggers     :debuggers:

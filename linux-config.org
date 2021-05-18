@@ -1863,9 +1863,6 @@ for_window [class="steam_app*"] inhibit_idle focus
   #Maintained in linux-init-files.org
   export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
 #+end_src
-#+begin_src conf :tangle "DotFiles/.profile"
-  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-#+end_src
 *** ~/bin/sway-display-swap
     https://i3wm.org/docs/user-contributed/swapping-workspaces.html
     #+begin_src bash :tangle ~/bin/i3-display-swap
