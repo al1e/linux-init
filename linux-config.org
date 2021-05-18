@@ -1808,12 +1808,12 @@ Load a host specific kanshi file if it exists
   [dropbox]
   label=⇄
   interval=15
-  command=echo  "$(my-i3b-db-status)"
+  command=my-i3b-db-status
   color=#ffd700
 
   [kernel]
   label=🐧
-  command=echo "$(uname -sr)"
+  command=my-i3b-kernel
   interval=once
   color=#ffffff
 
@@ -1834,14 +1834,14 @@ Load a host specific kanshi file if it exists
 
   [battery]
   markup=pango
-  command=battery-plus
+  command=my-i3b-battery-status
   interval=60
 
-  [power_draw]
-  label=⚡
-  command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-  interval=5
-  color=#00ff00
+  # [power_draw]
+  # label=⚡
+  # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+  # interval=5
+  # color=#00ff00
 
   [bluetooth]
   command=echo "$(my-i3b-bluetooth)"
@@ -1889,10 +1889,37 @@ Load a host specific kanshi file if it exists
   #Maintained in linux-init-files.org
   b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
   if [ -z "$b" ]; then
-      echo "charged";
-  else
-      echo $b;
+      b="charged";
   fi
+  echo "🔋$b ⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h"
+#+end_src
+**** ~/bin/my-i3b-db-status
+#+begin_src bash :tangle "~/bin/my-i3b-db-status"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  if pidof dropbox > /dev/null ; then
+      stat=$(dropbox status | sed -n 1p)
+      echo "DB:${stat}"; echo "";
+  else
+      if command -v dropbox > /dev/null; then
+          echo "Restart Dropbox.."
+          #dropbox start &> /dev/null &
+      fi
+  fi
+#+end_src
+**** ~/bin/my-i3b-db-kernel
+#+begin_src bash :tangle "~/bin/my-i3b-kernel"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          oneterminal "bpytop-kernel" bpytop &>/dev/null &
+          sway-do-too "bpytop-kernel"
+          ;;
+      ,*)
+          ;;
+  esac
+  echo "$(uname -sr)"
 #+end_src
 **** ~/bin/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/my-i3b-db-status"
@@ -1978,7 +2005,11 @@ return the volume %
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
-      1) pavucontrol &>/dev/null &
+      1)
+          pavucontrol &>/dev/null &
+          ;;
+      ,*)
+          ;;
   esac
   exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
 #+end_src

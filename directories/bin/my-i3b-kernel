@@ -2,9 +2,10 @@
 #Maintained in linux-init-files.org
 case $BLOCK_BUTTON in
     1)
-        pavucontrol &>/dev/null &
+        oneterminal "bpytop-kernel" bpytop &>/dev/null &
+        sway-do-too "bpytop-kernel"
         ;;
     *)
         ;;
 esac
-exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+echo "$(uname -sr)"

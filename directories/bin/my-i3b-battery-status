@@ -2,7 +2,6 @@
 #Maintained in linux-init-files.org
 b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
 if [ -z "$b" ]; then
-    echo "charged";
-else
-    echo $b;
+    b="charged";
 fi
+echo "🔋$b ⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h"

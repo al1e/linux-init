@@ -9,3 +9,15 @@ else
         #dropbox start &> /dev/null &
     fi
 fi
+
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+if pidof dropbox > /dev/null ; then
+    stat=$(dropbox status | sed -n 1p)
+    echo "DB:${stat}"; echo "";
+else
+    if command -v dropbox > /dev/null; then
+        echo "Restart Dropbox.."
+        #dropbox start &> /dev/null &
+    fi
+fi
