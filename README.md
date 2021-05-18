@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org9f4cdc9"></a>
+<a id="org95126db"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org8d4b762"></a>
+<a id="org5295dfe"></a>
 
 ## ~/.bash\_profile
 
@@ -686,6 +686,19 @@ bindsym $mod+Shift+c reload
 Bindsym $mod+Shift+r restart
 
 ```
+
+
+### sway gaming     :gaming:
+
+1.  dont idle     :idle:
+
+    We dont want the PC blanking when gaming
+
+    1.  steam     :steam:
+
+        ```conf
+        for_window [class="steam_app*"] inhibit_idle focus
+        ```
 
 
 ### sway workspace
@@ -1986,7 +1999,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org8d4b762) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org5295dfe) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1998,7 +2011,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org9f4cdc9)
+    Added to PATH in [~/.profile](#org95126db)
 
 
 ### Debuggers     :debuggers:

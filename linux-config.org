@@ -1240,6 +1240,13 @@ X11 apps still need resource definitions when launched under XWayland.
       Bindsym $mod+Shift+r restart
 
     #+end_src
+*** sway gaming                                                      :gaming:
+**** dont idle                                                         :idle:
+We dont want the PC blanking when gaming
+***** steam                                                           :steam:
+#+begin_src conf
+for_window [class="steam_app*"] inhibit_idle focus
+#+end_src
 *** sway workspace
     #+begin_src conf
       # change focus

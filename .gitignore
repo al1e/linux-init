@@ -32,6 +32,9 @@
 !/dot-config/polybar
 !/dot-config/polybar/config
 
+!/dot-config/sway
+!/dot-config/sway/config
+
 !/dot-config/zsh
 !/dot-config/zsh/.zshenv
 !/dot-config/zsh/.zlogin
