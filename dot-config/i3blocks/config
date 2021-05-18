@@ -1,21 +1,18 @@
 [dropbox]
+label=⇄
 interval=15
 command=echo  "$(my-i3b-db-status)"
 color=#ffd700
 
 [kernel]
+label=🐧
 command=echo "$(uname -sr)"
 interval=once
 color=#ffffff
 
-[power_draw]
-command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-interval=5
-color=#ffffff
-
-[battery]
-markup=pango
-command=battery-plus
+[uptime]
+label=⬆
+command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 interval=60
 
 [cpu_usage]
@@ -24,17 +21,25 @@ command=i3bm-cpu
 interval=1
 
 [temperature]
-label=T:
+label=🌡
 command=/usr/share/i3blocks/temperature
 interval=60
 
-[uptime]
-command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+[battery]
+markup=pango
+command=battery-plus
 interval=60
+
+[power_draw]
+label=⚡
+command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+interval=5
+color=#00ff00
 
 [bluetooth]
 command=echo "$(my-i3b-bluetooth)"
 interval=60
+color=#4d4dff
 
 [wifi]
 markup=pango
@@ -52,15 +57,19 @@ interval=300
 # color=#A4C2F4
 
 [time]
+label=📅
 command=date +"%a, %d %b: %H:%M"
 interval=60
 
 [brightness]
-markup=pango
-command=echo "Br:$(my-i3b-brightness)"
+label=🔆
+command=echo "$(my-i3b-brightness)"
+color=#FFD700
 interval=10
 
 [volume]
+label=🔊
 markup=pango
-command=i3bm-volume
+command=my-i3b-volume
 interval=10
+color=#FFD700

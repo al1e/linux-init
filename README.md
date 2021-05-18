@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgff747d3"></a>
+<a id="org9f4cdc9"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org97b4f87"></a>
+<a id="org8d4b762"></a>
 
 ## ~/.bash\_profile
 
@@ -675,11 +675,10 @@ default_border pixel
 
 # Font  for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
-
+font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 
 # workspace_layout <default|stacking|tabbed>
-workspace_layout tabbed
+workspace_layout default
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -871,7 +870,8 @@ bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
-bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+#bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
 ```
 
 
@@ -902,7 +902,7 @@ bindsym $mod+Control+q mode "$mode_system"
 # i3bar
 bar {
 status_command i3blocks
-font pango:Source Sans Pro, FontAwesome 8
+font pango:Source Sans Pro, FontAwesome 10
 position top
 #mode hide
 hidden_state hide
@@ -1059,23 +1059,20 @@ bindsym Escape mode "default"
 
 ```conf
 [dropbox]
+label=⇄
 interval=15
 command=echo  "$(my-i3b-db-status)"
 color=#ffd700
 
 [kernel]
+label=🐧
 command=echo "$(uname -sr)"
 interval=once
 color=#ffffff
 
-[power_draw]
-command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-interval=5
-color=#ffffff
-
-[battery]
-markup=pango
-command=battery-plus
+[uptime]
+label=⬆
+command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 interval=60
 
 [cpu_usage]
@@ -1084,17 +1081,25 @@ command=i3bm-cpu
 interval=1
 
 [temperature]
-label=T:
+label=🌡
 command=/usr/share/i3blocks/temperature
 interval=60
 
-[uptime]
-command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+[battery]
+markup=pango
+command=battery-plus
 interval=60
+
+[power_draw]
+label=⚡
+command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+interval=5
+color=#00ff00
 
 [bluetooth]
 command=echo "$(my-i3b-bluetooth)"
 interval=60
+color=#4d4dff
 
 [wifi]
 markup=pango
@@ -1112,18 +1117,22 @@ interval=300
 # color=#A4C2F4
 
 [time]
+label=📅
 command=date +"%a, %d %b: %H:%M"
 interval=60
 
 [brightness]
-markup=pango
-command=echo "Br:$(my-i3b-brightness)"
+label=🔆
+command=echo "$(my-i3b-brightness)"
+color=#FFD700
 interval=10
 
 [volume]
+label=🔊
 markup=pango
-command=i3bm-volume
+command=my-i3b-volume
 interval=10
+color=#FFD700
 
 ```
 
@@ -1226,6 +1235,16 @@ interval=10
     else
         echo "N/A"
     fi
+    ```
+
+5.  ~/bin/my-i3b-volume
+
+    return the volume %
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
     ```
 
 
@@ -1967,7 +1986,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org97b4f87) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org8d4b762) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1979,7 +1998,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgff747d3)
+    Added to PATH in [~/.profile](#org9f4cdc9)
 
 
 ### Debuggers     :debuggers:

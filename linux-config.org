@@ -1229,11 +1229,10 @@ X11 apps still need resource definitions when launched under XWayland.
 
       # Font  for window titles. Will also be used by the bar unless a different font
       # is used in the bar {} block below.
-      font pango:monospace 8
-
+      font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 
       # workspace_layout <default|stacking|tabbed>
-      workspace_layout tabbed
+      workspace_layout default
 
       # reload the configuration file
       bindsym $mod+Shift+c reload
@@ -1413,7 +1412,8 @@ X11 apps still need resource definitions when launched under XWayland.
       bindsym $mod+Control+Shift+p exec htop-regexp
       bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
       bindsym $mod+Return exec oneterminal "i3wmterm" ""
-      bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+      #bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+      bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
     #+end_src
 *** exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
     #+begin_src conf
@@ -1441,7 +1441,7 @@ X11 apps still need resource definitions when launched under XWayland.
       # i3bar
       bar {
       status_command i3blocks
-      font pango:Source Sans Pro, FontAwesome 8
+      font pango:Source Sans Pro, FontAwesome 10
       position top
       #mode hide
       hidden_state hide
@@ -1595,23 +1595,20 @@ X11 apps still need resource definitions when launched under XWayland.
 
      #+begin_src conf
        [dropbox]
+       label=⇄
        interval=15
        command=echo  "$(my-i3b-db-status)"
        color=#ffd700
 
        [kernel]
+       label=🐧
        command=echo "$(uname -sr)"
        interval=once
        color=#ffffff
 
-       [power_draw]
-       command=echo "Wh:$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-       interval=5
-       color=#ffffff
-
-       [battery]
-       markup=pango
-       command=battery-plus
+       [uptime]
+       label=⬆
+       command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
        interval=60
 
        [cpu_usage]
@@ -1620,17 +1617,25 @@ X11 apps still need resource definitions when launched under XWayland.
        interval=1
 
        [temperature]
-       label=T:
+       label=🌡
        command=/usr/share/i3blocks/temperature
        interval=60
 
-       [uptime]
-       command=echo "UT:$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+       [battery]
+       markup=pango
+       command=battery-plus
        interval=60
+
+       [power_draw]
+       label=⚡
+       command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+       interval=5
+       color=#00ff00
 
        [bluetooth]
        command=echo "$(my-i3b-bluetooth)"
        interval=60
+       color=#4d4dff
 
        [wifi]
        markup=pango
@@ -1648,18 +1653,22 @@ X11 apps still need resource definitions when launched under XWayland.
        # color=#A4C2F4
 
        [time]
+       label=📅
        command=date +"%a, %d %b: %H:%M"
        interval=60
 
        [brightness]
-       markup=pango
-       command=echo "Br:$(my-i3b-brightness)"
+       label=🔆
+       command=echo "$(my-i3b-brightness)"
+       color=#FFD700
        interval=10
 
        [volume]
+       label=🔊
        markup=pango
-       command=i3bm-volume
+       command=my-i3b-volume
        interval=10
+       color=#FFD700
 
      #+end_src
 *** i3blocks utilities
@@ -1752,6 +1761,13 @@ X11 apps still need resource definitions when launched under XWayland.
         fi
       #+end_src
 
+**** ~/bin/my-i3b-volume
+      return the volume %
+      #+begin_src bash :tangle "~/bin/my-i3b-volume"
+        #!/usr/bin/bash
+        #Maintained in linux-init-files.org
+        awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+      #+end_src
 ** Sway Related Scripts                                        :sway:wayland:
 ** ~/bin/sway-lock-utils
    Just a gathering place of locky/suspendy type things...
