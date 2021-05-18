@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbfdb662"></a>
+<a id="orga1f7396"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org00c7572"></a>
+<a id="org8f31d52"></a>
 
 ## ~/.bash\_profile
 
@@ -650,8 +650,8 @@ exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook
 exec nm-applet --indicator
-
-exec 'sleep 3; swaymsg workspace 1:edit'
+exec gpg-cache
+exec swaymsg workspace 1:edit
 
 ```
 
@@ -1379,11 +1379,13 @@ Monitor control with hotplug <https://github.com/emersion/kanshi>
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
     config="$HOME/.config/kanshi/config-$(hostname)"
-    if [ ! -f  "$config" ]; then
-        config="$HOME/.config/kanshi/config"
+    if [ -f  "$config" ]; then
+        logger -t "kanshi"  "$config"
+        exec kanshi -c "$config"
+    else
+        logger -t "kanshi"  "default config"
+        exec kanshi
     fi
-    logger -t "kanshi"  "$config"
-    kanshi -c "$config"
     ```
 
 2.  config-thinkpadt14s
@@ -1981,7 +1983,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org00c7572) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org8f31d52) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -1993,7 +1995,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbfdb662)
+    Added to PATH in [~/.profile](#orga1f7396)
 
 
 ### Debuggers     :debuggers:
@@ -2399,7 +2401,7 @@ fi
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
 #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty -t "${title}"  --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty -t "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"

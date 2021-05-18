@@ -12,7 +12,7 @@
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
 #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty -t "${title}"  --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty -t "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"

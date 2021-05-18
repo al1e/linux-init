@@ -1207,8 +1207,8 @@ X11 apps still need resource definitions when launched under XWayland.
       exec swaybg -i ~/Pictures/Wallpapers/current
       exec sway-idle-hook
       exec nm-applet --indicator
-
-      exec 'sleep 3; swaymsg workspace 1:edit'
+      exec gpg-cache
+      exec swaymsg workspace 1:edit
 
     #+end_src
 *** general
@@ -1886,11 +1886,13 @@ Load a host specific kanshi file if it exists
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   config="$HOME/.config/kanshi/config-$(hostname)"
-  if [ ! -f  "$config" ]; then
-      config="$HOME/.config/kanshi/config"
+  if [ -f  "$config" ]; then
+      logger -t "kanshi"  "$config"
+      exec kanshi -c "$config"
+  else
+      logger -t "kanshi"  "default config"
+      exec kanshi
   fi
-  logger -t "kanshi"  "$config"
-  kanshi -c "$config"
 #+end_src
 **** config-thinkpadt14s
 #+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
@@ -2808,7 +2810,7 @@ Load a host specific kanshi file if it exists
       WID=`xdotool search --name "^${title}$" | head -1`
       if [ -z "$WID" ]; then
 #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-          alacritty -t "${title}"  --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+          alacritty -t "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
       else
           if ! tmux has-session -t  "${sessionname}"; then
               tmux attach -t "${sessionname}"
