@@ -1578,6 +1578,7 @@ We dont want the PC blanking when gaming
 *** apps default appearance
 #+begin_src conf
   for_window [app_id="nmtui"] floating enable
+  for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
 *** apps keybindings
