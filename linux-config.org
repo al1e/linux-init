@@ -716,7 +716,7 @@
 
      #alias man=eman
 
-     export PATH="${HOME}/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
+     export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
 
      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
      export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -1790,9 +1790,9 @@ for_window [class="steam_app*"] inhibit_idle focus
       #+end_src
 
 ** Sway Related Scripts                                        :sway:wayland:
-*** ~/bin/sway-lock-utils
+*** ~/bin/sway/sway-lock-utils
    Just a gathering place of locky/suspendy type things...
-   #+begin_src bash :tangle "~/bin/sway-lock-utils"
+   #+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
      #!/usr/bin/bash
      # Maintained in linux-init-files.org
      lock() {
@@ -1841,12 +1841,12 @@ for_window [class="steam_app*"] inhibit_idle focus
 
      exit 0
    #+end_src
-*** ~/bin/sway-idle-hook                                    :sleep:lock:idle:
+*** ~/bin/sway/sway-idle-hook                                    :sleep:lock:idle:
 :PROPERTIES:
 :ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
 :END:
 
-#+begin_src bash :tangle "~/bin/sway-idle-hook"
+#+begin_src bash :tangle "~/bin/sway/sway-idle-hook"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   exec swayidle -w \
@@ -1862,28 +1862,28 @@ for_window [class="steam_app*"] inhibit_idle focus
          before-sleep 'sway-lock'
 #+end_src
 
-*** ~/bin/sway-lock
+*** ~/bin/sway/sway-lock
 :PROPERTIES:
 :ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 :END:
-#+begin_src bash :tangle "~/bin/sway-lock"
+#+begin_src bash :tangle "~/bin/sway/sway-lock"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
 #+end_src
-*** ~/bin/sway-swaysock                                            :swaysock:
-#+begin_src bash :tangle "~/bin/sway-swaysock"
+*** ~/bin/sway/sway-swaysock                                            :swaysock:
+#+begin_src bash :tangle "~/bin/sway/sway-swaysock"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
 #+end_src
-*** ~/bin/sway-display-swap
+*** ~/bin/sway/sway-display-swap
     https://i3wm.org/docs/user-contributed/swapping-workspaces.html
-    #+begin_src bash :tangle ~/bin/i3-display-swap
+    #+begin_src bash :tangle ~/bin/sway/sway-display-swap
       #!/usr/bin/bash
       # Maintained in linux-init-files.org
 
-      DISPLAY_CONFIG=($(i3-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+      DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
 
       for ROW in "${DISPLAY_CONFIG[@]}"
       do
@@ -1898,7 +1898,7 @@ for_window [class="steam_app*"] inhibit_idle focus
     #+end_src
 *** kanshi                                                           :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi
-**** ~/bin/sway-kanshi
+**** ~/bin/sway/sway-kanshi
 Load a host specific kanshi file if it exists
 #+begin_src bash :tangle "~/bin/sway-kanshi"
   #!/usr/bin/bash

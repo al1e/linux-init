@@ -63,6 +63,9 @@
 !/directories/bin/gdb-scripts/
 !/directories/bin/gdb-scripts/*
 
+!/directories/bin/sway/
+!/directories/bin/sway/*
+
 !/directories/bin/one*
 
 !/directories/bin/sway-*
