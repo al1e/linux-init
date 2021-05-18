@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 id="$1"
+script="$2"
 [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
 if swaymsg "[app_id=^${id}] focus" &> /dev/null; then
     echo "app_id ${id} found"
@@ -8,7 +9,11 @@ else
     if  swaymsg "[class=^${id}] focus" &> /dev/null; then
         echo "class ${id} found"
     else
-        exit 1
+        if [ ! -z "$script" ]; then
+           eval "$script" &
+        else
+            exit 1
+        fi
     fi
 fi
 echo "$id"

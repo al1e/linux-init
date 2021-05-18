@@ -1406,7 +1406,8 @@ We dont want the PC blanking when gaming
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
   bindsym Print exec gnome-screenshot -i
   bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-  bindsym $mod+Shift+f exec google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland
+  bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
+  bindsym $mod+Control+Shift+f exec  "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
   bindsym $mod+Control+a exec pavucontrol
   bindsym $mod+Control+Shift+a exec pulse-restart
   bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -1602,6 +1603,7 @@ We dont want the PC blanking when gaming
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   id="$1"
+  script="$2"
   [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
   if swaymsg "[app_id=^${id}] focus" &> /dev/null; then
       echo "app_id ${id} found"
@@ -1609,7 +1611,11 @@ We dont want the PC blanking when gaming
       if  swaymsg "[class=^${id}] focus" &> /dev/null; then
           echo "class ${id} found"
       else
-          exit 1
+          if [ ! -z "$script" ]; then
+             eval "$script" &
+          else
+              exit 1
+          fi
       fi
   fi
   echo "$id"
