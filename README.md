@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orge6699f0"></a>
+<a id="org70efe62"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org7d92e59"></a>
+<a id="org66478ec"></a>
 
 ## ~/.bash\_profile
 
@@ -782,11 +782,6 @@ set $ws10 "10"
 workspace $ws3 gaps inner 2
 workspace $ws3 gaps outer 2
 
-assign [class="Signal"] $ws8
-assign [class="Hexchat"] $ws8
-assign [class="discord"] $ws8
-assign [class="Steam"] $ws9
-
 assign [title="dbg:"] $ws3
 
 # for_window [class="steam_app.*"] fullscreen enable
@@ -865,34 +860,6 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 exec command -v brightnessctl && brightnessctl -r
 bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
 bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
-```
-
-
-### apps
-
-```conf
-bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
-bindsym Print exec gnome-screenshot -i
-bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
-bindsym $mod+Control+Shift+f exec  "sway-www"
-bindsym $mod+Control+a exec pavucontrol
-bindsym $mod+Control+Shift+a exec pulse-restart
-bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
-bindsym $mod+Control+c exec conky
-bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
-bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
-bindsym $mod+Control+g exec oneterminal "gdb"
-bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
-bindsym $mod+Control+h exec pidof hexchat || hexchat
-bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
-bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
-bindsym $mod+Control+Shift+p exec htop-regexp
-bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
-bindsym $mod+Return exec oneterminal "i3wmterm" ""
-#bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
 ```
 
 
@@ -1070,6 +1037,45 @@ bindsym Return mode "$mode_gaps"
 bindsym Escape mode "default"
 }
 
+```
+
+
+### apps default workspace
+
+```conf
+assign [class="Emacs"] $ws1
+assign [class="Signal"] $ws8
+assign [class="Hexchat"] $ws8
+assign [class="discord"] $ws8
+assign [class="Steam"] $ws9
+```
+
+
+### apps keybindings
+
+```conf
+bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
+bindsym Print exec gnome-screenshot -i
+bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
+bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
+bindsym $mod+Control+Shift+f exec  "sway-www"
+bindsym $mod+Control+a exec pavucontrol
+bindsym $mod+Control+Shift+a exec pulse-restart
+bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
+bindsym $mod+Control+c exec conky
+bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
+bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
+bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
+bindsym $mod+Control+g exec oneterminal "gdb"
+bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
+bindsym $mod+Control+h exec pidof hexchat || hexchat
+bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
+bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
+bindsym $mod+Control+Shift+p exec htop-regexp
+bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
+bindsym $mod+Return exec oneterminal "i3wmterm" ""
+#bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
 ```
 
 
@@ -2060,7 +2066,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org7d92e59) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org66478ec) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2072,7 +2078,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orge6699f0)
+    Added to PATH in [~/.profile](#org70efe62)
 
 
 ### Debuggers     :debuggers:
