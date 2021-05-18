@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org391812b"></a>
+<a id="org222a5db"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org26980cc"></a>
+<a id="org582d59f"></a>
 
 ## ~/.bash\_profile
 
@@ -1081,10 +1081,10 @@ bindsym Escape mode "default"
     # Maintained in linux-init-files.org
     id="$1"
     [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
-    if swaymsg "[app_id=${id}] focus" &> /dev/null; then
+    if swaymsg "[app_id=^${id}] focus" &> /dev/null; then
         echo "app_id ${id} found"
     else
-        if  swaymsg "[class=${id}] focus" &> /dev/null; then
+        if  swaymsg "[class=^${id}] focus" &> /dev/null; then
             echo "class ${id} found"
         else
             exit 1
@@ -2032,7 +2032,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org26980cc) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org582d59f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2044,7 +2044,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org391812b)
+    Added to PATH in [~/.profile](#org222a5db)
 
 
 ### Debuggers     :debuggers:
