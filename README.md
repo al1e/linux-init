@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org4760336"></a>
+<a id="org391812b"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org6dcc2b7"></a>
+<a id="org26980cc"></a>
 
 ## ~/.bash\_profile
 
@@ -2032,7 +2032,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org6dcc2b7) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org26980cc) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2044,7 +2044,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org4760336)
+    Added to PATH in [~/.profile](#org391812b)
 
 
 ### Debuggers     :debuggers:
@@ -2466,8 +2466,7 @@ exit 0
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-WID=`xdotool search --name "^${title}$" | head -1`
-[ -z "${WID}" ] || xdotool windowactivate "${WID}"
+sway-do-tool "$@"
 ```
 
 
