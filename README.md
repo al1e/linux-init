@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org11457a8"></a>
+<a id="orge6699f0"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgfadfd50"></a>
+<a id="org7d92e59"></a>
 
 ## ~/.bash\_profile
 
@@ -874,8 +874,8 @@ bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 1
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
-bindsym $mod+Control+Shift+f exec  "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
+bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
+bindsym $mod+Control+Shift+f exec  "sway-www"
 bindsym $mod+Control+a exec pavucontrol
 bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -1180,7 +1180,16 @@ bindsym Escape mode "default"
     swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
     ```
 
-5.  ~/bin/sway/sway-swaysock     :swaysock:
+5.  ~/bin/sway/sway-www
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
+    sway-do-tool "Google-chrome"
+    ```
+
+6.  ~/bin/sway/sway-swaysock     :swaysock:
 
     ```bash
     #!/usr/bin/bash
@@ -1188,7 +1197,7 @@ bindsym Escape mode "default"
     export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
     ```
 
-6.  ~/bin/sway/sway-display-swap
+7.  ~/bin/sway/sway-display-swap
 
     <https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
 
@@ -1204,13 +1213,13 @@ bindsym Escape mode "default"
         read -ra CONFIG <<< "${ROW}"
         if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
             echo "moving ${CONFIG[1]} right..."
-            i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-            i3-msg -- move workspace to output right
+            sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+            sway-msg -- move workspace to output right
         fi
     done
     ```
 
-7.  kanshi     :kanshi:
+8.  kanshi     :kanshi:
 
     Monitor control with hotplug <https://github.com/emersion/kanshi>
 
@@ -1328,7 +1337,7 @@ interval=60
 
 [weather]
 markup=pango
-command=i3bm-weather
+command=my-i3b-weather
 interval=300
 
 # [weather]
@@ -1481,6 +1490,19 @@ color=#FFD700
         1) oneterminal "wifi" "nmtui"  &>/dev/null &
     esac
     exec i3bm-wifi
+    ```
+
+7.  ~/bin/my-i3b-weather
+
+    return the volume %
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1) sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+    esac
+    exec i3bm-weather
     ```
 
 
@@ -2038,7 +2060,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgfadfd50) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org7d92e59) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2050,7 +2072,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org11457a8)
+    Added to PATH in [~/.profile](#orge6699f0)
 
 
 ### Debuggers     :debuggers:

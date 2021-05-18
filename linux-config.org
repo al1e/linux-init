@@ -1406,8 +1406,8 @@ We dont want the PC blanking when gaming
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
   bindsym Print exec gnome-screenshot -i
   bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-  bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
-  bindsym $mod+Control+Shift+f exec  "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
+  bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
+  bindsym $mod+Control+Shift+f exec  "sway-www"
   bindsym $mod+Control+a exec pavucontrol
   bindsym $mod+Control+Shift+a exec pulse-restart
   bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -1702,6 +1702,16 @@ Just a gathering place of locky/suspendy type things...
   # Maintained in linux-init-files.org
   swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
 #+end_src
+**** ~/bin/sway/sway-www
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway/sway-www"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
+  sway-do-tool "Google-chrome"
+#+end_src
 **** ~/bin/sway/sway-swaysock                                      :swaysock:
 #+begin_src bash :tangle "~/bin/sway/sway-swaysock"
   #!/usr/bin/bash
@@ -1722,8 +1732,8 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
       read -ra CONFIG <<< "${ROW}"
       if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
           echo "moving ${CONFIG[1]} right..."
-          i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-          i3-msg -- move workspace to output right
+          sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+          sway-msg -- move workspace to output right
       fi
   done
 #+end_src
@@ -1836,7 +1846,7 @@ Load a host specific kanshi file if it exists
 
   [weather]
   markup=pango
-  command=i3bm-weather
+  command=my-i3b-weather
   interval=300
 
   # [weather]
@@ -1973,7 +1983,16 @@ return the volume %
   esac
   exec i3bm-wifi
 #+end_src
-
+**** ~/bin/my-i3b-weather
+return the volume %
+#+begin_src bash :tangle "~/bin/my-i3b-weather"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1) sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+  esac
+  exec i3bm-weather
+#+end_src
 * Vim
 ** ~/.vimrc
 #+begin_src conf :tangle "DotFiles/.vimrc"

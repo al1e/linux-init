@@ -48,7 +48,7 @@ interval=60
 
 [weather]
 markup=pango
-command=i3bm-weather
+command=my-i3b-weather
 interval=300
 
 # [weather]

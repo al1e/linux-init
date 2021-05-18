@@ -181,8 +181,8 @@ bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 1
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
-bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
-bindsym $mod+Control+Shift+f exec  "google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland"
+bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
+bindsym $mod+Control+Shift+f exec  "sway-www"
 bindsym $mod+Control+a exec pavucontrol
 bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop

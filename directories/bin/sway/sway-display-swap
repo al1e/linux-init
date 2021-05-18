@@ -9,7 +9,7 @@ do
     read -ra CONFIG <<< "${ROW}"
     if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
         echo "moving ${CONFIG[1]} right..."
-        i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-        i3-msg -- move workspace to output right
+        sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+        sway-msg -- move workspace to output right
     fi
 done

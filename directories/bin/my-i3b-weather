@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+case $BLOCK_BUTTON in
+    1) sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+esac
+exec i3bm-weather
