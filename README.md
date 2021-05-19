@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org67011ec"></a>
+<a id="orgb0d4ed6"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org3ec1816"></a>
+<a id="org3576f6a"></a>
 
 ## ~/.bash\_profile
 
@@ -883,21 +883,6 @@ bindsym $mod+Control+q mode "$mode_system"
 ```
 
 
-### status bar     :i3blocks:
-
-```conf
-# i3bar
-bar {
-status_command i3blocks
-font pango:Source Sans Pro, FontAwesome 10
-position top
-#mode hide
-hidden_state hide
-modifier $mod
-}
-```
-
-
 ### i3 gaps
 
 ```conf
@@ -1297,297 +1282,309 @@ bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/
         ```
 
 
-## i3blocks
-
-
-### config
+### status bar     :status:i3bar:i3blocks:
 
 ```conf
-[dropbox]
-label=⇄
-interval=15
-command=my-i3b-db-status
-color=#ffd700
-
-[kernel]
-label=🐧
-command=my-i3b-kernel
-interval=once
-color=#ffffff
-
-[uptime]
-label=⬆
-command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
-interval=60
-
-[cpu_usage]
-markup=pango
-command=my-i3b-cpu
-interval=1
-
-[temperature]
-label=🌡
-command=/usr/share/i3blocks/temperature
-interval=60
-
-[battery]
-markup=pango
-command=my-i3b-battery-status
-interval=60
-
-# [power_draw]
-# label=⚡
-# command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-# interval=5
-# color=#00ff00
-
-[weather]
-markup=pango
-command=my-i3b-weather
-interval=300
-
-# [weather]
-# command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-# interval=900
-# color=#A4C2F4
-
-[time]
-label=📅
-command=date +"%a, %d %b: %H:%M"
-interval=60
-
-[brightness]
-label=🔆
-command=echo "$(my-i3b-brightness)"
-color=#FFD700
-interval=10
-
-[volume]
-label=🔊
-markup=pango
-command=my-i3b-volume
-interval=10
-color=#FFD700
-
-[bluetooth]
-command=echo "$(my-i3b-bluetooth)"
-interval=60
-color=#4d4dff
-
-[wifi]
-markup=pango
-command=my-i3b-wifi
-interval=60
-
+# i3bar
+bar {
+status_command i3blocks
+font pango:Source Sans Pro, FontAwesome 10
+position top
+#mode hide
+hidden_state hide
+modifier $mod
+}
 ```
 
+1.  i3blocks
 
-### i3blocks utilities
+    1.  config
 
-1.  ~/bin/my-i3b-battery-status
+        ```conf
+        [dropbox]
+        label=⇄
+        interval=15
+        command=my-i3b-db-status
+        color=#ffd700
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            oneterminal "htop-kernel" htop &>/dev/null &
-            ;;
-        ,*)
-            ;;
-    esac
-    b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
-    if [ -z "$b" ]; then
-        b="charged";
-    fi
-    echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
-    ```
+        [kernel]
+        label=🐧
+        command=my-i3b-kernel
+        interval=once
+        color=#ffffff
 
-2.  ~/bin/my-i3b-db-status
+        [uptime]
+        label=⬆
+        command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+        interval=60
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    if pidof dropbox > /dev/null ; then
-        stat=$(dropbox status | sed -n 1p)
-        echo "DB:${stat}"; echo "";
-    else
-        if command -v dropbox > /dev/null; then
-            echo "Restart Dropbox.."
-            #dropbox start &> /dev/null &
-        fi
-    fi
-    ```
+        [cpu_usage]
+        markup=pango
+        command=my-i3b-cpu
+        interval=1
 
-3.  ~/bin/my-i3b-cpu
+        [temperature]
+        label=🌡
+        command=/usr/share/i3blocks/temperature
+        interval=60
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            conky &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec i3bm-cpu
-    ```
+        [battery]
+        markup=pango
+        command=my-i3b-battery-status
+        interval=60
 
-4.  ~/bin/my-i3b-db-kernel
+        # [power_draw]
+        # label=⚡
+        # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+        # interval=5
+        # color=#00ff00
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            oneterminal "bpytop-kernel" bpytop &>/dev/null &
-            ;;
-        *)
-            ;;
-    esac
-    echo "$(uname -sr)"
-    ```
+        [weather]
+        markup=pango
+        command=my-i3b-weather
+        interval=300
 
-5.  ~/bin/my-i3b-db-status
+        # [weather]
+        # command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+        # interval=900
+        # color=#A4C2F4
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-      case $BLOCK_BUTTON in
-          1)
-              sway-www "https://www.dropbox.com/home"  &> /dev/null
-              ;;
-          ,*)
-              ;;
-      esac
+        [time]
+        label=📅
+        command=date +"%a, %d %b: %H:%M"
+        interval=60
 
-    if pidof dropbox > /dev/null ; then
-        stat=$(dropbox status | sed -n 1p)
-        echo "DB:${stat}"; echo "";
-    else
-        if command -v dropbox > /dev/null; then
-            echo "Restart Dropbox.."
-            #dropbox start &> /dev/null &
-        fi
-    fi
-    ```
+        [brightness]
+        label=🔆
+        command=echo "$(my-i3b-brightness)"
+        color=#FFD700
+        interval=10
 
-6.  ~/bin/my-i3b-bluetooth
+        [volume]
+        label=🔊
+        markup=pango
+        command=my-i3b-volume
+        interval=10
+        color=#FFD700
 
-    Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
+        [bluetooth]
+        command=echo "$(my-i3b-bluetooth)"
+        interval=60
+        color=#4d4dff
 
-    ```bash
-    #!/usr/bin/env bash
+        [wifi]
+        markup=pango
+        command=my-i3b-wifi
+        interval=60
 
+        ```
 
-    get_from_file() {
-        dev=$1
-        name=
-        if [ ! -f /tmp/bt-devices.txt ]; then
-            touch /tmp/bt-devices.txt
-            echo ""
-            return
-        fi
-        for i in `cat /tmp/bt-devices.txt`; do
-            d=`echo $i | awk -F:: '{print $1}'`
-            if [ $d = $dev ]; then
-                name=`echo $i | awk -F:: '{print $2}'`
+    2.  i3blocks utilities
+
+        1.  ~/bin/my-i3b-battery-status
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    oneterminal "htop-kernel" htop &>/dev/null &
+                    ;;
+                ,*)
+                    ;;
+            esac
+            b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
+            if [ -z "$b" ]; then
+                b="charged";
             fi
-        done
-        echo "${name}"
-    }
+            echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
+            ```
 
-    store_file() {
-        dev=$1
-        name="${2}"
-        echo "$dev::${name}" >> /tmp/bt-devices.txt
-    }
+        2.  ~/bin/my-i3b-db-status
 
-    connections=`hcitool con | sed -n 2p`
-    if [ ! -z "$connections" ]; then
-        # We have a connection, we want to get the name from a file if we've had
-        # it from there before because getting the name of the device connected
-        # is very slow and costly.
-        dev=`echo $connections | awk '{print $3}'`
-        name=`get_from_file $dev`
-        if [ -z "$name" ]; then
-            name=`hcitool name $dev | awk '{print $1}'`
-            if [ ! -z "${name}" ]; then
-                store_file $dev "${name}"
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            if pidof dropbox > /dev/null ; then
+                stat=$(dropbox status | sed -n 1p)
+                echo "DB:${stat}"; echo "";
+            else
+                if command -v dropbox > /dev/null; then
+                    echo "Restart Dropbox.."
+                    #dropbox start &> /dev/null &
+                fi
             fi
-        fi
-        echo " $name"
-        echo " $name"
-        echo "#83AF40\n"
-        # echo "#859900\n"
-    else
-        echo ""
-        echo ""
-    fi
-    ```
+            ```
 
-7.  ~/bin/my-i3b-brightness
+        3.  ~/bin/my-i3b-cpu
 
-    return the brightness %
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    conky &> /dev/null
+                    ;;
+                *)
+                    ;;
+            esac
+            exec i3bm-cpu
+            ```
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
-    if command -v brightnessctl &> /dev/null; then
-        echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
-    else
-        echo "N/A"
-    fi
-    ```
+        4.  ~/bin/my-i3b-db-kernel
 
-8.  ~/bin/my-i3b-volume
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    oneterminal "bpytop-kernel" bpytop &>/dev/null &
+                    ;;
+                *)
+                    ;;
+            esac
+            echo "$(uname -sr)"
+            ```
 
-    return the volume %
+        5.  ~/bin/my-i3b-db-status
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            pavucontrol &>/dev/null &
-            ;;
-        *)
-            ;;
-    esac
-    exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
-    ```
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+              case $BLOCK_BUTTON in
+                  1)
+                      sway-www "https://www.dropbox.com/home"  &> /dev/null
+                      ;;
+                  ,*)
+                      ;;
+              esac
 
-9.  ~/bin/my-i3b-wifi
+            if pidof dropbox > /dev/null ; then
+                stat=$(dropbox status | sed -n 1p)
+                echo "DB:${stat}"; echo "";
+            else
+                if command -v dropbox > /dev/null; then
+                    echo "Restart Dropbox.."
+                    #dropbox start &> /dev/null &
+                fi
+            fi
+            ```
 
-    return the volume %
+        6.  ~/bin/my-i3b-bluetooth
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1) oneterminal "wifi" "nmtui"  &>/dev/null &
-    esac
-    exec i3bm-wifi
-    ```
+            Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
-10. ~/bin/my-i3b-weather
+            ```bash
+            #!/usr/bin/env bash
 
-    return the volume %
 
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec i3bm-weather
-    ```
+            get_from_file() {
+                dev=$1
+                name=
+                if [ ! -f /tmp/bt-devices.txt ]; then
+                    touch /tmp/bt-devices.txt
+                    echo ""
+                    return
+                fi
+                for i in `cat /tmp/bt-devices.txt`; do
+                    d=`echo $i | awk -F:: '{print $1}'`
+                    if [ $d = $dev ]; then
+                        name=`echo $i | awk -F:: '{print $2}'`
+                    fi
+                done
+                echo "${name}"
+            }
+
+            store_file() {
+                dev=$1
+                name="${2}"
+                echo "$dev::${name}" >> /tmp/bt-devices.txt
+            }
+
+            connections=`hcitool con | sed -n 2p`
+            if [ ! -z "$connections" ]; then
+                # We have a connection, we want to get the name from a file if we've had
+                # it from there before because getting the name of the device connected
+                # is very slow and costly.
+                dev=`echo $connections | awk '{print $3}'`
+                name=`get_from_file $dev`
+                if [ -z "$name" ]; then
+                    name=`hcitool name $dev | awk '{print $1}'`
+                    if [ ! -z "${name}" ]; then
+                        store_file $dev "${name}"
+                    fi
+                fi
+                echo " $name"
+                echo " $name"
+                echo "#83AF40\n"
+                # echo "#859900\n"
+            else
+                echo ""
+                echo ""
+            fi
+            ```
+
+        7.  ~/bin/my-i3b-brightness
+
+            return the brightness %
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
+            if command -v brightnessctl &> /dev/null; then
+                echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+            else
+                echo "N/A"
+            fi
+            ```
+
+        8.  ~/bin/my-i3b-volume
+
+            return the volume %
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    pavucontrol &>/dev/null &
+                    ;;
+                *)
+                    ;;
+            esac
+            exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+            ```
+
+        9.  ~/bin/my-i3b-wifi
+
+            return the volume %
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1) oneterminal "wifi" "nmtui"  &>/dev/null &
+            esac
+            exec i3bm-wifi
+            ```
+
+        10. ~/bin/my-i3b-weather
+
+            return the volume %
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+                    ;;
+                *)
+                    ;;
+            esac
+            exec i3bm-weather
+            ```
 
 
 # Vim
@@ -2144,7 +2141,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org3ec1816) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org3576f6a) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2156,7 +2153,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org67011ec)
+    Added to PATH in [~/.profile](#orgb0d4ed6)
 
 
 ### Debuggers     :debuggers:

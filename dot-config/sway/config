@@ -187,16 +187,6 @@ bindsym Escape mode "default"
 }
 bindsym $mod+Control+q mode "$mode_system"
 
-# i3bar
-bar {
-status_command i3blocks
-font pango:Source Sans Pro, FontAwesome 10
-position top
-#mode hide
-hidden_state hide
-modifier $mod
-}
-
 # Necessary for i3-gaps to work properly (pixel can be any value)
 for_window [class="^.*"] border pixel 1
 
@@ -366,3 +356,13 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 #bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
+
+# i3bar
+bar {
+status_command i3blocks
+font pango:Source Sans Pro, FontAwesome 10
+position top
+#mode hide
+hidden_state hide
+modifier $mod
+}

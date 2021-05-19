@@ -1413,21 +1413,6 @@ We dont want the PC blanking when gaming
   }
   bindsym $mod+Control+q mode "$mode_system"
 #+end_src
-*** status bar                                                     :i3blocks:
-:PROPERTIES:
-:ID:       d930fa7e-59c1-44ec-a8aa-522f05e50c13
-:END:
-#+begin_src conf
-  # i3bar
-  bar {
-  status_command i3blocks
-  font pango:Source Sans Pro, FontAwesome 10
-  position top
-  #mode hide
-  hidden_state hide
-  modifier $mod
-  }
-#+end_src
 *** i3 gaps
 #+begin_src conf
   # Necessary for i3-gaps to work properly (pixel can be any value)
@@ -1799,8 +1784,23 @@ Load a host specific kanshi file if it exists
   }
 
 #+end_src
-** i3blocks
-*** config
+*** status bar                                        :status:i3bar:i3blocks:
+:PROPERTIES:
+:ID:       d930fa7e-59c1-44ec-a8aa-522f05e50c13
+:END:
+#+begin_src conf
+  # i3bar
+  bar {
+  status_command i3blocks
+  font pango:Source Sans Pro, FontAwesome 10
+  position top
+  #mode hide
+  hidden_state hide
+  modifier $mod
+  }
+#+end_src
+**** i3blocks
+***** config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/i3blocks/config"
 :ID:       20c2b7d9-7111-46c4-8965-63db28dea79d
@@ -1884,8 +1884,8 @@ Load a host specific kanshi file if it exists
   interval=60
 
 #+end_src
-*** i3blocks utilities
-**** ~/bin/my-i3b-battery-status
+***** i3blocks utilities
+****** ~/bin/my-i3b-battery-status
 #+begin_src bash :tangle "~/bin/my-i3b-battery-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
@@ -1902,7 +1902,7 @@ Load a host specific kanshi file if it exists
   fi
   echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
-**** ~/bin/my-i3b-db-status
+****** ~/bin/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
@@ -1916,7 +1916,7 @@ Load a host specific kanshi file if it exists
       fi
   fi
 #+end_src
-**** ~/bin/my-i3b-cpu
+****** ~/bin/my-i3b-cpu
 #+begin_src bash :tangle "~/bin/my-i3b-cpu"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
@@ -1929,7 +1929,7 @@ Load a host specific kanshi file if it exists
   esac
   exec i3bm-cpu
 #+end_src
-**** ~/bin/my-i3b-db-kernel
+****** ~/bin/my-i3b-db-kernel
 #+begin_src bash :tangle "~/bin/my-i3b-kernel"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
@@ -1942,7 +1942,7 @@ Load a host specific kanshi file if it exists
   esac
   echo "$(uname -sr)"
 #+end_src
-**** ~/bin/my-i3b-db-status
+****** ~/bin/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
@@ -1964,7 +1964,7 @@ Load a host specific kanshi file if it exists
       fi
   fi
 #+end_src
-**** ~/bin/my-i3b-bluetooth
+****** ~/bin/my-i3b-bluetooth
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
 #+begin_src bash :tangle "~/bin/my-i3b-bluetooth"
   #!/usr/bin/env bash
@@ -2015,7 +2015,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       echo ""
   fi
 #+end_src
-**** ~/bin/my-i3b-brightness
+****** ~/bin/my-i3b-brightness
 return the brightness %
 #+begin_src bash :tangle "~/bin/my-i3b-brightness"
   #!/usr/bin/bash
@@ -2028,7 +2028,7 @@ return the brightness %
   fi
 #+end_src
 
-**** ~/bin/my-i3b-volume
+****** ~/bin/my-i3b-volume
 return the volume %
 #+begin_src bash :tangle "~/bin/my-i3b-volume"
   #!/usr/bin/bash
@@ -2042,7 +2042,7 @@ return the volume %
   esac
   exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
 #+end_src
-**** ~/bin/my-i3b-wifi
+****** ~/bin/my-i3b-wifi
 return the volume %
 #+begin_src bash :tangle "~/bin/my-i3b-wifi"
   #!/usr/bin/bash
@@ -2052,7 +2052,7 @@ return the volume %
   esac
   exec i3bm-wifi
 #+end_src
-**** ~/bin/my-i3b-weather
+****** ~/bin/my-i3b-weather
 return the volume %
 #+begin_src bash :tangle "~/bin/my-i3b-weather"
   #!/usr/bin/bash
