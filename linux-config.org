@@ -1167,6 +1167,7 @@ Set keyboard layout.
   export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
 #+end_src
 ** ~/.Xresources
+*** resource file
 X11 apps still need resource definitions when launched under XWayland.
 #+begin_src conf :tangle "DotFiles/.Xresources"
   ! Use a truetype font and size.
@@ -1197,6 +1198,14 @@ X11 apps still need resource definitions when launched under XWayland.
   #endif
   ! }}}
 #+end_src
+*** sway integration
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/config"
+:ID:       28b74638-3fc4-499c-bb15-3360f58bccae
+:END:
+#+begin_src conf
+  exec xrdb -merge ~/.Xresources
+#+end_src
 
 ** Sway config
 :PROPERTIES:
@@ -1206,7 +1215,6 @@ X11 apps still need resource definitions when launched under XWayland.
 *** sway autostart
 #+begin_src conf
   #exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
-  exec xrdb -merge ~/.Xresources
   exec sway-kanshi
   exec swaybg -i ~/Pictures/Wallpapers/current
   exec sway-idle-hook

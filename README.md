@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org3ce9702"></a>
+<a id="orga718cdc"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org678e47b"></a>
+<a id="org72e7e10"></a>
 
 ## ~/.bash\_profile
 
@@ -612,6 +612,9 @@ export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
 
 ## ~/.Xresources
 
+
+### resource file
+
 X11 apps still need resource definitions when launched under XWayland.
 
 ```conf
@@ -645,6 +648,13 @@ Xft.dpi:       188
 ```
 
 
+### sway integration
+
+```conf
+exec xrdb -merge ~/.Xresources
+```
+
+
 ## Sway config
 
 
@@ -652,7 +662,6 @@ Xft.dpi:       188
 
 ```conf
 #exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
-exec xrdb -merge ~/.Xresources
 exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook
@@ -2181,7 +2190,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org678e47b) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org72e7e10) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2193,7 +2202,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org3ce9702)
+    Added to PATH in [~/.profile](#orga718cdc)
 
 
 ### Debuggers     :debuggers:
