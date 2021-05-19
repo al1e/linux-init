@@ -1144,9 +1144,10 @@ Written to find the tty for a pane in order to redirect gef context source to a 
 * Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
-** TODO xkb keyboard
-SCHEDULED: <2021-05-18 Tue>
+** DONE xkb keyboard
+CLOSED: [2021-05-19 Wed 11:55] SCHEDULED: <2021-05-18 Tue>
 :LOGBOOK:
+- State "DONE"       from "TODO"       [2021-05-19 Wed 11:55]
 - Note taken on [2021-05-18 Tue 00:41] \\
   need to look into xkb stuff
 - State "TODO"       from              [2021-05-18 Tue 00:41]
@@ -1857,7 +1858,7 @@ Load a host specific kanshi file if it exists
 
   [time]
   label=📅
-  command=date +"%a, %d %b: %H:%M"
+  command=my-i3b-date-cal
   interval=60
 
   [brightness]
@@ -1922,12 +1923,25 @@ Load a host specific kanshi file if it exists
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
       1)
-          conky &> /dev/null
+          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
           ;;
       ,*)
           ;;
   esac
   exec i3bm-cpu
+#+end_src
+****** ~/bin/my-i3b-date-cal
+#+begin_src bash :tangle "~/bin/my-i3b-date-cal"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec date +"%a, %d %b: %H:%M"
 #+end_src
 ****** ~/bin/my-i3b-db-kernel
 #+begin_src bash :tangle "~/bin/my-i3b-kernel"

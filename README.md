@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgb0d4ed6"></a>
+<a id="orga16378d"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org3576f6a"></a>
+<a id="org791273b"></a>
 
 ## ~/.bash\_profile
 
@@ -590,7 +590,7 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
 
-## TODO xkb keyboard
+## DONE xkb keyboard
 
 Set keyboard layout.
 
@@ -1351,7 +1351,7 @@ modifier $mod
 
         [time]
         label=📅
-        command=date +"%a, %d %b: %H:%M"
+        command=my-i3b-date-cal
         interval=60
 
         [brightness]
@@ -1423,7 +1423,7 @@ modifier $mod
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    conky &> /dev/null
+                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
                     ;;
                 *)
                     ;;
@@ -1431,7 +1431,22 @@ modifier $mod
             exec i3bm-cpu
             ```
 
-        4.  ~/bin/my-i3b-db-kernel
+        4.  ~/bin/my-i3b-date-cal
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
+                    ;;
+                *)
+                    ;;
+            esac
+            exec date +"%a, %d %b: %H:%M"
+            ```
+
+        5.  ~/bin/my-i3b-db-kernel
 
             ```bash
             #!/usr/bin/bash
@@ -1446,7 +1461,7 @@ modifier $mod
             echo "$(uname -sr)"
             ```
 
-        5.  ~/bin/my-i3b-db-status
+        6.  ~/bin/my-i3b-db-status
 
             ```bash
             #!/usr/bin/bash
@@ -1470,7 +1485,7 @@ modifier $mod
             fi
             ```
 
-        6.  ~/bin/my-i3b-bluetooth
+        7.  ~/bin/my-i3b-bluetooth
 
             Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
@@ -1524,7 +1539,7 @@ modifier $mod
             fi
             ```
 
-        7.  ~/bin/my-i3b-brightness
+        8.  ~/bin/my-i3b-brightness
 
             return the brightness %
 
@@ -1539,7 +1554,7 @@ modifier $mod
             fi
             ```
 
-        8.  ~/bin/my-i3b-volume
+        9.  ~/bin/my-i3b-volume
 
             return the volume %
 
@@ -1556,7 +1571,7 @@ modifier $mod
             exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
             ```
 
-        9.  ~/bin/my-i3b-wifi
+        10. ~/bin/my-i3b-wifi
 
             return the volume %
 
@@ -1569,7 +1584,7 @@ modifier $mod
             exec i3bm-wifi
             ```
 
-        10. ~/bin/my-i3b-weather
+        11. ~/bin/my-i3b-weather
 
             return the volume %
 
@@ -2141,7 +2156,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org3576f6a) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org791273b) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2153,7 +2168,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgb0d4ed6)
+    Added to PATH in [~/.profile](#orga16378d)
 
 
 ### Debuggers     :debuggers:

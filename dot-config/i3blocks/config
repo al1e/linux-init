@@ -48,7 +48,7 @@ interval=300
 
 [time]
 label=📅
-command=date +"%a, %d %b: %H:%M"
+command=my-i3b-date-cal
 interval=60
 
 [brightness]
