@@ -1573,6 +1573,7 @@ We dont want the PC blanking when gaming
   for_window [class="Conky"] floating enable
   for_window [app_id="zenity"] floating enable
   for_window [app_id="wifi"] floating enable
+  for_window [app_id="bluetoothctl"] floating enable
   for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
@@ -1912,6 +1913,9 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src bash :tangle "~/bin/sway/my-i3b-bluetooth"
   #!/usr/bin/env bash
 
+  case $BLOCK_BUTTON in
+      1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+  esac
 
   get_from_file() {
       dev=$1

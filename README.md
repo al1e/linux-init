@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org082d258"></a>
+<a id="orgd31d88a"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org66f9b47"></a>
+<a id="org19bb5c1"></a>
 
 ## ~/.bash\_profile
 
@@ -1050,6 +1050,7 @@ assign [class="Steam"] $ws9
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [app_id="wifi"] floating enable
+for_window [app_id="bluetoothctl"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 ```
 
@@ -1411,6 +1412,9 @@ modifier $mod
             ```bash
             #!/usr/bin/env bash
 
+            case $BLOCK_BUTTON in
+                1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+            esac
 
             get_from_file() {
                 dev=$1
@@ -2174,7 +2178,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org66f9b47) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org19bb5c1) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2186,7 +2190,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org082d258)
+    Added to PATH in [~/.profile](#orgd31d88a)
 
 
 ### Debuggers     :debuggers:

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+case $BLOCK_BUTTON in
+    1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+esac
 
 get_from_file() {
     dev=$1
