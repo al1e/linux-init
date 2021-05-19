@@ -7,4 +7,4 @@ case $BLOCK_BUTTON in
     *)
         ;;
 esac
-exec date +"%a, %d %b: %H:%M"
+exec echo "📅$(date +"%a, %d %b: %H:%M)"

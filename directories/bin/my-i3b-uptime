@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+case $BLOCK_BUTTON in
+    1)
+        sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+        ;;
+    *)
+        ;;
+esac
+exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"

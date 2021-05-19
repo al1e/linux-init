@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org39a419d"></a>
+<a id="org308f920"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgbbb7b53"></a>
+<a id="org5ee3312"></a>
 
 ## ~/.bash\_profile
 
@@ -1301,7 +1301,6 @@ modifier $mod
 
         ```conf
         [dropbox]
-        label=⇄
         interval=15
         command=my-i3b-db-status
         color=#ffd700
@@ -1313,8 +1312,8 @@ modifier $mod
         color=#ffffff
 
         [uptime]
-        label=⬆
-        command=echo "$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+
+        command=my-i3b-uptime
         interval=60
 
         [cpu_usage]
@@ -1324,7 +1323,7 @@ modifier $mod
 
         [temperature]
         label=🌡
-        command=/usr/share/i3blocks/temperature
+        command=my-i3b-temperature
         interval=60
 
         [battery]
@@ -1349,25 +1348,22 @@ modifier $mod
         # color=#A4C2F4
 
         [time]
-        label=📅
         command=my-i3b-date-cal
         interval=60
 
         [brightness]
-        label=🔆
-        command=echo "$(my-i3b-brightness)"
+        command=my-i3b-brightness
         color=#FFD700
         interval=10
 
         [volume]
-        label=🔊
         markup=pango
         command=my-i3b-volume
         interval=10
         color=#FFD700
 
         [bluetooth]
-        command=echo "$(my-i3b-bluetooth)"
+        command=my-i3b-bluetooth
         interval=60
         color=#4d4dff
 
@@ -1406,10 +1402,10 @@ modifier $mod
             #Maintained in linux-init-files.org
             if pidof dropbox > /dev/null ; then
                 stat=$(dropbox status | sed -n 1p)
-                echo "DB:${stat}"; echo "";
+                echo "⇄${stat}"; echo "";
             else
                 if command -v dropbox > /dev/null; then
-                    echo "Restart Dropbox.."
+                    echo "⇄Restart Dropbox.."
                     #dropbox start &> /dev/null &
                 fi
             fi
@@ -1430,7 +1426,37 @@ modifier $mod
             exec i3bm-cpu
             ```
 
-        4.  ~/bin/my-i3b-date-cal
+        4.  ~/bin/my-i3b-temperature
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                    ;;
+                *)
+                    ;;
+            esac
+            exec /usr/share/i3blocks/temperature
+            ```
+
+        5.  ~/bin/my-i3b-uptime
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-init-files.org
+            case $BLOCK_BUTTON in
+                1)
+                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                    ;;
+                *)
+                    ;;
+            esac
+            exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+            ```
+
+        6.  ~/bin/my-i3b-date-cal
 
             ```bash
             #!/usr/bin/bash
@@ -1442,10 +1468,10 @@ modifier $mod
                 *)
                     ;;
             esac
-            exec date +"%a, %d %b: %H:%M"
+            exec echo "📅$(date +"%a, %d %b: %H:%M)"
             ```
 
-        5.  ~/bin/my-i3b-db-kernel
+        7.  ~/bin/my-i3b-kernel
 
             ```bash
             #!/usr/bin/bash
@@ -1460,7 +1486,7 @@ modifier $mod
             echo "$(uname -sr)"
             ```
 
-        6.  ~/bin/my-i3b-db-status
+        8.  ~/bin/my-i3b-db-status
 
             ```bash
             #!/usr/bin/bash
@@ -1484,7 +1510,7 @@ modifier $mod
             fi
             ```
 
-        7.  ~/bin/my-i3b-bluetooth
+        9.  ~/bin/my-i3b-bluetooth
 
             Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
@@ -1538,7 +1564,7 @@ modifier $mod
             fi
             ```
 
-        8.  ~/bin/my-i3b-brightness
+        10. ~/bin/my-i3b-brightness
 
             return the brightness %
 
@@ -1547,13 +1573,13 @@ modifier $mod
             #Maintained in linux-init-files.org
             #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
             if command -v brightnessctl &> /dev/null; then
-                echo "$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+                echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
             else
-                echo "N/A"
+                echo "🔆N/A"
             fi
             ```
 
-        9.  ~/bin/my-i3b-volume
+        11. ~/bin/my-i3b-volume
 
             return the volume %
 
@@ -1567,10 +1593,10 @@ modifier $mod
                 *)
                     ;;
             esac
-            exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
+            exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
             ```
 
-        10. ~/bin/my-i3b-wifi
+        12. ~/bin/my-i3b-wifi
 
             return the volume %
 
@@ -1583,7 +1609,7 @@ modifier $mod
             exec i3bm-wifi
             ```
 
-        11. ~/bin/my-i3b-weather
+        13. ~/bin/my-i3b-weather
 
             return the volume %
 
@@ -2155,7 +2181,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgbbb7b53) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org5ee3312) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2167,7 +2193,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org39a419d)
+    Added to PATH in [~/.profile](#org308f920)
 
 
 ### Debuggers     :debuggers:
