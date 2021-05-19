@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org3e4e3fc"></a>
+<a id="orgb586e47"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org4366d26"></a>
+<a id="org9505711"></a>
 
 ## ~/.bash\_profile
 
@@ -1066,12 +1066,13 @@ bindsym $mod+Control+a exec pavucontrol
 bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
+bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
+bindsym $mod+Control+h exec sway-do-tool "Hexchat" "hexchat"
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
-bindsym $mod+Control+h exec pidof hexchat || hexchat
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2173,7 +2174,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org4366d26) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org9505711) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2185,7 +2186,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org3e4e3fc)
+    Added to PATH in [~/.profile](#orgb586e47)
 
 
 ### Debuggers     :debuggers:
