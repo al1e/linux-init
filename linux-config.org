@@ -1576,6 +1576,7 @@ We dont want the PC blanking when gaming
   for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
+
 *** apps keybindings
 #+begin_src conf
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
@@ -1976,7 +1977,7 @@ return the brightness %
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
       1)
-          oneterminal "htop-kernel" htop &>/dev/null
+          oneterminal "Process-Monitor-htop" htop &>/dev/null
           ;;
       ,*)
           ;;

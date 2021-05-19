@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org0f89441"></a>
+<a id="org082d258"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org5989af5"></a>
+<a id="org66f9b47"></a>
 
 ## ~/.bash\_profile
 
@@ -1480,7 +1480,7 @@ modifier $mod
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    oneterminal "htop-kernel" htop &>/dev/null
+                    oneterminal "Process-Monitor-htop" htop &>/dev/null
                     ;;
                 *)
                     ;;
@@ -2174,7 +2174,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org5989af5) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org66f9b47) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2186,7 +2186,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org0f89441)
+    Added to PATH in [~/.profile](#org082d258)
 
 
 ### Debuggers     :debuggers:
