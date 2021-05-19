@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orge65164e"></a>
+<a id="org39a419d"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org747c59f"></a>
+<a id="orgbbb7b53"></a>
 
 ## ~/.bash\_profile
 
@@ -606,7 +606,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ## swaysock for tmux
 
 ```bash
-export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
 ```
 
 
@@ -1194,7 +1194,7 @@ bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
-    export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
+    export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
     ```
 
 7.  ~/bin/sway/sway-display-swap
@@ -2155,7 +2155,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org747c59f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgbbb7b53) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2167,7 +2167,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orge65164e)
+    Added to PATH in [~/.profile](#org39a419d)
 
 
 ### Debuggers     :debuggers:

@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
+export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)

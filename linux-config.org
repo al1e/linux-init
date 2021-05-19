@@ -1164,7 +1164,7 @@ Set keyboard layout.
 #+end_src
 ** swaysock for tmux
 #+begin_src bash :tangle "~/.config/zsh/.zshrc"
-  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+  export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
 #+end_src
 ** ~/.Xresources
 X11 apps still need resource definitions when launched under XWayland.
@@ -1712,7 +1712,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-swaysock"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  export SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock | head -n 1)
+  export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
 #+end_src
 **** ~/bin/sway/sway-display-swap
 https://i3wm.org/docs/user-contributed/swapping-workspaces.html
