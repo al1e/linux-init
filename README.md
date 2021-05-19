@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org1807f06"></a>
+<a id="org298ae05"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org3e4d12f"></a>
+<a id="org45201a6"></a>
 
 ## ~/.bash\_profile
 
@@ -1072,10 +1072,11 @@ bindsym $mod+Return exec oneterminal "i3wmterm" ""
 ```
 
 
-### app launcher
+### app launcher     :launcher:
 
 ```conf
-bindsym $mod+d exec "dmenu_path | wofi --show drun -i | xargs swaymsg exec --"
+bindsym $mod+d exec sway-launcher-wofi
+for_window [app_id="sway-launcher"] floating enable
 ```
 
 
@@ -1225,81 +1226,23 @@ bindsym $mod+d exec "dmenu_path | wofi --show drun -i | xargs swaymsg exec --"
     done
     ```
 
-8.  ~/bin/sway/sway-launcher
-
-    Nice but went with wofi in the end. credit : <https://gitlab.com/FlyingWombat/my-scripts/blob/master/sway-launcher>
+8.  ~/bin/sway/sway-launcher-wofi
 
     ```bash
-    #!/bin/sh
+    #!/usr/bin/bash
     # Maintained in linux-init-files.org
-
-
-    # terminal application launcher for sway, using fzf
-    # original command:
-    # Based on: https://github.com/swaywm/sway/issues/1367
-    # bindsym $altkey+space exec termite --name=launcher -e \
-        #    "bash -c 'compgen -c | sort -u | fzf --no-extended --print-query | \
-        #    tail -n1 | xargs -r swaymsg -t command exec'"
-
-    HIST_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/sway-launcher-history.txt"
-
-    # Get shell command list
-    # This may include the occasional non-executable file
-    command_list=$({ IFS=:; ls -H $PATH; } | grep -v '/.*' | sort -u)
-
-    # read existing command history
-    if [ -f "$HIST_FILE" ]; then
-        command_history=$(cat "$HIST_FILE")
-    else
-        command_history=""
-    fi
-
-    # search command list
-    command_str=$(printf "%s\n" "${command_history}" "${command_list}" | \
-                      sed -E 's/^[0-9]+ (.+)$/\1/' | \
-                      fzf --no-extended --print-query --no-sort | \
-                      tail -n1) || exit 1
-
-    if [ "$command_str" = "" ]; then
-        exit 1
-    fi
-    # echo "Command: $command_str"
-
-    # using \E flag from perl regex
-    test "${command_str#*\\E}" != "$command_str" && echo "command can't contain '\E'"
-    test "${command_str#*\\E}" != "$command_str" && exit 1
-
-    # get full line from history (with count number)
-    hist_line=$(echo "$command_history" | grep -Pe "^[0-9]+ \Q$command_str\E$")
-    # echo "Hist Line: $hist_line"
-
-    if [ "$hist_line" = "" ]; then
-        hist_count=1
-    else
-        # Increment usage count
-        hist_count=$(echo "$hist_line" | sed -E 's/^([0-9]+) .+$/\1/')
-        hist_count=$((hist_count + 1))
-        # delete line, to add updated later
-        # echo "Hist Before: $command_history"
-        command_history=$(echo "$command_history" | \
-                              grep --invert-match -Pe "^[0-9]+ \Q$command_str\E$")
-        # echo "Hist After: $command_history"
-    fi
-
-    # update history
-    update_line="${hist_count} ${command_str}"
-    printf "%s\n" "${update_line}" "${command_history}" | \
-        sort --numeric-sort --reverse > "$HIST_FILE"
-    # echo "$update_line"
-
-    # execute command
-    echo "$command_str"
-    swaymsg -t command exec "$command_str"
-
-
+    dmenu_path | wofi --show drun -i | xargs swaymsg exec --
     ```
 
-9.  kanshi     :kanshi:
+9.  ~/bin/sway/sway-launcher-fzf
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+    ```
+
+10. kanshi     :kanshi:
 
     Monitor control with hotplug <https://github.com/emersion/kanshi>
 
@@ -2247,7 +2190,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org3e4d12f) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org45201a6) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2259,7 +2202,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org1807f06)
+    Added to PATH in [~/.profile](#org298ae05)
 
 
 ### Debuggers     :debuggers:

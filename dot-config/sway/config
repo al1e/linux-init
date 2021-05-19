@@ -357,7 +357,8 @@ bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
-bindsym $mod+d exec "dmenu_path | wofi --show drun -i | xargs swaymsg exec --"
+bindsym $mod+d exec sway-launcher-wofi
+for_window [app_id="sway-launcher"] floating enable
 
 # i3bar
 bar {

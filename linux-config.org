@@ -1602,9 +1602,10 @@ X11 apps still need resource definitions when launched under XWayland.
 
 #+end_src
 
-*** app launcher
+*** app launcher                                                   :launcher:
 #+begin_src conf
-  bindsym $mod+d exec "dmenu_path | wofi --show drun -i | xargs swaymsg exec --"
+  bindsym $mod+d exec sway-launcher-wofi
+  for_window [app_id="sway-launcher"] floating enable
 #+end_src
 
 *** Sway Related Scripts                                       :sway:wayland:
@@ -1747,83 +1748,23 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
       fi
   done
 #+end_src
-**** ~/bin/sway/sway-launcher
-Nice but went with wofi in the end.
-credit : https://gitlab.com/FlyingWombat/my-scripts/blob/master/sway-launcher
-#+begin_src bash :tangle ~/bin/sway/sway-launcher
-  #!/bin/sh
+**** ~/bin/sway/sway-launcher-wofi
+#+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
+  #!/usr/bin/bash
   # Maintained in linux-init-files.org
-
-
-  # terminal application launcher for sway, using fzf
-  # original command:
-  # Based on: https://github.com/swaywm/sway/issues/1367
-  # bindsym $altkey+space exec termite --name=launcher -e \
-      #    "bash -c 'compgen -c | sort -u | fzf --no-extended --print-query | \
-      #    tail -n1 | xargs -r swaymsg -t command exec'"
-
-  HIST_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/sway-launcher-history.txt"
-
-  # Get shell command list
-  # This may include the occasional non-executable file
-  command_list=$({ IFS=:; ls -H $PATH; } | grep -v '/.*' | sort -u)
-
-  # read existing command history
-  if [ -f "$HIST_FILE" ]; then
-      command_history=$(cat "$HIST_FILE")
-  else
-      command_history=""
-  fi
-
-  # search command list
-  command_str=$(printf "%s\n" "${command_history}" "${command_list}" | \
-                    sed -E 's/^[0-9]+ (.+)$/\1/' | \
-                    fzf --no-extended --print-query --no-sort | \
-                    tail -n1) || exit 1
-
-  if [ "$command_str" = "" ]; then
-      exit 1
-  fi
-  # echo "Command: $command_str"
-
-  # using \E flag from perl regex
-  test "${command_str#*\\E}" != "$command_str" && echo "command can't contain '\E'"
-  test "${command_str#*\\E}" != "$command_str" && exit 1
-
-  # get full line from history (with count number)
-  hist_line=$(echo "$command_history" | grep -Pe "^[0-9]+ \Q$command_str\E$")
-  # echo "Hist Line: $hist_line"
-
-  if [ "$hist_line" = "" ]; then
-      hist_count=1
-  else
-      # Increment usage count
-      hist_count=$(echo "$hist_line" | sed -E 's/^([0-9]+) .+$/\1/')
-      hist_count=$((hist_count + 1))
-      # delete line, to add updated later
-      # echo "Hist Before: $command_history"
-      command_history=$(echo "$command_history" | \
-                            grep --invert-match -Pe "^[0-9]+ \Q$command_str\E$")
-      # echo "Hist After: $command_history"
-  fi
-
-  # update history
-  update_line="${hist_count} ${command_str}"
-  printf "%s\n" "${update_line}" "${command_history}" | \
-      sort --numeric-sort --reverse > "$HIST_FILE"
-  # echo "$update_line"
-
-  # execute command
-  echo "$command_str"
-  swaymsg -t command exec "$command_str"
-
-
+  dmenu_path | wofi --show drun -i | xargs swaymsg exec --
+#+end_src
+**** ~/bin/sway/sway-launcher-fzf
+#+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
 #+end_src
 **** kanshi                                                          :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi
 ***** ~/bin/sway/sway-kanshi
 Load a host specific kanshi file if it exists
-#+begin_src bash :tangle "~/bin/sway-kanshi"
+#+begin_src bash :tangle "~/bin/sway/sway-kanshi"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   config="$HOME/.config/kanshi/config-$(hostname)"
