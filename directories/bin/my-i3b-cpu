@@ -2,9 +2,9 @@
 #Maintained in linux-init-files.org
 case $BLOCK_BUTTON in
     1)
-        oneterminal "bpytop-kernel" bpytop &>/dev/null &
+        conky &> /dev/null
         ;;
     *)
         ;;
 esac
-echo "$(uname -sr)"
+exec i3bm-cpu

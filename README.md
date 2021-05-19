@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org16bb127"></a>
+<a id="org67011ec"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgd902b87"></a>
+<a id="org3ec1816"></a>
 
 ## ~/.bash\_profile
 
@@ -656,7 +656,6 @@ exec xrdb -merge ~/.Xresources
 exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook
-exec nm-applet --indicator
 exec sleep 5 && gpg-cache
 exec swaymsg workspace 1:edit
 
@@ -1054,7 +1053,10 @@ assign [class="Steam"] $ws9
 ### apps default appearance
 
 ```conf
+for_window [class="Conky"] floating enable
+for_window [app_id="zenity"] floating enable
 for_window [app_id="nmtui"] floating enable
+for_window [class="nmtui"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 ```
 
@@ -1320,7 +1322,7 @@ interval=60
 
 [cpu_usage]
 markup=pango
-command=i3bm-cpu
+command=my-i3b-cpu
 interval=1
 
 [temperature]
@@ -1338,16 +1340,6 @@ interval=60
 # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
 # interval=5
 # color=#00ff00
-
-[bluetooth]
-command=echo "$(my-i3b-bluetooth)"
-interval=60
-color=#4d4dff
-
-[wifi]
-markup=pango
-command=my-i3b-wifi
-interval=60
 
 [weather]
 markup=pango
@@ -1377,6 +1369,16 @@ command=my-i3b-volume
 interval=10
 color=#FFD700
 
+[bluetooth]
+command=echo "$(my-i3b-bluetooth)"
+interval=60
+color=#4d4dff
+
+[wifi]
+markup=pango
+command=my-i3b-wifi
+interval=60
+
 ```
 
 
@@ -1387,11 +1389,18 @@ color=#FFD700
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1)
+            oneterminal "htop-kernel" htop &>/dev/null &
+            ;;
+        ,*)
+            ;;
+    esac
     b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
     if [ -z "$b" ]; then
         b="charged";
     fi
-    echo "🔋$b ⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h"
+    echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
     ```
 
 2.  ~/bin/my-i3b-db-status
@@ -1410,7 +1419,22 @@ color=#FFD700
     fi
     ```
 
-3.  ~/bin/my-i3b-db-kernel
+3.  ~/bin/my-i3b-cpu
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1)
+            conky &> /dev/null
+            ;;
+        *)
+            ;;
+    esac
+    exec i3bm-cpu
+    ```
+
+4.  ~/bin/my-i3b-db-kernel
 
     ```bash
     #!/usr/bin/bash
@@ -1418,7 +1442,6 @@ color=#FFD700
     case $BLOCK_BUTTON in
         1)
             oneterminal "bpytop-kernel" bpytop &>/dev/null &
-            sway-do-too "bpytop-kernel"
             ;;
         *)
             ;;
@@ -1426,11 +1449,19 @@ color=#FFD700
     echo "$(uname -sr)"
     ```
 
-4.  ~/bin/my-i3b-db-status
+5.  ~/bin/my-i3b-db-status
 
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
+      case $BLOCK_BUTTON in
+          1)
+              sway-www "https://www.dropbox.com/home"  &> /dev/null
+              ;;
+          ,*)
+              ;;
+      esac
+
     if pidof dropbox > /dev/null ; then
         stat=$(dropbox status | sed -n 1p)
         echo "DB:${stat}"; echo "";
@@ -1442,7 +1473,7 @@ color=#FFD700
     fi
     ```
 
-5.  ~/bin/my-i3b-bluetooth
+6.  ~/bin/my-i3b-bluetooth
 
     Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
@@ -1496,7 +1527,7 @@ color=#FFD700
     fi
     ```
 
-6.  ~/bin/my-i3b-brightness
+7.  ~/bin/my-i3b-brightness
 
     return the brightness %
 
@@ -1511,7 +1542,7 @@ color=#FFD700
     fi
     ```
 
-7.  ~/bin/my-i3b-volume
+8.  ~/bin/my-i3b-volume
 
     return the volume %
 
@@ -1528,7 +1559,7 @@ color=#FFD700
     exec awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master)
     ```
 
-8.  ~/bin/my-i3b-wifi
+9.  ~/bin/my-i3b-wifi
 
     return the volume %
 
@@ -1541,7 +1572,7 @@ color=#FFD700
     exec i3bm-wifi
     ```
 
-9.  ~/bin/my-i3b-weather
+10. ~/bin/my-i3b-weather
 
     return the volume %
 
@@ -1549,7 +1580,11 @@ color=#FFD700
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
     case $BLOCK_BUTTON in
-        1) sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+        1)
+            sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+            ;;
+        *)
+            ;;
     esac
     exec i3bm-weather
     ```
@@ -2109,7 +2144,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgd902b87) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org3ec1816) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2121,7 +2156,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org16bb127)
+    Added to PATH in [~/.profile](#org67011ec)
 
 
 ### Debuggers     :debuggers:

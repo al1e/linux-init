@@ -1209,7 +1209,6 @@ X11 apps still need resource definitions when launched under XWayland.
   exec sway-kanshi
   exec swaybg -i ~/Pictures/Wallpapers/current
   exec sway-idle-hook
-  exec nm-applet --indicator
   exec sleep 5 && gpg-cache
   exec swaymsg workspace 1:edit
 
@@ -1577,7 +1576,10 @@ We dont want the PC blanking when gaming
 #+end_src
 *** apps default appearance
 #+begin_src conf
+  for_window [class="Conky"] floating enable
+  for_window [app_id="zenity"] floating enable
   for_window [app_id="nmtui"] floating enable
+  for_window [class="nmtui"] floating enable
   for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
@@ -1824,7 +1826,7 @@ Load a host specific kanshi file if it exists
 
   [cpu_usage]
   markup=pango
-  command=i3bm-cpu
+  command=my-i3b-cpu
   interval=1
 
   [temperature]
@@ -1842,16 +1844,6 @@ Load a host specific kanshi file if it exists
   # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
   # interval=5
   # color=#00ff00
-
-  [bluetooth]
-  command=echo "$(my-i3b-bluetooth)"
-  interval=60
-  color=#4d4dff
-
-  [wifi]
-  markup=pango
-  command=my-i3b-wifi
-  interval=60
 
   [weather]
   markup=pango
@@ -1881,17 +1873,34 @@ Load a host specific kanshi file if it exists
   interval=10
   color=#FFD700
 
+  [bluetooth]
+  command=echo "$(my-i3b-bluetooth)"
+  interval=60
+  color=#4d4dff
+
+  [wifi]
+  markup=pango
+  command=my-i3b-wifi
+  interval=60
+
 #+end_src
 *** i3blocks utilities
 **** ~/bin/my-i3b-battery-status
 #+begin_src bash :tangle "~/bin/my-i3b-battery-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          oneterminal "htop-kernel" htop &>/dev/null &
+          ;;
+      ,,*)
+          ;;
+  esac
   b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
   if [ -z "$b" ]; then
       b="charged";
   fi
-  echo "🔋$b ⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h"
+  echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
 **** ~/bin/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/my-i3b-db-status"
@@ -1907,6 +1916,19 @@ Load a host specific kanshi file if it exists
       fi
   fi
 #+end_src
+**** ~/bin/my-i3b-cpu
+#+begin_src bash :tangle "~/bin/my-i3b-cpu"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          conky &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec i3bm-cpu
+#+end_src
 **** ~/bin/my-i3b-db-kernel
 #+begin_src bash :tangle "~/bin/my-i3b-kernel"
   #!/usr/bin/bash
@@ -1914,7 +1936,6 @@ Load a host specific kanshi file if it exists
   case $BLOCK_BUTTON in
       1)
           oneterminal "bpytop-kernel" bpytop &>/dev/null &
-          sway-do-too "bpytop-kernel"
           ;;
       ,*)
           ;;
@@ -1925,6 +1946,14 @@ Load a host specific kanshi file if it exists
 #+begin_src bash :tangle "~/bin/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1)
+            sway-www "https://www.dropbox.com/home"  &> /dev/null
+            ;;
+        ,,*)
+            ;;
+    esac
+
   if pidof dropbox > /dev/null ; then
       stat=$(dropbox status | sed -n 1p)
       echo "DB:${stat}"; echo "";
@@ -2029,7 +2058,11 @@ return the volume %
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
-      1) sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+      1)
+          sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+          ;;
+      ,*)
+          ;;
   esac
   exec i3bm-weather
 #+end_src

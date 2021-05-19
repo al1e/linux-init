@@ -12,6 +12,14 @@ fi
 
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-www "https://www.dropbox.com/home"  &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+
 if pidof dropbox > /dev/null ; then
     stat=$(dropbox status | sed -n 1p)
     echo "DB:${stat}"; echo "";

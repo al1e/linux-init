@@ -1,7 +1,14 @@
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
+case $BLOCK_BUTTON in
+    1)
+        oneterminal "htop-kernel" htop &>/dev/null &
+        ;;
+    ,*)
+        ;;
+esac
 b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
 if [ -z "$b" ]; then
     b="charged";
 fi
-echo "🔋$b ⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h"
+echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"

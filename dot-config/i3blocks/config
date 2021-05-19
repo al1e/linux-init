@@ -17,7 +17,7 @@ interval=60
 
 [cpu_usage]
 markup=pango
-command=i3bm-cpu
+command=my-i3b-cpu
 interval=1
 
 [temperature]
@@ -35,16 +35,6 @@ interval=60
 # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
 # interval=5
 # color=#00ff00
-
-[bluetooth]
-command=echo "$(my-i3b-bluetooth)"
-interval=60
-color=#4d4dff
-
-[wifi]
-markup=pango
-command=my-i3b-wifi
-interval=60
 
 [weather]
 markup=pango
@@ -73,3 +63,13 @@ markup=pango
 command=my-i3b-volume
 interval=10
 color=#FFD700
+
+[bluetooth]
+command=echo "$(my-i3b-bluetooth)"
+interval=60
+color=#4d4dff
+
+[wifi]
+markup=pango
+command=my-i3b-wifi
+interval=60
