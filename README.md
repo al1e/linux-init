@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgd31d88a"></a>
+<a id="org1807f06"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org19bb5c1"></a>
+<a id="org3e4d12f"></a>
 
 ## ~/.bash\_profile
 
@@ -590,14 +590,7 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
 
-## DONE xkb keyboard
-
-Set keyboard layout.
-
-```bash
-export XKB_DEFAULT_LAYOUT=de
-export XKB_DEFAULT_OPTIONS=ctrl:nocaps
-```
+## DONE xkb keyboard     :ARCHIVE:
 
 
 ## Gnome     :ARCHIVE:
@@ -705,15 +698,12 @@ Bindsym $mod+Shift+r restart
 
 ### sway gaming     :gaming:
 
-1.  dont idle     :idle:
+1.  steam     :steam:
 
-    We dont want the PC blanking when gaming
-
-    1.  steam     :steam:
-
-        ```conf
-        for_window [class="steam_app*"] inhibit_idle focus
-        ```
+    ```conf
+    for_window [class="steam_app.*"] fullscreen enable
+    for_window [class="steam_app*"] inhibit_idle focus
+    ```
 
 
 ### sway workspace
@@ -791,8 +781,6 @@ workspace $ws3 gaps inner 2
 workspace $ws3 gaps outer 2
 
 assign [title="dbg:"] $ws3
-
-# for_window [class="steam_app.*"] fullscreen enable
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -1068,6 +1056,7 @@ bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
+bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
 bindsym $mod+Control+h exec sway-do-tool "Hexchat" "hexchat"
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
@@ -1079,8 +1068,14 @@ bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
 bindsym $mod+Return exec oneterminal "i3wmterm" ""
-#bindsym $mod+d exec --no-startup-id "rofi -show drun -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
-bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/usr/local/lib/ bemenu -i --nb "#3f3f3f" --nf "#dcdccc" --fn "pango:DejaVu Sans Mono 12"' --term='alacritty'
+
+```
+
+
+### app launcher
+
+```conf
+bindsym $mod+d exec "dmenu_path | wofi --show drun -i | xargs swaymsg exec --"
 ```
 
 
@@ -1230,7 +1225,81 @@ bindsym $mod+d exec j4-dmenu-desktop --display-binary --dmenu='LD_LIBRARY_PATH=/
     done
     ```
 
-8.  kanshi     :kanshi:
+8.  ~/bin/sway/sway-launcher
+
+    Nice but went with wofi in the end. credit : <https://gitlab.com/FlyingWombat/my-scripts/blob/master/sway-launcher>
+
+    ```bash
+    #!/bin/sh
+    # Maintained in linux-init-files.org
+
+
+    # terminal application launcher for sway, using fzf
+    # original command:
+    # Based on: https://github.com/swaywm/sway/issues/1367
+    # bindsym $altkey+space exec termite --name=launcher -e \
+        #    "bash -c 'compgen -c | sort -u | fzf --no-extended --print-query | \
+        #    tail -n1 | xargs -r swaymsg -t command exec'"
+
+    HIST_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/sway-launcher-history.txt"
+
+    # Get shell command list
+    # This may include the occasional non-executable file
+    command_list=$({ IFS=:; ls -H $PATH; } | grep -v '/.*' | sort -u)
+
+    # read existing command history
+    if [ -f "$HIST_FILE" ]; then
+        command_history=$(cat "$HIST_FILE")
+    else
+        command_history=""
+    fi
+
+    # search command list
+    command_str=$(printf "%s\n" "${command_history}" "${command_list}" | \
+                      sed -E 's/^[0-9]+ (.+)$/\1/' | \
+                      fzf --no-extended --print-query --no-sort | \
+                      tail -n1) || exit 1
+
+    if [ "$command_str" = "" ]; then
+        exit 1
+    fi
+    # echo "Command: $command_str"
+
+    # using \E flag from perl regex
+    test "${command_str#*\\E}" != "$command_str" && echo "command can't contain '\E'"
+    test "${command_str#*\\E}" != "$command_str" && exit 1
+
+    # get full line from history (with count number)
+    hist_line=$(echo "$command_history" | grep -Pe "^[0-9]+ \Q$command_str\E$")
+    # echo "Hist Line: $hist_line"
+
+    if [ "$hist_line" = "" ]; then
+        hist_count=1
+    else
+        # Increment usage count
+        hist_count=$(echo "$hist_line" | sed -E 's/^([0-9]+) .+$/\1/')
+        hist_count=$((hist_count + 1))
+        # delete line, to add updated later
+        # echo "Hist Before: $command_history"
+        command_history=$(echo "$command_history" | \
+                              grep --invert-match -Pe "^[0-9]+ \Q$command_str\E$")
+        # echo "Hist After: $command_history"
+    fi
+
+    # update history
+    update_line="${hist_count} ${command_str}"
+    printf "%s\n" "${update_line}" "${command_history}" | \
+        sort --numeric-sort --reverse > "$HIST_FILE"
+    # echo "$update_line"
+
+    # execute command
+    echo "$command_str"
+    swaymsg -t command exec "$command_str"
+
+
+    ```
+
+9.  kanshi     :kanshi:
 
     Monitor control with hotplug <https://github.com/emersion/kanshi>
 
@@ -2178,7 +2247,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org19bb5c1) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org3e4d12f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2190,7 +2259,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgd31d88a)
+    Added to PATH in [~/.profile](#org1807f06)
 
 
 ### Debuggers     :debuggers:
