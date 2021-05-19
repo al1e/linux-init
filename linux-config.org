@@ -1898,107 +1898,6 @@ Load a host specific kanshi file if it exists
   fi
   echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
-****** ~/bin/my-i3b-db-status
-#+begin_src bash :tangle "~/bin/my-i3b-db-status"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  if pidof dropbox > /dev/null ; then
-      stat=$(dropbox status | sed -n 1p)
-      echo "⇄${stat}"; echo "";
-  else
-      if command -v dropbox > /dev/null; then
-          echo "⇄Restart Dropbox.."
-          #dropbox start &> /dev/null &
-      fi
-  fi
-#+end_src
-****** ~/bin/my-i3b-cpu
-#+begin_src bash :tangle "~/bin/my-i3b-cpu"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1)
-          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-          ;;
-      ,*)
-          ;;
-  esac
-  exec i3bm-cpu
-#+end_src
-****** ~/bin/my-i3b-temperature
-#+begin_src bash :tangle "~/bin/my-i3b-temperature"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1)
-          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-          ;;
-      ,*)
-          ;;
-  esac
-  exec /usr/share/i3blocks/temperature
-#+end_src
-****** ~/bin/my-i3b-uptime
-#+begin_src bash :tangle "~/bin/my-i3b-uptime"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1)
-          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-          ;;
-      ,*)
-          ;;
-  esac
-  exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
-#+end_src
-****** ~/bin/my-i3b-date-cal
-#+begin_src bash :tangle "~/bin/my-i3b-date-cal"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1)
-          sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
-          ;;
-      ,*)
-          ;;
-  esac
-  exec echo "📅$(date +"%a, %d %b: %H:%M)"
-#+end_src
-****** ~/bin/my-i3b-kernel
-#+begin_src bash :tangle "~/bin/my-i3b-kernel"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1)
-          oneterminal "bpytop-kernel" bpytop &>/dev/null &
-          ;;
-      ,*)
-          ;;
-  esac
-  echo "$(uname -sr)"
-#+end_src
-****** ~/bin/my-i3b-db-status
-#+begin_src bash :tangle "~/bin/my-i3b-db-status"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-www "https://www.dropbox.com/home"  &> /dev/null
-            ;;
-        ,,*)
-            ;;
-    esac
-
-  if pidof dropbox > /dev/null ; then
-      stat=$(dropbox status | sed -n 1p)
-      echo "DB:${stat}"; echo "";
-  else
-      if command -v dropbox > /dev/null; then
-          echo "Restart Dropbox.."
-          #dropbox start &> /dev/null &
-      fi
-  fi
-#+end_src
 ****** ~/bin/my-i3b-bluetooth
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
 #+begin_src bash :tangle "~/bin/my-i3b-bluetooth"
@@ -2063,6 +1962,107 @@ return the brightness %
   fi
 #+end_src
 
+****** ~/bin/my-i3b-cpu
+#+begin_src bash :tangle "~/bin/my-i3b-cpu"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec i3bm-cpu
+#+end_src
+****** ~/bin/my-i3b-date-cal
+#+begin_src bash :tangle "~/bin/my-i3b-date-cal"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec echo "📅$(date +"%a, %d %b: %H:%M")"
+#+end_src
+****** ~/bin/my-i3b-db-status
+#+begin_src bash :tangle "~/bin/my-i3b-db-status"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  if pidof dropbox > /dev/null ; then
+      stat=$(dropbox status | sed -n 1p)
+      echo "⇄${stat}"; echo "";
+  else
+      if command -v dropbox > /dev/null; then
+          echo "⇄Restart Dropbox.."
+          #dropbox start &> /dev/null &
+      fi
+  fi
+#+end_src
+****** ~/bin/my-i3b-db-status
+#+begin_src bash :tangle "~/bin/my-i3b-db-status"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+    case $BLOCK_BUTTON in
+        1)
+            sway-www "https://www.dropbox.com/home"  &> /dev/null
+            ;;
+        ,,*)
+            ;;
+    esac
+
+  if pidof dropbox > /dev/null ; then
+      stat=$(dropbox status | sed -n 1p)
+      echo "DB:${stat}"; echo "";
+  else
+      if command -v dropbox > /dev/null; then
+          echo "Restart Dropbox.."
+          #dropbox start &> /dev/null &
+      fi
+  fi
+#+end_src
+****** ~/bin/my-i3b-kernel
+#+begin_src bash :tangle "~/bin/my-i3b-kernel"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          oneterminal "bpytop-kernel" bpytop &>/dev/null &
+          ;;
+      ,*)
+          ;;
+  esac
+  echo "$(uname -sr)"
+#+end_src
+****** ~/bin/my-i3b-temperature
+#+begin_src bash :tangle "~/bin/my-i3b-temperature"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec /usr/share/i3blocks/temperature
+#+end_src
+****** ~/bin/my-i3b-uptime
+#+begin_src bash :tangle "~/bin/my-i3b-uptime"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1)
+          sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+          ;;
+      ,*)
+          ;;
+  esac
+  exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+#+end_src
 ****** ~/bin/my-i3b-volume
 return the volume %
 #+begin_src bash :tangle "~/bin/my-i3b-volume"
@@ -2077,16 +2077,6 @@ return the volume %
   esac
   exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
 #+end_src
-****** ~/bin/my-i3b-wifi
-return the volume %
-#+begin_src bash :tangle "~/bin/my-i3b-wifi"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  case $BLOCK_BUTTON in
-      1) oneterminal "wifi" "nmtui"  &>/dev/null &
-  esac
-  exec i3bm-wifi
-#+end_src
 ****** ~/bin/my-i3b-weather
 return the volume %
 #+begin_src bash :tangle "~/bin/my-i3b-weather"
@@ -2100,6 +2090,16 @@ return the volume %
           ;;
   esac
   exec i3bm-weather
+#+end_src
+****** ~/bin/my-i3b-wifi
+return the volume %
+#+begin_src bash :tangle "~/bin/my-i3b-wifi"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  case $BLOCK_BUTTON in
+      1) oneterminal "wifi" "nmtui"  &>/dev/null &
+  esac
+  exec i3bm-wifi
 #+end_src
 * Vim
 ** ~/.vimrc
