@@ -330,8 +330,7 @@ assign [class="Steam"] $ws9
 
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
-for_window [app_id="nmtui"] floating enable
-for_window [class="nmtui"] floating enable
+for_window [app_id="wifi"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""

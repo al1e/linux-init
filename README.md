@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga16378d"></a>
+<a id="orge65164e"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org791273b"></a>
+<a id="org747c59f"></a>
 
 ## ~/.bash\_profile
 
@@ -1040,8 +1040,7 @@ assign [class="Steam"] $ws9
 ```conf
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
-for_window [app_id="nmtui"] floating enable
-for_window [class="nmtui"] floating enable
+for_window [app_id="wifi"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 ```
 
@@ -2156,7 +2155,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org791273b) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org747c59f) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2168,7 +2167,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga16378d)
+    Added to PATH in [~/.profile](#orge65164e)
 
 
 ### Debuggers     :debuggers:
