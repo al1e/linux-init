@@ -43,6 +43,11 @@
 
 !/DotFiles
 
+!/DotFiles/.gnupg
+!/DotFiles/.gnupg/gpg.conf
+!/DotFiles/.gnupg/gpg-agent.conf
+
+
 !/DotFiles/.bashrc
 !/DotFiles/.bash_profile
 !/DotFiles/.mbsyncrc

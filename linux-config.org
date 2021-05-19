@@ -2654,14 +2654,12 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 #+begin_src conf :tangle "~/.gnupg/gpg.conf"
   # Maintained in linux-init-files.org
   use-agent
-  default-key AB23BE58
 #+end_src
 
 ** ~/.gnupg/gpg-agent.conf
 #+begin_src conf :tangle "~/.gnupg/gpg-agent.conf"
   # Maintained in linux-init-files.org
   #gpg-preset-passphrase
-  default-key AB23BE58
   allow-preset-passphrase
   pinentry-program /usr/bin/pinentry
   max-cache-ttl 86400
