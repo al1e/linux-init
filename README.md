@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgb586e47"></a>
+<a id="org0f89441"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org9505711"></a>
+<a id="org5989af5"></a>
 
 ## ~/.bash\_profile
 
@@ -1518,10 +1518,10 @@ modifier $mod
 
             if pidof dropbox > /dev/null ; then
                 stat=$(dropbox status | sed -n 1p)
-                echo "DB:${stat}"; echo "";
+                echo "⇄${stat}"; echo "";
             else
                 if command -v dropbox > /dev/null; then
-                    echo "Restart Dropbox.."
+                    echo "⇄Restart Dropbox.."
                     #dropbox start &> /dev/null &
                 fi
             fi
@@ -2174,7 +2174,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org9505711) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org5989af5) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2186,7 +2186,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgb586e47)
+    Added to PATH in [~/.profile](#org0f89441)
 
 
 ### Debuggers     :debuggers:
@@ -2225,7 +2225,6 @@ e dbg.bep=main
 ```conf
 # Maintained in linux-init-files.org
 use-agent
-default-key AB23BE58
 ```
 
 
@@ -2234,7 +2233,6 @@ default-key AB23BE58
 ```conf
 # Maintained in linux-init-files.org
 #gpg-preset-passphrase
-default-key AB23BE58
 allow-preset-passphrase
 pinentry-program /usr/bin/pinentry
 max-cache-ttl 86400
