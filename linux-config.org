@@ -1889,8 +1889,8 @@ Load a host specific kanshi file if it exists
 
 #+end_src
 ***** i3blocks utilities
-****** ~/bin/my-i3b-battery-status
-#+begin_src bash :tangle "~/bin/my-i3b-battery-status"
+****** ~/bin/sway/my-i3b-battery-status
+#+begin_src bash :tangle "~/bin/sway/my-i3b-battery-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -1906,9 +1906,9 @@ Load a host specific kanshi file if it exists
   fi
   echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
-****** ~/bin/my-i3b-bluetooth
+****** ~/bin/sway/my-i3b-bluetooth
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
-#+begin_src bash :tangle "~/bin/my-i3b-bluetooth"
+#+begin_src bash :tangle "~/bin/sway/my-i3b-bluetooth"
   #!/usr/bin/env bash
 
 
@@ -1957,9 +1957,9 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       echo ""
   fi
 #+end_src
-****** ~/bin/my-i3b-brightness
+****** ~/bin/sway/my-i3b-brightness
 return the brightness %
-#+begin_src bash :tangle "~/bin/my-i3b-brightness"
+#+begin_src bash :tangle "~/bin/sway/my-i3b-brightness"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
@@ -1970,8 +1970,8 @@ return the brightness %
   fi
 #+end_src
 
-****** ~/bin/my-i3b-cpu
-#+begin_src bash :tangle "~/bin/my-i3b-cpu"
+****** ~/bin/sway/my-i3b-cpu
+#+begin_src bash :tangle "~/bin/sway/my-i3b-cpu"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -1983,21 +1983,21 @@ return the brightness %
   esac
   exec i3bm-cpu
 #+end_src
-****** ~/bin/my-i3b-date-cal
-#+begin_src bash :tangle "~/bin/my-i3b-date-cal"
+****** ~/bin/sway/my-i3b-date-cal
+#+begin_src bash :tangle "~/bin/sway/my-i3b-date-cal"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
       1)
-          sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
+          sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
           ;;
       ,*)
           ;;
   esac
   exec echo "📅$(date +"%a, %d %b: %H:%M")"
 #+end_src
-****** ~/bin/my-i3b-db-status
-#+begin_src bash :tangle "~/bin/my-i3b-db-status"
+****** ~/bin/sway/my-i3b-db-status
+#+begin_src bash :tangle "~/bin/sway/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   if pidof dropbox > /dev/null ; then
@@ -2010,8 +2010,8 @@ return the brightness %
       fi
   fi
 #+end_src
-****** ~/bin/my-i3b-db-status
-#+begin_src bash :tangle "~/bin/my-i3b-db-status"
+****** ~/bin/sway/my-i3b-db-status
+#+begin_src bash :tangle "~/bin/sway/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
     case $BLOCK_BUTTON in
@@ -2032,8 +2032,8 @@ return the brightness %
       fi
   fi
 #+end_src
-****** ~/bin/my-i3b-kernel
-#+begin_src bash :tangle "~/bin/my-i3b-kernel"
+****** ~/bin/sway/my-i3b-kernel
+#+begin_src bash :tangle "~/bin/sway/my-i3b-kernel"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -2045,8 +2045,8 @@ return the brightness %
   esac
   echo "$(uname -sr)"
 #+end_src
-****** ~/bin/my-i3b-temperature
-#+begin_src bash :tangle "~/bin/my-i3b-temperature"
+****** ~/bin/sway/my-i3b-temperature
+#+begin_src bash :tangle "~/bin/sway/my-i3b-temperature"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -2058,8 +2058,8 @@ return the brightness %
   esac
   exec /usr/share/i3blocks/temperature
 #+end_src
-****** ~/bin/my-i3b-uptime
-#+begin_src bash :tangle "~/bin/my-i3b-uptime"
+****** ~/bin/sway/my-i3b-uptime
+#+begin_src bash :tangle "~/bin/sway/my-i3b-uptime"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -2071,9 +2071,9 @@ return the brightness %
   esac
   exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 #+end_src
-****** ~/bin/my-i3b-volume
+****** ~/bin/sway/my-i3b-volume
 return the volume %
-#+begin_src bash :tangle "~/bin/my-i3b-volume"
+#+begin_src bash :tangle "~/bin/sway/my-i3b-volume"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -2085,9 +2085,9 @@ return the volume %
   esac
   exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
 #+end_src
-****** ~/bin/my-i3b-weather
+****** ~/bin/sway/my-i3b-weather
 return the volume %
-#+begin_src bash :tangle "~/bin/my-i3b-weather"
+#+begin_src bash :tangle "~/bin/sway/my-i3b-weather"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
@@ -2099,9 +2099,9 @@ return the volume %
   esac
   exec i3bm-weather
 #+end_src
-****** ~/bin/my-i3b-wifi
+****** ~/bin/sway/my-i3b-wifi
 return the volume %
-#+begin_src bash :tangle "~/bin/my-i3b-wifi"
+#+begin_src bash :tangle "~/bin/sway/my-i3b-wifi"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in

@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orga718cdc"></a>
+<a id="orgbe5e915"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org72e7e10"></a>
+<a id="orgc8b986b"></a>
 
 ## ~/.bash\_profile
 
@@ -1385,7 +1385,7 @@ modifier $mod
 
     2.  i3blocks utilities
 
-        1.  ~/bin/my-i3b-battery-status
+        1.  ~/bin/sway/my-i3b-battery-status
 
             ```bash
             #!/usr/bin/bash
@@ -1404,7 +1404,7 @@ modifier $mod
             echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
             ```
 
-        2.  ~/bin/my-i3b-bluetooth
+        2.  ~/bin/sway/my-i3b-bluetooth
 
             Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
@@ -1458,7 +1458,7 @@ modifier $mod
             fi
             ```
 
-        3.  ~/bin/my-i3b-brightness
+        3.  ~/bin/sway/my-i3b-brightness
 
             return the brightness %
 
@@ -1473,7 +1473,7 @@ modifier $mod
             fi
             ```
 
-        4.  ~/bin/my-i3b-cpu
+        4.  ~/bin/sway/my-i3b-cpu
 
             ```bash
             #!/usr/bin/bash
@@ -1488,14 +1488,14 @@ modifier $mod
             exec i3bm-cpu
             ```
 
-        5.  ~/bin/my-i3b-date-cal
+        5.  ~/bin/sway/my-i3b-date-cal
 
             ```bash
             #!/usr/bin/bash
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    sway-www "https://navigator.gmx.net/calendar?sid=2806623e0275885527e6231892f7917c1624879b7fa6ca66bcca9f8e2b23de2d90fabd7499f61b2d1063ba6b7281b277" &> /dev/null
+                    sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
                     ;;
                 *)
                     ;;
@@ -1503,7 +1503,7 @@ modifier $mod
             exec echo "📅$(date +"%a, %d %b: %H:%M")"
             ```
 
-        6.  ~/bin/my-i3b-db-status
+        6.  ~/bin/sway/my-i3b-db-status
 
             ```bash
             #!/usr/bin/bash
@@ -1519,7 +1519,7 @@ modifier $mod
             fi
             ```
 
-        7.  ~/bin/my-i3b-db-status
+        7.  ~/bin/sway/my-i3b-db-status
 
             ```bash
             #!/usr/bin/bash
@@ -1543,7 +1543,7 @@ modifier $mod
             fi
             ```
 
-        8.  ~/bin/my-i3b-kernel
+        8.  ~/bin/sway/my-i3b-kernel
 
             ```bash
             #!/usr/bin/bash
@@ -1558,7 +1558,7 @@ modifier $mod
             echo "$(uname -sr)"
             ```
 
-        9.  ~/bin/my-i3b-temperature
+        9.  ~/bin/sway/my-i3b-temperature
 
             ```bash
             #!/usr/bin/bash
@@ -1573,7 +1573,7 @@ modifier $mod
             exec /usr/share/i3blocks/temperature
             ```
 
-        10. ~/bin/my-i3b-uptime
+        10. ~/bin/sway/my-i3b-uptime
 
             ```bash
             #!/usr/bin/bash
@@ -1588,7 +1588,7 @@ modifier $mod
             exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
             ```
 
-        11. ~/bin/my-i3b-volume
+        11. ~/bin/sway/my-i3b-volume
 
             return the volume %
 
@@ -1605,7 +1605,7 @@ modifier $mod
             exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
             ```
 
-        12. ~/bin/my-i3b-weather
+        12. ~/bin/sway/my-i3b-weather
 
             return the volume %
 
@@ -1622,7 +1622,7 @@ modifier $mod
             exec i3bm-weather
             ```
 
-        13. ~/bin/my-i3b-wifi
+        13. ~/bin/sway/my-i3b-wifi
 
             return the volume %
 
@@ -2190,7 +2190,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org72e7e10) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgc8b986b) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2202,7 +2202,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orga718cdc)
+    Added to PATH in [~/.profile](#orgbe5e915)
 
 
 ### Debuggers     :debuggers:
