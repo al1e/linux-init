@@ -2,7 +2,7 @@
 #Maintained in linux-init-files.org
 case $BLOCK_BUTTON in
     1)
-        sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+        oneterminal "htop-kernel" htop &>/dev/null
         ;;
     *)
         ;;

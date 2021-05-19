@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgbe5e915"></a>
+<a id="org3e4e3fc"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgc8b986b"></a>
+<a id="org4366d26"></a>
 
 ## ~/.bash\_profile
 
@@ -1392,7 +1392,6 @@ modifier $mod
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    oneterminal "htop-kernel" htop &>/dev/null &
                     ;;
                 ,*)
                     ;;
@@ -1480,7 +1479,7 @@ modifier $mod
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                    oneterminal "htop-kernel" htop &>/dev/null
                     ;;
                 *)
                     ;;
@@ -1508,22 +1507,6 @@ modifier $mod
             ```bash
             #!/usr/bin/bash
             #Maintained in linux-init-files.org
-            if pidof dropbox > /dev/null ; then
-                stat=$(dropbox status | sed -n 1p)
-                echo "⇄${stat}"; echo "";
-            else
-                if command -v dropbox > /dev/null; then
-                    echo "⇄Restart Dropbox.."
-                    #dropbox start &> /dev/null &
-                fi
-            fi
-            ```
-
-        7.  ~/bin/sway/my-i3b-db-status
-
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-init-files.org
               case $BLOCK_BUTTON in
                   1)
                       sway-www "https://www.dropbox.com/home"  &> /dev/null
@@ -1543,14 +1526,14 @@ modifier $mod
             fi
             ```
 
-        8.  ~/bin/sway/my-i3b-kernel
+        7.  ~/bin/sway/my-i3b-kernel
 
             ```bash
             #!/usr/bin/bash
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    oneterminal "bpytop-kernel" bpytop &>/dev/null &
+                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
                     ;;
                 *)
                     ;;
@@ -1558,7 +1541,7 @@ modifier $mod
             echo "$(uname -sr)"
             ```
 
-        9.  ~/bin/sway/my-i3b-temperature
+        8.  ~/bin/sway/my-i3b-temperature
 
             ```bash
             #!/usr/bin/bash
@@ -1573,14 +1556,14 @@ modifier $mod
             exec /usr/share/i3blocks/temperature
             ```
 
-        10. ~/bin/sway/my-i3b-uptime
+        9.  ~/bin/sway/my-i3b-uptime
 
             ```bash
             #!/usr/bin/bash
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                    oneterminal "bpytop-kernel" bpytop &>/dev/null
                     ;;
                 *)
                     ;;
@@ -1588,7 +1571,7 @@ modifier $mod
             exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
             ```
 
-        11. ~/bin/sway/my-i3b-volume
+        10. ~/bin/sway/my-i3b-volume
 
             return the volume %
 
@@ -1605,7 +1588,7 @@ modifier $mod
             exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
             ```
 
-        12. ~/bin/sway/my-i3b-weather
+        11. ~/bin/sway/my-i3b-weather
 
             return the volume %
 
@@ -1622,7 +1605,7 @@ modifier $mod
             exec i3bm-weather
             ```
 
-        13. ~/bin/sway/my-i3b-wifi
+        12. ~/bin/sway/my-i3b-wifi
 
             return the volume %
 
@@ -2190,7 +2173,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgc8b986b) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org4366d26) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2202,7 +2185,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgbe5e915)
+    Added to PATH in [~/.profile](#org3e4e3fc)
 
 
 ### Debuggers     :debuggers:
@@ -2238,9 +2221,10 @@ e dbg.bep=main
 
 ## ~/.gnupg/gpg.conf
 
-```gpg
+```conf
 # Maintained in linux-init-files.org
 use-agent
+default-key AB23BE58
 ```
 
 
@@ -2249,6 +2233,7 @@ use-agent
 ```conf
 # Maintained in linux-init-files.org
 #gpg-preset-passphrase
+default-key AB23BE58
 allow-preset-passphrase
 pinentry-program /usr/bin/pinentry
 max-cache-ttl 86400
@@ -2264,6 +2249,13 @@ enable-ssh-support
 ```bash
 export USER_STARTX_START=
 ```
+
+
+## ~/.profile.local     :crypt:
+
+&#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+
+hQEMA7IjL5SkHG4iAQgAnAMLgodgtOc1tsGz6mRqJbkJsM+R+5MTPdsOdml6xMoL xFZjkYTDUGa3G6PsQHpbJ/tjD+6B4qmZIymq1EReWPtrepGGN6DNG8hLPVNnQ+9N WAFaK1o+gzzfsw9XuptT5Um47k2G3zm019mGKDe0OwYJJ/r/DTHpz9yI9nj5lVdq sdk0Y/WQL/5mcraC7LPz0FhIhuXqKKFNvcQCA6D0fTWJxlzqvXRzuc44LN+mvozq 9Q4WbvXp/etZjeiUYjXmz70KEYxFIch3OR4EGmV41apfojLTmR9R2dp/u3jYexMy NlXugS5egyP+ioiuuTcCsSjN4rxnDwSW868lLkdhIdLAPgFdxEWpJjtaJO0A9aIB 6lJTRLKPzuwTyGiyRdKO8yqYFYwllgfEr/87qcB/ajjRpkhw9tlD8zTrODt4ZUu2 MQQHK2rzvplmgDf2LvDMiM2gv7z4bI3YzOTiGu6m+SxW/j8LA71WRMwhFmUObgOb g44XzdKHAV0o0Q/ZPPnJU4dlKc9nRkNS3MzpORmUGAT1/FSwt+q7uzpuBTZ1crGl P/fo8sDBBu2QBoL2+gQZ11l7uSZMjTCR/8msBO5LbLDmyOUposbv6va1dzPN898F ZsaqN9VNjV2b75kQiPJsZaoekClV7yOFc10/VRKBFD1MlspEovrIpReI9by6azIU =nb0T &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 
 # systemd

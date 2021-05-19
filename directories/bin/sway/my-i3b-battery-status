@@ -2,7 +2,6 @@
 #Maintained in linux-init-files.org
 case $BLOCK_BUTTON in
     1)
-        oneterminal "htop-kernel" htop &>/dev/null &
         ;;
     ,*)
         ;;
