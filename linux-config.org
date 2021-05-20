@@ -1899,10 +1899,6 @@ Load a host specific kanshi file if it exists
   # interval=900
   # color=#A4C2F4
 
-  [time]
-  command=my-i3b-date-cal
-  interval=60
-
   [brightness]
   command=my-i3b-brightness
   color=#FFD700
@@ -1922,6 +1918,10 @@ Load a host specific kanshi file if it exists
   [wifi]
   markup=pango
   command=my-i3b-wifi
+  interval=60
+
+  [time]
+  command=my-i3b-date-cal
   interval=60
 
 #+end_src

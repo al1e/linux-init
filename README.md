@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org423963b"></a>
+<a id="orgdda9f6b"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org787ef86"></a>
+<a id="org9579b2c"></a>
 
 ## ~/.bash\_profile
 
@@ -1404,10 +1404,6 @@ modifier $mod
         # interval=900
         # color=#A4C2F4
 
-        [time]
-        command=my-i3b-date-cal
-        interval=60
-
         [brightness]
         command=my-i3b-brightness
         color=#FFD700
@@ -1427,6 +1423,10 @@ modifier $mod
         [wifi]
         markup=pango
         command=my-i3b-wifi
+        interval=60
+
+        [time]
+        command=my-i3b-date-cal
         interval=60
 
         ```
@@ -2224,7 +2224,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org787ef86) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org9579b2c) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2236,7 +2236,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org423963b)
+    Added to PATH in [~/.profile](#orgdda9f6b)
 
 
 ### Debuggers     :debuggers:
