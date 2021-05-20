@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org298ae05"></a>
+<a id="org571fa0f"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org45201a6"></a>
+<a id="orgf5acb22"></a>
 
 ## ~/.bash\_profile
 
@@ -590,7 +590,14 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
 
 
-## DONE xkb keyboard     :ARCHIVE:
+## xkb keyboard
+
+Set keyboard layout. Override in .profile.local
+
+```bash
+export XKB_DEFAULT_LAYOUT=de
+export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+```
 
 
 ## Gnome     :ARCHIVE:
@@ -2190,7 +2197,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org45201a6) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#orgf5acb22) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2202,7 +2209,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org298ae05)
+    Added to PATH in [~/.profile](#org571fa0f)
 
 
 ### Debuggers     :debuggers:

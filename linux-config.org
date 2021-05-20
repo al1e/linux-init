@@ -1144,15 +1144,9 @@ Written to find the tty for a pane in order to redirect gef context source to a 
 * Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
-** DONE xkb keyboard                                                :ARCHIVE:
-CLOSED: [2021-05-19 Wed 11:55] SCHEDULED: <2021-05-18 Tue>
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2021-05-19 Wed 11:55]
-- Note taken on [2021-05-18 Tue 00:41] \\
-  need to look into xkb stuff
-- State "TODO"       from              [2021-05-18 Tue 00:41]
-:END:
+** xkb keyboard
 Set keyboard layout.
+Override in .profile.local
 #+begin_src bash :tangle "DotFiles/.profile"
   export XKB_DEFAULT_LAYOUT=de
   export XKB_DEFAULT_OPTIONS=ctrl:nocaps
