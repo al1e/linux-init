@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org245d8ad"></a>
+<a id="org423963b"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org90976a9"></a>
+<a id="org787ef86"></a>
 
 ## ~/.bash\_profile
 
@@ -1094,6 +1094,10 @@ for_window [app_id="sway-launcher"] floating enable
     ```bash
     #!/usr/bin/bash
     # Maintained in linux-init-files.org
+
+    # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
+    # get the app_id/class instance instead. But.. it works.
+
     id="$1"
     script="$2"
     [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
@@ -2220,7 +2224,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org90976a9) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org787ef86) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2232,7 +2236,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org245d8ad)
+    Added to PATH in [~/.profile](#org423963b)
 
 
 ### Debuggers     :debuggers:

@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
+
+# NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
+# get the app_id/class instance instead. But.. it works.
+
 id="$1"
 script="$2"
 [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
