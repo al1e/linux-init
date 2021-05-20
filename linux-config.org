@@ -1759,20 +1759,20 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
 #+begin_src bash :tangle ~/bin/sway/sway-screenshot
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-#!/bin/sh
+  # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
-DIR=${HOME}/tmp/Screenshots
+  DIR=${HOME}/tmp/Screenshots
 
-mkdir -p "${DIR}"
+  mkdir -p "${DIR}"
 
-FILENAME="screenshot-$(date +%F-%T).png"
-grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+  FILENAME="screenshot-$(date +%F-%T).png"
+  grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
 
-#Create a link, so don't have to search for the newest
-ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+  #Create a link, so don't have to search for the newest
+  ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
 
-#Copy to the buffer
-wl-copy < "${DIR}"/screenshot-latest.png
+  #Copy to the buffer
+  wl-copy < "${DIR}"/screenshot-latest.png
 #+end_src
 **** kanshi                                                          :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi

@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org01bb40c"></a>
+<a id="org245d8ad"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org50cc134"></a>
+<a id="org90976a9"></a>
 
 ## ~/.bash\_profile
 
@@ -1254,9 +1254,9 @@ for_window [app_id="sway-launcher"] floating enable
     Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/>
 
     ```bash
-      #!/usr/bin/bash
-      # Maintained in linux-init-files.org
-    #!/bin/sh
+    #!/usr/bin/bash
+    # Maintained in linux-init-files.org
+    # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
     DIR=${HOME}/tmp/Screenshots
 
@@ -2220,7 +2220,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org50cc134) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org90976a9) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2232,7 +2232,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org01bb40c)
+    Added to PATH in [~/.profile](#org245d8ad)
 
 
 ### Debuggers     :debuggers:
