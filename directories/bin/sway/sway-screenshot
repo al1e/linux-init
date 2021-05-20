@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+  # Maintained in linux-init-files.org
+#!/bin/sh
+
+DIR=${HOME}/tmp/Screenshots
+
+mkdir -p "${DIR}"
+
+FILENAME="screenshot-$(date +%F-%T).png"
+grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+
+#Create a link, so don't have to search for the newest
+ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+
+#Copy to the buffer
+wl-copy < "${DIR}"/screenshot-latest.png

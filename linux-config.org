@@ -1568,7 +1568,6 @@ X11 apps still need resource definitions when launched under XWayland.
   for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
-
 *** apps keybindings
 #+begin_src conf
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
@@ -1602,7 +1601,7 @@ X11 apps still need resource definitions when launched under XWayland.
   for_window [app_id="sway-launcher"] floating enable
 #+end_src
 
-*** Sway Related Scripts                                       :sway:wayland:
+*** bin,scripts                                                :sway:wayland:
 **** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"
   #!/usr/bin/bash
@@ -1753,6 +1752,27 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+#+end_src
+
+**** ~/bin/sway/sway-screenshot
+Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
+#+begin_src bash :tangle ~/bin/sway/sway-screenshot
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+#!/bin/sh
+
+DIR=${HOME}/tmp/Screenshots
+
+mkdir -p "${DIR}"
+
+FILENAME="screenshot-$(date +%F-%T).png"
+grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+
+#Create a link, so don't have to search for the newest
+ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+
+#Copy to the buffer
+wl-copy < "${DIR}"/screenshot-latest.png
 #+end_src
 **** kanshi                                                          :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi

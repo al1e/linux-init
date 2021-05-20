@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org571fa0f"></a>
+<a id="org01bb40c"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="orgf5acb22"></a>
+<a id="org50cc134"></a>
 
 ## ~/.bash\_profile
 
@@ -1087,7 +1087,7 @@ for_window [app_id="sway-launcher"] floating enable
 ```
 
 
-### Sway Related Scripts     :sway:wayland:
+### bin,scripts     :sway:wayland:
 
 1.  ~/bin/sway/sway-do-tool
 
@@ -1249,7 +1249,30 @@ for_window [app_id="sway-launcher"] floating enable
     exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
     ```
 
-10. kanshi     :kanshi:
+10. ~/bin/sway/sway-screenshot
+
+    Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/>
+
+    ```bash
+      #!/usr/bin/bash
+      # Maintained in linux-init-files.org
+    #!/bin/sh
+
+    DIR=${HOME}/tmp/Screenshots
+
+    mkdir -p "${DIR}"
+
+    FILENAME="screenshot-$(date +%F-%T).png"
+    grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+
+    #Create a link, so don't have to search for the newest
+    ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+
+    #Copy to the buffer
+    wl-copy < "${DIR}"/screenshot-latest.png
+    ```
+
+11. kanshi     :kanshi:
 
     Monitor control with hotplug <https://github.com/emersion/kanshi>
 
@@ -2197,7 +2220,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#orgf5acb22) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org50cc134) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2209,7 +2232,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#org571fa0f)
+    Added to PATH in [~/.profile](#org01bb40c)
 
 
 ### Debuggers     :debuggers:
