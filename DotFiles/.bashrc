@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-logger -t "startup-initfile"  BASHRC
+rgr-logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples

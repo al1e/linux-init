@@ -1,5 +1,5 @@
 # Maintained in linux-init-files.org
-logger -t "startup-initfile"  ZSHRC
+rgr-logger -t "startup-initfile"  ZSHRC
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 export TERM="xterm-256color"
 # Path to your oh-my-zsh installation.

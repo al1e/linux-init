@@ -8,19 +8,19 @@ id="$1"
 script="$2"
 [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
 if swaymsg "[title=${id}] focus" &> /dev/null; then
-    logger -t "sway-do-tool" "title ${id} found"
+    rgr-logger -t "sway-do-tool" "title ${id} found"
 else
     if  swaymsg "[class=^${id}] focus" &> /dev/null; then
-        logger -t "sway-do-tool" "class ${id} found"
+        rgr-logger -t "sway-do-tool" "class ${id} found"
     else
         if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-            logger -t "sway-do-tool" "app_id ${id} found"
+            rgr-logger -t "sway-do-tool" "app_id ${id} found"
         else
             if [ ! -z "$script" ]; then
-                logger -t "sway-do-tool" "evaling script $scipt"
+                rgr-logger -t "sway-do-tool" "evaling script $scipt"
                 eval "$script" &
             else
-                logger -t "sway-do-tool" "exiting"
+                rgr-logger -t "sway-do-tool" "exiting"
                 exit 1
             fi
         fi

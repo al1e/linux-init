@@ -10,17 +10,20 @@ tflags="${3}"
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 if ! sway-do-tool "$title"; then
-    logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-    logger -t "oneterminal" "and attaching a session ${sessionname}"
-    logger -t "oneterminal" "if it exists else created with script ${script}."
+    rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
+    if tmux has-session -t "${sessionname}"; then
+        rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
+    else
+        rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
+    fi
     alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
 else
-    logger -t "oneterminal" "Found an existing terminal $title."
+    rgr-logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
-        logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
+        rgr-logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
         tmux attach -t "${sessionname}"
     else
-        logger -t "oneterminal" "It was already attched to session ${sessionname}"
+        rgr-logger -t "oneterminal" "It was already attached to session ${sessionname}"
     fi
 fi
 exit 0

@@ -2,9 +2,9 @@
 #Maintained in linux-init-files.org
 config="$HOME/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then
-    logger -t "kanshi"  "$config"
+    rgr-logger -t "kanshi"  "$config"
     exec kanshi -c "$config"
 else
-    logger -t "kanshi"  "default config"
+    rgr-logger -t "kanshi"  "default config"
     exec kanshi
 fi

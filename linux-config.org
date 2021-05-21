@@ -136,14 +136,14 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
 #+begin_src bash :tangle "DotFiles/.xsession"
   #!/usr/bin/env bash
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  USER-XSESSION
+  rgr-logger -t "startup-initfile"  USER-XSESSION
   exec dbus-launch --sh-syntax --exit-with-session i3
 #+end_src
 ** ~/.xsessionrc
 #+begin_src bash :tangle "DotFiles/.xsessionrc"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  XSESSIONRC
+  rgr-logger -t "startup-initfile"  XSESSIONRC
   xhost +
 
   xset s off
@@ -193,7 +193,7 @@ Add machine specifics. The xmg neo 15 [[https://github.com/pobrn/ite8291r3-ctl][
 #+begin_src bash :tangle "no"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  XSESSIONRC-LOCAL
+  rgr-logger -t "startup-initfile"  XSESSIONRC-LOCAL
   # sugestions for .xsessionrc.local
   # export XIDLEHOOK_KBD=60
   # export XIDLEHOOK_DIM=120
@@ -239,7 +239,7 @@ Just a gathering place of locky/suspendy type things...
   # Maintained in linux-init-files.org
 
   # lock() {
-  #     logger -t "x-lock-utils"  lock
+  #     rgr-logger -t "x-lock-utils"  lock
   #     pre-lock
   #     xbacklight -set 5
   #     xset dpms 5 0 0
@@ -254,7 +254,7 @@ Just a gathering place of locky/suspendy type things...
   }
 
   lock_gpg_clear() {
-      logger -t "x-lock-utils"  lock_gpg_clear
+      rgr-logger -t "x-lock-utils"  lock_gpg_clear
       [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
       lock
   }
@@ -688,7 +688,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 
 #+begin_src bash :tangle "DotFiles/.profile"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  PROFILE
+  rgr-logger -t "startup-initfile"  PROFILE
 
   # ~/.profile: executed by the command interpreter for login shells.
   # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
@@ -744,7 +744,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 #+begin_src bash :tangle "DotFiles/.bash_profile"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  BASH_PROFILE
+  rgr-logger -t "startup-initfile"  BASH_PROFILE
 
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
@@ -762,7 +762,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 #+begin_src bash :tangle "DotFiles/.bashrc"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  BASHRC
+  rgr-logger -t "startup-initfile"  BASHRC
   # ~/.bashrc: executed by bash(1) for non-login shells.
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
@@ -815,7 +815,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 ** ~/.config/zsh/.zshrc
 #+begin_src bash :tangle "~/.config/zsh/.zshrc"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ZSHRC
+  rgr-logger -t "startup-initfile"  ZSHRC
   [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
   export TERM="xterm-256color"
   # Path to your oh-my-zsh installation.
@@ -942,14 +942,14 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 ** ~/.config/zsh/.zlogin
 #+begin_src bash :tangle "~/.config/zsh/.zlogin"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ZLOGIN
+  rgr-logger -t "startup-initfile"  ZLOGIN
   # [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 #+end_src
 ** zprofile
 **** ~/.config/zsh/.zprofile
 #+begin_src bash :tangle "~/.config/zsh/.zprofile"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ZPROFILE
+  rgr-logger -t "startup-initfile"  ZPROFILE
   if [ -f ~/.profile ]; then
       emulate sh -c '. ~/.profile'
   fi
@@ -964,13 +964,13 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
   # shells invoked with the -l flag.)
   #
   # Global Order: zshenv, zprofile, zshrc, zlogin
-  logger -t "startup-initfile"  ETC-ZPROFILE
+  rgr-logger -t "startup-initfile"  ETC-ZPROFILE
 #+end_src
 ** zshenv
 **** etc/zsh/zshenv
 #+begin_src bash :tangle "etc/zsh/zshenv"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ETC-ZSHENV
+  rgr-logger -t "startup-initfile"  ETC-ZSHENV
   if [[ -z "$PATH" || "$PATH" == "/bin:/usr/bin" ]]
   then
       export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games"
@@ -983,7 +983,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 Link this into $HOME
 #+begin_src bash :tangle "~/.config/zsh/.zshenv"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ZSHENV
+  rgr-logger -t "startup-initfile"  ZSHENV
   if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
   then
       export XDG_CONFIG_HOME="$HOME/.config"
@@ -1014,7 +1014,7 @@ Directory is [[file:.oh-my-zsh/][here]].
 **  ~/bin/add-user-paths
 #+begin_src bash  :tangle "~/bin/add-user-paths"
   # Maintained in linux-init-files.org
-  logger -t "startup-initfile"  ADD_USER_PATHS
+  rgr-logger -t "startup-initfile"  ADD_USER_PATHS
   #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
 #+end_src
 * Tmux                                                                 :tmux:
@@ -1289,7 +1289,7 @@ X11 apps still need resource definitions when launched under XWayland.
   floating_modifier $mod
   # kill focused window
   bindsym $mod+q kill
-  bindsym $mod+0 close
+  bindsym $mod+0 kill
   default_border pixel
 
   # Font  for window titles. Will also be used by the bar unless a different font
@@ -1679,19 +1679,19 @@ X11 apps still need resource definitions when launched under XWayland.
   script="$2"
   [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
   if swaymsg "[title=${id}] focus" &> /dev/null; then
-      logger -t "sway-do-tool" "title ${id} found"
+      rgr-logger -t "sway-do-tool" "title ${id} found"
   else
       if  swaymsg "[class=^${id}] focus" &> /dev/null; then
-          logger -t "sway-do-tool" "class ${id} found"
+          rgr-logger -t "sway-do-tool" "class ${id} found"
       else
           if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-              logger -t "sway-do-tool" "app_id ${id} found"
+              rgr-logger -t "sway-do-tool" "app_id ${id} found"
           else
               if [ ! -z "$script" ]; then
-                  logger -t "sway-do-tool" "evaling script $scipt"
+                  rgr-logger -t "sway-do-tool" "evaling script $scipt"
                   eval "$script" &
               else
-                  logger -t "sway-do-tool" "exiting"
+                  rgr-logger -t "sway-do-tool" "exiting"
                   exit 1
               fi
           fi
@@ -1709,7 +1709,7 @@ Just a gathering place of locky/suspendy type things...
   }
 
   lock_gpg_clear() {
-      logger -t "x-lock-utils"  lock_gpg_clear
+      rgr-logger -t "x-lock-utils"  lock_gpg_clear
       [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
       lock
   }
@@ -1857,10 +1857,10 @@ Load a host specific kanshi file if it exists
   #Maintained in linux-init-files.org
   config="$HOME/.config/kanshi/config-$(hostname)"
   if [ -f  "$config" ]; then
-      logger -t "kanshi"  "$config"
+      rgr-logger -t "kanshi"  "$config"
       exec kanshi -c "$config"
   else
-      logger -t "kanshi"  "default config"
+      rgr-logger -t "kanshi"  "default config"
       exec kanshi
   fi
 #+end_src
@@ -3089,17 +3089,20 @@ if it exists jump to it else start it
   profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
   if ! sway-do-tool "$title"; then
-      logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-      logger -t "oneterminal" "and attaching a session ${sessionname}"
-      logger -t "oneterminal" "if it exists else created with script ${script}."
+      rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
+      if tmux has-session -t "${sessionname}"; then
+          rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
+      else
+          rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
+      fi
       alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
   else
-      logger -t "oneterminal" "Found an existing terminal $title."
+      rgr-logger -t "oneterminal" "Found an existing terminal $title."
       if ! tmux has-session -t  "${sessionname}"; then
-          logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
+          rgr-logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
           tmux attach -t "${sessionname}"
       else
-          logger -t "oneterminal" "It was already attched to session ${sessionname}"
+          rgr-logger -t "oneterminal" "It was already attached to session ${sessionname}"
       fi
   fi
   exit 0
@@ -3327,18 +3330,17 @@ restart pulseaudio
 
 #+include: "directories/development/projects/utilities/resgithub/resgithub.sh" src bash :tangle bin/resgithub.sh
 
+** ~/bin/rgr-logger
+#+begin_src bash :tangle ~/bin/rgr-logger
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  [ -z "$RGR-LOGGER" ] || logger "$@"
+#+end_src
 ** ~/bin/sharemouse
 #+begin_src bash :tangle "~/bin/sharemouse"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
   exec ssh -X ${1-192.168.2.100} x2x -east -to :0
-#+end_src
-** ~/bin/sys-logger
-Only log to syslog if MY_LOGGER -T "STARTUP-INITFILE" _ON is set
-#+begin_src bash :tangle "~/bin/sys-logger"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  [ -z "${MY_LOGGER} -T "STARTUP-INITFILE" _ON" ] || /usr/bin/logger -t "startup-initfile"  "$@"
 #+end_src
 ** ~/bin/upd
 update sw

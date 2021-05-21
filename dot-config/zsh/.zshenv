@@ -1,5 +1,5 @@
 # Maintained in linux-init-files.org
-logger -t "startup-initfile"  ZSHENV
+rgr-logger -t "startup-initfile"  ZSHENV
 if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
 then
     export XDG_CONFIG_HOME="$HOME/.config"

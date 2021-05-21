@@ -6,4 +6,4 @@
 # shells invoked with the -l flag.)
 #
 # Global Order: zshenv, zprofile, zshrc, zlogin
-logger -t "startup-initfile"  ETC-ZPROFILE
+rgr-logger -t "startup-initfile"  ETC-ZPROFILE

@@ -18,7 +18,7 @@ mouse_warping none
 floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
-bindsym $mod+0 close
+bindsym $mod+0 kill
 default_border pixel
 
 # Font  for window titles. Will also be used by the bar unless a different font
