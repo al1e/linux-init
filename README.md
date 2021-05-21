@@ -70,7 +70,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="orgdda9f6b"></a>
+<a id="orga9e3eeb"></a>
 
 ## ~/.profile
 
@@ -123,7 +123,7 @@ fi
 ```
 
 
-<a id="org9579b2c"></a>
+<a id="org5eb3746"></a>
 
 ## ~/.bash\_profile
 
@@ -1101,8 +1101,8 @@ for_window [app_id="sway-launcher"] floating enable
     id="$1"
     script="$2"
     [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
-    if swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-        echo "app_id ${id} found"
+    if swaymsg "[title=${id}] focus" &> /dev/null; then
+        echo "title ${id} found"
     else
         if  swaymsg "[class=^${id}] focus" &> /dev/null; then
             echo "class ${id} found"
@@ -2224,7 +2224,7 @@ e dbg.bep=main
     export PATH="${HOME}/.pyenv/bin":"${PATH}"
     ```
 
-2.  [Eval](#org9579b2c) pyenv init from bash\_profile in order to set python version
+2.  [Eval](#org5eb3746) pyenv init from bash\_profile in order to set python version
 
     ```bash
     eval "$(pyenv init -)"
@@ -2236,7 +2236,7 @@ e dbg.bep=main
     eval "$(pyenv virtualenv-init -)"
     ```
 
-    Added to PATH in [~/.profile](#orgdda9f6b)
+    Added to PATH in [~/.profile](#orga9e3eeb)
 
 
 ### Debuggers     :debuggers:
