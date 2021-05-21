@@ -1206,7 +1206,7 @@ X11 apps still need resource definitions when launched under XWayland.
 :header-args:conf: :tangle "~/.config/sway/config"
 :ID:       834da4bb-cc3f-4b6d-8201-c04c0d07981d
 :END:
-*** sway autostart
+*** autostart                                                     :autostart:
 #+begin_src conf
   #exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
   exec sway-kanshi
@@ -1245,19 +1245,21 @@ X11 apps still need resource definitions when launched under XWayland.
   Bindsym $mod+Shift+r restart
 
 #+end_src
-*** sway gaming                                                      :gaming:
+*** gaming                                                           :gaming:
 **** steam                                                            :steam:
 #+begin_src conf
   for_window [class="steam_app.*"] fullscreen enable
   for_window [class="steam_app*"] inhibit_idle focus
 #+end_src
-*** sway workspace
+*** navigation
 #+begin_src conf
   # change focus
   # bindsym $mod+h focus left
   # bindsym $mod+j focus down
   # bindsym $mod+k focus up
   # bindsym $mod+l focus right
+
+  bindsym $mod+o focus left
 
   # alternatively, you can use the cursor keys:
   bindsym $mod+Left focus left

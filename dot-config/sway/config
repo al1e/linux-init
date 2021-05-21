@@ -42,6 +42,8 @@ for_window [class="steam_app*"] inhibit_idle focus
 # bindsym $mod+k focus up
 # bindsym $mod+l focus right
 
+bindsym $mod+o focus left
+
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
