@@ -1,6 +1,5 @@
 exec xrdb -merge ~/.Xresources
 
-#exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
 exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook

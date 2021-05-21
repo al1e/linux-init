@@ -9,16 +9,9 @@ logger -t "startup-initfile"  BASH_PROFILE
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
 
-# disable tracker
-gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
-gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
-
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# # disable tracker
+# gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+# gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
 
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-# export USER_STARTX_NO_LOGOUT_ON_QUIT=""
-[ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ] && [ -f ~/.START_X ] && {
-    echo "Auto starting via startx with USER_STARTX_NO_LOGOUT_ON_QUIT:${USER_STARTX_NO_LOGOUT_ON_QUIT}"
-    [ -z "$USER_STARTX_NO_LOGOUT_ON_QUIT" ] && exec startx || startx
-}
+[ $(tty) = /dev/tty1 ] && exec sway

@@ -746,9 +746,9 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
   systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
   dropbox-start-once async
 
-  # disable tracker
-  gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
-  gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+  # # disable tracker
+  # gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+  # gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
 
 #+end_src
 ** ~/.bashrc
@@ -1158,7 +1158,7 @@ Override in .profile.local
 #+end_src
 ** swaysock for tmux
 #+begin_src bash :tangle "~/.config/zsh/.zshrc"
-  export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #+end_src
 ** ~/.Xresources
 *** resource file
@@ -1208,7 +1208,6 @@ X11 apps still need resource definitions when launched under XWayland.
 :END:
 *** autostart                                                     :autostart:
 #+begin_src conf
-  #exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
   exec sway-kanshi
   exec swaybg -i ~/Pictures/Wallpapers/current
   exec sway-idle-hook
@@ -1726,7 +1725,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-swaysock"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #+end_src
 **** ~/bin/sway/sway-display-swap
 https://i3wm.org/docs/user-contributed/swapping-workspaces.html
@@ -2656,20 +2655,10 @@ add voltron panes to an existing session
 *** pyvenv  https://github.com/pyenv/pyenv#installation
 **** add pyenv to path
 #+begin_src bash :tangle "DotFiles/.profile"
-  export PYENV_ROOT="${HOME}/.pyenv"
-  export PATH="${HOME}/.pyenv/bin":"${PATH}"
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
 #+end_src
-
-**** [[id:606c1aee-d313-42f6-a174-3f9e9fa97548][Eval]] pyenv init from bash_profile in order to set python version
-#+begin_src bash :tangle "DotFiles/.bash_profile"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-#+end_src
-#+begin_src bash :tangle "~/.config/zsh/.zshrc"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-#+end_src
-Added to PATH in [[id:a0ce8c14-82b5-468b-b942-5ca9cdc4d832][~/.profile]]
 *** Debuggers                                                     :debuggers:
 **** pdb                                                                :pdb:
 https://docs.python.org/3/library/pdb.html
@@ -3508,11 +3497,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 ** ~/.bash_profile
 #+begin_src bash :tangle "DotFiles/.bash_profile"
   [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-  # export USER_STARTX_NO_LOGOUT_ON_QUIT=""
-  [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ] && [ -f ~/.START_X ] && {
-      echo "Auto starting via startx with USER_STARTX_NO_LOGOUT_ON_QUIT:${USER_STARTX_NO_LOGOUT_ON_QUIT}"
-      [ -z "$USER_STARTX_NO_LOGOUT_ON_QUIT" ] && exec startx || startx
-  }
+  [ $(tty) = /dev/tty1 ] && exec sway
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"
