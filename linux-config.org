@@ -721,7 +721,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 
   #alias man=eman
 
-  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
+  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -730,6 +730,8 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
   then
       export XDG_CONFIG_HOME="$HOME/.config"
   fi
+
+  [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
 #+end_src
@@ -1147,6 +1149,11 @@ Written to find the tty for a pane in order to redirect gef context source to a 
   window="${3:-0}"
   tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tty}' | awk '/pane_index:'"${pane_index}"'/ {print $2 }'
 #+end_src
+* zellij terminal
+** config
+#+begin_src conf :tangle "~/.config/zellij/config"
+  simplified_ui: true
+#+end_src
 * Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
@@ -1282,6 +1289,7 @@ X11 apps still need resource definitions when launched under XWayland.
   floating_modifier $mod
   # kill focused window
   bindsym $mod+q kill
+  bindsym $mod+0 close
   default_border pixel
 
   # Font  for window titles. Will also be used by the bar unless a different font
@@ -1390,7 +1398,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+7 workspace number $ws7
   bindsym $mod+8 workspace number $ws8
   bindsym $mod+9 workspace number $ws9
-  bindsym $mod+0 workspace number $ws10
+#  bindsym $mod+0 workspace number $ws10
 
   # move focused container to workspace
   bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -1557,6 +1565,7 @@ X11 apps still need resource definitions when launched under XWayland.
   }
   mode "$mode_gaps_top" {
   bindsym plus  gaps top current plus 5
+
   bindsym minus gaps top current minus 5
   bindsym 0     gaps top current set 0
 
@@ -1651,6 +1660,7 @@ X11 apps still need resource definitions when launched under XWayland.
 
 *** app launcher                                                   :launcher:
 #+begin_src conf
+  #bindsym $mod+d exec sway-launcher-fzf
   bindsym $mod+d exec sway-launcher-wofi
   for_window [app_id="sway-launcher"] floating enable
 #+end_src
@@ -1807,7 +1817,7 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  dmenu_path | wofi --show drun -i | xargs swaymsg exec --
+  dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 #+end_src
 **** ~/bin/sway/sway-launcher-fzf
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
@@ -2272,7 +2282,7 @@ return the volume %
 
 * Conky
 ** ~/.config/conky/conky.conf
-#+begin_src conky :tangle "~/.config/conky/conky.conf"
+#+begin_src conf :tangle "~/.config/conky/conky.conf"
  --[[
  Conky, a system monitor, based on torsmo
 
@@ -3554,7 +3564,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 ** ~/.bash_profile
 #+begin_src bash :tangle "DotFiles/.bash_profile"
   [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-  [ $(tty) = /dev/tty1 ] && exec sway
+  [ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"

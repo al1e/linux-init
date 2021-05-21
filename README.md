@@ -115,7 +115,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.cargo/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -124,6 +124,8 @@ if [ -z "$XDG_CONFIG_HOME" ]
 then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
+
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
 ```
@@ -587,6 +589,16 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 ```
 
 
+# zellij terminal
+
+
+## config
+
+```conf
+simplified_ui: true
+```
+
+
 # Sway Wayland Compositing Tile Manager     :i3:swaywm:sway:
 
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
@@ -740,6 +752,7 @@ mouse_warping none
 floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
+bindsym $mod+0 close
 default_border pixel
 
 # Font  for window titles. Will also be used by the bar unless a different font
@@ -770,131 +783,131 @@ Bindsym $mod+Shift+r restart
 ### navigation                                  :navigation
 
 ```conf
-# change focus
-# bindsym $mod+h focus left
-# bindsym $mod+j focus down
-# bindsym $mod+k focus up
-# bindsym $mod+l focus right
+  # change focus
+  # bindsym $mod+h focus left
+  # bindsym $mod+j focus down
+  # bindsym $mod+k focus up
+  # bindsym $mod+l focus right
 
-bindsym $mod+o focus left
+  bindsym $mod+o focus left
 
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+  # alternatively, you can use the cursor keys:
+  bindsym $mod+Left focus left
+  bindsym $mod+Down focus down
+  bindsym $mod+Up focus up
+  bindsym $mod+Right focus right
 
-# move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+  # move focused window
+  bindsym $mod+Shift+h move left
+  bindsym $mod+Shift+j move down
+  bindsym $mod+Shift+k move up
+  bindsym $mod+Shift+l move right
 
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+  # alternatively, you can use the cursor keys:
+  bindsym $mod+Shift+Left move left
+  bindsym $mod+Shift+Down move down
+  bindsym $mod+Shift+Up move up
+  bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-bindsym $mod+h split h
-# split in vertical orientation
-bindsym $mod+v split v
+  # split in horizontal orientation
+  bindsym $mod+h split h
+  # split in vertical orientation
+  bindsym $mod+v split v
 
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+  # enter fullscreen mode for the focused container
+  bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+  # change container layout (stacked, tabbed, toggle split)
+  bindsym $mod+s layout stacking
+  bindsym $mod+w layout tabbed
+  bindsym $mod+e layout toggle split
 
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+  # toggle tiling / floating
+  bindsym $mod+Shift+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+  # change focus between tiling / floating windows
+  bindsym $mod+space focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
+  # focus the parent container
+  bindsym $mod+a focus parent
 
-bindsym $mod+Shift+s sticky toggle
+  bindsym $mod+Shift+s sticky toggle
 
-bindsym $mod+m move workspace to output left
-bindsym $mod+Control+m exec sway-display-swap
-bindsym $mod+Tab workspace back_and_forth
+  bindsym $mod+m move workspace to output left
+  bindsym $mod+Control+m exec sway-display-swap
+  bindsym $mod+Tab workspace back_and_forth
 
-# focus the child container
-#bindsym $mod+d focus child
+  # focus the child container
+  #bindsym $mod+d focus child
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:edit"
-set $ws2 "2:research"
-set $ws3 "3:shell"
-set $ws4 "4:browse"
-set $ws5 "5:dired"
-set $ws6 "6:music"
-set $ws7 "7:video"
-set $ws8 "8:irc"
-set $ws9 "9:steam"
-set $ws10 "10"
+  # Define names for default workspaces for which we configure key bindings later on.
+  # We use variables to avoid repeating the names in multiple places.
+  set $ws1 "1:edit"
+  set $ws2 "2:research"
+  set $ws3 "3:shell"
+  set $ws4 "4:browse"
+  set $ws5 "5:dired"
+  set $ws6 "6:music"
+  set $ws7 "7:video"
+  set $ws8 "8:irc"
+  set $ws9 "9:steam"
+  set $ws10 "10"
 
-workspace $ws3 gaps inner 2
-workspace $ws3 gaps outer 2
+  workspace $ws3 gaps inner 2
+  workspace $ws3 gaps outer 2
 
-assign [title="dbg:"] $ws3
+  assign [title="dbg:"] $ws3
 
-# switch to workspace
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+  # switch to workspace
+  bindsym $mod+1 workspace number $ws1
+  bindsym $mod+2 workspace number $ws2
+  bindsym $mod+3 workspace number $ws3
+  bindsym $mod+4 workspace number $ws4
+  bindsym $mod+5 workspace number $ws5
+  bindsym $mod+6 workspace number $ws6
+  bindsym $mod+7 workspace number $ws7
+  bindsym $mod+8 workspace number $ws8
+  bindsym $mod+9 workspace number $ws9
+#  bindsym $mod+0 workspace number $ws10
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
+  # move focused container to workspace
+  bindsym $mod+Shift+1 move container to workspace number $ws1
+  bindsym $mod+Shift+2 move container to workspace number $ws2
+  bindsym $mod+Shift+3 move container to workspace number $ws3
+  bindsym $mod+Shift+4 move container to workspace number $ws4
+  bindsym $mod+Shift+5 move container to workspace number $ws5
+  bindsym $mod+Shift+6 move container to workspace number $ws6
+  bindsym $mod+Shift+7 move container to workspace number $ws7
+  bindsym $mod+Shift+8 move container to workspace number $ws8
+  bindsym $mod+Shift+9 move container to workspace number $ws9
+  bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-# These bindings trigger as soon as you enter the resize mode
+  # resize window (you can also use the mouse for that)
+  mode "resize" {
+  # These bindings trigger as soon as you enter the resize mode
 
-# Pressing left will shrink the window’s width.
-# Pressing right will grow the window’s width.
-# Pressing up will shrink the window’s height.
-# Pressing down will grow the window’s height.
-bindsym j resize shrink width 10 px or 10 ppt
-bindsym k resize grow height 10 px or 10 ppt
-bindsym l resize shrink height 10 px or 10 ppt
-bindsym odiaeresis resize grow width 10 px or 10 ppt
+  # Pressing left will shrink the window’s width.
+  # Pressing right will grow the window’s width.
+  # Pressing up will shrink the window’s height.
+  # Pressing down will grow the window’s height.
+  bindsym j resize shrink width 10 px or 10 ppt
+  bindsym k resize grow height 10 px or 10 ppt
+  bindsym l resize shrink height 10 px or 10 ppt
+  bindsym odiaeresis resize grow width 10 px or 10 ppt
 
-# same bindings, but for the arrow keys
-bindsym Left resize shrink width 10 px or 10 ppt
-bindsym Down resize grow height 10 px or 10 ppt
-bindsym Up resize shrink height 10 px or 10 ppt
-bindsym Right resize grow width 10 px or 10 ppt
+  # same bindings, but for the arrow keys
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
 
-# back to normal: Enter or Escape or $mod+r
-bindsym Return mode "default"
-bindsym Escape mode "default"
-bindsym $mod+r mode "default"
-}
+  # back to normal: Enter or Escape or $mod+r
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $mod+r mode "default"
+  }
 
-bindsym $mod+r mode "resize"
+  bindsym $mod+r mode "resize"
 
 ```
 
@@ -1034,6 +1047,7 @@ bindsym Escape mode "default"
 }
 mode "$mode_gaps_top" {
 bindsym plus  gaps top current plus 5
+
 bindsym minus gaps top current minus 5
 bindsym 0     gaps top current set 0
 
@@ -1138,6 +1152,7 @@ bindsym $mod+Return exec oneterminal "i3wmterm" ""
 ### app launcher     :launcher:
 
 ```conf
+#bindsym $mod+d exec sway-launcher-fzf
 bindsym $mod+d exec sway-launcher-wofi
 for_window [app_id="sway-launcher"] floating enable
 ```
@@ -1302,7 +1317,7 @@ for_window [app_id="sway-launcher"] floating enable
     ```bash
     #!/usr/bin/bash
     # Maintained in linux-init-files.org
-    dmenu_path | wofi --show drun -i | xargs swaymsg exec --
+    dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
     ```
 
 9.  ~/bin/sway/sway-launcher-fzf
@@ -1825,7 +1840,7 @@ cache
 
 ## ~/.config/conky/conky.conf
 
-```conky
+```conf
 --[[
 Conky, a system monitor, based on torsmo
 
@@ -3297,7 +3312,7 @@ command -v brightnessctl && brightnessctl -r
 
 ```bash
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-[ $(tty) = /dev/tty1 ] && exec sway
+[ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway
 ```
 
 
