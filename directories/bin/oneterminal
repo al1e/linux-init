@@ -9,14 +9,18 @@ tflags="${3}"
 
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
-
 if ! sway-do-tool "$title"; then
-    #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-    alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
-    #          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
+    logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
+    logger -t "oneterminal" "and attaching a session ${sessionname}"
+    logger -t "oneterminal" "if it exists else created with script ${script}."
+    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
 else
+    logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
+        logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
         tmux attach -t "${sessionname}"
+    else
+        logger -t "oneterminal" "It was already attched to session ${sessionname}"
     fi
 fi
 exit 0

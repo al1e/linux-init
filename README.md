@@ -1173,24 +1173,25 @@ for_window [title="sway-launcher"] floating enable
     script="$2"
     [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
     if swaymsg "[title=${id}] focus" &> /dev/null; then
-        echo "title ${id} found"
+        logger -t "sway-do-tool" "title ${id} found"
     else
         if  swaymsg "[class=^${id}] focus" &> /dev/null; then
-            echo "class ${id} found"
+            logger -t "sway-do-tool" "class ${id} found"
         else
             if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-                echo "class ${id} found"
+                logger -t "sway-do-tool" "app_id ${id} found"
             else
                 if [ ! -z "$script" ]; then
+                    logger -t "sway-do-tool" "evaling script $scipt"
                     eval "$script" &
                 else
+                    logger -t "sway-do-tool" "exiting"
                     exit 1
                 fi
             fi
         fi
     fi
-    echo "$id"
-
+    exit 0
     ```
 
 2.  ~/bin/sway/sway-lock-utils
@@ -2708,14 +2709,18 @@ tflags="${3}"
 
 profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
-
 if ! sway-do-tool "$title"; then
-    #          terminator -T "${title}" -p "${profile}" ${tflags} -e "tmux new-session -A -s ${sessionname} ${script}"
-    alacritty --title "${title}"  --class "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
-    #          kitty --title "$title"  --class "$title" "sh -c tmux new-session -A -s ${sessionname} ${script}"
+    logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
+    logger -t "oneterminal" "and attaching a session ${sessionname}"
+    logger -t "oneterminal" "if it exists else created with script ${script}."
+    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
 else
+    logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
+        logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
         tmux attach -t "${sessionname}"
+    else
+        logger -t "oneterminal" "It was already attched to session ${sessionname}"
     fi
 fi
 exit 0
