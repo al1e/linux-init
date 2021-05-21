@@ -1659,10 +1659,11 @@ X11 apps still need resource definitions when launched under XWayland.
 #+end_src
 
 *** app launcher                                                   :launcher:
+
 #+begin_src conf
-  #bindsym $mod+d exec sway-launcher-fzf
-  bindsym $mod+d exec sway-launcher-wofi
-  for_window [app_id="sway-launcher"] floating enable
+  bindsym $mod+d exec sway-launcher-fzf
+  #bindsym $mod+d exec sway-launcher-wofi
+  for_window [title="sway-launcher"] floating enable
 #+end_src
 
 *** bin,scripts                                                :sway:wayland:
@@ -1823,7 +1824,7 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+  exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
 #+end_src
 
 **** ~/bin/sway/sway-screenshot

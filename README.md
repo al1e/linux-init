@@ -1152,9 +1152,9 @@ bindsym $mod+Return exec oneterminal "i3wmterm" ""
 ### app launcher     :launcher:
 
 ```conf
-#bindsym $mod+d exec sway-launcher-fzf
-bindsym $mod+d exec sway-launcher-wofi
-for_window [app_id="sway-launcher"] floating enable
+bindsym $mod+d exec sway-launcher-fzf
+#bindsym $mod+d exec sway-launcher-wofi
+for_window [title="sway-launcher"] floating enable
 ```
 
 
@@ -1325,7 +1325,7 @@ for_window [app_id="sway-launcher"] floating enable
     ```bash
     #!/usr/bin/bash
     # Maintained in linux-init-files.org
-    exec alacritty --class "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+    exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
     ```
 
 10. ~/bin/sway/sway-screenshot
