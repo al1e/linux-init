@@ -23,9 +23,7 @@ ZSH_TMUX_AUTOQUIT=true
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
-# POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_MODE='awesome-fontconfig'
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME=robbyrussell
 
 # ZSH_THEME="agnoster"
 

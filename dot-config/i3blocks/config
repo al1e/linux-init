@@ -48,12 +48,12 @@ interval=300
 [brightness]
 command=my-i3b-brightness
 color=#FFD700
-interval=10
+interval=2
 
 [volume]
 markup=pango
 command=my-i3b-volume
-interval=10
+interval=2
 color=#FFD700
 
 [bluetooth]

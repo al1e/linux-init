@@ -9,19 +9,27 @@ Work in progress!! Keep all config and scripts in a single org file for document
 ## GIT
 
 
+### gitconfig-mode
+
+```emacs-lisp
+(use-package gitconfig-mode)
+```
+
+
 ### ~/.gitconfig
 
 global git settings NB - NOT Exported as lots of things want to update it
 
-```conf
-# Maintained in linux-init-files.org
+```gitconfig
 [user]
-name = rileyrg
-email = rileyrg@gmx.de
+        name = rileyrg
+        email = rileyrg@gmx.de
 [push]
-default = current
+        default = current
 [github]
-user = rileyrg
+        user = rileyrg
+[pull]
+        rebase = false
 ```
 
 
@@ -228,9 +236,7 @@ ZSH_TMUX_AUTOQUIT=true
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
-# POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_MODE='awesome-fontconfig'
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME=robbyrussell
 
 # ZSH_THEME="agnoster"
 
@@ -653,11 +659,54 @@ exec xrdb -merge ~/.Xresources
 
 ## Building from source
 
+
+### wayland
+
 ```bash
+mkdir -p $HOME/development/projects/wayland/clones
 export WLD=$HOME/development/projects/wayland
 export LD_LIBRARY_PATH=$WLD/lib
 export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
 export PATH=$WLD/bin:$PATH
+
+cd $HOME/development/projects/wayland/clones
+
+git clone https://gitlab.freedesktop.org/wayland/wayland.git
+cd wayland
+meson build/ --prefix=$WLD
+ninja -C build/ install
+cd ..
+
+git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git
+cd wayland-protocols
+meson build/ --prefix=$WLD
+ninja -C build/ install
+cd ..
+
+git clone https://gitlab.freedesktop.org/wayland/weston.git
+cd weston
+meson build/ --prefix=$WLD -Dbackend-wayland=true -Dcolor-management-colord=false -Dremoting=false
+ninja -C build/ install
+cd ..
+
+```
+
+
+### sway
+
+```emacs-lisp
+# Clone repositories
+
+git clone git@github.com:swaywm/sway.git
+cd sway
+git clone git@github.com:swaywm/wlroots.git subprojects/wlroots
+
+# Build sway and wlroots
+meson build/
+ninja -C build/
+
+# Start sway
+build/sway/sway
 ```
 
 
@@ -1418,12 +1467,12 @@ modifier $mod
         [brightness]
         command=my-i3b-brightness
         color=#FFD700
-        interval=10
+        interval=2
 
         [volume]
         markup=pango
         command=my-i3b-volume
-        interval=10
+        interval=2
         color=#FFD700
 
         [bluetooth]
