@@ -1201,6 +1201,13 @@ X11 apps still need resource definitions when launched under XWayland.
   exec xrdb -merge ~/.Xresources
 #+end_src
 
+** Building from source
+#+begin_src bash :tangle ~/bin/sway/sway-make-wayland
+  export WLD=$HOME/development/projects/wayland
+  export LD_LIBRARY_PATH=$WLD/lib
+  export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
+  export PATH=$WLD/bin:$PATH
+#+end_src
 ** Sway config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/sway/config"
@@ -1250,7 +1257,7 @@ X11 apps still need resource definitions when launched under XWayland.
   for_window [class="steam_app.*"] fullscreen enable
   for_window [class="steam_app*"] inhibit_idle focus
 #+end_src
-*** navigation
+*** navigation                                  :navigation
 #+begin_src conf
   # change focus
   # bindsym $mod+h focus left
@@ -1379,7 +1386,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+r mode "resize"
 
 #+end_src
-*** volume
+*** volume                                                           :volume:
 #+begin_src conf
 
   # Use pactl to adjust volume in PulseAudio.
@@ -1390,7 +1397,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
   bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 #+end_src
-*** brightness
+*** brightness                                                   :brightness:
 #+begin_src conf
   exec command -v brightnessctl && brightnessctl -r
   bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
@@ -1414,7 +1421,7 @@ X11 apps still need resource definitions when launched under XWayland.
   }
   bindsym $mod+Control+q mode "$mode_system"
 #+end_src
-*** i3 gaps
+*** i3 gaps                                                          :i3gaps:
 #+begin_src conf
   # Necessary for i3-gaps to work properly (pixel can be any value)
   for_window [class="^.*"] border pixel 1
@@ -1620,10 +1627,14 @@ X11 apps still need resource definitions when launched under XWayland.
       if  swaymsg "[class=^${id}] focus" &> /dev/null; then
           echo "class ${id} found"
       else
-          if [ ! -z "$script" ]; then
-             eval "$script" &
+          if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
+              echo "class ${id} found"
           else
-              exit 1
+              if [ ! -z "$script" ]; then
+                  eval "$script" &
+              else
+                  exit 1
+              fi
           fi
       fi
   fi
@@ -2104,7 +2115,7 @@ return the volume %
   #Maintained in linux-init-files.org
   case $BLOCK_BUTTON in
       1)
-          pavucontrol &>/dev/null &
+          sway-do-tool Pavucontrol pavucontrol &>/dev/null &
           ;;
       ,*)
           ;;

@@ -13,10 +13,14 @@ else
     if  swaymsg "[class=^${id}] focus" &> /dev/null; then
         echo "class ${id} found"
     else
-        if [ ! -z "$script" ]; then
-           eval "$script" &
+        if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
+            echo "class ${id} found"
         else
-            exit 1
+            if [ ! -z "$script" ]; then
+                eval "$script" &
+            else
+                exit 1
+            fi
         fi
     fi
 fi

@@ -70,8 +70,6 @@ If using startx on debian this is taken care of by the system XSession loading e
 \`-&#x2014;
 
 
-<a id="org640e828"></a>
-
 ## ~/.profile
 
 ```bash
@@ -123,8 +121,6 @@ fi
 ```
 
 
-<a id="org580d0a2"></a>
-
 ## ~/.bash\_profile
 
 ```bash
@@ -139,9 +135,9 @@ logger -t "startup-initfile"  BASH_PROFILE
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 dropbox-start-once async
 
-# disable tracker
-gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
-gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+# # disable tracker
+# gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+# gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
 
 ```
 
@@ -606,7 +602,7 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 ## swaysock for tmux
 
 ```bash
-export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```
 
 
@@ -655,13 +651,22 @@ exec xrdb -merge ~/.Xresources
 ```
 
 
+## Building from source
+
+```bash
+export WLD=$HOME/development/projects/wayland
+export LD_LIBRARY_PATH=$WLD/lib
+export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
+export PATH=$WLD/bin:$PATH
+```
+
+
 ## Sway config
 
 
 ### autostart     :autostart:
 
 ```conf
-#exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
 exec sway-kanshi
 exec swaybg -i ~/Pictures/Wallpapers/current
 exec sway-idle-hook
@@ -713,7 +718,7 @@ Bindsym $mod+Shift+r restart
     ```
 
 
-### navigation
+### navigation                                  :navigation
 
 ```conf
 # change focus
@@ -845,7 +850,7 @@ bindsym $mod+r mode "resize"
 ```
 
 
-### volume
+### volume     :volume:
 
 ```conf
 
@@ -859,7 +864,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 ```
 
 
-### brightness
+### brightness     :brightness:
 
 ```conf
 exec command -v brightnessctl && brightnessctl -r
@@ -889,7 +894,7 @@ bindsym $mod+Control+q mode "$mode_system"
 ```
 
 
-### i3 gaps
+### i3 gaps     :i3gaps:
 
 ```conf
 # Necessary for i3-gaps to work properly (pixel can be any value)
@@ -1109,10 +1114,14 @@ for_window [app_id="sway-launcher"] floating enable
         if  swaymsg "[class=^${id}] focus" &> /dev/null; then
             echo "class ${id} found"
         else
-            if [ ! -z "$script" ]; then
-               eval "$script" &
+            if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
+                echo "class ${id} found"
             else
-                exit 1
+                if [ ! -z "$script" ]; then
+                    eval "$script" &
+                else
+                    exit 1
+                fi
             fi
         fi
     fi
@@ -1214,7 +1223,7 @@ for_window [app_id="sway-launcher"] floating enable
     ```bash
     #!/usr/bin/bash
     #Maintained in linux-init-files.org
-    export SWAYSOCK=$(ls /run/user/$(id -u)/sway-*)
+    export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
     ```
 
 7.  ~/bin/sway/sway-display-swap
@@ -1633,7 +1642,7 @@ modifier $mod
             #Maintained in linux-init-files.org
             case $BLOCK_BUTTON in
                 1)
-                    pavucontrol &>/dev/null &
+                    sway-do-tool Pavucontrol pavucontrol &>/dev/null &
                     ;;
                 *)
                     ;;
@@ -2222,23 +2231,10 @@ e dbg.bep=main
 1.  add pyenv to path
 
     ```bash
-    export PYENV_ROOT="${HOME}/.pyenv"
-    export PATH="${HOME}/.pyenv/bin":"${PATH}"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
     ```
-
-2.  [Eval](#org580d0a2) pyenv init from bash\_profile in order to set python version
-
-    ```bash
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    ```
-
-    ```bash
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    ```
-
-    Added to PATH in [~/.profile](#org640e828)
 
 
 ### Debuggers     :debuggers:
@@ -3252,11 +3248,7 @@ command -v brightnessctl && brightnessctl -r
 
 ```bash
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-# export USER_STARTX_NO_LOGOUT_ON_QUIT=""
-[ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ] && [ -f ~/.START_X ] && {
-    echo "Auto starting via startx with USER_STARTX_NO_LOGOUT_ON_QUIT:${USER_STARTX_NO_LOGOUT_ON_QUIT}"
-    [ -z "$USER_STARTX_NO_LOGOUT_ON_QUIT" ] && exec startx || startx
-}
+[ $(tty) = /dev/tty1 ] && exec sway
 ```
 
 

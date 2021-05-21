@@ -2,7 +2,7 @@
 #Maintained in linux-init-files.org
 case $BLOCK_BUTTON in
     1)
-        pavucontrol &>/dev/null &
+        sway-do-tool Pavucontrol pavucontrol &>/dev/null &
         ;;
     *)
         ;;
