@@ -725,18 +725,6 @@ build/sway/sway
 ## Sway config
 
 
-### autostart     :autostart:
-
-```conf
-exec sway-kanshi
-exec swaybg -i ~/Pictures/Wallpapers/current
-exec sway-idle-hook
-exec sleep 5 && gpg-cache
-exec swaymsg workspace 1:edit
-
-```
-
-
 ### general
 
 ```conf
@@ -744,8 +732,13 @@ exec swaymsg workspace 1:edit
 
 set $mod Mod4
 
-focus_follows_mouse yes
-mouse_warping none
+set $menu sway-launcher-fzf
+for_window [title="sway-launcher"] floating enable
+
+set $term  'oneterminal "i3wmterm" ""'
+set $wallpaper "~/Pictures/Wallpapers/current"
+
+include /etc/sway/config-vars.d/*
 
 # start a terminal
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -759,25 +752,46 @@ default_border pixel
 # is used in the bar {} block below.
 font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 
-# workspace_layout <default|stacking|tabbed>
-workspace_layout default
-
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 Bindsym $mod+Shift+r restart
 
+output * bg  $wallpaper fill
+
+bindsym $mod+Return exec $term
+bindsym $mod+d exec $menu
+
 ```
 
 
-### gaming     :gaming:
+### autostart     :autostart:
 
-1.  steam     :steam:
+```conf
+exec sway-kanshi
+exec sway-idle-hook
+exec sleep 5 && gpg-cache
+exec swaymsg workspace 1:edit
+```
 
-    ```conf
-    for_window [class="steam_app.*"] fullscreen enable
-    for_window [class="steam_app*"] inhibit_idle focus
-    ```
+
+### scratchpad
+
+```conf
+#
+# Scratchpad:
+#
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+```
 
 
 ### navigation                                  :navigation
@@ -822,7 +836,7 @@ Bindsym $mod+Shift+r restart
   bindsym $mod+w layout tabbed
   bindsym $mod+e layout toggle split
 
-  # toggle tiling / floating
+  # toggle tiling / floatving
   bindsym $mod+Shift+space floating toggle
 
   # change focus between tiling / floating windows
@@ -1144,17 +1158,7 @@ bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
-bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
-```
-
-
-### app launcher     :launcher:
-
-```conf
-bindsym $mod+d exec sway-launcher-fzf
-#bindsym $mod+d exec sway-launcher-wofi
-for_window [title="sway-launcher"] floating enable
 ```
 
 
@@ -1414,6 +1418,16 @@ for_window [title="sway-launcher"] floating enable
         ```
 
 
+### gaming     :gaming:
+
+1.  steam     :steam:
+
+    ```conf
+    for_window [class="steam_app.*"] fullscreen enable
+    for_window [class="steam_app*"] inhibit_idle focus
+    ```
+
+
 ### status bar     :status:i3bar:i3blocks:
 
 ```conf
@@ -1426,6 +1440,13 @@ position top
 hidden_state hide
 modifier $mod
 }
+```
+
+
+### library include
+
+```conf
+include /etc/sway/config.d/*
 ```
 
 1.  i3blocks

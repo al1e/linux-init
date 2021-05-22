@@ -1170,6 +1170,9 @@ Override in .profile.local
   # export GDK_BACKEND=wayland
 #+end_src
 ** swaysock for tmux
+:LOGBOOK:
+- State "WAITING"    from              [2021-05-22 Sat 03:17]
+:END:
 #+begin_src bash :tangle "~/.config/zsh/.zshrc"
   export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #+end_src
@@ -1266,23 +1269,19 @@ X11 apps still need resource definitions when launched under XWayland.
 :header-args:conf: :tangle "~/.config/sway/config"
 :ID:       834da4bb-cc3f-4b6d-8201-c04c0d07981d
 :END:
-*** autostart                                                     :autostart:
-#+begin_src conf
-  exec sway-kanshi
-  exec swaybg -i ~/Pictures/Wallpapers/current
-  exec sway-idle-hook
-  exec sleep 5 && gpg-cache
-  exec swaymsg workspace 1:edit
-
-#+end_src
 *** general
 #+begin_src conf
   # Maintained in linux-init-files.org
 
   set $mod Mod4
 
-  focus_follows_mouse yes
-  mouse_warping none
+  set $menu sway-launcher-fzf
+  for_window [title="sway-launcher"] floating enable
+
+  set $term  'oneterminal "i3wmterm" ""'
+  set $wallpaper "~/Pictures/Wallpapers/current"
+
+  include /etc/sway/config-vars.d/*
 
   # start a terminal
   # Use Mouse+$mod to drag floating windows to their wanted position
@@ -1296,20 +1295,39 @@ X11 apps still need resource definitions when launched under XWayland.
   # is used in the bar {} block below.
   font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 
-  # workspace_layout <default|stacking|tabbed>
-  workspace_layout default
-
   # reload the configuration file
   bindsym $mod+Shift+c reload
   # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
   Bindsym $mod+Shift+r restart
 
+  output * bg  $wallpaper fill
+
+  bindsym $mod+Return exec $term
+  bindsym $mod+d exec $menu
+
 #+end_src
-*** gaming                                                           :gaming:
-**** steam                                                            :steam:
+*** autostart                                                     :autostart:
 #+begin_src conf
-  for_window [class="steam_app.*"] fullscreen enable
-  for_window [class="steam_app*"] inhibit_idle focus
+  exec sway-kanshi
+  exec sway-idle-hook
+  exec sleep 5 && gpg-cache
+  exec swaymsg workspace 1:edit
+#+end_src
+*** scratchpad
+#+begin_src conf
+  #
+  # Scratchpad:
+  #
+  # Sway has a "scratchpad", which is a bag of holding for windows.
+  # You can send windows there and get them back later.
+
+  # Move the currently focused window to the scratchpad
+  bindsym $mod+Shift+minus move scratchpad
+
+  # Show the next scratchpad window or hide the focused scratchpad window.
+  # If there are multiple scratchpad windows, this command cycles through them.
+  bindsym $mod+minus scratchpad show
+
 #+end_src
 *** navigation                                  :navigation
 #+begin_src conf
@@ -1352,7 +1370,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+w layout tabbed
   bindsym $mod+e layout toggle split
 
-  # toggle tiling / floating
+  # toggle tiling / floatving
   bindsym $mod+Shift+space floating toggle
 
   # change focus between tiling / floating windows
@@ -1654,16 +1672,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
   bindsym $mod+Control+Shift+p exec htop-regexp
   bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
-  bindsym $mod+Return exec oneterminal "i3wmterm" ""
 
-#+end_src
-
-*** app launcher                                                   :launcher:
-
-#+begin_src conf
-  bindsym $mod+d exec sway-launcher-fzf
-  #bindsym $mod+d exec sway-launcher-wofi
-  for_window [title="sway-launcher"] floating enable
 #+end_src
 
 *** bin,scripts                                                :sway:wayland:
@@ -1899,6 +1908,12 @@ Load a host specific kanshi file if it exists
   }
 
 #+end_src
+*** gaming                                                           :gaming:
+**** steam                                                            :steam:
+#+begin_src conf
+  for_window [class="steam_app.*"] fullscreen enable
+  for_window [class="steam_app*"] inhibit_idle focus
+#+end_src
 *** status bar                                        :status:i3bar:i3blocks:
 :PROPERTIES:
 :ID:       d930fa7e-59c1-44ec-a8aa-522f05e50c13
@@ -1913,6 +1928,10 @@ Load a host specific kanshi file if it exists
   hidden_state hide
   modifier $mod
   }
+#+end_src
+*** library include
+#+begin_src conf
+  include /etc/sway/config.d/*
 #+end_src
 **** i3blocks
 ***** config
