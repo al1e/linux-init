@@ -108,6 +108,7 @@
 !/directories/bin/resgithub
 !/directories/bin/remove-broken-symlinks
 !/directories/bin/remove-conflicted-copies
+!/directories/bin/rgr-logger
 !/directories/bin/rnv
 !/directories/bin/securelock
 !/directories/bin/sharemouse

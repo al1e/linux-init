@@ -82,7 +82,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 
 ```bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  PROFILE
+logger -t "startup-initfile"  PROFILE
 
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
@@ -136,7 +136,7 @@ fi
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  BASH_PROFILE
+logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
@@ -157,7 +157,7 @@ dropbox-start-once async
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  BASHRC
+logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -214,7 +214,7 @@ export GPG_TTY
 
 ```bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  ZSHRC
+logger -t "startup-initfile"  ZSHRC
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 export TERM="xterm-256color"
 # Path to your oh-my-zsh installation.
@@ -341,7 +341,7 @@ DEFAULT_USER=$USER
 
 ```bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  ZLOGIN
+logger -t "startup-initfile"  ZLOGIN
 # [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 ```
 
@@ -352,7 +352,7 @@ rgr-logger -t "startup-initfile"  ZLOGIN
 
     ```bash
     # Maintained in linux-init-files.org
-    rgr-logger -t "startup-initfile"  ZPROFILE
+    logger -t "startup-initfile"  ZPROFILE
     if [ -f ~/.profile ]; then
         emulate sh -c '. ~/.profile'
     fi
@@ -369,7 +369,7 @@ rgr-logger -t "startup-initfile"  ZLOGIN
     # shells invoked with the -l flag.)
     #
     # Global Order: zshenv, zprofile, zshrc, zlogin
-    rgr-logger -t "startup-initfile"  ETC-ZPROFILE
+    logger -t "startup-initfile"  ETC-ZPROFILE
     ```
 
 
@@ -379,7 +379,7 @@ rgr-logger -t "startup-initfile"  ZLOGIN
 
     ```bash
     # Maintained in linux-init-files.org
-    rgr-logger -t "startup-initfile"  ETC-ZSHENV
+    logger -t "startup-initfile"  ETC-ZSHENV
     if [[ -z "$PATH" || "$PATH" == "/bin:/usr/bin" ]]
     then
         export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games"
@@ -395,7 +395,7 @@ rgr-logger -t "startup-initfile"  ZLOGIN
 
     ```bash
     # Maintained in linux-init-files.org
-    rgr-logger -t "startup-initfile"  ZSHENV
+    logger -t "startup-initfile"  ZSHENV
     if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
     then
         export XDG_CONFIG_HOME="$HOME/.config"
@@ -437,7 +437,7 @@ Directory is [here](.oh-my-zsh/).
 
 ```bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  ADD_USER_PATHS
+logger -t "startup-initfile"  ADD_USER_PATHS
 #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
 ```
 
@@ -3027,7 +3027,7 @@ fi
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-[ -z "$RGR-LOGGER" ] || logger "$@"
+[ -z "$RGR_LOGGER" ] || logger "$@"
 ```
 
 

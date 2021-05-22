@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-rgr-logger -t "startup-initfile"  BASH_PROFILE
+logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
