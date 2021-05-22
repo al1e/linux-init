@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 mp="${1:-man}"
-if pidof emacsx; then
+if pidof emacs; then
     emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
 else
     oneterminal random-man "man $mp"

@@ -736,6 +736,7 @@ set $menu sway-launcher-fzf
 for_window [title="sway-launcher"] floating enable
 
 set $term  'sway-terminal'
+set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
 include /etc/sway/config-vars.d/*
@@ -746,7 +747,6 @@ floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
 bindsym $mod+0 kill
-default_border pixel
 
 # Font  for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -760,6 +760,7 @@ Bindsym $mod+Shift+r restart
 output * bg  $wallpaper fill
 
 bindsym $mod+Return exec $term
+bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
 ```
@@ -943,162 +944,22 @@ bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 1
 
 ```conf
 
+bindsym  $mod+Control+l exec sway-lock-utils lock
+
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-bindsym b exec --no-startup-id sway-lock-utils blank, mode "default"
-bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
-bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
-bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"
-bindsym h exec --no-startup-id sway-lock-utils hibernate, mode "default"
-bindsym r exec --no-startup-id sway-lock-utils reboot, mode "default"
-bindsym Shift+s exec --no-startup-id sway-lock-utils shutdown, mode "default"
+bindsym b exec sway-lock-utils blank, mode "default"
+bindsym l exec sway-lock-utils lock, mode "default"
+bindsym e exec sway-lock-utils logout, mode "default"
+bindsym s exec sway-lock-utils suspend, mode "default"
+bindsym h exec sway-lock-utils hibernate, mode "default"
+bindsym r exec sway-lock-utils reboot, mode "default"
+bindsym Shift+s exec sway-lock-utils shutdown, mode "default"
 # back to normal: Enter or Escape
 bindsym Return mode "default"
 bindsym Escape mode "default"
 }
 bindsym $mod+Control+q mode "$mode_system"
-```
-
-
-### i3 gaps     :i3gaps:
-
-```conf
-# Necessary for i3-gaps to work properly (pixel can be any value)
-for_window [class="^.*"] border pixel 1
-
-# Smart Gaps
-smart_gaps on
-
-# Smart Borders
-smart_borders on
-
-# Set inner/outer gaps
-gaps inner 3
-gaps outer 0
-
-# Gaps mode
-set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
-set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_verti Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_top Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_right Right Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_bottom Bottom Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_left Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
-bindsym $mod+Shift+g mode "$mode_gaps"
-
-mode "$mode_gaps" {
-bindsym o      mode "$mode_gaps_outer"
-bindsym i      mode "$mode_gaps_inner"
-bindsym h      mode "$mode_gaps_horiz"
-bindsym v      mode "$mode_gaps_verti"
-bindsym t      mode "$mode_gaps_top"
-bindsym r      mode "$mode_gaps_right"
-bindsym b      mode "$mode_gaps_bottom"
-bindsym l      mode "$mode_gaps_left"
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_outer" {
-bindsym plus  gaps outer current plus 5
-bindsym minus gaps outer current minus 5
-bindsym 0     gaps outer current set 0
-
-bindsym Shift+plus  gaps outer all plus 5
-bindsym Shift+minus gaps outer all minus 5
-bindsym Shift+0     gaps outer all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_inner" {
-bindsym plus  gaps inner current plus 5
-bindsym minus gaps inner current minus 5
-bindsym 0     gaps inner current set 0
-
-bindsym Shift+plus  gaps inner all plus 5
-bindsym Shift+minus gaps inner all minus 5
-bindsym Shift+0     gaps inner all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_horiz" {
-bindsym plus  gaps horizontal current plus 5
-bindsym minus gaps horizontal current minus 5
-bindsym 0     gaps horizontal current set 0
-
-bindsym Shift+plus  gaps horizontal all plus 5
-bindsym Shift+minus gaps horizontal all minus 5
-bindsym Shift+0     gaps horizontal all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_verti" {
-bindsym plus  gaps vertical current plus 5
-bindsym minus gaps vertical current minus 5
-bindsym 0     gaps vertical current set 0
-
-bindsym Shift+plus  gaps vertical all plus 5
-bindsym Shift+minus gaps vertical all minus 5
-bindsym Shift+0     gaps vertical all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_top" {
-bindsym plus  gaps top current plus 5
-
-bindsym minus gaps top current minus 5
-bindsym 0     gaps top current set 0
-
-bindsym Shift+plus  gaps top all plus 5
-bindsym Shift+minus gaps top all minus 5
-bindsym Shift+0     gaps top all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_right" {
-bindsym plus  gaps right current plus 5
-bindsym minus gaps right current minus 5
-bindsym 0     gaps right current set 0
-
-bindsym Shift+plus  gaps right all plus 5
-bindsym Shift+minus gaps right all minus 5
-bindsym Shift+0     gaps right all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_bottom" {
-bindsym plus  gaps bottom current plus 5
-bindsym minus gaps bottom current minus 5
-bindsym 0     gaps bottom current set 0
-
-bindsym Shift+plus  gaps bottom all plus 5
-bindsym Shift+minus gaps bottom all minus 5
-bindsym Shift+0     gaps bottom all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-mode "$mode_gaps_left" {
-bindsym plus  gaps left current plus 5
-bindsym minus gaps left current minus 5
-bindsym 0     gaps left current set 0
-
-bindsym Shift+plus  gaps left all plus 5
-bindsym Shift+minus gaps left all minus 5
-bindsym Shift+0     gaps left all set 0
-
-bindsym Return mode "$mode_gaps"
-bindsym Escape mode "default"
-}
-
 ```
 
 
@@ -1129,7 +990,6 @@ for_window [app_id="pavucontrol"] floating enable
 ```conf
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
-bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
 bindsym $mod+Control+Shift+f exec  "sway-www"
 bindsym $mod+Control+a exec pavucontrol
@@ -1520,7 +1380,6 @@ include /etc/sway/config.d/*
 sway-kanshi &
 sway-idle-hook &
 (sleep 5 && gpg-cache) &
-oneterminal "random-man-page" random-man-page &
 [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 ```
 
@@ -1560,6 +1419,15 @@ exit 0
 ```
 
 
+### ~/bin/sway/sway-editor
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+exec emacs-same-frame "$@"
+```
+
+
 ### ~/bin/sway/sway-lock-utils
 
 Just a gathering place of locky/suspendy type things&#x2026;
@@ -1568,7 +1436,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -1624,7 +1492,7 @@ pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exi
 exec swayidle -w \
      timeout 5 '' \
      resume 'sway-lock-utils unblank' \
-     timeout 10 'pidof waylock && sway-lock-utils blank' \
+     timeout 10 'pidof swaylock && sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
@@ -1640,7 +1508,7 @@ exec swayidle -w \
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+exec sway-lock-utils lock
 ```
 
 
@@ -2876,7 +2744,7 @@ Use emacs for manpages if it's running might be an idea set an alias such as 'al
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 mp="${1:-man}"
-if pidof emacsx; then
+if pidof emacs; then
     emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
 else
     oneterminal random-man "man $mp"
