@@ -1,4 +1,8 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-mp=${1:-"man"}
-pgrep -x emacs > /dev/nulka ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null) & ) || /usr/bin/man "$@"
+mp="${1:-man}"
+if pidof emacsx; then
+    emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
+else
+    oneterminal random-man "man $mp"
+fi

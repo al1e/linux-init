@@ -1,3 +1,4 @@
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-man $(find /usr/share/man/man1 -type f | sort -R | head -n1)
+page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
+eman "$page"

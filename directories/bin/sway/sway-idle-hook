@@ -4,7 +4,7 @@ pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exi
 exec swayidle -w \
      timeout 5 '' \
      resume 'sway-lock-utils unblank' \
-     timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+     timeout 10 'pidof waylock && sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \

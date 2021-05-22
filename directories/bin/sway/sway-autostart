@@ -3,3 +3,5 @@
 sway-kanshi &
 sway-idle-hook &
 (sleep 5 && gpg-cache) &
+oneterminal "random-man-page" random-man-page &
+[ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"

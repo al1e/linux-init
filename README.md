@@ -735,7 +735,7 @@ set $mod Mod4
 set $menu sway-launcher-fzf
 for_window [title="sway-launcher"] floating enable
 
-set $term  'oneterminal "i3wmterm" ""'
+set $term  'sway-terminal'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
 include /etc/sway/config-vars.d/*
@@ -762,16 +762,6 @@ output * bg  $wallpaper fill
 bindsym $mod+Return exec $term
 bindsym $mod+d exec $menu
 
-```
-
-
-### autostart     :autostart:
-
-```conf
-exec sway-kanshi
-exec sway-idle-hook
-exec sleep 5 && gpg-cache
-exec swaymsg workspace 1:edit
 ```
 
 
@@ -1162,262 +1152,6 @@ bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instanc
 ```
 
 
-### bin,scripts     :sway:wayland:
-
-1.  ~/bin/sway/sway-do-tool
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-
-    # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
-    # get the app_id/class instance instead. But.. it works.
-
-    id="$1"
-    script="$2"
-    [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
-    if swaymsg "[title=${id}] focus" &> /dev/null; then
-        rgr-logger -t "sway-do-tool" "title ${id} found"
-    else
-        if  swaymsg "[class=^${id}] focus" &> /dev/null; then
-            rgr-logger -t "sway-do-tool" "class ${id} found"
-        else
-            if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-                rgr-logger -t "sway-do-tool" "app_id ${id} found"
-            else
-                if [ ! -z "$script" ]; then
-                    rgr-logger -t "sway-do-tool" "evaling script $scipt"
-                    eval "$script" &
-                else
-                    rgr-logger -t "sway-do-tool" "exiting"
-                    exit 1
-                fi
-            fi
-        fi
-    fi
-    exit 0
-    ```
-
-2.  ~/bin/sway/sway-lock-utils
-
-    Just a gathering place of locky/suspendy type things&#x2026;
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    lock() {
-        swaylock -i ~/Pictures/LockScreen/lock -c 000000
-    }
-
-    lock_gpg_clear() {
-        rgr-logger -t "x-lock-utils"  lock_gpg_clear
-        [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-        lock
-    }
-
-    case "$1" in
-        lock)
-            lock
-            #exec loginctl lock-session
-            ;;
-        lock_gpg_clear)
-            lock_gpg_clear
-            ;;
-        logout)
-            swaymsg exit
-            ;;
-        suspend)
-            systemctl suspend && lock
-            ;;
-        hibernate)
-            systemctl hibernate && lock
-            ;;
-        reboot)
-            systemctl reboot
-            ;;
-        shutdown)
-            systemctl poweroff
-            ;;
-        blank)
-            swaymsg "output * dpms off"
-            ;;
-        unblank)
-            swaymsg "output * dpms on"
-            ;;
-        *)
-            lock
-            ;;
-    esac
-
-    exit 0
-    ```
-
-3.  ~/bin/sway/sway-idle-hook     :sleep:lock:idle:
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    exec swayidle -w \
-         timeout 5 '' \
-         resume 'sway-lock-utils unblank' \
-         timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-         resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
-         resume 'sway-lock-utils unblank' \
-         timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
-         resume 'sway-lock-utils unblank' \
-         lock 'sway-lock' \
-         before-sleep 'sway-lock'
-    ```
-
-4.  ~/bin/sway/sway-lock
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
-    ```
-
-5.  ~/bin/sway/sway-www
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
-    sway-do-tool "Google-chrome"
-    ```
-
-6.  ~/bin/sway/sway-swaysock     :swaysock:
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-init-files.org
-    export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-    ```
-
-7.  ~/bin/sway/sway-display-swap
-
-    <https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-
-    DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
-
-    for ROW in "${DISPLAY_CONFIG[@]}"
-    do
-        IFS=':'
-        read -ra CONFIG <<< "${ROW}"
-        if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
-            echo "moving ${CONFIG[1]} right..."
-            sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-            sway-msg -- move workspace to output right
-        fi
-    done
-    ```
-
-8.  ~/bin/sway/sway-launcher-wofi
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
-    ```
-
-9.  ~/bin/sway/sway-launcher-fzf
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
-    ```
-
-10. ~/bin/sway/sway-screenshot
-
-    Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/>
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-init-files.org
-    # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
-
-    DIR=${HOME}/tmp/Screenshots
-
-    mkdir -p "${DIR}"
-
-    FILENAME="screenshot-$(date +%F-%T).png"
-    grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
-
-    #Create a link, so don't have to search for the newest
-    ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
-
-    #Copy to the buffer
-    wl-copy < "${DIR}"/screenshot-latest.png
-    ```
-
-11. kanshi     :kanshi:
-
-    Monitor control with hotplug <https://github.com/emersion/kanshi>
-
-    1.  ~/bin/sway/sway-kanshi
-
-        Load a host specific kanshi file if it exists
-
-        ```bash
-        #!/usr/bin/bash
-        #Maintained in linux-init-files.org
-        config="$HOME/.config/kanshi/config-$(hostname)"
-        if [ -f  "$config" ]; then
-            rgr-logger -t "kanshi"  "$config"
-            exec kanshi -c "$config"
-        else
-            rgr-logger -t "kanshi"  "default config"
-            exec kanshi
-        fi
-        ```
-
-    2.  config-thinkpadt14s
-
-        ```conf
-        {
-        output eDP-1 enable mode 1920x1080  position 0,0
-        }
-
-        {
-        output eDP-1 mode 1920x1080 position 1920,0
-        output DP-4 mode 1920x1080 position 0,0
-        }
-        ```
-
-    3.  config-thinkpadt460
-
-        ```conf
-        {
-        output eDP-1 enable mode 1366×768   position 0,0
-        }
-
-        {
-        output eDP-1 mode 1366×768  position 1920,0
-        output DP-4 mode 1920x1080 position 0,0
-        }
-        ```
-
-    4.  config-thinkpadx270
-
-        ```conf
-        {
-        output eDP-1 enable mode 1920x1080  position 0,0
-        }
-
-        {
-        output DP-4 mode 1920x1080 position 0,0
-        output eDP-1 disable
-        }
-
-        ```
-
-
 ### gaming     :gaming:
 
 1.  steam     :steam:
@@ -1440,6 +1174,14 @@ position top
 hidden_state hide
 modifier $mod
 }
+```
+
+
+### autostart     :autostart:
+
+```conf
+exec sway-autostart
+exec swaymsg workspace 1:edit
 ```
 
 
@@ -1765,6 +1507,297 @@ include /etc/sway/config.d/*
             esac
             exec i3bm-wifi
             ```
+
+
+## bin,scripts     :sway:wayland:
+
+
+### ~/bin/sway/sway-autostart
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+sway-kanshi &
+sway-idle-hook &
+(sleep 5 && gpg-cache) &
+oneterminal "random-man-page" random-man-page &
+[ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
+```
+
+
+### ~/bin/sway/sway-do-tool
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+
+# NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
+# get the app_id/class instance instead. But.. it works.
+
+id="$1"
+script="$2"
+[ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
+if swaymsg "[title=${id}] focus" &> /dev/null; then
+    rgr-logger -t "sway-do-tool" "title ${id} found"
+else
+    if  swaymsg "[class=^${id}] focus" &> /dev/null; then
+        rgr-logger -t "sway-do-tool" "class ${id} found"
+    else
+        if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
+            rgr-logger -t "sway-do-tool" "app_id ${id} found"
+        else
+            if [ ! -z "$script" ]; then
+                rgr-logger -t "sway-do-tool" "evaling script $scipt"
+                eval "$script" &
+            else
+                rgr-logger -t "sway-do-tool" "exiting"
+                exit 1
+            fi
+        fi
+    fi
+fi
+exit 0
+```
+
+
+### ~/bin/sway/sway-lock-utils
+
+Just a gathering place of locky/suspendy type things&#x2026;
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+lock() {
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+}
+
+lock_gpg_clear() {
+    rgr-logger -t "x-lock-utils"  lock_gpg_clear
+    [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+    lock
+}
+
+case "$1" in
+    lock)
+        lock
+        #exec loginctl lock-session
+        ;;
+    lock_gpg_clear)
+        lock_gpg_clear
+        ;;
+    logout)
+        swaymsg exit
+        ;;
+    suspend)
+        systemctl suspend && lock
+        ;;
+    hibernate)
+        systemctl hibernate && lock
+        ;;
+    reboot)
+        systemctl reboot
+        ;;
+    shutdown)
+        systemctl poweroff
+        ;;
+    blank)
+        swaymsg "output * dpms off"
+        ;;
+    unblank)
+        swaymsg "output * dpms on"
+        ;;
+    *)
+        lock
+        ;;
+esac
+
+exit 0
+```
+
+
+### ~/bin/sway/sway-idle-hook     :sleep:lock:idle:
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
+exec swayidle -w \
+     timeout 5 '' \
+     resume 'sway-lock-utils unblank' \
+     timeout 10 'pidof waylock && sway-lock-utils blank' \
+     resume 'sway-lock-utils unblank' \
+     timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+     resume 'sway-lock-utils unblank' \
+     timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+     resume 'sway-lock-utils unblank' \
+     lock 'sway-lock' \
+     before-sleep 'sway-lock'
+```
+
+
+### ~/bin/sway/sway-lock
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+```
+
+
+### ~/bin/sway/sway-www
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
+sway-do-tool "Google-chrome"
+```
+
+
+### ~/bin/sway/sway-swaysock     :swaysock:
+
+```bash
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+```
+
+
+### ~/bin/sway/sway-terminal     :swaysock:
+
+```bash
+#!/usr/bin/bash
+#Maintained in linux-init-files.org
+exec oneterminal "${1:-Terminal}" ""
+```
+
+
+### ~/bin/sway/sway-display-swap
+
+<https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+
+DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+
+for ROW in "${DISPLAY_CONFIG[@]}"
+do
+    IFS=':'
+    read -ra CONFIG <<< "${ROW}"
+    if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
+        echo "moving ${CONFIG[1]} right..."
+        sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+        sway-msg -- move workspace to output right
+    fi
+done
+```
+
+
+### ~/bin/sway/sway-launcher-wofi
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
+```
+
+
+### ~/bin/sway/sway-launcher-fzf
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+```
+
+
+### ~/bin/sway/sway-screenshot
+
+Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/>
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+# thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
+
+DIR=${HOME}/tmp/Screenshots
+
+mkdir -p "${DIR}"
+
+FILENAME="screenshot-$(date +%F-%T).png"
+grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+
+#Create a link, so don't have to search for the newest
+ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+
+#Copy to the buffer
+wl-copy < "${DIR}"/screenshot-latest.png
+```
+
+
+### kanshi     :kanshi:
+
+Monitor control with hotplug <https://github.com/emersion/kanshi>
+
+1.  ~/bin/sway/sway-kanshi
+
+    Load a host specific kanshi file if it exists
+
+    ```bash
+    #!/usr/bin/bash
+    #Maintained in linux-init-files.org
+    pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+    config="$HOME/.config/kanshi/config-$(hostname)"
+    if [ -f  "$config" ]; then
+        rgr-logger -t "kanshi"  "$config"
+        exec kanshi -c "$config"
+    else
+        rgr-logger -t "kanshi"  "default config"
+        exec kanshi
+    fi
+    ```
+
+2.  config-thinkpadt14s
+
+    ```conf
+    {
+    output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+    output eDP-1 mode 1920x1080 position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+3.  config-thinkpadt460
+
+    ```conf
+    {
+    output eDP-1 enable mode 1366×768   position 0,0
+    }
+
+    {
+    output eDP-1 mode 1366×768  position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+4.  config-thinkpadx270
+
+    ```conf
+    {
+    output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+    output DP-4 mode 1920x1080 position 0,0
+    output eDP-1 disable
+    }
+
+    ```
 
 
 # Vim
@@ -2391,30 +2424,6 @@ export USER_STARTX_START=
 hQEMA7IjL5SkHG4iAQgAnAMLgodgtOc1tsGz6mRqJbkJsM+R+5MTPdsOdml6xMoL xFZjkYTDUGa3G6PsQHpbJ/tjD+6B4qmZIymq1EReWPtrepGGN6DNG8hLPVNnQ+9N WAFaK1o+gzzfsw9XuptT5Um47k2G3zm019mGKDe0OwYJJ/r/DTHpz9yI9nj5lVdq sdk0Y/WQL/5mcraC7LPz0FhIhuXqKKFNvcQCA6D0fTWJxlzqvXRzuc44LN+mvozq 9Q4WbvXp/etZjeiUYjXmz70KEYxFIch3OR4EGmV41apfojLTmR9R2dp/u3jYexMy NlXugS5egyP+ioiuuTcCsSjN4rxnDwSW868lLkdhIdLAPgFdxEWpJjtaJO0A9aIB 6lJTRLKPzuwTyGiyRdKO8yqYFYwllgfEr/87qcB/ajjRpkhw9tlD8zTrODt4ZUu2 MQQHK2rzvplmgDf2LvDMiM2gv7z4bI3YzOTiGu6m+SxW/j8LA71WRMwhFmUObgOb g44XzdKHAV0o0Q/ZPPnJU4dlKc9nRkNS3MzpORmUGAT1/FSwt+q7uzpuBTZ1crGl P/fo8sDBBu2QBoL2+gQZ11l7uSZMjTCR/8msBO5LbLDmyOUposbv6va1dzPN898F ZsaqN9VNjV2b75kQiPJsZaoekClV7yOFc10/VRKBFD1MlspEovrIpReI9by6azIU =nb0T &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 
-# systemd
-
-
-## DONE lock when lid closed
-
-
-### TODO ~/.config/systemd/user/lidlock.service
-
-```conf
-# Maintained in linux-init-files.org
-[Unit]
-Description=i3lock on suspend
-After=sleep.target
-
-[Service]
-Type=forking
-Environment=DISPLAY=:0
-#ExecStart=/usr/bin/i3lock -d -c 000000
-
-[Install]
-WantedBy=sleep.target
-```
-
-
 # ACPI
 
 
@@ -2732,7 +2741,7 @@ profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 if ! sway-do-tool "$title"; then
     rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-    if tmux has-session -t "${sessionname}"; then
+    if tmux has-session -t "${sessionname}" &> /dev/null; then
         rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
     else
         rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
@@ -2866,8 +2875,12 @@ Use emacs for manpages if it's running might be an idea set an alias such as 'al
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-mp=${1:-"man"}
-pgrep -x emacs > /dev/null && ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null) & ) || /usr/bin/man "$@"
+mp="${1:-man}"
+if pidof emacsx; then
+    emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
+else
+    oneterminal random-man "man $mp"
+fi
 ```
 
 
@@ -2987,7 +3000,8 @@ start-pulseaudio-x11
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-man $(find /usr/share/man/man1 -type f | sort -R | head -n1)
+page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
+eman "$page"
 ```
 
 
@@ -3262,9 +3276,7 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-init-files.org
-SERVICE="gpg-agent"
-if pgrep -x "$SERVICE" >/dev/null
-then
+if pid-of gpg-agent; then
     echo "agent already running"
 else
     p=$(zenity --password --title "Password for SSH")

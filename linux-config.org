@@ -1996,6 +1996,8 @@ return the volume %
   sway-kanshi &
   sway-idle-hook &
   (sleep 5 && gpg-cache) &
+  oneterminal "random-man-page" random-man-page &
+  [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 #+end_src
 *** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"
@@ -2092,7 +2094,7 @@ Just a gathering place of locky/suspendy type things...
   exec swayidle -w \
        timeout 5 '' \
        resume 'sway-lock-utils unblank' \
-       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+       timeout 10 'pidof waylock && sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
@@ -3092,7 +3094,7 @@ if it exists jump to it else start it
 
   if ! sway-do-tool "$title"; then
       rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-      if tmux has-session -t "${sessionname}"; then
+      if tmux has-session -t "${sessionname}" &> /dev/null; then
           rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
       else
           rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
@@ -3200,8 +3202,12 @@ might be an idea set an alias such as 'alias man=eman'
 #+begin_src bash :tangle "~/bin/eman"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  mp=${1:-"man"}
-  pgrep -x emacs > /dev/nulka ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null) & ) || /usr/bin/man "$@"
+  mp="${1:-man}"
+  if pidof emacsx; then
+      emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
+  else
+      oneterminal random-man "man $mp"
+  fi
 #+end_src
 ** ~/bin/expert-advice
 #+begin_src bash :tangle "~/bin/expert-advice"
@@ -3304,7 +3310,8 @@ restart pulseaudio
 #+begin_src bash :tangle "~/bin/random-man-page"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  man $(find /usr/share/man/man1 -type f | sort -R | head -n1)
+  page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
+  eman "$page"
 #+end_src
 ** ~/bin/remove-broken-symlinks
 #+begin_src bash :tangle "~/bin/remove-broken-symlinks"
@@ -3518,9 +3525,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 #+begin_src bash :tangle "~/bin/gpg-cache"
   #!/usr/bin/bash
   #Maintained in linux-init-files.org
-  SERVICE="gpg-agent"
-  if pgrep -x "$SERVICE" >/dev/null
-  then
+  if pid-of gpg-agent; then
       echo "agent already running"
   else
       p=$(zenity --password --title "Password for SSH")

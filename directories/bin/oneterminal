@@ -11,7 +11,7 @@ profile="${ONETERM_PROFILE:-"$(hostname)"}"
 
 if ! sway-do-tool "$title"; then
     rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-    if tmux has-session -t "${sessionname}"; then
+    if tmux has-session -t "${sessionname}" &> /dev/null; then
         rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
     else
         rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
