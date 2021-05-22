@@ -1857,7 +1857,7 @@ return the volume %
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   sway-kanshi &
-  sway-idle-hook &
+  sway-idle &
   (sleep 5 && gpg-cache) &
   [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 #+end_src
@@ -1920,28 +1920,28 @@ Just a gathering place of locky/suspendy type things...
           #exec loginctl lock-session
           ;;
       lock_gpg_clear)
-          lock_gpg_clear
+          exec lock_gpg_clear
           ;;
       logout)
-          swaymsg exit
+          exec swaymsg exit
           ;;
       suspend)
-          systemctl suspend && lock
+          exec systemctl suspend && lock
           ;;
       hibernate)
-          systemctl hibernate && lock
+          exec systemctl hibernate && lock
           ;;
       reboot)
-          systemctl reboot
+          exec systemctl reboot
           ;;
       shutdown)
-          systemctl poweroff
+          exec systemctl poweroff
           ;;
       blank)
-          swaymsg "output * dpms off"
+          exec swaymsg "output * dpms off"
           ;;
       unblank)
-          swaymsg "output * dpms on"
+          exec swaymsg "output * dpms on"
           ;;
       ,*)
           lock
@@ -1950,12 +1950,15 @@ Just a gathering place of locky/suspendy type things...
 
   exit 0
 #+end_src
-*** ~/bin/sway/sway-idle-hook                               :sleep:lock:idle:
+
+#+RESULTS:
+
+*** ~/bin/sway/sway-idle                                    :sleep:lock:idle:
 :PROPERTIES:
 :ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
 :END:
 
-#+begin_src bash :tangle "~/bin/sway/sway-idle-hook"
+#+begin_src bash :tangle "~/bin/sway/sway-idle"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0

@@ -16,28 +16,28 @@ case "$1" in
         #exec loginctl lock-session
         ;;
     lock_gpg_clear)
-        lock_gpg_clear
+        exec lock_gpg_clear
         ;;
     logout)
-        swaymsg exit
+        exec swaymsg exit
         ;;
     suspend)
-        systemctl suspend && lock
+        exec systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate && lock
+        exec systemctl hibernate && lock
         ;;
     reboot)
-        systemctl reboot
+        exec systemctl reboot
         ;;
     shutdown)
-        systemctl poweroff
+        exec systemctl poweroff
         ;;
     blank)
-        swaymsg "output * dpms off"
+        exec swaymsg "output * dpms off"
         ;;
     unblank)
-        swaymsg "output * dpms on"
+        exec swaymsg "output * dpms on"
         ;;
     *)
         lock
