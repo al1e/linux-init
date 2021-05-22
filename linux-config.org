@@ -1279,6 +1279,7 @@ X11 apps still need resource definitions when launched under XWayland.
   for_window [title="sway-launcher"] floating enable
 
   set $term  'sway-terminal'
+  set $editor  'sway-editor'
   set $wallpaper "~/Pictures/Wallpapers/current"
 
   include /etc/sway/config-vars.d/*
@@ -1303,6 +1304,7 @@ X11 apps still need resource definitions when launched under XWayland.
   output * bg  $wallpaper fill
 
   bindsym $mod+Return exec $term
+  bindsym $mod+Shift+e exec $editor
   bindsym $mod+d exec $menu
 
 #+end_src
@@ -1471,15 +1473,17 @@ X11 apps still need resource definitions when launched under XWayland.
 *** exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 #+begin_src conf
 
+  bindsym  $mod+Control+l exec sway-lock-utils lock
+
   set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
   mode "$mode_system" {
-  bindsym b exec --no-startup-id sway-lock-utils blank, mode "default"
-  bindsym l exec --no-startup-id sway-lock-utils lock, mode "default"
-  bindsym e exec --no-startup-id sway-lock-utils logout, mode "default"
-  bindsym s exec --no-startup-id sway-lock-utils suspend, mode "default"
-  bindsym h exec --no-startup-id sway-lock-utils hibernate, mode "default"
-  bindsym r exec --no-startup-id sway-lock-utils reboot, mode "default"
-  bindsym Shift+s exec --no-startup-id sway-lock-utils shutdown, mode "default"
+  bindsym b exec sway-lock-utils blank, mode "default"
+  bindsym l exec sway-lock-utils lock, mode "default"
+  bindsym e exec sway-lock-utils logout, mode "default"
+  bindsym s exec sway-lock-utils suspend, mode "default"
+  bindsym h exec sway-lock-utils hibernate, mode "default"
+  bindsym r exec sway-lock-utils reboot, mode "default"
+  bindsym Shift+s exec sway-lock-utils shutdown, mode "default"
   # back to normal: Enter or Escape
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -1646,7 +1650,6 @@ X11 apps still need resource definitions when launched under XWayland.
 #+begin_src conf
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
   bindsym Print exec gnome-screenshot -i
-  bindsym $mod+Shift+e exec XMODIFIERS= emacs-same-frame
   bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
   bindsym $mod+Control+Shift+f exec  "sway-www"
   bindsym $mod+Control+a exec pavucontrol
@@ -1996,7 +1999,6 @@ return the volume %
   sway-kanshi &
   sway-idle-hook &
   (sleep 5 && gpg-cache) &
-  oneterminal "random-man-page" random-man-page &
   [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 #+end_src
 *** ~/bin/sway/sway-do-tool
@@ -2031,13 +2033,19 @@ return the volume %
   fi
   exit 0
 #+end_src
+*** ~/bin/sway/sway-editor
+#+begin_src bash :tangle "~/bin/sway/sway-editor"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  exec emacs-same-frame "$@"
+#+end_src
 *** ~/bin/sway/sway-lock-utils
 Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   lock() {
-      swaylock -i ~/Pictures/LockScreen/lock -c 000000
+      exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
   }
 
   lock_gpg_clear() {
@@ -2094,7 +2102,7 @@ Just a gathering place of locky/suspendy type things...
   exec swayidle -w \
        timeout 5 '' \
        resume 'sway-lock-utils unblank' \
-       timeout 10 'pidof waylock && sway-lock-utils blank' \
+       timeout 10 'pidof swaylock && sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
@@ -2111,7 +2119,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-lock"
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
-  swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+  exec sway-lock-utils lock
 #+end_src
 *** ~/bin/sway/sway-www
 :PROPERTIES:

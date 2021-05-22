@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
 lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
