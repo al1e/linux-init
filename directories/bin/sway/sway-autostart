@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+sway-kanshi &
+sway-idle-hook &
+(sleep 5 && gpg-cache) &

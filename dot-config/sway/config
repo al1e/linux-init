@@ -7,7 +7,7 @@ set $mod Mod4
 set $menu sway-launcher-fzf
 for_window [title="sway-launcher"] floating enable
 
-set $term  'oneterminal "i3wmterm" ""'
+set $term  'sway-terminal'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
 include /etc/sway/config-vars.d/*
@@ -33,11 +33,6 @@ output * bg  $wallpaper fill
 
 bindsym $mod+Return exec $term
 bindsym $mod+d exec $menu
-
-exec sway-kanshi
-exec sway-idle-hook
-exec sleep 5 && gpg-cache
-exec swaymsg workspace 1:edit
 
 #
 # Scratchpad:
@@ -387,5 +382,8 @@ position top
 hidden_state hide
 modifier $mod
 }
+
+exec sway-autostart
+exec swaymsg workspace 1:edit
 
 include /etc/sway/config.d/*

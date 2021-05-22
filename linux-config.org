@@ -1278,7 +1278,7 @@ X11 apps still need resource definitions when launched under XWayland.
   set $menu sway-launcher-fzf
   for_window [title="sway-launcher"] floating enable
 
-  set $term  'oneterminal "i3wmterm" ""'
+  set $term  'sway-terminal'
   set $wallpaper "~/Pictures/Wallpapers/current"
 
   include /etc/sway/config-vars.d/*
@@ -1305,13 +1305,6 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+Return exec $term
   bindsym $mod+d exec $menu
 
-#+end_src
-*** autostart                                                     :autostart:
-#+begin_src conf
-  exec sway-kanshi
-  exec sway-idle-hook
-  exec sleep 5 && gpg-cache
-  exec swaymsg workspace 1:edit
 #+end_src
 *** scratchpad
 #+begin_src conf
@@ -1675,239 +1668,6 @@ X11 apps still need resource definitions when launched under XWayland.
 
 #+end_src
 
-*** bin,scripts                                                :sway:wayland:
-**** ~/bin/sway/sway-do-tool
-#+begin_src bash :tangle "~/bin/sway/sway-do-tool"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-
-  # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
-  # get the app_id/class instance instead. But.. it works.
-
-  id="$1"
-  script="$2"
-  [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
-  if swaymsg "[title=${id}] focus" &> /dev/null; then
-      rgr-logger -t "sway-do-tool" "title ${id} found"
-  else
-      if  swaymsg "[class=^${id}] focus" &> /dev/null; then
-          rgr-logger -t "sway-do-tool" "class ${id} found"
-      else
-          if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
-              rgr-logger -t "sway-do-tool" "app_id ${id} found"
-          else
-              if [ ! -z "$script" ]; then
-                  rgr-logger -t "sway-do-tool" "evaling script $scipt"
-                  eval "$script" &
-              else
-                  rgr-logger -t "sway-do-tool" "exiting"
-                  exit 1
-              fi
-          fi
-      fi
-  fi
-  exit 0
-#+end_src
-**** ~/bin/sway/sway-lock-utils
-Just a gathering place of locky/suspendy type things...
-#+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  lock() {
-      swaylock -i ~/Pictures/LockScreen/lock -c 000000
-  }
-
-  lock_gpg_clear() {
-      rgr-logger -t "x-lock-utils"  lock_gpg_clear
-      [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
-      lock
-  }
-
-  case "$1" in
-      lock)
-          lock
-          #exec loginctl lock-session
-          ;;
-      lock_gpg_clear)
-          lock_gpg_clear
-          ;;
-      logout)
-          swaymsg exit
-          ;;
-      suspend)
-          systemctl suspend && lock
-          ;;
-      hibernate)
-          systemctl hibernate && lock
-          ;;
-      reboot)
-          systemctl reboot
-          ;;
-      shutdown)
-          systemctl poweroff
-          ;;
-      blank)
-          swaymsg "output * dpms off"
-          ;;
-      unblank)
-          swaymsg "output * dpms on"
-          ;;
-      ,*)
-          lock
-          ;;
-  esac
-
-  exit 0
-#+end_src
-**** ~/bin/sway/sway-idle-hook                              :sleep:lock:idle:
-:PROPERTIES:
-:ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
-:END:
-
-#+begin_src bash :tangle "~/bin/sway/sway-idle-hook"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  exec swayidle -w \
-       timeout 5 '' \
-       resume 'sway-lock-utils unblank' \
-       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
-       resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
-       resume 'sway-lock-utils unblank' \
-       lock 'sway-lock' \
-       before-sleep 'sway-lock'
-#+end_src
-
-**** ~/bin/sway/sway-lock
-:PROPERTIES:
-:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
-:END:
-#+begin_src bash :tangle "~/bin/sway/sway-lock"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
-#+end_src
-**** ~/bin/sway/sway-www
-:PROPERTIES:
-:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
-:END:
-#+begin_src bash :tangle "~/bin/sway/sway-www"
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
-  sway-do-tool "Google-chrome"
-#+end_src
-**** ~/bin/sway/sway-swaysock                                      :swaysock:
-#+begin_src bash :tangle "~/bin/sway/sway-swaysock"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-#+end_src
-**** ~/bin/sway/sway-display-swap
-https://i3wm.org/docs/user-contributed/swapping-workspaces.html
-#+begin_src bash :tangle ~/bin/sway/sway-display-swap
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-
-  DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
-
-  for ROW in "${DISPLAY_CONFIG[@]}"
-  do
-      IFS=':'
-      read -ra CONFIG <<< "${ROW}"
-      if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
-          echo "moving ${CONFIG[1]} right..."
-          sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-          sway-msg -- move workspace to output right
-      fi
-  done
-#+end_src
-**** ~/bin/sway/sway-launcher-wofi
-#+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
-#+end_src
-**** ~/bin/sway/sway-launcher-fzf
-#+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
-#+end_src
-
-**** ~/bin/sway/sway-screenshot
-Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
-#+begin_src bash :tangle ~/bin/sway/sway-screenshot
-  #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
-
-  DIR=${HOME}/tmp/Screenshots
-
-  mkdir -p "${DIR}"
-
-  FILENAME="screenshot-$(date +%F-%T).png"
-  grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
-
-  #Create a link, so don't have to search for the newest
-  ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
-
-  #Copy to the buffer
-  wl-copy < "${DIR}"/screenshot-latest.png
-#+end_src
-**** kanshi                                                          :kanshi:
-Monitor control with hotplug https://github.com/emersion/kanshi
-***** ~/bin/sway/sway-kanshi
-Load a host specific kanshi file if it exists
-#+begin_src bash :tangle "~/bin/sway/sway-kanshi"
-  #!/usr/bin/bash
-  #Maintained in linux-init-files.org
-  config="$HOME/.config/kanshi/config-$(hostname)"
-  if [ -f  "$config" ]; then
-      rgr-logger -t "kanshi"  "$config"
-      exec kanshi -c "$config"
-  else
-      rgr-logger -t "kanshi"  "default config"
-      exec kanshi
-  fi
-#+end_src
-***** config-thinkpadt14s
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
-  {
-  output eDP-1 enable mode 1920x1080  position 0,0
-  }
-
-  {
-  output eDP-1 mode 1920x1080 position 1920,0
-  output DP-4 mode 1920x1080 position 0,0
-  }
-#+end_src
-
-***** config-thinkpadt460
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
-  {
-  output eDP-1 enable mode 1366×768   position 0,0
-  }
-
-  {
-  output eDP-1 mode 1366×768  position 1920,0
-  output DP-4 mode 1920x1080 position 0,0
-  }
-#+end_src
-***** config-thinkpadx270
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
-  {
-  output eDP-1 enable mode 1920x1080  position 0,0
-  }
-
-  {
-  output DP-4 mode 1920x1080 position 0,0
-  output eDP-1 disable
-  }
-
-#+end_src
 *** gaming                                                           :gaming:
 **** steam                                                            :steam:
 #+begin_src conf
@@ -1928,6 +1688,11 @@ Load a host specific kanshi file if it exists
   hidden_state hide
   modifier $mod
   }
+#+end_src
+*** autostart                                                     :autostart:
+#+begin_src conf
+  exec sway-autostart
+  exec swaymsg workspace 1:edit
 #+end_src
 *** library include
 #+begin_src conf
@@ -2222,6 +1987,255 @@ return the volume %
       1) oneterminal "wifi" "nmtui"  &>/dev/null &
   esac
   exec i3bm-wifi
+#+end_src
+** bin,scripts                                                 :sway:wayland:
+*** ~/bin/sway/sway-autostart
+#+begin_src bash :tangle "~/bin/sway/sway-autostart"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  sway-kanshi &
+  sway-idle-hook &
+  (sleep 5 && gpg-cache) &
+#+end_src
+*** ~/bin/sway/sway-do-tool
+#+begin_src bash :tangle "~/bin/sway/sway-do-tool"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+
+  # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
+  # get the app_id/class instance instead. But.. it works.
+
+  id="$1"
+  script="$2"
+  [ -z "$id" ] && echo "usage: sway-do-tool id" && exit 1
+  if swaymsg "[title=${id}] focus" &> /dev/null; then
+      rgr-logger -t "sway-do-tool" "title ${id} found"
+  else
+      if  swaymsg "[class=^${id}] focus" &> /dev/null; then
+          rgr-logger -t "sway-do-tool" "class ${id} found"
+      else
+          if  swaymsg "[app_id=^${id}] focus" &> /dev/null; then
+              rgr-logger -t "sway-do-tool" "app_id ${id} found"
+          else
+              if [ ! -z "$script" ]; then
+                  rgr-logger -t "sway-do-tool" "evaling script $scipt"
+                  eval "$script" &
+              else
+                  rgr-logger -t "sway-do-tool" "exiting"
+                  exit 1
+              fi
+          fi
+      fi
+  fi
+  exit 0
+#+end_src
+*** ~/bin/sway/sway-lock-utils
+Just a gathering place of locky/suspendy type things...
+#+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  lock() {
+      swaylock -i ~/Pictures/LockScreen/lock -c 000000
+  }
+
+  lock_gpg_clear() {
+      rgr-logger -t "x-lock-utils"  lock_gpg_clear
+      [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
+      lock
+  }
+
+  case "$1" in
+      lock)
+          lock
+          #exec loginctl lock-session
+          ;;
+      lock_gpg_clear)
+          lock_gpg_clear
+          ;;
+      logout)
+          swaymsg exit
+          ;;
+      suspend)
+          systemctl suspend && lock
+          ;;
+      hibernate)
+          systemctl hibernate && lock
+          ;;
+      reboot)
+          systemctl reboot
+          ;;
+      shutdown)
+          systemctl poweroff
+          ;;
+      blank)
+          swaymsg "output * dpms off"
+          ;;
+      unblank)
+          swaymsg "output * dpms on"
+          ;;
+      ,*)
+          lock
+          ;;
+  esac
+
+  exit 0
+#+end_src
+*** ~/bin/sway/sway-idle-hook                               :sleep:lock:idle:
+:PROPERTIES:
+:ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
+:END:
+
+#+begin_src bash :tangle "~/bin/sway/sway-idle-hook"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
+  exec swayidle -w \
+       timeout 5 '' \
+       resume 'sway-lock-utils unblank' \
+       timeout 10 'if pgrep -x swaylock; then sway-lock-utils blank; fi' \
+       resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+       resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+       resume 'sway-lock-utils unblank' \
+       lock 'sway-lock' \
+       before-sleep 'sway-lock'
+#+end_src
+
+*** ~/bin/sway/sway-lock
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway/sway-lock"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  swaylock -f -s fit -i ~/Pictures/LockScreen/lock -c 000000
+#+end_src
+*** ~/bin/sway/sway-www
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway/sway-www"
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
+  sway-do-tool "Google-chrome"
+#+end_src
+*** ~/bin/sway/sway-swaysock                                       :swaysock:
+#+begin_src bash :tangle "~/bin/sway/sway-swaysock"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
+#+end_src
+*** ~/bin/sway/sway-terminal                                       :swaysock:
+#+begin_src bash :tangle "~/bin/sway/sway-terminal"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  exec oneterminal "${1:-Terminal}" ""
+#+end_src
+*** ~/bin/sway/sway-display-swap
+https://i3wm.org/docs/user-contributed/swapping-workspaces.html
+#+begin_src bash :tangle ~/bin/sway/sway-display-swap
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+
+  DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+
+  for ROW in "${DISPLAY_CONFIG[@]}"
+  do
+      IFS=':'
+      read -ra CONFIG <<< "${ROW}"
+      if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
+          echo "moving ${CONFIG[1]} right..."
+          sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+          sway-msg -- move workspace to output right
+      fi
+  done
+#+end_src
+*** ~/bin/sway/sway-launcher-wofi
+#+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
+#+end_src
+*** ~/bin/sway/sway-launcher-fzf
+#+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
+#+end_src
+
+*** ~/bin/sway/sway-screenshot
+Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
+#+begin_src bash :tangle ~/bin/sway/sway-screenshot
+  #!/usr/bin/bash
+  # Maintained in linux-init-files.org
+  # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
+
+  DIR=${HOME}/tmp/Screenshots
+
+  mkdir -p "${DIR}"
+
+  FILENAME="screenshot-$(date +%F-%T).png"
+  grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
+
+  #Create a link, so don't have to search for the newest
+  ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+
+  #Copy to the buffer
+  wl-copy < "${DIR}"/screenshot-latest.png
+#+end_src
+*** kanshi                                                           :kanshi:
+Monitor control with hotplug https://github.com/emersion/kanshi
+**** ~/bin/sway/sway-kanshi
+Load a host specific kanshi file if it exists
+#+begin_src bash :tangle "~/bin/sway/sway-kanshi"
+  #!/usr/bin/bash
+  #Maintained in linux-init-files.org
+  pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+  config="$HOME/.config/kanshi/config-$(hostname)"
+  if [ -f  "$config" ]; then
+      rgr-logger -t "kanshi"  "$config"
+      exec kanshi -c "$config"
+  else
+      rgr-logger -t "kanshi"  "default config"
+      exec kanshi
+  fi
+#+end_src
+**** config-thinkpadt14s
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
+  {
+  output eDP-1 enable mode 1920x1080  position 0,0
+  }
+
+  {
+  output eDP-1 mode 1920x1080 position 1920,0
+  output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+
+**** config-thinkpadt460
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
+  {
+  output eDP-1 enable mode 1366×768   position 0,0
+  }
+
+  {
+  output eDP-1 mode 1366×768  position 1920,0
+  output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+**** config-thinkpadx270
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
+  {
+  output eDP-1 enable mode 1920x1080  position 0,0
+  }
+
+  {
+  output DP-4 mode 1920x1080 position 0,0
+  output eDP-1 disable
+  }
+
 #+end_src
 * Vim
 ** ~/.vimrc
@@ -2808,37 +2822,6 @@ P/fo8sDBBu2QBoL2+gQZ11l7uSZMjTCR/8msBO5LbLDmyOUposbv6va1dzPN898F
 ZsaqN9VNjV2b75kQiPJsZaoekClV7yOFc10/VRKBFD1MlspEovrIpReI9by6azIU
 =nb0T
 -----END PGP MESSAGE-----
-* systemd
-** DONE lock when lid closed
-CLOSED: [2020-12-28 Mo 07:19] SCHEDULED: <2020-12-07 Mo>
-:LOGBOOK:
-- Note taken on [2020-12-28 Mo 07:19] \\
-  use xss-lock to capture suspend
-- State "DONE"       from "CANCELLED"  [2020-12-28 Mo 07:19]
-- Note taken on [2020-12-05 Sa 09:38] \\
-  not working - xsslock seems to be the way
-- State "TODO"       from              [2020-12-05 Sa 09:36]
-:END:
-*** TODO ~/.config/systemd/user/lidlock.service
-:LOGBOOK:
-- Note taken on [2021-05-03 Mon 11:22] \\
-  not sure if this is used or not
-- State "TODO"       from              [2021-05-03 Mon 11:21]
-:END:
-#+begin_src conf :tangle "~/.config/systemd/user/lidlock.service"
-  # Maintained in linux-init-files.org
-  [Unit]
-  Description=i3lock on suspend
-  After=sleep.target
-
-  [Service]
-  Type=forking
-  Environment=DISPLAY=:0
-  #ExecStart=/usr/bin/i3lock -d -c 000000
-
-  [Install]
-  WantedBy=sleep.target
-#+end_src
 * ACPI
 ** power status
 *** acpid events
@@ -3218,7 +3201,7 @@ might be an idea set an alias such as 'alias man=eman'
   #!/usr/bin/bash
   # Maintained in linux-init-files.org
   mp=${1:-"man"}
-  pgrep -x emacs > /dev/null && ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null) & ) || /usr/bin/man "$@"
+  pgrep -x emacs > /dev/nulka ( (emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null) & ) || /usr/bin/man "$@"
 #+end_src
 ** ~/bin/expert-advice
 #+begin_src bash :tangle "~/bin/expert-advice"
