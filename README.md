@@ -1650,7 +1650,9 @@ swaymsg "output ${m} ${1:-enable}"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"' | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
+l=$(swaymsg -t get_outputs | jq -r '. | length')
+[ "$l" = "1" ] && sway-notify "Only one monitor so no...." && exit 1
+s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
 if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
@@ -1658,6 +1660,7 @@ if [ ! -z "$s" ]; then
         command -v sway-notify && (sleep 0.5 && sway-notify "$s:$e") &
     fi
 fi
+exit 0
 ```
 
 
