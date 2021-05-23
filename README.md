@@ -766,6 +766,22 @@ bindsym $mod+d exec $menu
 ```
 
 
+### display
+
+1.  lid     :lid:clamshell:
+
+    ```conf
+    exec sway-lid
+    ```
+
+2.  brightness     :brightness:
+
+    ```conf
+    bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+    bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+    ```
+
+
 ### scratchpad
 
 ```conf
@@ -925,34 +941,23 @@ bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
 ```
 
 
-### volume     :volume:
+### audio     :audio:
 
-```conf
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-```
+1.  volume     :volume:
 
+    ```conf
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    ```
 
-### brightness     :brightness:
+2.  pavucontrol
 
-```conf
-bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
-bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
-```
-
-
-### lid     :lid:clamshell:
-
-1.  ~/bin/sway/sway-lid
-
-    ```bash
-    #!/usr/bin/bash
-    # Maintained in linux-config.org
-    M="$(swaymsg -t get_outputs | jq '.[0].name')"
-    swaymsg 'bindswitch lid:on output ${M} disable'
-    swaymsg 'bindswitch lid:off output ${M} enable'
+    ```conf
+    for_window [app_id="pavucontrol"] floating enable
+    bindsym $mod+Control+a exec pavucontrol
+    bindsym $mod+Control+Shift+a exec pulse-restart
     ```
 
 
@@ -997,7 +1002,6 @@ for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [title="wifi"] floating enable
 for_window [title="bluetoothctl"] floating enable
-for_window [app_id="pavucontrol"] floating enable
 ```
 
 
@@ -1008,8 +1012,6 @@ bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
 bindsym $mod+Control+Shift+f exec  "sway-www"
-bindsym $mod+Control+a exec pavucontrol
-bindsym $mod+Control+Shift+a exec pulse-restart
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
@@ -1070,322 +1072,323 @@ exec swaymsg workspace 1:edit
 include /etc/sway/config.d/*
 ```
 
-1.  i3blocks
 
-    1.  config
+### i3blocks
 
-        ```conf
-        [dropbox]
-        interval=15
-        command=my-i3b-db-status
-        color=#ffd700
+1.  config
 
-        [kernel]
-        label=🐧
-        command=my-i3b-kernel
-        interval=once
-        color=#ffffff
+    ```conf
+    [dropbox]
+    interval=15
+    command=my-i3b-db-status
+    color=#ffd700
 
-        [uptime]
+    [kernel]
+    label=🐧
+    command=my-i3b-kernel
+    interval=once
+    color=#ffffff
 
-        command=my-i3b-uptime
-        interval=60
+    [uptime]
 
-        [cpu_usage]
-        markup=pango
-        command=my-i3b-cpu
-        interval=1
+    command=my-i3b-uptime
+    interval=60
 
-        [temperature]
-        label=🌡
-        command=my-i3b-temperature
-        interval=60
+    [cpu_usage]
+    markup=pango
+    command=my-i3b-cpu
+    interval=1
 
-        [battery]
-        markup=pango
-        command=my-i3b-battery-status
-        interval=60
+    [temperature]
+    label=🌡
+    command=my-i3b-temperature
+    interval=60
 
-        # [power_draw]
-        # label=⚡
-        # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-        # interval=5
-        # color=#00ff00
+    [battery]
+    markup=pango
+    command=my-i3b-battery-status
+    interval=60
 
-        [weather]
-        markup=pango
-        command=my-i3b-weather
-        interval=300
+    # [power_draw]
+    # label=⚡
+    # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+    # interval=5
+    # color=#00ff00
 
-        # [weather]
-        # command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-        # interval=900
-        # color=#A4C2F4
+    [weather]
+    markup=pango
+    command=my-i3b-weather
+    interval=300
 
-        [brightness]
-        command=my-i3b-brightness
-        color=#FFD700
-        interval=2
+    # [weather]
+    # command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+    # interval=900
+    # color=#A4C2F4
 
-        [volume]
-        markup=pango
-        command=my-i3b-volume
-        interval=2
-        color=#FFD700
+    [brightness]
+    command=my-i3b-brightness
+    color=#FFD700
+    interval=2
 
-        [bluetooth]
-        command=my-i3b-bluetooth
-        interval=60
-        color=#4d4dff
+    [volume]
+    markup=pango
+    command=my-i3b-volume
+    interval=2
+    color=#FFD700
 
-        [wifi]
-        markup=pango
-        command=my-i3b-wifi
-        interval=60
+    [bluetooth]
+    command=my-i3b-bluetooth
+    interval=60
+    color=#4d4dff
 
-        [time]
-        command=my-i3b-date-cal
-        interval=60
+    [wifi]
+    markup=pango
+    command=my-i3b-wifi
+    interval=60
 
+    [time]
+    command=my-i3b-date-cal
+    interval=60
+
+    ```
+
+2.  i3blocks utilities
+
+    1.  ~/bin/sway/my-i3b-battery-status
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                ;;
+            ,*)
+                ;;
+        esac
+        b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
+        if [ -z "$b" ]; then
+            b="charged";
+        fi
+        echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
         ```
 
-    2.  i3blocks utilities
+    2.  ~/bin/sway/my-i3b-bluetooth
 
-        1.  ~/bin/sway/my-i3b-battery-status
+        Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    ;;
-                ,*)
-                    ;;
-            esac
-            b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
-            if [ -z "$b" ]; then
-                b="charged";
+        ```bash
+        #!/usr/bin/env bash
+
+        case $BLOCK_BUTTON in
+            1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+        esac
+
+        get_from_file() {
+            dev=$1
+            name=
+            if [ ! -f /tmp/bt-devices.txt ]; then
+                touch /tmp/bt-devices.txt
+                echo ""
+                return
             fi
-            echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
-            ```
-
-        2.  ~/bin/sway/my-i3b-bluetooth
-
-            Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
-
-            ```bash
-            #!/usr/bin/env bash
-
-            case $BLOCK_BUTTON in
-                1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
-            esac
-
-            get_from_file() {
-                dev=$1
-                name=
-                if [ ! -f /tmp/bt-devices.txt ]; then
-                    touch /tmp/bt-devices.txt
-                    echo ""
-                    return
+            for i in `cat /tmp/bt-devices.txt`; do
+                d=`echo $i | awk -F:: '{print $1}'`
+                if [ $d = $dev ]; then
+                    name=`echo $i | awk -F:: '{print $2}'`
                 fi
-                for i in `cat /tmp/bt-devices.txt`; do
-                    d=`echo $i | awk -F:: '{print $1}'`
-                    if [ $d = $dev ]; then
-                        name=`echo $i | awk -F:: '{print $2}'`
-                    fi
-                done
-                echo "${name}"
-            }
+            done
+            echo "${name}"
+        }
 
-            store_file() {
-                dev=$1
-                name="${2}"
-                echo "$dev::${name}" >> /tmp/bt-devices.txt
-            }
+        store_file() {
+            dev=$1
+            name="${2}"
+            echo "$dev::${name}" >> /tmp/bt-devices.txt
+        }
 
-            connections=`hcitool con | sed -n 2p`
-            if [ ! -z "$connections" ]; then
-                # We have a connection, we want to get the name from a file if we've had
-                # it from there before because getting the name of the device connected
-                # is very slow and costly.
-                dev=`echo $connections | awk '{print $3}'`
-                name=`get_from_file $dev`
-                if [ -z "$name" ]; then
-                    name=`hcitool name $dev | awk '{print $1}'`
-                    if [ ! -z "${name}" ]; then
-                        store_file $dev "${name}"
-                    fi
-                fi
-                echo " $name"
-                echo " $name"
-                echo "#83AF40\n"
-                # echo "#859900\n"
-            else
-                echo ""
-                echo ""
-            fi
-            ```
-
-        3.  ~/bin/sway/my-i3b-brightness
-
-            return the brightness %
-
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
-            if command -v brightnessctl &> /dev/null; then
-                echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
-            else
-                echo "🔆N/A"
-            fi
-            ```
-
-        4.  ~/bin/sway/my-i3b-cpu
-
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    oneterminal "Process-Monitor-htop" htop &>/dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            exec i3bm-cpu
-            ```
-
-        5.  ~/bin/sway/my-i3b-date-cal
-
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            exec echo "📅$(date +"%a, %d %b: %H:%M")"
-            ```
-
-        6.  ~/bin/sway/my-i3b-db-status
-
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-              case $BLOCK_BUTTON in
-                  1)
-                      sway-www "https://www.dropbox.com/home"  &> /dev/null
-                      ;;
-                  ,*)
-                      ;;
-              esac
-
-            if pidof dropbox > /dev/null ; then
-                stat=$(dropbox status | sed -n 1p)
-                echo "⇄${stat}"; echo "";
-            else
-                if command -v dropbox > /dev/null; then
-                    echo "⇄Restart Dropbox.."
-                    #dropbox start &> /dev/null &
+        connections=`hcitool con | sed -n 2p`
+        if [ ! -z "$connections" ]; then
+            # We have a connection, we want to get the name from a file if we've had
+            # it from there before because getting the name of the device connected
+            # is very slow and costly.
+            dev=`echo $connections | awk '{print $3}'`
+            name=`get_from_file $dev`
+            if [ -z "$name" ]; then
+                name=`hcitool name $dev | awk '{print $1}'`
+                if [ ! -z "${name}" ]; then
+                    store_file $dev "${name}"
                 fi
             fi
-            ```
+            echo " $name"
+            echo " $name"
+            echo "#83AF40\n"
+            # echo "#859900\n"
+        else
+            echo ""
+            echo ""
+        fi
+        ```
 
-        7.  ~/bin/sway/my-i3b-kernel
+    3.  ~/bin/sway/my-i3b-brightness
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            echo "$(uname -sr)"
-            ```
+        return the brightness %
 
-        8.  ~/bin/sway/my-i3b-temperature
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
+        if command -v brightnessctl &> /dev/null; then
+            echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+        else
+            echo "🔆N/A"
+        fi
+        ```
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            exec /usr/share/i3blocks/temperature
-            ```
+    4.  ~/bin/sway/my-i3b-cpu
 
-        9.  ~/bin/sway/my-i3b-uptime
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                oneterminal "Process-Monitor-htop" htop &>/dev/null
+                ;;
+            *)
+                ;;
+        esac
+        exec i3bm-cpu
+        ```
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    oneterminal "bpytop-kernel" bpytop &>/dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
-            ```
+    5.  ~/bin/sway/my-i3b-date-cal
 
-        10. ~/bin/sway/my-i3b-volume
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
+                ;;
+            *)
+                ;;
+        esac
+        exec echo "📅$(date +"%a, %d %b: %H:%M")"
+        ```
 
-            return the volume %
+    6.  ~/bin/sway/my-i3b-db-status
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    sway-do-tool Pavucontrol pavucontrol &>/dev/null &
-                    ;;
-                *)
-                    ;;
-            esac
-            exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
-            ```
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+          case $BLOCK_BUTTON in
+              1)
+                  sway-www "https://www.dropbox.com/home"  &> /dev/null
+                  ;;
+              ,*)
+                  ;;
+          esac
 
-        11. ~/bin/sway/my-i3b-weather
+        if pidof dropbox > /dev/null ; then
+            stat=$(dropbox status | sed -n 1p)
+            echo "⇄${stat}"; echo "";
+        else
+            if command -v dropbox > /dev/null; then
+                echo "⇄Restart Dropbox.."
+                #dropbox start &> /dev/null &
+            fi
+        fi
+        ```
 
-            return the volume %
+    7.  ~/bin/sway/my-i3b-kernel
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1)
-                    sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
-                    ;;
-                *)
-                    ;;
-            esac
-            exec i3bm-weather
-            ```
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                ;;
+            *)
+                ;;
+        esac
+        echo "$(uname -sr)"
+        ```
 
-        12. ~/bin/sway/my-i3b-wifi
+    8.  ~/bin/sway/my-i3b-temperature
 
-            return the volume %
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                ;;
+            *)
+                ;;
+        esac
+        exec /usr/share/i3blocks/temperature
+        ```
 
-            ```bash
-            #!/usr/bin/bash
-            #Maintained in linux-config.org
-            case $BLOCK_BUTTON in
-                1) oneterminal "wifi" "nmtui"  &>/dev/null &
-            esac
-            exec i3bm-wifi
-            ```
+    9.  ~/bin/sway/my-i3b-uptime
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                oneterminal "bpytop-kernel" bpytop &>/dev/null
+                ;;
+            *)
+                ;;
+        esac
+        exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+        ```
+
+    10. ~/bin/sway/my-i3b-volume
+
+        return the volume %
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-do-tool Pavucontrol pavucontrol &>/dev/null &
+                ;;
+            *)
+                ;;
+        esac
+        exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
+        ```
+
+    11. ~/bin/sway/my-i3b-weather
+
+        return the volume %
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+                ;;
+            *)
+                ;;
+        esac
+        exec i3bm-weather
+        ```
+
+    12. ~/bin/sway/my-i3b-wifi
+
+        return the volume %
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1) oneterminal "wifi" "nmtui"  &>/dev/null &
+        esac
+        exec i3bm-wifi
+        ```
 
 
 ## bin,scripts     :sway:wayland:
@@ -1514,6 +1517,17 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      lock 'sway-lock' \
      before-sleep 'sway-lock'
+```
+
+
+### ~/bin/sway/sway-lid
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+M="$(swaymsg -t get_outputs | jq '.[0].name')"
+swaymsg 'bindswitch lid:on output ${M} disable'
+swaymsg 'bindswitch lid:off output ${M} enable'
 ```
 
 

@@ -1307,6 +1307,16 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+d exec $menu
 
 #+end_src
+*** display
+**** lid                                                      :lid:clamshell:
+#+begin_src conf
+  exec sway-lid
+#+end_src
+**** brightness                                                  :brightness:
+#+begin_src conf
+  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+#+end_src
 *** scratchpad
 #+begin_src conf
   #
@@ -1457,26 +1467,19 @@ X11 apps still need resource definitions when launched under XWayland.
   exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
   bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
 #+end_src
-*** volume                                                           :volume:
+*** audio                                                             :audio:
+**** volume                                                          :volume:
 #+begin_src conf
   bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
   bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
   bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
   bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 #+end_src
-*** brightness                                                   :brightness:
+**** pavucontrol
 #+begin_src conf
-  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
-  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
-#+end_src
-*** lid                                                       :lid:clamshell:
-**** ~/bin/sway/sway-lid
-#+begin_src bash :tangle ~/bin/sway/sway-lid
-  #!/usr/bin/bash
-  # Maintained in linux-config.org
-  M="$(swaymsg -t get_outputs | jq '.[0].name')"
-  swaymsg 'bindswitch lid:on output ${M} disable'
-  swaymsg 'bindswitch lid:off output ${M} enable'
+  for_window [app_id="pavucontrol"] floating enable
+  bindsym $mod+Control+a exec pavucontrol
+  bindsym $mod+Control+Shift+a exec pulse-restart
 #+end_src
 *** exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 #+begin_src conf
@@ -1512,7 +1515,6 @@ X11 apps still need resource definitions when launched under XWayland.
   for_window [app_id="zenity"] floating enable
   for_window [title="wifi"] floating enable
   for_window [title="bluetoothctl"] floating enable
-  for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
 *** apps keybindings
@@ -1521,8 +1523,6 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym Print exec gnome-screenshot -i
   bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
   bindsym $mod+Control+Shift+f exec  "sway-www"
-  bindsym $mod+Control+a exec pavucontrol
-  bindsym $mod+Control+Shift+a exec pulse-restart
   bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
   bindsym $mod+Control+c exec conky
   bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
@@ -1573,8 +1573,8 @@ X11 apps still need resource definitions when launched under XWayland.
 #+begin_src conf
   include /etc/sway/config.d/*
 #+end_src
-**** i3blocks
-***** config
+*** i3blocks
+**** config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/i3blocks/config"
 :ID:       20c2b7d9-7111-46c4-8965-63db28dea79d
@@ -1654,8 +1654,8 @@ X11 apps still need resource definitions when launched under XWayland.
   interval=60
 
 #+end_src
-***** i3blocks utilities
-****** ~/bin/sway/my-i3b-battery-status
+**** i3blocks utilities
+***** ~/bin/sway/my-i3b-battery-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-battery-status"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1671,7 +1671,7 @@ X11 apps still need resource definitions when launched under XWayland.
   fi
   echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
-****** ~/bin/sway/my-i3b-bluetooth
+***** ~/bin/sway/my-i3b-bluetooth
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
 #+begin_src bash :tangle "~/bin/sway/my-i3b-bluetooth"
   #!/usr/bin/env bash
@@ -1725,7 +1725,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       echo ""
   fi
 #+end_src
-****** ~/bin/sway/my-i3b-brightness
+***** ~/bin/sway/my-i3b-brightness
 return the brightness %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-brightness"
   #!/usr/bin/bash
@@ -1738,7 +1738,7 @@ return the brightness %
   fi
 #+end_src
 
-****** ~/bin/sway/my-i3b-cpu
+***** ~/bin/sway/my-i3b-cpu
 #+begin_src bash :tangle "~/bin/sway/my-i3b-cpu"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1751,7 +1751,7 @@ return the brightness %
   esac
   exec i3bm-cpu
 #+end_src
-****** ~/bin/sway/my-i3b-date-cal
+***** ~/bin/sway/my-i3b-date-cal
 #+begin_src bash :tangle "~/bin/sway/my-i3b-date-cal"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1764,7 +1764,7 @@ return the brightness %
   esac
   exec echo "📅$(date +"%a, %d %b: %H:%M")"
 #+end_src
-****** ~/bin/sway/my-i3b-db-status
+***** ~/bin/sway/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1786,7 +1786,7 @@ return the brightness %
       fi
   fi
 #+end_src
-****** ~/bin/sway/my-i3b-kernel
+***** ~/bin/sway/my-i3b-kernel
 #+begin_src bash :tangle "~/bin/sway/my-i3b-kernel"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1799,7 +1799,7 @@ return the brightness %
   esac
   echo "$(uname -sr)"
 #+end_src
-****** ~/bin/sway/my-i3b-temperature
+***** ~/bin/sway/my-i3b-temperature
 #+begin_src bash :tangle "~/bin/sway/my-i3b-temperature"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1812,7 +1812,7 @@ return the brightness %
   esac
   exec /usr/share/i3blocks/temperature
 #+end_src
-****** ~/bin/sway/my-i3b-uptime
+***** ~/bin/sway/my-i3b-uptime
 #+begin_src bash :tangle "~/bin/sway/my-i3b-uptime"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1825,7 +1825,7 @@ return the brightness %
   esac
   exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 #+end_src
-****** ~/bin/sway/my-i3b-volume
+***** ~/bin/sway/my-i3b-volume
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-volume"
   #!/usr/bin/bash
@@ -1839,7 +1839,7 @@ return the volume %
   esac
   exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
 #+end_src
-****** ~/bin/sway/my-i3b-weather
+***** ~/bin/sway/my-i3b-weather
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-weather"
   #!/usr/bin/bash
@@ -1853,7 +1853,7 @@ return the volume %
   esac
   exec i3bm-weather
 #+end_src
-****** ~/bin/sway/my-i3b-wifi
+***** ~/bin/sway/my-i3b-wifi
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-wifi"
   #!/usr/bin/bash
@@ -1982,6 +1982,14 @@ Just a gathering place of locky/suspendy type things...
        before-sleep 'sway-lock'
 #+end_src
 
+*** ~/bin/sway/sway-lid
+#+begin_src bash :tangle ~/bin/sway/sway-lid
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  M="$(swaymsg -t get_outputs | jq '.[0].name')"
+  swaymsg 'bindswitch lid:on output ${M} disable'
+  swaymsg 'bindswitch lid:off output ${M} enable'
+#+end_src
 *** ~/bin/sway/sway-lock
 :PROPERTIES:
 :ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
