@@ -1969,7 +1969,7 @@ Just a gathering place of locky/suspendy type things...
   #!/usr/bin/bash
   # Maintained in linux-config.org
   lock() {
-      exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
+      swaylock -i ~/Pictures/LockScreen/lock -c 000000 &
   }
 
   lock_gpg_clear() {
