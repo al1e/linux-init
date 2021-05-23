@@ -224,7 +224,7 @@ for_window [title="wifi"] floating enable
 for_window [title="bluetoothctl"] floating enable
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
-bindsym Print exec gnome-screenshot -i
+bindsym Print exec sway-screenshot -i
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
 bindsym $mod+Control+Shift+f exec  "sway-www"
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop

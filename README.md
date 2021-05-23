@@ -1040,7 +1040,7 @@ for_window [title="bluetoothctl"] floating enable
 
 ```conf
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
-bindsym Print exec gnome-screenshot -i
+bindsym Print exec sway-screenshot -i
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
 bindsym $mod+Control+Shift+f exec  "sway-www"
 bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
@@ -1607,7 +1607,6 @@ exec notify-send -t 5000 "${1:-default}"
 #!/usr/bin/bash
 # Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
-sway-do-tool "Google-chrome"
 ```
 
 
