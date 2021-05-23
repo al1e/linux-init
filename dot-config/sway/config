@@ -37,8 +37,8 @@ bindsym $mod+d exec $menu
 
 exec sway-lid
 
-bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
-bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
+bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
 
 #
 # Scratchpad:

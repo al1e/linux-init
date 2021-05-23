@@ -1331,8 +1331,8 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+end_src
 **** brightness                                                  :brightness:
 #+begin_src conf
-  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
-  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
+  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
 #+end_src
 *** scratchpad
 #+begin_src conf
@@ -1747,14 +1747,12 @@ return the brightness %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-brightness"
   #!/usr/bin/bash
   #Maintained in linux-config.org
-  #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
-  if command -v brightnessctl &> /dev/null; then
-      echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+  if command -v light &> /dev/null; then
+      echo "🔆$(printf "%.0f\n" $(light -G))"
   else
-      echo "🔆N/A"
+      echo "🔆N/A- install "light""
   fi
 #+end_src
-
 ***** ~/bin/sway/my-i3b-cpu
 #+begin_src bash :tangle "~/bin/sway/my-i3b-cpu"
   #!/usr/bin/bash

@@ -804,8 +804,8 @@ bindsym $mod+d exec $menu
 2.  brightness     :brightness:
 
     ```conf
-    bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
-    bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+    bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
+    bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
     ```
 
 
@@ -1263,11 +1263,10 @@ include /etc/sway/config.d/*
         ```bash
         #!/usr/bin/bash
         #Maintained in linux-config.org
-        #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
-        if command -v brightnessctl &> /dev/null; then
-            echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
+        if command -v light &> /dev/null; then
+            echo "🔆$(printf "%.0f\n" $(light -G))"
         else
-            echo "🔆N/A"
+            echo "🔆N/A- install "light""
         fi
         ```
 
