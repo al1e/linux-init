@@ -766,7 +766,7 @@ set $term  'sway-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
-set $monitor `swaymsg -t get_outputs | jq '.[0].name')`
+set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
 exec sleep 2 && sway-notify $monitor
 
 include /etc/sway/config-vars.d/*
@@ -1049,6 +1049,7 @@ bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
 bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
 bindsym $mod+Control+h exec sway-do-tool "Hexchat" "hexchat"
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
+bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
@@ -1484,7 +1485,7 @@ exit 0
 # Maintained in linux-config.org
 DPMS="${1:-on}"
 DISP="${2:-*}"
-currentDPMS="$(swaymsg -t get_outputs | jq '.[0]'.dpms)"
+currentDPMS="$(swaymsg -t get_outputs | jq -r '.[0]'.dpms)"
 [ "$dpms" != "$currentDPMS" ] && swaymsg "output $DISP DPMS $DPMS"
 ```
 
@@ -1576,7 +1577,7 @@ exec swayidle -w \
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m="$(swaymsg -t get_outputs | jq '.[0].name')"
+m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
 swaymsg bindswitch lid:on exec "sway-screen disable $m"
 swaymsg bindswitch lid:off exec "sway-screen enable $m"
 ```
@@ -1615,9 +1616,27 @@ sway-do-tool "Google-chrome"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m=${2:-$(swaymsg -t get_outputs | jq '.[0].name')}
+m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
 swaymsg "output ${m} ${1:-enable}"
 (sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
+```
+
+
+### ~/bin/sway/sway-screen-menu
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+SCREEN=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name), Active: \(.active)"' | wofi -L 3 -G --show dmenu -)
+echo $SCREEN
+if [ ! -z "$SCREEN" ]; then
+    SCREEN="$(echo $SCREEN | cut -d, -f1)"
+    ONOFF="$(echo -e "enable\ndisable" | wofi -L 2 -G --show dmenu -)"
+    if [ ! -z "$ONOFF" ]; then
+        sway-screen "$ONOFF" "$SCREEN"
+    fi
+fi
+
 ```
 
 

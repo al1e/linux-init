@@ -2,6 +2,5 @@
 # Maintained in linux-config.org
 DPMS="${1:-on}"
 DISP="${2:-*}"
-echo "$DISP"
-currentDPMS="$(swaymsg -t get_outputs | jq '.[0]'.dpms)"
+currentDPMS="$(swaymsg -t get_outputs | jq -r '.[0]'.dpms)"
 [ "$dpms" != "$currentDPMS" ] && swaymsg "output $DISP DPMS $DPMS"

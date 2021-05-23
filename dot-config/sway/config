@@ -11,7 +11,7 @@ set $term  'sway-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
-set $monitor `swaymsg -t get_outputs | jq '.[0].name')`
+set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
 exec sleep 2 && sway-notify $monitor
 
 include /etc/sway/config-vars.d/*
@@ -233,6 +233,7 @@ bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
 bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
 bindsym $mod+Control+h exec sway-do-tool "Hexchat" "hexchat"
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
+bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"

@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+# Maintained in linux-config.org
+SCREEN=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name), Active: \(.active)"' | wofi -L 3 -G --show dmenu -)
+echo $SCREEN
+if [ ! -z "$SCREEN" ]; then
+    SCREEN="$(echo $SCREEN | cut -d, -f1)"
+    ONOFF="$(echo -e "enable\ndisable" | wofi -L 2 -G --show dmenu -)"
+    if [ ! -z "$ONOFF" ]; then
+        sway-screen "$ONOFF" "$SCREEN"
+    fi
+fi

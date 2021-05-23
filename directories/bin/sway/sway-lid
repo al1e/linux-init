@@ -1,5 +1,5 @@
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m="$(swaymsg -t get_outputs | jq '.[0].name')"
+m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
 swaymsg bindswitch lid:on exec "sway-screen disable $m"
 swaymsg bindswitch lid:off exec "sway-screen enable $m"
