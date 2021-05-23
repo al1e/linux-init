@@ -112,7 +112,7 @@ CLOSED: [2020-12-20 Sun 13:35]
 I use this as a kind of placeholder to remind me that system xinitrc is doing the work.
 #+begin_src conf :tangle "DotFiles/.xinitrc"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # Dont need that as startx will use xinitc anyway if this doesnt exist.
   rm ~/.xsession-errors
   . /etc/X11/xinit/xinitrc
@@ -120,7 +120,7 @@ I use this as a kind of placeholder to remind me that system xinitrc is doing th
 ** ~/.xprofile
 Another placeholder doing nothing as xinit launches XSession which uses .xsession and .xsessionrc on Debian
 #+begin_src bash :tangle "DotFiles/.xprofile"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # all moved to .xsessionrc so /etc/X11/Xsession loads it
 
 #+end_src
@@ -135,14 +135,14 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
 [[file:/etc/X11][/etc/X11/Xsession.d]] does the most work. It's processed by [[file:/usr/bin/startx::!/bin/sh][startx]]->[[file:/etc/X11/xinit/xinitrc::!/bin/sh][xinitrc]] which in turn calls [[file:/etc/X11/Xsession::!/bin/sh][/etc/X11/Xsession]]
 #+begin_src bash :tangle "DotFiles/.xsession"
   #!/usr/bin/env bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   rgr-logger -t "startup-initfile"  USER-XSESSION
   exec dbus-launch --sh-syntax --exit-with-session i3
 #+end_src
 ** ~/.xsessionrc
 #+begin_src bash :tangle "DotFiles/.xsessionrc"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   rgr-logger -t "startup-initfile"  XSESSIONRC
   xhost +
 
@@ -192,7 +192,7 @@ Another placeholder doing nothing as xinit launches XSession which uses .xsessio
 Add machine specifics. The xmg neo 15 [[https://github.com/pobrn/ite8291r3-ctl][keyboard backlight repo]] for example.
 #+begin_src bash :tangle "no"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   rgr-logger -t "startup-initfile"  XSESSIONRC-LOCAL
   # sugestions for .xsessionrc.local
   # export XIDLEHOOK_KBD=60
@@ -236,7 +236,7 @@ Add machine specifics. The xmg neo 15 [[https://github.com/pobrn/ite8291r3-ctl][
 Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/x-lock-utils"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   # lock() {
   #     rgr-logger -t "x-lock-utils"  lock
@@ -298,7 +298,7 @@ See [[https://github.com/jD91mZM2/xidlehook][xidlehook]]. Better handling of idl
 *** ~/bin/x-idlehook
 #+begin_src bash :tangle "~/bin/x-idlehook"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   xidlehook \
       `# Don't lock when there's a fullscreen application` \
@@ -325,14 +325,14 @@ See [[https://github.com/jD91mZM2/xidlehook][xidlehook]]. Better handling of idl
 enable force of nvidia driver - run with nvidia
 #+begin_src bash :tangle "~/bin/rnv"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia ${@}
 #+end_src
 ** ~/bin/x-backlight-persist
 Save and restore backlight values
 #+begin_src bash :tangle "~/bin/x-backlight-persist"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   save() {
       l=$(xbacklight -get);
@@ -398,7 +398,7 @@ org code block to calculate the DPI - pass inWidth as width in inches, else cmWi
 **** xrandr-connected-active
 #+begin_src bash :tangle "~/bin/xrandr-connected-active"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   XRANDR_CONNECTED_ACTIVE="$(xrandr --listactivemonitors | tail -n +2  | awk '{print $4}')"
   echo "$XRANDR_CONNECTED_ACTIVE"
 #+end_src
@@ -406,7 +406,7 @@ org code block to calculate the DPI - pass inWidth as width in inches, else cmWi
 list connected ids
 #+begin_src bash :tangle "~/bin/xrandr-connected"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   export XRANDR_CONNECTED=$(xrandr -q | grep -iw "connected" | awk '{print $1}')
   echo "$XRANDR_CONNECTED"
 #+end_src
@@ -414,7 +414,7 @@ list connected ids
 return the id of the first display reported by xrandr
 #+begin_src bash :tangle "~/bin/xrandr-connected-first"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xrandr-connected | head -n 1 | awk '{print $1}'
 #+end_src
 
@@ -425,7 +425,7 @@ return the id of the first display reported by xrandr
 list disconnected
 #+begin_src bash :tangle "~/bin/xrandr-disconnected"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xrandr -q | grep -w "disconnected" | awk '{print $1}'
 #+end_src
 
@@ -433,14 +433,14 @@ list disconnected
 turn off all disconnected
 #+begin_src bash :tangle "~/bin/xrandr-disconnected-off"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xargs -I {} xrandr --output {} --off <<< $(xrandr-disconnected)
 #+end_src
 
 **** ~/bin/xrandr-connected-external
 #+begin_src bash :tangle "~/bin/xrandr-connected-external"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   export XRANDR_EXTERNAL="$(xrandr-connected | awk '{print $1}' | grep -i "^[hdmi|d]" | head -n 1)"
   echo "$XRANDR_EXTERNAL"
 #+end_src
@@ -451,7 +451,7 @@ turn off all disconnected
 set the primary display to  arg1 else set first in list thats on
 #+begin_src bash :tangle "~/bin/xrandr-connected-primary"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   primary="${1-$(xrandr-connected-active|head -n 1)}"
   existingprimary="$(xrandr -q | grep -w "primary" | awk '{print $1}')"
   [ "${existingprimary}" != "${primary}" ] &&
@@ -471,7 +471,7 @@ set the primary display to  arg1 else set first in list thats on
 :END:
 #+begin_src bash :tangle "~/bin/xrandr-laptop"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   on=${1:-"on"}
   l="$(xrandr-laptop-id)"
   if [ -z "$l" ]; then
@@ -500,7 +500,7 @@ set the primary display to  arg1 else set first in list thats on
 #+name: xrandr-multi
 #+begin_src bash :tangle ~/bin/xrandr-multi
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   on=${1:-"on"}
   as_primary=${2:-"yes"}
   extmonitor=$(xrandr-connected-external | head -n 1)
@@ -531,7 +531,7 @@ set the primary display to  arg1 else set first in list thats on
 #+name: xrandr-mancave
 #+begin_src bash :tangle ~/bin/xrandr-mancave
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   on=${1:-"on"}
   connected=${2:-$(xrandr-connected-external | head -n 1)}
   laptop=$(xrandr-laptop-id)
@@ -553,7 +553,7 @@ set the primary display to  arg1 else set first in list thats on
 connect to richie's monitors by default if we can
 #+begin_src bash :tangle ~/bin/xrandr-smart-connect
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # turn off call disconnected displays
   xrandr-disconnected-off
   # try and ID the display connected and act accordingly
@@ -577,7 +577,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 ***** ~/bin/xrandr-smart-connect-daemon
 #+begin_src bash :tangle ~/bin/xrandr-smart-connect-daemon
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   while true; do
       sleep 5
       [ -z "$(pidof "steam")" ] && xrandr-smart-connect &> /dev/null
@@ -589,7 +589,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 ***** ~/bin/xrandr-smart-connect-daemon-run
 #+begin_src bash :tangle ~/bin/xrandr-smart-connect-daemon-run
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   if pidof -x xrandr-smart-connect-daemon &> /dev/null; then
       echo "$0 already running."
       exit 1;
@@ -608,7 +608,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 #+name: xrandr-x270-bigtv
 #+begin_src bash :tangle ~/bin/xrandr-x270-bigtv
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xrandr-multi "$@"
 #+end_src
 
@@ -622,7 +622,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 
 #+begin_src bash :tangle ~/bin/xrandr-x270-mancave
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xrandr-mancave "$@"
 #+end_src
 
@@ -632,7 +632,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 #+name: xrandr-xmgneo-bigtv
 #+begin_src bash :tangle ~/bin/xrandr-xmgneo-bigtv
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   xrandr-multi on "$@"
 #+end_src
 
@@ -646,7 +646,7 @@ Note these are not used now in favour of the [[https://github.com/jceb/srandrd][
 
 #+begin_src bash :tangle ~/bin/xrandr-xmgneo-mancave
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   dpi=188 xrandr-mancave "$@"
 #+end_src
 
@@ -687,7 +687,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 :END:
 
 #+begin_src bash :tangle "DotFiles/.profile"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  PROFILE
 
   # ~/.profile: executed by the command interpreter for login shells.
@@ -743,7 +743,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 
 #+begin_src bash :tangle "DotFiles/.bash_profile"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  BASH_PROFILE
 
   [ -f ~/.profile ] && . ~/.profile || true
@@ -761,7 +761,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 ** ~/.bashrc
 #+begin_src bash :tangle "DotFiles/.bashrc"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  BASHRC
   # ~/.bashrc: executed by bash(1) for non-login shells.
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -814,7 +814,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 * ZSH Related
 ** ~/.config/zsh/.zshrc
 #+begin_src bash :tangle "~/.config/zsh/.zshrc"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ZSHRC
   [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
   export TERM="xterm-256color"
@@ -941,14 +941,14 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 
 ** ~/.config/zsh/.zlogin
 #+begin_src bash :tangle "~/.config/zsh/.zlogin"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ZLOGIN
   # [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 #+end_src
 ** zprofile
 **** ~/.config/zsh/.zprofile
 #+begin_src bash :tangle "~/.config/zsh/.zprofile"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ZPROFILE
   if [ -f ~/.profile ]; then
       emulate sh -c '. ~/.profile'
@@ -956,7 +956,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 #+end_src
 **** etc/zsh/zprofile
 #+begin_src bash :tangle "etc/zsh/zshprofile"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # /etc/zsh/zprofile: system-wide .zprofile file for zsh(1).
   #
   # This file is sourced only for login shells (i.e. shells
@@ -969,7 +969,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 ** zshenv
 **** etc/zsh/zshenv
 #+begin_src bash :tangle "etc/zsh/zshenv"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ETC-ZSHENV
   if [[ -z "$PATH" || "$PATH" == "/bin:/usr/bin" ]]
   then
@@ -982,7 +982,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
 **** ~/.config/zsh/.zshenv
 Link this into $HOME
 #+begin_src bash :tangle "~/.config/zsh/.zshenv"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ZSHENV
   if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
   then
@@ -998,7 +998,7 @@ Link this into $HOME
 Directory is [[file:.oh-my-zsh/][here]].
 **** Aliases ~/.config/zsh/oh-my-zsh/custom/aliases.zsh
 #+begin_src conf :tangle "~/.config/zsh/oh-my-zsh/custom/aliases.zsh"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   alias grep="grep -n --color"
   alias hg='history|grep'
 #+end_src
@@ -1013,7 +1013,7 @@ Directory is [[file:.oh-my-zsh/][here]].
 * Path
 **  ~/bin/add-user-paths
 #+begin_src bash  :tangle "~/bin/add-user-paths"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   logger -t "startup-initfile"  ADD_USER_PATHS
   #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
 #+end_src
@@ -1034,7 +1034,7 @@ Directory is [[file:.oh-my-zsh/][here]].
 :END:
 *** start
 #+begin_src conf
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # Change the prefix key to C-a
 #+end_src
 *** styles
@@ -1135,14 +1135,14 @@ Directory is [[file:.oh-my-zsh/][here]].
 ** ~/bin/tmux-current-session
 #+begin_src bash :tangle ~/bin/tmux-current-session
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   echo "$(tmux list-panes -t "$TMUX_PANE" -F '#S' | head -n1)"
 #+end_src
 ** ~/bin/tmux-pane-tty
 Written to find the tty for a pane in order to redirect gef context source to a voltron pane
 #+begin_src bash :tangle ~/bin/tmux-pane-tty
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   session="${1:-""}"
   [ -z ${session} ] && exit 1
   pane_index="${2:-0}"
@@ -1271,7 +1271,7 @@ X11 apps still need resource definitions when launched under XWayland.
 :END:
 *** general
 #+begin_src conf
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   set $mod Mod4
 
@@ -1452,22 +1452,31 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym $mod+r mode "resize"
 
 #+end_src
+*** clipboard
+#+begin_src conf
+  exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
+  bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
+#+end_src
 *** volume                                                           :volume:
 #+begin_src conf
-
-  # Use pactl to adjust volume in PulseAudio.
-  #       set $refresh_i3status killall -SIGUSR1 i3status
-  set $refresh_i3status killall -SIGUSR1 py3status
-  bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-  bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-  bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-  bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+  bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+  bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+  bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 #+end_src
 *** brightness                                                   :brightness:
 #+begin_src conf
-  exec command -v brightnessctl && brightnessctl -r
-  bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
-  bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+#+end_src
+*** lid
+**** ~/bin/sway/sway-lid
+#+begin_src bash :tangle ~/bin/sway/sway-lid
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  M="$(swaymsg -t get_outputs | jq '.[0].name')"
+  swaymsg 'bindswitch lid:on output ${M} disable'
+  swaymsg 'bindswitch lid:off output ${M} enable'
 #+end_src
 *** exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 #+begin_src conf
@@ -1501,8 +1510,8 @@ X11 apps still need resource definitions when launched under XWayland.
 #+begin_src conf
   for_window [class="Conky"] floating enable
   for_window [app_id="zenity"] floating enable
-  for_window [app_id="wifi"] floating enable
-  for_window [app_id="bluetoothctl"] floating enable
+  for_window [title="wifi"] floating enable
+  for_window [title="bluetoothctl"] floating enable
   for_window [app_id="pavucontrol"] floating enable
 #+end_src
 
@@ -1554,6 +1563,9 @@ X11 apps still need resource definitions when launched under XWayland.
 #+end_src
 *** autostart                                                     :autostart:
 #+begin_src conf
+  exec sway-kanshi
+  exec sway-idle
+  exec sleep 5 && gpg-cache
   exec sway-autostart
   exec swaymsg workspace 1:edit
 #+end_src
@@ -1646,7 +1658,7 @@ X11 apps still need resource definitions when launched under XWayland.
 ****** ~/bin/sway/my-i3b-battery-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-battery-status"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           ;;
@@ -1717,7 +1729,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 return the brightness %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-brightness"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
   if command -v brightnessctl &> /dev/null; then
       echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
@@ -1729,7 +1741,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-cpu
 #+begin_src bash :tangle "~/bin/sway/my-i3b-cpu"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           oneterminal "Process-Monitor-htop" htop &>/dev/null
@@ -1742,7 +1754,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-date-cal
 #+begin_src bash :tangle "~/bin/sway/my-i3b-date-cal"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
@@ -1755,7 +1767,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-db-status"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
     case $BLOCK_BUTTON in
         1)
             sway-www "https://www.dropbox.com/home"  &> /dev/null
@@ -1777,7 +1789,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-kernel
 #+begin_src bash :tangle "~/bin/sway/my-i3b-kernel"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
@@ -1790,7 +1802,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-temperature
 #+begin_src bash :tangle "~/bin/sway/my-i3b-temperature"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
@@ -1803,7 +1815,7 @@ return the brightness %
 ****** ~/bin/sway/my-i3b-uptime
 #+begin_src bash :tangle "~/bin/sway/my-i3b-uptime"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           oneterminal "bpytop-kernel" bpytop &>/dev/null
@@ -1817,7 +1829,7 @@ return the brightness %
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-volume"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           sway-do-tool Pavucontrol pavucontrol &>/dev/null &
@@ -1831,7 +1843,7 @@ return the volume %
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-weather"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
           sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
@@ -1845,7 +1857,7 @@ return the volume %
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-wifi"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1) oneterminal "wifi" "nmtui"  &>/dev/null &
   esac
@@ -1855,16 +1867,13 @@ return the volume %
 *** ~/bin/sway/sway-autostart
 #+begin_src bash :tangle "~/bin/sway/sway-autostart"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
-  sway-kanshi &
-  sway-idle &
-  (sleep 5 && gpg-cache) &
+  # Maintained in linux-config.org
   [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 #+end_src
 *** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
   # get the app_id/class instance instead. But.. it works.
@@ -1896,20 +1905,19 @@ return the volume %
 *** ~/bin/sway/sway-editor
 #+begin_src bash :tangle "~/bin/sway/sway-editor"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   exec emacs-same-frame "$@"
 #+end_src
 *** ~/bin/sway/sway-lock-utils
 Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   lock() {
       exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
   }
 
   lock_gpg_clear() {
-      rgr-logger -t "x-lock-utils"  lock_gpg_clear
       [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
       lock
   }
@@ -1917,10 +1925,9 @@ Just a gathering place of locky/suspendy type things...
   case "$1" in
       lock)
           lock
-          #exec loginctl lock-session
           ;;
       lock_gpg_clear)
-          exec lock_gpg_clear
+          lock_gpg_clear
           ;;
       logout)
           exec swaymsg exit
@@ -1960,7 +1967,7 @@ Just a gathering place of locky/suspendy type things...
 
 #+begin_src bash :tangle "~/bin/sway/sway-idle"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
   exec swayidle -w \
        timeout 5 '' \
@@ -1981,7 +1988,7 @@ Just a gathering place of locky/suspendy type things...
 :END:
 #+begin_src bash :tangle "~/bin/sway/sway-lock"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   exec sway-lock-utils lock
 #+end_src
 *** ~/bin/sway/sway-www
@@ -1990,27 +1997,27 @@ Just a gathering place of locky/suspendy type things...
 :END:
 #+begin_src bash :tangle "~/bin/sway/sway-www"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
   sway-do-tool "Google-chrome"
 #+end_src
 *** ~/bin/sway/sway-swaysock                                       :swaysock:
 #+begin_src bash :tangle "~/bin/sway/sway-swaysock"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #+end_src
 *** ~/bin/sway/sway-terminal                                       :swaysock:
 #+begin_src bash :tangle "~/bin/sway/sway-terminal"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   exec oneterminal "${1:-Terminal}" ""
 #+end_src
 *** ~/bin/sway/sway-display-swap
 https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 #+begin_src bash :tangle ~/bin/sway/sway-display-swap
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
 
@@ -2028,13 +2035,13 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 *** ~/bin/sway/sway-launcher-wofi
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 #+end_src
 *** ~/bin/sway/sway-launcher-fzf
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
 #+end_src
 
@@ -2042,7 +2049,7 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 #+begin_src bash :tangle ~/bin/sway/sway-screenshot
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
   DIR=${HOME}/tmp/Screenshots
@@ -2064,7 +2071,7 @@ Monitor control with hotplug https://github.com/emersion/kanshi
 Load a host specific kanshi file if it exists
 #+begin_src bash :tangle "~/bin/sway/sway-kanshi"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
   config="$HOME/.config/kanshi/config-$(hostname)"
   if [ -f  "$config" ]; then
@@ -2113,7 +2120,7 @@ Load a host specific kanshi file if it exists
 * Vim
 ** ~/.vimrc
 #+begin_src conf :tangle "DotFiles/.vimrc"
-  " Maintained in linux-init-files.org
+  " Maintained in linux-config.org
   set nocompatible              " be iMproved, required
   filetype off                  " required
 
@@ -2166,7 +2173,7 @@ Load a host specific kanshi file if it exists
 * ripgrep
 ** ~/.ignore
 #+begin_src conf :tangle "DotFiles/.ignore"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   ,*~
   .git
   cache
@@ -2175,7 +2182,7 @@ Load a host specific kanshi file if it exists
 ** ~/.ripgreprc
 #+begin_src conf :tangle "DotFiles/.ripgreprc"
 
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # Don't let ripgrep vomit really long lines to my terminal, and show a preview.
   --max-columns=150
 
@@ -2290,7 +2297,7 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 *** scripts
 **** ~/.gdbinit
 #+begin_src conf :tangle "DotFiles/.gdbinit"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
 
   set auto-load safe-path /
   set auto-load local-gdbinit on
@@ -2402,7 +2409,7 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 Create a session but let someone else do the attach
 #+begin_src bash :tangle ~/bin/gdb-session
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   directory="$(realpath -s "${1:-`pwd`}")"
   cd "${directory}"
   session="${2:-${directory//[^[:alnum:]]/}}"
@@ -2418,7 +2425,7 @@ Create a session but let someone else do the attach
 ***** ~/bin/gdb-run
 #+begin_src bash :tangle ~/bin/gdb-run
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   directory="${1:-`pwd`}"
   session="${2}"
   ONETERM_PROFILE=gdb ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
@@ -2597,7 +2604,7 @@ add voltron panes to an existing session
 ***** ~/bin/voltron-panes-h
 #+begin_src bash :tangle ~/bin/voltron-panes-h
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   session=${1:-"voltron"}
   window=${2:-"0"}
   pane=${3:-"0"}
@@ -2610,7 +2617,7 @@ add voltron panes to an existing session
 **** ~/bin/voltron-session
 #+begin_src bash :tangle ~/bin/voltron-session
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   session="${1:-voltron}"
   if ! tmux has-session -t "${session}" &> /dev/null; then
       tmux new-session -d -s "${session}" &> /dev/null
@@ -2651,19 +2658,19 @@ https://pypi.org/project/ipdb/
 https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 ***** ~/.ipdb
 #+begin_src conf :tangle "DotFiles/.ipdb"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   context=5
 #+end_src
 * PGP/GNUPG/GPG
 ** ~/.gnupg/gpg.conf
 #+begin_src conf :tangle "~/.gnupg/gpg.conf"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   use-agent
 #+end_src
 
 ** ~/.gnupg/gpg-agent.conf
 #+begin_src conf :tangle "~/.gnupg/gpg-agent.conf"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   #gpg-preset-passphrase
   allow-preset-passphrase
   pinentry-program /usr/bin/pinentry
@@ -2702,7 +2709,7 @@ You must copy these into [[/etc/acpi/events/][/etc/acpi/events/]] if you have an
 **** /etc/acpi/events/user-powerstate
 
 #+begin_src conf :tangle "etc/acpi/events/user-powerstate"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # /etc/acpi/events/user-powerstate
   # Called when the user connects ac power to us
   #
@@ -2711,7 +2718,7 @@ You must copy these into [[/etc/acpi/events/][/etc/acpi/events/]] if you have an
 #+end_src
 **** /etc/acpi/events/xmg-neo-powerstate
 #+begin_src conf :tangle "etc/acpi/events/xmg-neo-powerstate"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # /etc/acpi/events/xmg-neo-powerstate
   # Called when the user connects ac power to us
   #
@@ -2723,7 +2730,7 @@ You must copy these into [[/etc/acpi/actions][/etc/acpi/actions]] if you have an
 **** /etc/acpi/actions/user-powerstate.sh
 #+begin_src bash :tangle "etc/acpi/actions/user-powerstate.sh"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # /etc/acpi/actions/user-powerstate
   . /usr/share/acpi-support/power-funcs
   . /usr/share/acpi-support/policy-funcs
@@ -2734,7 +2741,7 @@ You must copy these into [[/etc/acpi/actions][/etc/acpi/actions]] if you have an
 **** /etc/acpi/actions/xmg-neo-powerstate.sh
 #+begin_src bash :tangle "etc/acpi/actions/xmg-neo-powerstate.sh"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   # /etc/acpi/actions/xmg-neo-powerstate
   . /usr/share/acpi-support/power-funcs
   . /usr/share/acpi-support/policy-funcs
@@ -2766,7 +2773,7 @@ mu4e includes [[https://www.djcbsoftware.nl/code/mu/mu4e/Indexing-your-messages.
 *** mbsync config
 Note the [[https://wiki.archlinux.org/index.php/Isync][PassCmd]] - since I use gpg then that's the way to go.
 #+begin_src conf :tangle "DotFiles/.mbsyncrc"
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   Create  Both
   Expunge Both
   SyncState *
@@ -2926,7 +2933,7 @@ and activate them
 ** ~/bin/getmails
 #+begin_src bash :tangle "~/bin/getmails"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   if [ $# -eq 0 ]
   then
       mbsync -a
@@ -2941,7 +2948,7 @@ if it exists jump to it else start it
 *** ~/bin/oneinstance
 #+begin_src bash :tangle "~/bin/oneinstance"
   #!/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   # oneinstance exename pname  winclass
   exename=$1;pname="${2:-"$exename"}";winclass={$3:-${pname}};
   if ! pidof "$pname"; then
@@ -2953,7 +2960,7 @@ if it exists jump to it else start it
 *** ~/bin/oneterminal
 #+begin_src bash :tangle "~/bin/oneterminal"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
 
   sessionname="${1:-`pwd`}"
   title="${ONETERM_TITLE:-${sessionname}}"
@@ -2985,20 +2992,20 @@ if it exists jump to it else start it
 *** ~/bin/pop-window
 #+begin_src bash :tangle "~/bin/pop-window"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   sway-do-tool "$@"
 #+end_src
 ** network interface utilities
 **** ~/bin/my-iface-active-query
 #+begin_src bash :tangle "~/bin/my-iface-active-query"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   nmcli device show ${IFACE_ACTIVE:-$(my-iface-active)} | grep -i -m 1 "${1:-".*"}.*:" | awk '{print $2}'
 #+end_src
 **** ~/bin/my-iface-active
 #+begin_src bash :tangle "~/bin/my-iface-active"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   IFACE_ACTIVE="$(nmcli device show | grep -m 1 "GENERAL.DEVICE" | awk '{print $2}')"
   export IFACE_ACTIVE
   echo $IFACE_ACTIVE
@@ -3006,26 +3013,26 @@ if it exists jump to it else start it
 **** ~/bin/my-iface-active-ssid
 #+begin_src bash :tangle "~/bin/my-iface-active-ssid"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   my-iface-active-query "GENERAL.CONNECTION"
 #+end_src
 **** ~/bin/my-iface-active-ipaddr
 #+begin_src bash :tangle "~/bin/my-iface-active-ipaddr"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   my-iface-active-query "IP4.ADDRESS"
 #+end_src
 **** ~/bin/my-iface-active-quality
 #+begin_src bash :tangle "~/bin/my-iface-active-quality"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   my-iface-active-query "GENERAL.STATE"
 #+end_src
 
 ** ~/bin/confirm-suspend
 #+begin_src bash :tangle "~/bin/confirm-suspend"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   delay=10;
   message="Almost out of juice."
   while [ "$#" -gt 0 ]; do
@@ -3047,7 +3054,7 @@ if it exists jump to it else start it
 ** ~/bin/dropbox-start-once
 #+begin_src bash :tangle "~/bin/dropbox-start-once"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   if pidof dropbox > /dev/null ; then
       echo "Dropbox is already running"
   else
@@ -3064,7 +3071,7 @@ if it exists jump to it else start it
 ** ~/bin/edit
 #+begin_src bash :tangle "~/bin/edit"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   ${VISUAL:-${EDITOR:-vi}} "${@}"
 #+end_src
 ** ~/bin/eman
@@ -3072,7 +3079,7 @@ Use emacs for manpages if it's running
 might be an idea set an alias such as 'alias man=eman'
 #+begin_src bash :tangle "~/bin/eman"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   mp="${1:-man}"
   if pidof emacs; then
       emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
@@ -3083,7 +3090,7 @@ might be an idea set an alias such as 'alias man=eman'
 ** ~/bin/expert-advice
 #+begin_src bash :tangle "~/bin/expert-advice"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   f=$(command -v fortune &>/dev/null && fortune || echo "I don't need to study a subject to have my own truths. Because own truths ARE a thing in 2020.")
   if [ "$1" = "t" ]
   then
@@ -3098,7 +3105,7 @@ might be an idea set an alias such as 'alias man=eman'
 strip debug info and store elsewhere
 #+begin_src bash :tangle "~/bin/extract-debug-info"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   scriptdir=`dirname ${0}`
   scriptdir=`(cd ${scriptdir}; pwd)`
   scriptname=`basename ${0}`
@@ -3146,7 +3153,7 @@ strip debug info and store elsewhere
 ** ~/bin/htop-regexp
 #+begin_src bash :tangle ~/bin/htop-regexp
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
   session="${2:-"htop-filter-${filter//[^[:alnum:]]/}"}"
   pids=$(ps aux | awk '/'"${filter}"'/ {print $2}' | xargs | sed -e 's/ /,/g')
@@ -3161,7 +3168,7 @@ strip debug info and store elsewhere
 ** ~/bin/make-compile_commands
 #+begin_src bash :tangle "~/bin/make-compile_commands"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   make --always-make --dry-run \
       | grep -wE 'gcc|g++' \
       | grep -w '\-c' \
@@ -3172,7 +3179,7 @@ strip debug info and store elsewhere
 restart pulseaudio
 #+begin_src bash :tangle "~/bin/pulse-restart"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   pulseaudio -k &> /dev/null
   pulseaudio -D &> /dev/null
   start-pulseaudio-x11
@@ -3180,20 +3187,20 @@ restart pulseaudio
 ** ~/bin/random-man-page
 #+begin_src bash :tangle "~/bin/random-man-page"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
   eman "$page"
 #+end_src
 ** ~/bin/remove-broken-symlinks
 #+begin_src bash :tangle "~/bin/remove-broken-symlinks"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 #+end_src
 ** ~/bin/remove-conflicted-copies
 #+begin_src bash :tangle "~/bin/remove-conflicted-copies"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   if [ "$1" == "--f" ]; then
       find ~/Dropbox/ -path "*(*'s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
       find ~/Dropbox/ -path "*(*s in Konflikt stehende Kopie [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
@@ -3213,20 +3220,20 @@ restart pulseaudio
 ** ~/bin/rgr-logger
 #+begin_src bash :tangle ~/bin/rgr-logger
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   [ -z "$RGR_LOGGER" ] || logger "$@"
 #+end_src
 ** ~/bin/sharemouse
 #+begin_src bash :tangle "~/bin/sharemouse"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   exec ssh -X ${1-192.168.2.100} x2x -east -to :0
 #+end_src
 ** ~/bin/upd
 update sw
 #+begin_src bash :tangle "~/bin/upd"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   export DEBIAN_FRONTEND=noninteractive
   sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
 #+end_src
@@ -3236,7 +3243,7 @@ update sw
 See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight controller]] for the controller code.
 #+begin_src bash :tangle "~/bin/xmg-neo-rgb-kbd-lights"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
 
   sf="$HOME/.xmg-neo-kbd"
 
@@ -3348,7 +3355,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/acpi-powerstate
 #+begin_src bash :tangle "~/bin/acpi-powerstate"
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   . /usr/share/acpi-support/power-funcs
   . /usr/share/acpi-support/policy-funcs
   getState
@@ -3359,7 +3366,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 **** ~/bin/nvidia-power-usage
 #+begin_src bash :tangle ~/bin/nvidia-power-usage
   #!/usr/bin/bash
-  # Maintained in linux-init-files.org
+  # Maintained in linux-config.org
   for i in $(seq 1 ${1:-5})
   do
       sleep ${2:-1} && echo "$(date +"%Y-%m-%d %H:%M:%S"):$(nvidia-smi -q -d POWER | grep Draw | sed 's/  */ /g')"
@@ -3373,7 +3380,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/google-trans
 #+begin_src bash :tangle "~/bin/google-trans"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   src=$1;shift;
   dst=$1;shift;
   txt=$@;
@@ -3382,20 +3389,20 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/google-trans-de-en
 #+begin_src bash :tangle "~/bin/google-trans-de-en"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   trans -e google -s de -t en -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 #+end_src
 *** ~/bin/google-trans-en-de
 #+begin_src bash :tangle "~/bin/google-trans-en-de"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   trans -e google -s en -t de -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 #+end_src
 ** Security/Locking/GPG
 *** ~/bin/gpg-cache
 #+begin_src bash :tangle "~/bin/gpg-cache"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   if pid-of gpg-agent; then
       echo "agent already running"
   else
@@ -3412,7 +3419,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/pre-lock
 #+begin_src bash :tangle "~/bin/pre-lock"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   [ -f "${HOME}"/.pre-lock ]  && . "${HOME}"/.pre-lock
 #+end_src
 **** Sample .pre-lock
@@ -3423,7 +3430,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/post-lock
 #+begin_src bash :tangle "~/bin/post-lock"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   [ -f "${HOME}"/.post-lock  ]  && . "${HOME}"/.post-lock
 #+end_src
 **** Sample .post-lock
@@ -3434,14 +3441,14 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 *** ~/bin/pre-blank
 #+begin_src bash :tangle "~/bin/pre-blank"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   command -v brightnessctl && brightnessctl -s
   [ -f ~/.pre-blank ]  && . ~/.pre-blank
 #+end_src
 *** ~/bin/post-blank
 #+begin_src bash :tangle "~/bin/post-blank"
   #!/usr/bin/bash
-  #Maintained in linux-init-files.org
+  #Maintained in linux-config.org
   [ -f ~/.post-blank ]  && . ~/.post-blank
   command -v brightnessctl && brightnessctl -r
 #+end_src

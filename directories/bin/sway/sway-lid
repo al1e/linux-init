@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+# Maintained in linux-init-files.org
+M="$(swaymsg -t get_outputs | jq '.[0].name')"
+swaymsg 'bindswitch lid:on output ${M} disable'
+swaymsg 'bindswitch lid:on exec echo "LID CLOSED" >> ~/tmp/lid.delme'
+swaymsg 'bindswitch lid:off output ${M} enable'

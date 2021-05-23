@@ -1040,6 +1040,9 @@ modifier $mod
 ### autostart     :autostart:
 
 ```conf
+exec sway-kanshi
+exec sway-idle
+exec sleep 5 && gpg-cache
 exec sway-autostart
 exec swaymsg workspace 1:edit
 ```
@@ -1377,9 +1380,6 @@ include /etc/sway/config.d/*
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-init-files.org
-sway-kanshi &
-sway-idle-hook &
-(sleep 5 && gpg-cache) &
 [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 ```
 
@@ -1440,7 +1440,6 @@ lock() {
 }
 
 lock_gpg_clear() {
-    rgr-logger -t "x-lock-utils"  lock_gpg_clear
     [ "$1" = gpg_clear ] &&  (echo RELOADAGENT | gpg-connect-agent &>/dev/null )
     lock
 }
@@ -1448,31 +1447,30 @@ lock_gpg_clear() {
 case "$1" in
     lock)
         lock
-        #exec loginctl lock-session
         ;;
     lock_gpg_clear)
         lock_gpg_clear
         ;;
     logout)
-        swaymsg exit
+        exec swaymsg exit
         ;;
     suspend)
-        systemctl suspend && lock
+        exec systemctl suspend && lock
         ;;
     hibernate)
-        systemctl hibernate && lock
+        exec systemctl hibernate && lock
         ;;
     reboot)
-        systemctl reboot
+        exec systemctl reboot
         ;;
     shutdown)
-        systemctl poweroff
+        exec systemctl poweroff
         ;;
     blank)
-        swaymsg "output * dpms off"
+        exec swaymsg "output * dpms off"
         ;;
     unblank)
-        swaymsg "output * dpms on"
+        exec swaymsg "output * dpms on"
         ;;
     *)
         lock
@@ -1483,7 +1481,7 @@ exit 0
 ```
 
 
-### ~/bin/sway/sway-idle-hook     :sleep:lock:idle:
+### ~/bin/sway/sway-idle     :sleep:lock:idle:
 
 ```bash
 #!/usr/bin/bash

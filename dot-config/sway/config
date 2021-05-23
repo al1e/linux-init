@@ -174,17 +174,16 @@ bindsym $mod+minus scratchpad show
 
   bindsym $mod+r mode "resize"
 
-# Use pactl to adjust volume in PulseAudio.
-#       set $refresh_i3status killall -SIGUSR1 i3status
-set $refresh_i3status killall -SIGUSR1 py3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
+bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
 
-exec command -v brightnessctl && brightnessctl -r
-bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
-bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
 
 bindsym  $mod+Control+l exec sway-lock-utils lock
 
@@ -211,8 +210,8 @@ assign [class="Steam"] $ws9
 
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
-for_window [app_id="wifi"] floating enable
-for_window [app_id="bluetoothctl"] floating enable
+for_window [title="wifi"] floating enable
+for_window [title="bluetoothctl"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
@@ -249,6 +248,9 @@ hidden_state hide
 modifier $mod
 }
 
+exec sway-kanshi
+exec sway-idle
+exec sleep 5 && gpg-cache
 exec sway-autostart
 exec swaymsg workspace 1:edit
 
