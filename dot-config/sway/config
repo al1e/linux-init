@@ -1,6 +1,6 @@
 exec xrdb -merge ~/.Xresources
 
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 
 set $mod Mod4
 

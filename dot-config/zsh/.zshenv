@@ -1,4 +1,4 @@
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  ZSHENV
 if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
 then

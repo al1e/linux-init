@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
 config="$HOME/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then

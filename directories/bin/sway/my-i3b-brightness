@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
 if command -v brightnessctl &> /dev/null; then
     echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"

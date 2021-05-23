@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 mp="${1:-man}"
 if pidof emacs; then
     emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &

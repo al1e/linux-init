@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 case $BLOCK_BUTTON in
     1)
         ;;

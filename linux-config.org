@@ -1469,7 +1469,7 @@ X11 apps still need resource definitions when launched under XWayland.
   bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
   bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
 #+end_src
-*** lid
+*** lid                                                       :lid:clamshell:
 **** ~/bin/sway/sway-lid
 #+begin_src bash :tangle ~/bin/sway/sway-lid
   #!/usr/bin/bash
@@ -2964,7 +2964,6 @@ if it exists jump to it else start it
 
   sessionname="${1:-`pwd`}"
   title="${ONETERM_TITLE:-${sessionname}}"
-  #sessionname="${sessionname//[^[:alnum:]]/}"
   script="${2}"
   tflags="${3}"
 
@@ -2988,6 +2987,7 @@ if it exists jump to it else start it
       fi
   fi
   exit 0
+
 #+end_src
 *** ~/bin/pop-window
 #+begin_src bash :tangle "~/bin/pop-window"

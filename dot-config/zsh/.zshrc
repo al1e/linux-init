@@ -1,4 +1,4 @@
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  ZSHRC
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 export TERM="xterm-256color"

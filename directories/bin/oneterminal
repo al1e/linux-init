@@ -1,9 +1,8 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
-#sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2}"
 tflags="${3}"
 

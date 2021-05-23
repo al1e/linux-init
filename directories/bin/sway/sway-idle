@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
 exec swayidle -w \
      timeout 5 '' \

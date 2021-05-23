@@ -1,4 +1,4 @@
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 
 set auto-load safe-path /
 set auto-load local-gdbinit on

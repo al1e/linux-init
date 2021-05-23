@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true

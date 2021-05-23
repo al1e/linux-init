@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
 session="${2:-"htop-filter-${filter//[^[:alnum:]]/}"}"
 pids=$(ps aux | awk '/'"${filter}"'/ {print $2}' | xargs | sed -e 's/ /,/g')

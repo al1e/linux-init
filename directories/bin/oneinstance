@@ -1,5 +1,5 @@
 #!/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 # oneinstance exename pname  winclass
 exename=$1;pname="${2:-"$exename"}";winclass={$3:-${pname}};
 if ! pidof "$pname"; then

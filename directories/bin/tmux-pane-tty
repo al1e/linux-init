@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 session="${1:-""}"
 [ -z ${session} ] && exit 1
 pane_index="${2:-0}"

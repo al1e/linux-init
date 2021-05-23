@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
 DIR=${HOME}/tmp/Screenshots

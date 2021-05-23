@@ -1,4 +1,4 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
 sway-do-tool "Google-chrome"

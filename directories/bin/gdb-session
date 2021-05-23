@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 directory="$(realpath -s "${1:-`pwd`}")"
 cd "${directory}"
 session="${2:-${directory//[^[:alnum:]]/}}"

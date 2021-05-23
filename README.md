@@ -81,7 +81,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 ## ~/.profile
 
 ```bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  PROFILE
 
 # ~/.profile: executed by the command interpreter for login shells.
@@ -135,7 +135,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
@@ -156,7 +156,7 @@ dropbox-start-once async
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -213,7 +213,7 @@ export GPG_TTY
 ## ~/.config/zsh/.zshrc
 
 ```bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  ZSHRC
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 export TERM="xterm-256color"
@@ -340,7 +340,7 @@ DEFAULT_USER=$USER
 ## ~/.config/zsh/.zlogin
 
 ```bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  ZLOGIN
 # [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 ```
@@ -351,7 +351,7 @@ logger -t "startup-initfile"  ZLOGIN
 1.  ~/.config/zsh/.zprofile
 
     ```bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     logger -t "startup-initfile"  ZPROFILE
     if [ -f ~/.profile ]; then
         emulate sh -c '. ~/.profile'
@@ -361,7 +361,7 @@ logger -t "startup-initfile"  ZLOGIN
 2.  etc/zsh/zprofile
 
     ```bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     # /etc/zsh/zprofile: system-wide .zprofile file for zsh(1).
     #
     # This file is sourced only for login shells (i.e. shells
@@ -378,7 +378,7 @@ logger -t "startup-initfile"  ZLOGIN
 1.  etc/zsh/zshenv
 
     ```bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     logger -t "startup-initfile"  ETC-ZSHENV
     if [[ -z "$PATH" || "$PATH" == "/bin:/usr/bin" ]]
     then
@@ -394,7 +394,7 @@ logger -t "startup-initfile"  ZLOGIN
     Link this into $HOME
 
     ```bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     logger -t "startup-initfile"  ZSHENV
     if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
     then
@@ -415,7 +415,7 @@ Directory is [here](.oh-my-zsh/).
 1.  Aliases ~/.config/zsh/oh-my-zsh/custom/aliases.zsh
 
     ```conf
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     alias grep="grep -n --color"
     alias hg='history|grep'
     ```
@@ -436,7 +436,7 @@ Directory is [here](.oh-my-zsh/).
 ## ~/bin/add-user-paths
 
 ```bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 logger -t "startup-initfile"  ADD_USER_PATHS
 #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
 ```
@@ -459,7 +459,7 @@ export FZF_TMUX_OPTS="-d 40%"
 ### start
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 # Change the prefix key to C-a
 ```
 
@@ -569,7 +569,7 @@ run -b '~/.tmux/plugins/tpm/tpm'
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 echo "$(tmux list-panes -t "$TMUX_PANE" -F '#S' | head -n1)"
 ```
 
@@ -580,7 +580,7 @@ Written to find the tty for a pane in order to redirect gef context source to a 
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 session="${1:-""}"
 [ -z ${session} ] && exit 1
 pane_index="${2:-0}"
@@ -728,7 +728,7 @@ build/sway/sway
 ### general
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 
 set $mod Mod4
 
@@ -917,27 +917,43 @@ bindsym $mod+minus scratchpad show
 ```
 
 
+### clipboard
+
+```conf
+exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
+bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
+```
+
+
 ### volume     :volume:
 
 ```conf
-
-# Use pactl to adjust volume in PulseAudio.
-#       set $refresh_i3status killall -SIGUSR1 i3status
-set $refresh_i3status killall -SIGUSR1 py3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 ```
 
 
 ### brightness     :brightness:
 
 ```conf
-exec command -v brightnessctl && brightnessctl -r
-bindsym XF86MonBrightnessUp   exec command -v brightnessctl && brightnessctl s +10 && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
-bindsym XF86MonBrightnessDown exec command -v brightnessctl && brightnessctl s 10- && brightnessctl -s && notify-send -c brightness -t 1000 -u low "Brightness(0-255):$(brightnessctl g)"
+bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
 ```
+
+
+### lid     :lid:clamshell:
+
+1.  ~/bin/sway/sway-lid
+
+    ```bash
+    #!/usr/bin/bash
+    # Maintained in linux-config.org
+    M="$(swaymsg -t get_outputs | jq '.[0].name')"
+    swaymsg 'bindswitch lid:on output ${M} disable'
+    swaymsg 'bindswitch lid:off output ${M} enable'
+    ```
 
 
 ### exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
@@ -979,8 +995,8 @@ assign [class="Steam"] $ws9
 ```conf
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
-for_window [app_id="wifi"] floating enable
-for_window [app_id="bluetoothctl"] floating enable
+for_window [title="wifi"] floating enable
+for_window [title="bluetoothctl"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 ```
 
@@ -1139,7 +1155,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     ;;
@@ -1216,7 +1232,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             #echo "B:$(echo "scale=2;100 / "" * "$(brightnessctl g)"" | bc |  sed 's!\..*$!!')%"
             if command -v brightnessctl &> /dev/null; then
                 echo "🔆$((1+((100000/$(brightnessctl m))*$(brightnessctl g))/1000))%"
@@ -1229,7 +1245,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     oneterminal "Process-Monitor-htop" htop &>/dev/null
@@ -1244,7 +1260,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
@@ -1259,7 +1275,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
               case $BLOCK_BUTTON in
                   1)
                       sway-www "https://www.dropbox.com/home"  &> /dev/null
@@ -1283,7 +1299,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
@@ -1298,7 +1314,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
@@ -1313,7 +1329,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     oneterminal "bpytop-kernel" bpytop &>/dev/null
@@ -1330,7 +1346,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     sway-do-tool Pavucontrol pavucontrol &>/dev/null &
@@ -1347,7 +1363,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1)
                     sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
@@ -1364,7 +1380,7 @@ include /etc/sway/config.d/*
 
             ```bash
             #!/usr/bin/bash
-            #Maintained in linux-init-files.org
+            #Maintained in linux-config.org
             case $BLOCK_BUTTON in
                 1) oneterminal "wifi" "nmtui"  &>/dev/null &
             esac
@@ -1379,7 +1395,7 @@ include /etc/sway/config.d/*
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
 ```
 
@@ -1388,7 +1404,7 @@ include /etc/sway/config.d/*
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 
 # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
 # get the app_id/class instance instead. But.. it works.
@@ -1423,7 +1439,7 @@ exit 0
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 exec emacs-same-frame "$@"
 ```
 
@@ -1434,7 +1450,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 lock() {
     exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
@@ -1485,7 +1501,7 @@ exit 0
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
 exec swayidle -w \
      timeout 5 '' \
@@ -1505,7 +1521,7 @@ exec swayidle -w \
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 exec sway-lock-utils lock
 ```
 
@@ -1514,7 +1530,7 @@ exec sway-lock-utils lock
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
 sway-do-tool "Google-chrome"
 ```
@@ -1524,7 +1540,7 @@ sway-do-tool "Google-chrome"
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```
 
@@ -1533,7 +1549,7 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 exec oneterminal "${1:-Terminal}" ""
 ```
 
@@ -1544,7 +1560,7 @@ exec oneterminal "${1:-Terminal}" ""
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 
 DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
 
@@ -1565,7 +1581,7 @@ done
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 ```
 
@@ -1574,7 +1590,7 @@ dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
 ```
 
@@ -1585,7 +1601,7 @@ Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_triv
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
 DIR=${HOME}/tmp/Screenshots
@@ -1613,7 +1629,7 @@ Monitor control with hotplug <https://github.com/emersion/kanshi>
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
     config="$HOME/.config/kanshi/config-$(hostname)"
     if [ -f  "$config" ]; then
@@ -1672,7 +1688,7 @@ Monitor control with hotplug <https://github.com/emersion/kanshi>
 ## ~/.vimrc
 
 ```conf
-" Maintained in linux-init-files.org
+" Maintained in linux-config.org
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -1730,7 +1746,7 @@ set splitright
 ## ~/.ignore
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 *~
 .git
 cache
@@ -1742,7 +1758,7 @@ cache
 
 ```conf
 
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 # Don't let ripgrep vomit really long lines to my terminal, and show a preview.
 --max-columns=150
 
@@ -1875,7 +1891,7 @@ e dbg.bep=main
 1.  ~/.gdbinit
 
     ```conf
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
 
     set auto-load safe-path /
     set auto-load local-gdbinit on
@@ -1976,7 +1992,7 @@ e dbg.bep=main
 
         ```bash
         #!/usr/bin/bash
-        # Maintained in linux-init-files.org
+        # Maintained in linux-config.org
         directory="$(realpath -s "${1:-`pwd`}")"
         cd "${directory}"
         session="${2:-${directory//[^[:alnum:]]/}}"
@@ -1993,7 +2009,7 @@ e dbg.bep=main
 
         ```bash
         #!/usr/bin/bash
-        # Maintained in linux-init-files.org
+        # Maintained in linux-config.org
         directory="${1:-`pwd`}"
         session="${2}"
         ONETERM_PROFILE=gdb ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
@@ -2180,7 +2196,7 @@ e dbg.bep=main
 
         ```bash
         #!/usr/bin/bash
-        # Maintained in linux-init-files.org
+        # Maintained in linux-config.org
         session=${1:-"voltron"}
         window=${2:-"0"}
         pane=${3:-"0"}
@@ -2195,7 +2211,7 @@ e dbg.bep=main
 
     ```bash
     #!/usr/bin/bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     session="${1:-voltron}"
     if ! tmux has-session -t "${session}" &> /dev/null; then
         tmux new-session -d -s "${session}" &> /dev/null
@@ -2245,7 +2261,7 @@ e dbg.bep=main
     3.  ~/.ipdb
 
         ```conf
-        # Maintained in linux-init-files.org
+        # Maintained in linux-config.org
         context=5
         ```
 
@@ -2256,7 +2272,7 @@ e dbg.bep=main
 ## ~/.gnupg/gpg.conf
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 use-agent
 ```
 
@@ -2264,7 +2280,7 @@ use-agent
 ## ~/.gnupg/gpg-agent.conf
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 #gpg-preset-passphrase
 allow-preset-passphrase
 pinentry-program /usr/bin/pinentry
@@ -2303,7 +2319,7 @@ You must copy these into [*etc/acpi/events*](file:///etc/acpi/events/) if you ha
 1.  /etc/acpi/events/user-powerstate
 
     ```conf
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     # /etc/acpi/events/user-powerstate
     # Called when the user connects ac power to us
     #
@@ -2314,7 +2330,7 @@ You must copy these into [*etc/acpi/events*](file:///etc/acpi/events/) if you ha
 2.  /etc/acpi/events/xmg-neo-powerstate
 
     ```conf
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     # /etc/acpi/events/xmg-neo-powerstate
     # Called when the user connects ac power to us
     #
@@ -2331,7 +2347,7 @@ You must copy these into [/etc/acpi/actions](file:///etc/acpi/actions) if you ha
 
     ```bash
     #!/usr/bin/bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     # /etc/acpi/actions/user-powerstate
     . /usr/share/acpi-support/power-funcs
     . /usr/share/acpi-support/policy-funcs
@@ -2344,7 +2360,7 @@ You must copy these into [/etc/acpi/actions](file:///etc/acpi/actions) if you ha
 
     ```bash
     #!/usr/bin/bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     # /etc/acpi/actions/xmg-neo-powerstate
     . /usr/share/acpi-support/power-funcs
     . /usr/share/acpi-support/policy-funcs
@@ -2387,7 +2403,7 @@ sudo apt install isync mu4e
 Note the [PassCmd](https://wiki.archlinux.org/index.php/Isync) - since I use gpg then that's the way to go.
 
 ```conf
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 Create  Both
 Expunge Both
 SyncState *
@@ -2557,7 +2573,7 @@ mu index
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 if [ $# -eq 0 ]
 then
     mbsync -a
@@ -2580,7 +2596,7 @@ if it exists jump to it else start it
 
 ```bash
 #!/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 # oneinstance exename pname  winclass
 exename=$1;pname="${2:-"$exename"}";winclass={$3:-${pname}};
 if ! pidof "$pname"; then
@@ -2595,11 +2611,10 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
-#sessionname="${sessionname//[^[:alnum:]]/}"
 script="${2}"
 tflags="${3}"
 
@@ -2623,6 +2638,7 @@ else
     fi
 fi
 exit 0
+
 ```
 
 
@@ -2630,7 +2646,7 @@ exit 0
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 sway-do-tool "$@"
 ```
 
@@ -2641,7 +2657,7 @@ sway-do-tool "$@"
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     nmcli device show ${IFACE_ACTIVE:-$(my-iface-active)} | grep -i -m 1 "${1:-".*"}.*:" | awk '{print $2}'
     ```
 
@@ -2649,7 +2665,7 @@ sway-do-tool "$@"
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     IFACE_ACTIVE="$(nmcli device show | grep -m 1 "GENERAL.DEVICE" | awk '{print $2}')"
     export IFACE_ACTIVE
     echo $IFACE_ACTIVE
@@ -2659,7 +2675,7 @@ sway-do-tool "$@"
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     my-iface-active-query "GENERAL.CONNECTION"
     ```
 
@@ -2667,7 +2683,7 @@ sway-do-tool "$@"
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     my-iface-active-query "IP4.ADDRESS"
     ```
 
@@ -2675,7 +2691,7 @@ sway-do-tool "$@"
 
     ```bash
     #!/usr/bin/bash
-    #Maintained in linux-init-files.org
+    #Maintained in linux-config.org
     my-iface-active-query "GENERAL.STATE"
     ```
 
@@ -2684,7 +2700,7 @@ sway-do-tool "$@"
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 delay=10;
 message="Almost out of juice."
 while [ "$#" -gt 0 ]; do
@@ -2709,7 +2725,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 if pidof dropbox > /dev/null ; then
     echo "Dropbox is already running"
 else
@@ -2729,7 +2745,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 ${VISUAL:-${EDITOR:-vi}} "${@}"
 ```
 
@@ -2740,7 +2756,7 @@ Use emacs for manpages if it's running might be an idea set an alias such as 'al
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 mp="${1:-man}"
 if pidof emacs; then
     emacsclient -c -e "(manual-entry \"-a ${mp}\")" &> /dev/null &
@@ -2754,7 +2770,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 f=$(command -v fortune &>/dev/null && fortune || echo "I don't need to study a subject to have my own truths. Because own truths ARE a thing in 2020.")
 if [ "$1" = "t" ]
 then
@@ -2770,7 +2786,7 @@ strip debug info and store elsewhere
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 scriptdir=`dirname ${0}`
 scriptdir=`(cd ${scriptdir}; pwd)`
 scriptname=`basename ${0}`
@@ -2821,7 +2837,7 @@ chmod -x "${debugdir}/${debugfile}"
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
 session="${2:-"htop-filter-${filter//[^[:alnum:]]/}"}"
 pids=$(ps aux | awk '/'"${filter}"'/ {print $2}' | xargs | sed -e 's/ /,/g')
@@ -2839,7 +2855,7 @@ ONETERM_TITLE="filtered htop:${filter}" ONETERM_PROFILE="Process-Monitor-htop" o
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 make --always-make --dry-run \
     | grep -wE 'gcc|g++' \
     | grep -w '\-c' \
@@ -2854,7 +2870,7 @@ restart pulseaudio
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 pulseaudio -k &> /dev/null
 pulseaudio -D &> /dev/null
 start-pulseaudio-x11
@@ -2865,7 +2881,7 @@ start-pulseaudio-x11
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
 eman "$page"
 ```
@@ -2875,7 +2891,7 @@ eman "$page"
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 ```
 
@@ -2884,7 +2900,7 @@ find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 if [ "$1" == "--f" ]; then
     find ~/Dropbox/ -path "*(*'s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
     find ~/Dropbox/ -path "*(*s in Konflikt stehende Kopie [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
@@ -2927,7 +2943,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 [ -z "$RGR_LOGGER" ] || logger "$@"
 ```
 
@@ -2936,7 +2952,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 exec ssh -X ${1-192.168.2.100} x2x -east -to :0
 ```
 
@@ -2947,7 +2963,7 @@ update sw
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 export DEBIAN_FRONTEND=noninteractive
 sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
 ```
@@ -2962,7 +2978,7 @@ See [XMGNeo 15 keyboard backlight controller](https://github.com/pobrn/ite8291r3
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 
 sf="$HOME/.xmg-neo-kbd"
 
@@ -3073,7 +3089,7 @@ xmg-neo-rgb-kbd-lights set-color red
 
 ```bash
 #!/usr/bin/bash
-# Maintained in linux-init-files.org
+# Maintained in linux-config.org
 . /usr/share/acpi-support/power-funcs
 . /usr/share/acpi-support/policy-funcs
 getState
@@ -3088,7 +3104,7 @@ export POWERSTATE=$STATE
 
     ```bash
     #!/usr/bin/bash
-    # Maintained in linux-init-files.org
+    # Maintained in linux-config.org
     for i in $(seq 1 ${1:-5})
     do
         sleep ${2:-1} && echo "$(date +"%Y-%m-%d %H:%M:%S"):$(nvidia-smi -q -d POWER | grep Draw | sed 's/  */ /g')"
@@ -3108,7 +3124,7 @@ sudo apt install translate-shell
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 src=$1;shift;
 dst=$1;shift;
 txt=$@;
@@ -3120,7 +3136,7 @@ trans -e google -s ${src} -t ${dst} -show-original y -show-original-phonetics y 
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 trans -e google -s de -t en -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 ```
 
@@ -3129,7 +3145,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics y -show-tr
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 trans -e google -s en -t de -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 ```
 
@@ -3141,7 +3157,7 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 if pid-of gpg-agent; then
     echo "agent already running"
 else
@@ -3162,7 +3178,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 [ -f "${HOME}"/.pre-lock ]  && . "${HOME}"/.pre-lock
 ```
 
@@ -3178,7 +3194,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 [ -f "${HOME}"/.post-lock  ]  && . "${HOME}"/.post-lock
 ```
 
@@ -3194,7 +3210,7 @@ fi
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 command -v brightnessctl && brightnessctl -s
 [ -f ~/.pre-blank ]  && . ~/.pre-blank
 ```
@@ -3204,7 +3220,7 @@ command -v brightnessctl && brightnessctl -s
 
 ```bash
 #!/usr/bin/bash
-#Maintained in linux-init-files.org
+#Maintained in linux-config.org
 [ -f ~/.post-blank ]  && . ~/.post-blank
 command -v brightnessctl && brightnessctl -r
 ```
