@@ -1331,8 +1331,8 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+end_src
 **** brightness                                                  :brightness:
 #+begin_src conf
-  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
-  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
+  bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
+  bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
 #+end_src
 *** scratchpad
 #+begin_src conf
@@ -1884,6 +1884,12 @@ return the volume %
   #!/usr/bin/bash
   # Maintained in linux-config.org
   [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
+#+end_src
+*** ~/bin/sway/sway-brightness-notify
+#+begin_src bash :tangle "~/bin/sway/sway-brightness-notify"
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
 #+end_src
 *** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"
