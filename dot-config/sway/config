@@ -182,10 +182,10 @@ bindsym $mod+minus scratchpad show
 exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
 bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
 
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && sway-volume-notify
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && sway-volume-notify
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && sway-volume-notify
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
 
 for_window [app_id="pavucontrol"] floating enable
 bindsym $mod+Control+a exec pavucontrol

@@ -804,8 +804,8 @@ bindsym $mod+d exec $menu
 2.  brightness     :brightness:
 
     ```conf
-    bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
-    bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && notify-send -u normal -t 2000 "Brightness:$(printf "%.0f" `light -G`)"
+    bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
+    bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
     ```
 
 
@@ -973,10 +973,10 @@ bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
 1.  volume     :volume:
 
     ```conf
-    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && sway-volume-notify
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && sway-volume-notify
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && sway-volume-notify
+    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
     ```
 
 2.  pavucontrol
@@ -1429,6 +1429,15 @@ include /etc/sway/config.d/*
 ```
 
 
+### ~/bin/sway/sway-brightness-notify
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+notify-send -u normal -t 2000 "🔆:$(printf "%.0f" `light -G`)"
+```
+
+
 ### ~/bin/sway/sway-do-tool
 
 ```bash
@@ -1656,6 +1665,17 @@ ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
 
 #Copy to the buffer
 wl-copy < "${DIR}"/screenshot-latest.png
+```
+
+
+### ~/bin/sway/sway-volume-notify
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
+volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
+notify-send -u normal -t 2000 "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
 ```
 
 
