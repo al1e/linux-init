@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+# Maintained in linux-config.org
+m="${1:-$(swaymsg -t get_outputs | jq '.[0].name')}"
+swaymsg "output $m ${1:-enable}"
+(sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &

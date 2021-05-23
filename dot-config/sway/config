@@ -11,7 +11,11 @@ set $term  'sway-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
+set $monitor `swaymsg -t get_outputs | jq '.[0].name')`
+exec sleep 2 && sway-notify $monitor
+
 include /etc/sway/config-vars.d/*
+include config-vars.d/*
 
 # start a terminal
 # Use Mouse+$mod to drag floating windows to their wanted position

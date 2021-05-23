@@ -766,7 +766,11 @@ set $term  'sway-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
+set $monitor `swaymsg -t get_outputs | jq '.[0].name')`
+exec sleep 2 && sway-notify $monitor
+
 include /etc/sway/config-vars.d/*
+include config-vars.d/*
 
 # start a terminal
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -1561,8 +1565,8 @@ exec swayidle -w \
 #!/usr/bin/bash
 # Maintained in linux-config.org
 M="$(swaymsg -t get_outputs | jq '.[0].name')"
-swaymsg 'bindswitch lid:on output ${M} disable'
-swaymsg 'bindswitch lid:off output ${M} enable'
+swaymsg bindswitch lid:on exec 'sway-screen disable'
+swaymsg bindswitch lid:off exec 'sway-screen enable'
 ```
 
 
@@ -1575,6 +1579,15 @@ exec sway-lock-utils lock
 ```
 
 
+### ~/bin/sway/sway-notify
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+exec notify-send -t 5000 "${1:-default}"
+```
+
+
 ### ~/bin/sway/sway-www
 
 ```bash
@@ -1582,6 +1595,17 @@ exec sway-lock-utils lock
 # Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
 sway-do-tool "Google-chrome"
+```
+
+
+### ~/bin/sway/sway-screen
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+m="${1:-$(swaymsg -t get_outputs | jq '.[0].name')}"
+swaymsg "output $m ${1:-enable}"
+(sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
 ```
 
 
