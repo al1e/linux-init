@@ -240,7 +240,7 @@ bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" 
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
-bindsym $mod+Control+t exec "notify-send -t 2000 'Opening NEW Terminator instance' && terminator -e zsh"
+bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
 
 for_window [class="steam_app.*"] fullscreen enable
 for_window [class="steam_app*"] inhibit_idle focus
