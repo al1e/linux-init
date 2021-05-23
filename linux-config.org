@@ -1564,7 +1564,6 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
   bindsym $mod+Control+Shift+p exec htop-regexp
   bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
-
 #+end_src
 
 *** gaming                                                           :gaming:
@@ -2080,7 +2079,7 @@ Just a gathering place of locky/suspendy type things...
       e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
       if [ ! -z "$e" ]; then
           swaymsg "output $s $e"
-          (sleep 0.5 && sway-notify "$s:$e") &
+          command -v sway-notify && (sleep 0.5 && sway-notify "$s:$e") &
       fi
   fi
 #+end_src
