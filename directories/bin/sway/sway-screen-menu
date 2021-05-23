@@ -5,6 +5,6 @@ if [ ! -z "$SCREEN" ]; then
     ENABLED="$(zenity  --list  --title "Enable ${SCREEN}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$ENABLED" ]; then
         swaymsg "output $SCREEN $ENABLED"
-        (sleep 0.5 && notify-send -t 3000 "$SCREEN:$ENABLED") &
+        command -v notify-send &> /dev/null && (sleep 0.5 && notify-send -t 3000 "$SCREEN:$ENABLED") &
     fi
 fi
