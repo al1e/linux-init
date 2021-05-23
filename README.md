@@ -738,7 +738,7 @@ Use mako as the notification daemon
 2.  ~/.config/mako/config
 
     ```conf
-    anchor=center
+    anchor=top-right
     ```
 
 3.  notification daemon
@@ -1065,7 +1065,6 @@ bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist
 bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
-
 ```
 
 
@@ -1166,8 +1165,11 @@ include /etc/sway/config.d/*
 
     [brightness]
     command=my-i3b-brightness
-    color=#FFD700
     interval=2
+
+    [monitors]
+    command=my-i3b-monitors
+    interval=-1
 
     [volume]
     markup=pango
@@ -1351,7 +1353,22 @@ include /etc/sway/config.d/*
         echo "$(uname -sr)"
         ```
 
-    8.  ~/bin/sway/my-i3b-temperature
+    8.  ~/bin/sway/my-i3b-monitors
+
+        ```bash
+        #!/usr/bin/bash
+        #Maintained in linux-config.org
+        case $BLOCK_BUTTON in
+            1)
+                sway-screen-menu &> /dev/null
+                ;;
+            *)
+                ;;
+        esac
+        echo "🖥️"
+        ```
+
+    9.  ~/bin/sway/my-i3b-temperature
 
         ```bash
         #!/usr/bin/bash
@@ -1366,7 +1383,7 @@ include /etc/sway/config.d/*
         exec /usr/share/i3blocks/temperature
         ```
 
-    9.  ~/bin/sway/my-i3b-uptime
+    10. ~/bin/sway/my-i3b-uptime
 
         ```bash
         #!/usr/bin/bash
@@ -1381,7 +1398,7 @@ include /etc/sway/config.d/*
         exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
         ```
 
-    10. ~/bin/sway/my-i3b-volume
+    11. ~/bin/sway/my-i3b-volume
 
         return the volume %
 
@@ -1398,7 +1415,7 @@ include /etc/sway/config.d/*
         exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
         ```
 
-    11. ~/bin/sway/my-i3b-weather
+    12. ~/bin/sway/my-i3b-weather
 
         return the volume %
 
@@ -1415,7 +1432,7 @@ include /etc/sway/config.d/*
         exec i3bm-weather
         ```
 
-    12. ~/bin/sway/my-i3b-wifi
+    13. ~/bin/sway/my-i3b-wifi
 
         return the volume %
 
@@ -1638,7 +1655,7 @@ if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
         swaymsg "output $s $e"
-        (sleep 0.5 && sway-notify "$s:$e") &
+        command -v sway-notify && (sleep 0.5 && sway-notify "$s:$e") &
     fi
 fi
 ```

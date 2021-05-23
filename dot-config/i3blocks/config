@@ -47,8 +47,11 @@ interval=300
 
 [brightness]
 command=my-i3b-brightness
-color=#FFD700
 interval=2
+
+[monitors]
+command=my-i3b-monitors
+interval=-1
 
 [volume]
 markup=pango
