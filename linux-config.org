@@ -2073,7 +2073,7 @@ Just a gathering place of locky/suspendy type things...
   # Maintained in linux-config.org
   s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"' | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
   if [ ! -z "$s" ]; then
-      e="$(zenity  --list  --title "Enable ${SCREEN}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
+      e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
       if [ ! -z "$e" ]; then
           swaymsg "output $s $e"
           command -v notify-send &> /dev/null && (sleep 0.5 && notify-send -t 3000 "$s:$e") &
