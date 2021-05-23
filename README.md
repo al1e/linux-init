@@ -1169,7 +1169,7 @@ include /etc/sway/config.d/*
 
     [monitors]
     command=my-i3b-monitors
-    interval=-1
+    interval=5
 
     [volume]
     markup=pango
@@ -1365,7 +1365,8 @@ include /etc/sway/config.d/*
             *)
                 ;;
         esac
-        echo "🖥️"
+        l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+        for i in `seq $l`; do echo -n "🖥️";done
         ```
 
     9.  ~/bin/sway/my-i3b-temperature
@@ -1531,7 +1532,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    exec swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    swaylock -i ~/Pictures/LockScreen/lock -c 000000 &
 }
 
 lock_gpg_clear() {
@@ -1650,12 +1651,12 @@ swaymsg "output ${m} ${1:-enable}"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
+numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+[ "$numActive" = "1" ] && sway-notify "Only one active monitor so no...." && exit 1
 s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
 if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
-        numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
-        [ "$numActive" = "1" ] && [ "$e" = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
         swaymsg "output $s $e"
         (sleep 0.5 && sway-notify "$s:$e") &
     fi

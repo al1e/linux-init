@@ -51,7 +51,7 @@ interval=2
 
 [monitors]
 command=my-i3b-monitors
-interval=-1
+interval=5
 
 [volume]
 markup=pango

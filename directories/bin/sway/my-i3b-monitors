@@ -7,4 +7,5 @@ case $BLOCK_BUTTON in
     *)
         ;;
 esac
-echo "🖥️"
+l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+for i in `seq $l`; do echo -n "🖥️";done
