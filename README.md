@@ -722,6 +722,33 @@ build/sway/sway
 ```
 
 
+## notification daemon
+
+
+### mako
+
+Use mako as the notification daemon
+
+```bash
+sudo apt install mako-notifier
+```
+
+
+### notification daemon
+
+```bash
+sudo apt install notification-daemon libnotifier-bin
+```
+
+Enable it as a dbus service <https://wiki.archlinux.org/title/Desktop_notifications> $XDG\_DATA\_HOME/dbus-1/services/org.freedesktop.Notifications.service
+
+```conf
+[D-BUS Service]
+Name=org.freedesktop.Notifications
+Exec=/usr/lib/notification-daemon/notification-daemon
+```
+
+
 ## Sway config
 
 

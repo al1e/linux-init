@@ -1264,6 +1264,23 @@ X11 apps still need resource definitions when launched under XWayland.
   # Start sway
   build/sway/sway
 #+end_src
+** notification daemon
+*** mako
+Use mako as the notification daemon
+#+begin_src bash
+  sudo apt install mako-notifier
+#+end_src
+*** notification daemon
+#+begin_src bash
+  sudo apt install notification-daemon libnotifier-bin
+#+end_src
+Enable it as a dbus service https://wiki.archlinux.org/title/Desktop_notifications
+$XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
+#+begin_src conf :tangle no
+  [D-BUS Service]
+  Name=org.freedesktop.Notifications
+  Exec=/usr/lib/notification-daemon/notification-daemon
+#+end_src
 ** Sway config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/sway/config"
