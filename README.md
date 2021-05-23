@@ -1629,10 +1629,10 @@ swaymsg "output ${m} ${1:-enable}"
 # Maintained in linux-config.org
 SCREEN=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"' | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
 if [ ! -z "$SCREEN" ]; then
-    SCREEN="$(echo $SCREEN | tr -s " " | cut -d " " -f1)"
-    ENABLED="$(zenity  --list  --text "Enable ${SCREEN}?" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
+    ENABLED="$(zenity  --list  --title "Enable ${SCREEN}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$ENABLED" ]; then
-        sway-screen "$ENABLED" "$SCREEN"
+        swaymsg "output $SCREEN $ENABLED"
+        (sleep 0.5 && notify-send -t 3000 "$SCREEN:$ENABLED") &
     fi
 fi
 ```
