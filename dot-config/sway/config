@@ -259,7 +259,7 @@ modifier $mod
 exec sway-kanshi
 exec sway-idle
 exec sleep 5 && gpg-cache
-exec sway-autostart
+exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec swaymsg workspace 1:edit
 
 include /etc/sway/config.d/*

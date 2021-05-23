@@ -1273,7 +1273,7 @@ Use mako as the notification daemon
 #+end_src
 **** ~/.config/mako/config
 #+begin_src conf :tangle "~/.config/mako/config"
-  anchor=top-center
+  anchor=center
 #+end_src
 **** notification daemon
 #+begin_src bash
@@ -1593,7 +1593,7 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   exec sway-kanshi
   exec sway-idle
   exec sleep 5 && gpg-cache
-  exec sway-autostart
+  exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
   exec swaymsg workspace 1:edit
 #+end_src
 *** library include
@@ -1893,13 +1893,13 @@ return the volume %
 #+begin_src bash :tangle "~/bin/sway/sway-autostart"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  [ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
+  [ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart"
 #+end_src
 *** ~/bin/sway/sway-brightness-notify
 #+begin_src bash :tangle "~/bin/sway/sway-brightness-notify"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  notify-send -u normal -t 2000 "🔆:$(printf "%.0f" `light -G`)"
+  sway-notify "🔆:$(printf "%.0f" `light -G`)"
 #+end_src
 *** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"
@@ -2046,7 +2046,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-notify"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  exec notify-send -t 5000 "${1:-default}"
+  exec notify-send -t 5000 "${@}"
 #+end_src
 *** ~/bin/sway/sway-www
 :PROPERTIES:
@@ -2066,7 +2066,7 @@ Just a gathering place of locky/suspendy type things...
   # Maintained in linux-config.org
   m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
   swaymsg "output ${m} ${1:-enable}"
-  (sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
+  (sleep 2 && sway-notify "${m}:${1:-enable}") &
 #+end_src
 *** ~/bin/sway/sway-screen-menu
 :PROPERTIES:
@@ -2080,7 +2080,7 @@ Just a gathering place of locky/suspendy type things...
       e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
       if [ ! -z "$e" ]; then
           swaymsg "output $s $e"
-          command -v notify-send &> /dev/null && (sleep 0.5 && notify-send -t 3000 "$s:$e") &
+          (sleep 0.5 && sway-notify "$s:$e") &
       fi
   fi
 #+end_src
@@ -2154,7 +2154,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   # Maintained in linux-config.org
   muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
   volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
-  notify-send -u normal -t 2000 "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+  sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
 #+end_src
 *** kanshi                                                           :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi

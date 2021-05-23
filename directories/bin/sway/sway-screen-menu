@@ -5,6 +5,6 @@ if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
         swaymsg "output $s $e"
-        command -v notify-send &> /dev/null && (sleep 0.5 && notify-send -t 3000 "$s:$e") &
+        (sleep 0.5 && sway-notify "$s:$e") &
     fi
 fi

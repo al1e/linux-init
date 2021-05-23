@@ -738,7 +738,7 @@ Use mako as the notification daemon
 2.  ~/.config/mako/config
 
     ```conf
-    anchor=top-center
+    anchor=center
     ```
 
 3.  notification daemon
@@ -1100,7 +1100,7 @@ modifier $mod
 exec sway-kanshi
 exec sway-idle
 exec sleep 5 && gpg-cache
-exec sway-autostart
+exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec swaymsg workspace 1:edit
 ```
 
@@ -1437,7 +1437,7 @@ include /etc/sway/config.d/*
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-[ -f "$HOME/.sway-autostart" ] && . "$HOME/.sway-autostart"
+[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart"
 ```
 
 
@@ -1446,7 +1446,7 @@ include /etc/sway/config.d/*
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-notify-send -u normal -t 2000 "🔆:$(printf "%.0f" `light -G`)"
+sway-notify "🔆:$(printf "%.0f" `light -G`)"
 ```
 
 
@@ -1604,7 +1604,7 @@ exec sway-lock-utils lock
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-exec notify-send -t 5000 "${1:-default}"
+exec notify-send -t 5000 "${@}"
 ```
 
 
@@ -1624,7 +1624,7 @@ google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=w
 # Maintained in linux-config.org
 m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
 swaymsg "output ${m} ${1:-enable}"
-(sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
+(sleep 2 && sway-notify "${m}:${1:-enable}") &
 ```
 
 
@@ -1638,7 +1638,7 @@ if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
         swaymsg "output $s $e"
-        command -v notify-send &> /dev/null && (sleep 0.5 && notify-send -t 3000 "$s:$e") &
+        (sleep 0.5 && sway-notify "$s:$e") &
     fi
 fi
 ```
@@ -1734,7 +1734,7 @@ wl-copy < "${DIR}"/screenshot-latest.png
 # Maintained in linux-config.org
 muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
 volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
-notify-send -u normal -t 2000 "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
 ```
 
 

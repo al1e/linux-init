@@ -2,4 +2,4 @@
 # Maintained in linux-config.org
 m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
 swaymsg "output ${m} ${1:-enable}"
-(sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
+(sleep 2 && sway-notify "${m}:${1:-enable}") &

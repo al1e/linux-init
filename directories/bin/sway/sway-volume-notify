@@ -2,4 +2,4 @@
 # Maintained in linux-config.org
 muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
 volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
-notify-send -u normal -t 2000 "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
