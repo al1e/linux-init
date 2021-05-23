@@ -1657,7 +1657,7 @@ if [ ! -z "$s" ]; then
         numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
         [ "$numActive" = "1" ] && [ "$e" = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
         swaymsg "output $s $e"
-        command -v sway-notify && (sleep 0.5 && sway-notify "$s:$e") &
+        (sleep 0.5 && sway-notify "$s:$e") &
     fi
 fi
 exit 0
