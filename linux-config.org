@@ -1267,10 +1267,15 @@ X11 apps still need resource definitions when launched under XWayland.
 ** notification daemon
 *** mako
 Use mako as the notification daemon
+**** install
 #+begin_src bash
   sudo apt install mako-notifier
 #+end_src
-*** notification daemon
+**** ~/.config/mako/config
+#+begin_src conf :tangle "~/.config/mako/config"
+  anchor=top-center
+#+end_src
+**** notification daemon
 #+begin_src bash
   sudo apt install notification-daemon libnotifier-bin
 #+end_src

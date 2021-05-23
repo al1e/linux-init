@@ -17,6 +17,9 @@
 
 !/dot-config
 
+!/dot-config/mako
+!/dot-config/mako/*
+
 !/dot-config/kanshi
 !/dot-config/kanshi/*
 
