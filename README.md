@@ -1627,16 +1627,14 @@ swaymsg "output ${m} ${1:-enable}"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-SCREEN=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name), Active: \(.active)"' | wofi -L 3 -G --show dmenu -)
-echo $SCREEN
+SCREEN=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"' | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
 if [ ! -z "$SCREEN" ]; then
-    SCREEN="$(echo $SCREEN | cut -d, -f1)"
-    ONOFF="$(echo -e "enable\ndisable" | wofi -L 2 -G --show dmenu -)"
-    if [ ! -z "$ONOFF" ]; then
-        sway-screen "$ONOFF" "$SCREEN"
+    SCREEN="$(echo $SCREEN | tr -s " " | cut -d " " -f1)"
+    ENABLED="$(zenity  --list  --text "Enable ${SCREEN}?" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
+    if [ ! -z "$ENABLED" ]; then
+        sway-screen "$ENABLED" "$SCREEN"
     fi
 fi
-
 ```
 
 
