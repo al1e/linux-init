@@ -1564,9 +1564,9 @@ exec swayidle -w \
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-M="$(swaymsg -t get_outputs | jq '.[0].name')"
-swaymsg bindswitch lid:on exec 'sway-screen disable'
-swaymsg bindswitch lid:off exec 'sway-screen enable'
+m="$(swaymsg -t get_outputs | jq '.[0].name')"
+swaymsg bindswitch lid:on exec "sway-screen disable $m"
+swaymsg bindswitch lid:off exec "sway-screen enable $m"
 ```
 
 
@@ -1603,8 +1603,8 @@ sway-do-tool "Google-chrome"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m="${1:-$(swaymsg -t get_outputs | jq '.[0].name')}"
-swaymsg "output $m ${1:-enable}"
+m=${2:-$(swaymsg -t get_outputs | jq '.[0].name')}
+swaymsg "output ${m} ${1:-enable}"
 (sleep 2 && notify-send -t 3000 "${m}:${1:-enable}") &
 ```
 
