@@ -1477,6 +1477,18 @@ exit 0
 ```
 
 
+### ~/bin/sway/sway-dpms
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+DPMS="${1:-on}"
+DISP="${2:-*}"
+currentDPMS="$(swaymsg -t get_outputs | jq '.[0]'.dpms)"
+[ "$dpms" != "$currentDPMS" ] && swaymsg "output $DISP DPMS $DPMS"
+```
+
+
 ### ~/bin/sway/sway-editor
 
 ```bash
@@ -1525,10 +1537,10 @@ case "$1" in
         exec systemctl poweroff
         ;;
     blank)
-        exec swaymsg "output * dpms off"
+        exec sway-dpms off
         ;;
     unblank)
-        exec swaymsg "output * dpms on"
+        exec sway-dpms on
         ;;
     *)
         lock
@@ -1546,7 +1558,7 @@ exit 0
 # Maintained in linux-config.org
 pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
 exec swayidle -w \
-     timeout 5 '' \
+     timeout 1 '' \
      resume 'sway-lock-utils unblank' \
      timeout 10 'pidof swaylock && sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \

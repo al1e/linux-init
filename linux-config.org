@@ -1927,6 +1927,15 @@ return the volume %
   fi
   exit 0
 #+end_src
+*** ~/bin/sway/sway-dpms
+#+begin_src bash :tangle "~/bin/sway/sway-dpms"
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  DPMS="${1:-on}"
+  DISP="${2:-*}"
+  currentDPMS="$(swaymsg -t get_outputs | jq '.[0]'.dpms)"
+  [ "$dpms" != "$currentDPMS" ] && swaymsg "output $DISP DPMS $DPMS"
+#+end_src
 *** ~/bin/sway/sway-editor
 #+begin_src bash :tangle "~/bin/sway/sway-editor"
   #!/usr/bin/bash
@@ -1970,10 +1979,10 @@ Just a gathering place of locky/suspendy type things...
           exec systemctl poweroff
           ;;
       blank)
-          exec swaymsg "output * dpms off"
+          exec sway-dpms off
           ;;
       unblank)
-          exec swaymsg "output * dpms on"
+          exec sway-dpms on
           ;;
       ,*)
           lock
@@ -1995,7 +2004,7 @@ Just a gathering place of locky/suspendy type things...
   # Maintained in linux-config.org
   pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
   exec swayidle -w \
-       timeout 5 '' \
+       timeout 1 '' \
        resume 'sway-lock-utils unblank' \
        timeout 10 'pidof swaylock && sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \

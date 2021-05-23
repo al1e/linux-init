@@ -32,10 +32,10 @@ case "$1" in
         exec systemctl poweroff
         ;;
     blank)
-        exec swaymsg "output * dpms off"
+        exec sway-dpms off
         ;;
     unblank)
-        exec swaymsg "output * dpms on"
+        exec sway-dpms on
         ;;
     *)
         lock
