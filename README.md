@@ -1632,7 +1632,8 @@ exec notify-send -t 5000 "${@}"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null
+google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
+sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
 
