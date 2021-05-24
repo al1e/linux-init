@@ -20,6 +20,9 @@
 !/dot-config/mako
 !/dot-config/mako/*
 
+!/dot-config/waybar
+!/dot-config/waybar/*
+
 !/dot-config/kanshi
 !/dot-config/kanshi/*
 

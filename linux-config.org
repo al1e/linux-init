@@ -1344,6 +1344,12 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
   bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
 #+end_src
+**** gaps
+#+begin_src conf
+gaps inner  2
+gaps outer  2
+#+end_src
+
 *** scratchpad
 #+begin_src conf
   #
@@ -1530,7 +1536,6 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+end_src
 *** apps default workspace
 #+begin_src conf
-  assign [class="Emacs"] $ws1
   assign [class="Signal"] $ws8
   assign [class="Hexchat"] $ws8
   assign [class="discord"] $ws8
@@ -1593,16 +1598,380 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+begin_src conf
   exec sway-kanshi
   exec sway-idle
-  exec sleep 5 && gpg-cache
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-  exec swaymsg workspace 1:edit
+  exec sleep 1 && swaymsg workspace $ws1
+  exec sleep 2 && gpg-cache
+  exec sleep 2 && $editor
 #+end_src
 *** library include
 #+begin_src conf
   include /etc/sway/config.d/*
 #+end_src
-*** i3blocks
-**** config
+** waybar                                                            :waybar:
+repo: https://github.com/Alexays/Waybar
+examples: https://github.com/Alexays/Waybar/wiki/Examples
+*** config
+stolen from here: https://github.com/mhdzli/dotfiles/tree/master/src/.config/waybar
+**** ~/.config/waybar/style.css
+:PROPERTIES:
+:header-args:css: :tangle "~/.config/waybar/style.css"
+:END:
+#+begin_src css
+,* {
+	border: none;
+	background: rgba(28, 28, 28, 0.6);
+	border-radius: 0;
+	font-family: "monospace";
+	font-size: 15;
+	min-height: 0;
+}
+
+#waybar {
+/*	background: rgba(48,48,59, 0);*/
+	color: #ffffff;
+}
+
+#window {
+	color: #e4e4e4;
+	font-weight: bold;
+}
+
+#workspaces {
+	font-size: 8px;
+/*	padding: 0 2px;*/
+	margin-left: 8px;
+	margin-right: 8px;
+	padding-left: 0px;
+	padding-right: 0px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background: rgba(28, 28, 28, 0.8);
+}
+
+#workspaces button {
+	padding: 0 5px;
+/*	background: rgba(28, 28, 28, 0.9);*/
+	color: #b8b8b8;
+/*	margin: 0 1px;*/
+}
+#workspaces button:hover {
+	box-shadow: inherit;
+	text-shadow: inherit;
+
+}
+
+#workspaces button.focused {
+	padding: 0 5px;
+	border-radius: 10;
+/*	background: #00afd7;*/
+	color: #8af0f0;
+	margin: 0 0px;
+}
+
+#workspaces button.urgent {
+	background: #af005f;
+	color: #1b1d1e;
+}
+
+#mode {
+	background: #af005f;
+}
+
+#clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+	padding: 0 3px;
+/*	background-color: #000000; */
+	background: rgba(28, 28, 28, 0.8);
+/*	margin: 0 2px;*/
+}
+
+#clock {
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+#custom-disk_root {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+#custom-weather {
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+#custom-jalalidate {
+	margin-right: 8px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+#battery {
+}
+
+#battery icon {
+    color: red;
+}
+
+#battery.charging {
+}
+
+@keyframes blink {
+    to {
+        background-color: #af005f;
+    }
+}
+
+#battery.warning:not(.charging) {
+	background-color: #ff8700;
+	color: #1b1d1e;
+}
+#battery.critical:not(.charging) {
+    color: white;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#cpu {
+}
+
+#memory {
+}
+
+#network {
+}
+
+#network.disconnected {
+    background: #f53c3c;
+}
+
+#pulseaudio {
+}
+
+#pulseaudio.muted {
+}
+
+#tray {
+	margin-left: 1px;
+}
+#+end_src
+
+**** ~/.config/waybar/config
+:PROPERTIES:
+:header-args:json: :tangle "~/.config/waybar/config"
+:END:
+#+begin_src json
+  {
+    //	"layer": "top", // Waybar at top layer
+    //	"position": "top", // Waybar position (top|bottom|left|right)
+    //	"height": 30, // Waybar height (to be removed for auto height)
+    //	"width": 1280, // Waybar width
+
+    //	Choose the order of the modules
+    "modules-left": [
+      "custom/disk_home",
+      "custom/disk_root",
+      "sway/workspaces",
+      "sway/mode"
+    ],
+
+    "modules-center": [
+      "clock#1",
+      //		"clock#2",
+      "custom/jalalidate"
+    ],
+
+    "modules-right": [
+      "custom/weather",
+      //		"temperature",
+      "cpu",
+      //		"memory",
+      "network",
+      "backlight",
+      "pulseaudio",
+      "battery",
+      "custom/wkblayout",
+      "idle_inhibitor",
+      "tray"],
+
+    "sway/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": true,
+      "format": "{name}",
+      "format-icons": {
+        "urgent": "<span color='#e85c5c'></span>",
+        "focused": "<span color='#8af0f0'></span>",
+        "default": "<span color='#b8b8b8'></span>"
+      }
+    },
+
+    "sway/mode": {
+      "format": "{}"
+    },
+
+    "backlight": {
+      //		"device": "acpi_video1",
+      "format": "{icon} {percent}%",
+      "format-icons": ["🔅", "🔆"]
+    },
+
+    "battery": {
+      "states": {
+        // "good": 95,
+        "warning": 20,
+        "critical": 10
+      },
+      "format": "<span color='#e88939'>{icon}</span> {capacity}%",
+
+      "format-charging": "<span color='#e88939'> </span> {capacity}% ({time})",
+      "format-plugged":  "<span color='#e88939'>{icon}  </span> {capacity}%",
+      //		"format-good": "", // An empty format will hide the module
+      "format-discharging": "<span color='#e88939'>{icon}</span> {capacity}% ({time})",
+      "format-icons": ["", "", "", "", ""]
+    },
+
+    "clock#1": {
+      "interval": 60,
+      "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
+      "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
+      // "format-alt": "{:%Y-%m-%d}"
+    },
+
+    "clock#2": {
+      "interval": 18000,
+      "format": "{:%F} 📅",
+      "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
+      // "format-alt": "{:%Y-%m-%d}"
+    },
+
+    "cpu": {
+      "interval": 5,
+      "format": "<span color='#eb8a60'> {usage}% ({load})</span>", // Icon: microchip
+      "states": {
+        "warning": 70,
+        "critical": 90
+      }
+    },
+
+    /*
+      "cpu": {
+      "format": "🏭 {usage}%",
+      "tooltip": false
+      },
+    ,*/
+    "idle_inhibitor": {
+      "format": "<span color='#589df6'>{icon}</span>",
+      "format-icons": {
+        "activated": "",
+        "deactivated": ""
+      },
+      "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
+    },
+    /*
+      "memory": {
+      "format": "💾 {used:0.1f}G",
+      "tooltip": false
+      },
+    ,*/
+    "network": {
+      // "interface": "wlp2*", // (Optional) To force the use of this interface
+      "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
+      "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+      "format-linked": "{ifname} (No IP) ",
+      "format-disconnected": " ",
+      "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
+      "interval": 60,
+      "tooltip-format": "{ifname}  {ipaddr}"
+    },
+
+    "pulseaudio": {
+      //		"scroll-step": 1, // %, can be a float
+      "format": "{icon} {volume}% {format_source}",
+      "format-muted": "🔇 {format_source}",
+      "format-bluetooth": "{icon} {volume}% {format_source}",
+      "format-bluetooth-muted": "🔇 {format_source}",
+
+      "format-source": " {volume}%",
+      "format-source-muted": "",
+
+      "format-icons": {
+        "headphones": "",
+        "handsfree": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["🔈", "🔉", "🔊"]
+      },
+      "on-click": "ponymix -N -t sink toggle",
+      "on-click-right": "ponymix -N -t source toggle"
+    },
+    /*
+      "temperature": {
+      //		"thermal-zone": 2,
+      //		"hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+      "critical-threshold": 80,
+      //		"format-critical": "{temperatureC}°C {icon}",
+      "format": "<span color='#e88939'>{icon}</span> {temperatureC}°C",
+      "format-icons": ["", "", ""],
+      "tooltip": false
+      },
+    ,*/
+    "tray": {
+      "icon-size": 18,
+      "spacing": 5
+    },
+
+    "custom/disk_home": {
+      "format": "<span color='#11eec2'> {} </span>",
+      "interval": 3600,
+      "exec": "df -h --output=avail $HOME | tail -1 | tr -d ' '",
+      "tooltip": "false"
+    },
+
+    "custom/disk_root": {
+      "format": "<span color='#a1b5e9'> {} </span>",
+      "interval": 3600,
+      "exec": "df -h --output=avail / | tail -1 | tr -d ' '",
+      "tooltip": "false"
+    },
+
+    // Persian calendar
+    "custom/jalalidate": {
+      "format": "<span color='#cde9f0'>{}</span>",
+      "interval": 18000,
+      //		"exec": "sb-jalalidate"
+      "exec": "pcal -t",
+      "tooltip": "false"
+    },
+
+    "custom/weather": {
+      "format": "<span color='#22dfda'>{}</span>",
+      "interval": 18000,
+      "exec": "sb-forecast",
+      //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
+      "exec-if": "ping openweathermap.org -c1",
+      "tooltip": "false"
+    },
+
+    "custom/wkblayout": {
+      "format": "<span color='#11eec2'>🖋</span> {}",
+      "interval": 30,
+      "signal": 1,
+      // bindsym the grp (switch layout shortcut) option in your sway confik to exec "pkill -SIGRTMIN+1 waybar"
+      "exec": "wkblayout",
+      //swaymsg -t get_inputs | grep -m1 "xkb_active_layout_name" | cut -d '"' -f4
+      "tooltip": "false"
+    }
+
+  }
+#+end_src
+** i3blocks                                                        :i3blocks:
+*** ~/.config/i3blocks/config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/i3blocks/config"
 :ID:       20c2b7d9-7111-46c4-8965-63db28dea79d
@@ -1685,8 +2054,8 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   interval=60
 
 #+end_src
-**** i3blocks utilities
-***** ~/bin/sway/my-i3b-battery-status
+*** i3blocks utilities
+**** ~/bin/sway/my-i3b-battery-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-battery-status"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1702,7 +2071,7 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   fi
   echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
 #+end_src
-***** ~/bin/sway/my-i3b-bluetooth
+**** ~/bin/sway/my-i3b-bluetooth
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
 #+begin_src bash :tangle "~/bin/sway/my-i3b-bluetooth"
   #!/usr/bin/env bash
@@ -1756,7 +2125,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       echo ""
   fi
 #+end_src
-***** ~/bin/sway/my-i3b-brightness
+**** ~/bin/sway/my-i3b-brightness
 return the brightness %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-brightness"
   #!/usr/bin/bash
@@ -1767,7 +2136,7 @@ return the brightness %
       echo "🔆N/A- install "light""
   fi
 #+end_src
-***** ~/bin/sway/my-i3b-cpu
+**** ~/bin/sway/my-i3b-cpu
 #+begin_src bash :tangle "~/bin/sway/my-i3b-cpu"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1780,7 +2149,7 @@ return the brightness %
   esac
   exec i3bm-cpu
 #+end_src
-***** ~/bin/sway/my-i3b-date-cal
+**** ~/bin/sway/my-i3b-date-cal
 #+begin_src bash :tangle "~/bin/sway/my-i3b-date-cal"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1793,7 +2162,7 @@ return the brightness %
   esac
   exec echo "📅$(date +"%a, %d %b: %H:%M")"
 #+end_src
-***** ~/bin/sway/my-i3b-db-status
+**** ~/bin/sway/my-i3b-db-status
 #+begin_src bash :tangle "~/bin/sway/my-i3b-db-status"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1815,7 +2184,7 @@ return the brightness %
       fi
   fi
 #+end_src
-***** ~/bin/sway/my-i3b-kernel
+**** ~/bin/sway/my-i3b-kernel
 #+begin_src bash :tangle "~/bin/sway/my-i3b-kernel"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1828,7 +2197,7 @@ return the brightness %
   esac
   echo "$(uname -sr)"
 #+end_src
-***** ~/bin/sway/my-i3b-monitors
+**** ~/bin/sway/my-i3b-monitors
 #+begin_src bash :tangle "~/bin/sway/my-i3b-monitors"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1842,7 +2211,7 @@ return the brightness %
   l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
   for i in `seq $l`; do echo -n "🖥️";done
 #+end_src
-***** ~/bin/sway/my-i3b-temperature
+**** ~/bin/sway/my-i3b-temperature
 #+begin_src bash :tangle "~/bin/sway/my-i3b-temperature"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1855,7 +2224,7 @@ return the brightness %
   esac
   exec /usr/share/i3blocks/temperature
 #+end_src
-***** ~/bin/sway/my-i3b-uptime
+**** ~/bin/sway/my-i3b-uptime
 #+begin_src bash :tangle "~/bin/sway/my-i3b-uptime"
   #!/usr/bin/bash
   #Maintained in linux-config.org
@@ -1868,7 +2237,7 @@ return the brightness %
   esac
   exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
 #+end_src
-***** ~/bin/sway/my-i3b-volume
+**** ~/bin/sway/my-i3b-volume
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-volume"
   #!/usr/bin/bash
@@ -1882,7 +2251,7 @@ return the volume %
   esac
   exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
 #+end_src
-***** ~/bin/sway/my-i3b-weather
+**** ~/bin/sway/my-i3b-weather
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-weather"
   #!/usr/bin/bash
@@ -1896,7 +2265,7 @@ return the volume %
   esac
   exec i3bm-weather
 #+end_src
-***** ~/bin/sway/my-i3b-wifi
+**** ~/bin/sway/my-i3b-wifi
 return the volume %
 #+begin_src bash :tangle "~/bin/sway/my-i3b-wifi"
   #!/usr/bin/bash
@@ -2185,7 +2554,8 @@ Load a host specific kanshi file if it exists
 #+begin_src bash :tangle "~/bin/sway/sway-kanshi"
   #!/usr/bin/bash
   #Maintained in linux-config.org
-  pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+  # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+  killall -9 kanshi &>/dev/null
   config="$HOME/.config/kanshi/config-$(hostname)"
   if [ -f  "$config" ]; then
       rgr-logger -t "kanshi"  "$config"

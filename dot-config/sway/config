@@ -44,6 +44,9 @@ exec sway-lid
 bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
 bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
 
+gaps inner  2
+gaps outer  2
+
 #
 # Scratchpad:
 #
@@ -212,7 +215,6 @@ bindsym Escape mode "default"
 }
 bindsym $mod+Control+q mode "$mode_system"
 
-assign [class="Emacs"] $ws1
 assign [class="Signal"] $ws8
 assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
@@ -259,8 +261,9 @@ modifier $mod
 
 exec sway-kanshi
 exec sway-idle
-exec sleep 5 && gpg-cache
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec swaymsg workspace 1:edit
+exec sleep 1 && swaymsg workspace $ws1
+exec sleep 2 && gpg-cache
+exec sleep 2 && $editor
 
 include /etc/sway/config.d/*
