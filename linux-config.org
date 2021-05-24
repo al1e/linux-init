@@ -1274,6 +1274,7 @@ Use mako as the notification daemon
 **** ~/.config/mako/config
 #+begin_src conf :tangle "~/.config/mako/config"
   anchor=top-right
+  background-color=#da4f37
 #+end_src
 **** notification daemon
 #+begin_src bash
@@ -2093,12 +2094,12 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-screen-menu"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
-  [ "$numActive" = "1" ] && sway-notify "Only one active monitor so no...." && exit 1
   s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
   if [ ! -z "$s" ]; then
       e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
       if [ ! -z "$e" ]; then
+          numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+          [ "$numActive" = "1" ] && [ $e = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
           swaymsg "output $s $e"
           (sleep 0.5 && sway-notify "$s:$e") &
       fi
