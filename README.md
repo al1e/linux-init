@@ -1036,6 +1036,7 @@ assign [class="Steam"] $ws9
 ### apps default appearance
 
 ```conf
+for_window [class="feh"] floating enable
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [title="wifi"] floating enable
@@ -1062,7 +1063,7 @@ bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
-bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
+bindsym $mod+Control+p exec oneterminal "Processes" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
 ```
@@ -1085,7 +1086,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 bar {
 status_command i3blocks
 font pango:Source Sans Pro, FontAwesome 10
-position top
+position bottom
 #mode hide
 hidden_state hide
 modifier $mod
@@ -1291,7 +1292,7 @@ include /etc/sway/config.d/*
         #Maintained in linux-config.org
         case $BLOCK_BUTTON in
             1)
-                oneterminal "Process-Monitor-htop" htop &>/dev/null
+                oneterminal "Processes" htop &>/dev/null
                 ;;
             *)
                 ;;
@@ -2979,6 +2980,7 @@ chmod -x "${debugdir}/${debugfile}"
 #!/usr/bin/bash
 #Maintained in linux-config.org
 filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
+[ -z "$filter" ] && exit 1
 session="${2:-"htop-filter-${filter//[^[:alnum:]]/}"}"
 pids=$(ps aux | awk '/'"${filter}"'/ {print $2}' | xargs | sed -e 's/ /,/g')
 if tmux has-session -t "${session}"; then
@@ -2987,7 +2989,7 @@ if tmux has-session -t "${session}"; then
 fi
 tmux new-session -d -s "${session}" "htop -p $pids"
 sleep 0.1
-ONETERM_TITLE="filtered htop:${filter}" ONETERM_PROFILE="Process-Monitor-htop" oneterminal "${session}"
+ONETERM_TITLE="filtered htop:${filter}" ONETERM_PROFILE="Processes" oneterminal "${session}"
 ```
 
 

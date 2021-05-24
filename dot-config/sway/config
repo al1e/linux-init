@@ -218,6 +218,7 @@ assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
 assign [class="Steam"] $ws9
 
+for_window [class="feh"] floating enable
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [title="wifi"] floating enable
@@ -239,7 +240,7 @@ bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
-bindsym $mod+Control+p exec oneterminal "Process-Monitor-htop" htop
+bindsym $mod+Control+p exec oneterminal "Processes" htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
 
@@ -250,7 +251,7 @@ for_window [class="steam_app*"] inhibit_idle focus
 bar {
 status_command i3blocks
 font pango:Source Sans Pro, FontAwesome 10
-position top
+position bottom
 #mode hide
 hidden_state hide
 modifier $mod
