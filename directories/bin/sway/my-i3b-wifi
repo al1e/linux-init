@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 #Maintained in linux-config.org
 case $BLOCK_BUTTON in
-    1) oneterminal "wifi" "nmtui"  &>/dev/null &
+    1) sway-wifi
 esac
 exec i3bm-wifi

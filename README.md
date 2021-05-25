@@ -1086,19 +1086,682 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
     ```
 
 
-### status bar     :status:i3bar:i3blocks:
+### status bar
 
-```conf
-# i3bar
-bar {
-status_command i3blocks
-font pango:Source Sans Pro, FontAwesome 10
-position bottom
-#mode hide
-hidden_state hide
-modifier $mod
-}
-```
+1.  waybar     :waybar:
+
+    <https://github.com/Alexays/Waybar/wiki/Configuration>
+
+    ```conf
+    exec waybar
+    ```
+
+    1.  ~/.config/waybar/config
+
+        ```json
+        {
+          "layer": "top",
+          "position": "bottom",
+          "height": 30,
+          "width": 1280,
+
+          "modules-left": [
+            "sway/workspaces",
+            "sway/mode",
+            "cpu",
+            "memory",
+          ],
+
+          "modules-center": [
+            "clock#2",
+            "idle_inhibitor",
+            "pulseaudio",
+          ],
+
+          "modules-right": [
+            "backlight",
+            "battery",
+            "network",
+            "tray"],
+
+          "sway/workspaces": {
+            "disable-scroll": true,
+            "all-outputs": true,
+            "format": "{name}",
+            "format-icons": {
+              "urgent": "<span color='#e85c5c'></span>",
+              "focused": "<span color='#8af0f0'></span>",
+              "default": "<span color='#b8b8b8'></span>"
+            }
+          },
+
+          "sway/mode": {
+            "format": "{}"
+          },
+
+          "backlight": {
+            //		"device": "acpi_video1",
+            "format": "{icon} {percent}%",
+            "format-icons": ["🔅", "🔆"]
+          },
+
+          "battery": {
+            "states": {
+              // "good": 95,
+              "warning": 20,
+              "critical": 10
+            },
+            "format": "<span color='#e88939'>{icon}</span> {capacity}%",
+
+            "format-charging": "<span color='#e88939'> </span> {capacity}% ({time})",
+            "format-plugged":  "<span color='#e88939'>{icon}  </span> {capacity}%",
+            //		"format-good": "", // An empty format will hide the module
+            "format-discharging": "<span color='#e88939'>{icon}</span> {capacity}% ({time})",
+            "format-icons": ["", "", "", "", ""]
+          },
+
+          "clock#1": {
+            "interval": 60,
+            "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
+            "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
+            // "format-alt": "{:%Y-%m-%d}"
+          },
+
+          "clock#2": {
+            "interval": 18000,
+            "format": "{:%F} 📅",
+            "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
+            // "format-alt": "{:%Y-%m-%d}"
+          },
+
+          "cpu": {
+            "interval": 5,
+            "format": "<span color='#eb8a60'> {usage}% ({load})</span>", // Icon: microchip
+            "states": {
+              "warning": 70,
+              "critical": 90
+            }
+          },
+
+          /*
+            "cpu": {
+            "format": "🏭 {usage}%",
+            "tooltip": false
+            },
+          */
+          "idle_inhibitor": {
+            "format": "<span color='#589df6'>{icon}</span>",
+            "format-icons": {
+              "activated": "",
+              "deactivated": ""
+            },
+            "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
+          },
+          /*
+            "memory": {
+            "format": "💾 {used:0.1f}G",
+            "tooltip": false
+            },
+          */
+          "network": {
+            // "interface": "wlp2*", // (Optional) To force the use of this interface
+            "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
+            "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+            "format-linked": "{ifname} (No IP) ",
+            "format-disconnected": " ",
+            "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
+            "interval": 60,
+            "on-click-right": "sway-wifi",
+            "tooltip-format": "{ifname}  {ipaddr}"
+          },
+
+          "pulseaudio": {
+            //		"scroll-step": 1, // %, can be a float
+            "format": "{icon} {volume}% {format_source}",
+            "format-muted": "🔇 {format_source}",
+            "format-bluetooth": "{icon} {volume}% {format_source}",
+            "format-bluetooth-muted": "🔇 {format_source}",
+
+            "format-source": " {volume}%",
+            "format-source-muted": "",
+
+            "format-icons": {
+              "headphones": "",
+              "handsfree": "",
+              "headset": "",
+              "phone": "",
+              "portable": "",
+              "car": "",
+              "default": ["🔈", "🔉", "🔊"]
+            },
+            "on-click": "amixer set Master toggle",
+            "on-click-right": "pavucontrol"
+          },
+          /*
+            "temperature": {
+            //		"thermal-zone": 2,
+            //		"hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+            "critical-threshold": 80,
+            //		"format-critical": "{temperatureC}°C {icon}",
+            "format": "<span color='#e88939'>{icon}</span> {temperatureC}°C",
+            "format-icons": ["", "", ""],
+            "tooltip": false
+            },
+          */
+          "tray": {
+            "icon-size": 18,
+            "spacing": 5
+          },
+
+
+          "custom/weather": {
+            "format": "<span color='#22dfda'>{}</span>",
+            "interval": 18000,
+            "exec": "sb-forecast",
+            //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
+            "exec-if": "ping openweathermap.org -c1",
+            "tooltip": "false"
+          },
+
+        }
+        ```
+
+    2.  ~/.config/waybar/style.css
+
+        ```css
+        * {
+                border: none;
+                background: rgba(28, 28, 28, 0.6);
+                border-radius: 0;
+                font-family: "monospace";
+                font-size: 10pt;
+                min-height: 0;
+        }
+
+        #waybar {
+                background: rgba(48,48,59, 0);
+                color: #e4e4e4;
+        }
+
+        #window {
+                color: #e4e4e4;
+                font-weight: bold;
+        }
+
+        #workspaces {
+                font-size: 8px;
+        /*	padding: 0 2px;*/
+                margin-left: 8px;
+                margin-right: 8px;
+                padding-left: 0px;
+                padding-right: 0px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                background: rgba(28, 28, 28, 0.8);
+        }
+
+        #workspaces button {
+                padding: 0 5px;
+        /*	background: rgba(28, 28, 28, 0.9);*/
+                color: #b8b8b8;
+        /*	margin: 0 1px;*/
+        }
+        #workspaces button:hover {
+                box-shadow: inherit;
+                text-shadow: inherit;
+
+        }
+
+        #workspaces button.focused {
+                padding: 0 5px;
+                border-radius: 10;
+        /*	background: #00afd7;*/
+                color: #8af0f0;
+                margin: 0 0px;
+        }
+
+        #workspaces button.urgent {
+                background: #af005f;
+                color: #1b1d1e;
+        }
+
+        #mode {
+                background: #af005f;
+        }
+
+        #clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+                padding: 0 3px;
+        /*	background-color: #000000; */
+                background: rgba(28, 28, 28, 0.8);
+        /*	margin: 0 2px;*/
+        }
+
+        #clock {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+        }
+
+        #custom-disk_root {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+        }
+
+        #custom-weather {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+        }
+
+        #custom-jalalidate {
+                margin-right: 8px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+        }
+
+        #battery {
+        }
+
+        #battery icon {
+            color: red;
+        }
+
+        #battery.charging {
+        }
+
+        @keyframes blink {
+            to {
+                background-color: #af005f;
+            }
+        }
+
+        #battery.warning:not(.charging) {
+                background-color: #ff8700;
+                color: #1b1d1e;
+        }
+        #battery.critical:not(.charging) {
+            color: white;
+            animation-name: blink;
+            animation-duration: 0.5s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        #cpu {
+        }
+
+        #memory {
+        }
+
+        #network {
+        }
+
+        #network.disconnected {
+            background: #f53c3c;
+        }
+
+        #pulseaudio {
+        }
+
+        #pulseaudio.muted {
+        }
+
+        #tray {
+                margin-left: 1px;
+        }
+        ```
+
+2.  i3bar     :i3bar:i3blocks:
+
+    Currently demoted for waybar
+
+    ```conf
+    # i3bar
+    bar {
+    status_command i3blocks
+    font pango:Source Sans Pro, FontAwesome 10
+    position bottom
+    #mode hide
+    hidden_state hide
+    modifier $mod
+    }
+    ```
+
+    1.  i3blocks     :i3blocks:
+
+        1.  ~/.config/i3blocks/config
+
+            ```conf
+            [dropbox]
+            interval=15
+            command=my-i3b-db-status
+            color=#ffd700
+
+            [kernel]
+            label=🐧
+            command=my-i3b-kernel
+            interval=once
+            color=#ffffff
+
+            [uptime]
+
+            command=my-i3b-uptime
+            interval=60
+
+            [cpu_usage]
+            markup=pango
+            command=my-i3b-cpu
+            interval=1
+
+            [temperature]
+            label=🌡
+            command=my-i3b-temperature
+            interval=60
+
+            [battery]
+            markup=pango
+            command=my-i3b-battery-status
+            interval=60
+
+            # [power_draw]
+            # label=⚡
+            # command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
+            # interval=5
+            # color=#00ff00
+
+            [weather]
+            markup=pango
+            command=my-i3b-weather
+            interval=300
+
+            # [weather]
+            # command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
+            # interval=900
+            # color=#A4C2F4
+
+            [brightness]
+            command=my-i3b-brightness
+            interval=2
+
+            [monitors]
+            command=my-i3b-monitors
+            interval=5
+
+            [volume]
+            markup=pango
+            command=my-i3b-volume
+            interval=2
+            color=#FFD700
+
+            [bluetooth]
+            command=my-i3b-bluetooth
+            interval=60
+            color=#4d4dff
+
+            [wifi]
+            markup=pango
+            command=my-i3b-wifi
+            interval=60
+
+            [time]
+            command=my-i3b-date-cal
+            interval=60
+
+            ```
+
+        2.  i3blocks utilities
+
+            1.  ~/bin/sway/my-i3b-battery-status
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        ;;
+                    ,*)
+                        ;;
+                esac
+                b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
+                if [ -z "$b" ]; then
+                    b="charged";
+                fi
+                echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
+                ```
+
+            2.  ~/bin/sway/my-i3b-bluetooth
+
+                Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
+
+                ```bash
+                #!/usr/bin/env bash
+
+                case $BLOCK_BUTTON in
+                    1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+                esac
+
+                get_from_file() {
+                    dev=$1
+                    name=
+                    if [ ! -f /tmp/bt-devices.txt ]; then
+                        touch /tmp/bt-devices.txt
+                        echo ""
+                        return
+                    fi
+                    for i in `cat /tmp/bt-devices.txt`; do
+                        d=`echo $i | awk -F:: '{print $1}'`
+                        if [ $d = $dev ]; then
+                            name=`echo $i | awk -F:: '{print $2}'`
+                        fi
+                    done
+                    echo "${name}"
+                }
+
+                store_file() {
+                    dev=$1
+                    name="${2}"
+                    echo "$dev::${name}" >> /tmp/bt-devices.txt
+                }
+
+                connections=`hcitool con | sed -n 2p`
+                if [ ! -z "$connections" ]; then
+                    # We have a connection, we want to get the name from a file if we've had
+                    # it from there before because getting the name of the device connected
+                    # is very slow and costly.
+                    dev=`echo $connections | awk '{print $3}'`
+                    name=`get_from_file $dev`
+                    if [ -z "$name" ]; then
+                        name=`hcitool name $dev | awk '{print $1}'`
+                        if [ ! -z "${name}" ]; then
+                            store_file $dev "${name}"
+                        fi
+                    fi
+                    echo " $name"
+                    echo " $name"
+                    echo "#83AF40\n"
+                    # echo "#859900\n"
+                else
+                    echo ""
+                    echo ""
+                fi
+                ```
+
+            3.  ~/bin/sway/my-i3b-brightness
+
+                return the brightness %
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                if command -v light &> /dev/null; then
+                    echo "🔆$(printf "%.0f\n" $(light -G))"
+                else
+                    echo "🔆N/A- install "light""
+                fi
+                ```
+
+            4.  ~/bin/sway/my-i3b-cpu
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        oneterminal "Processes" htop &>/dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec i3bm-cpu
+                ```
+
+            5.  ~/bin/sway/my-i3b-date-cal
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec echo "📅$(date +"%a, %d %b: %H:%M")"
+                ```
+
+            6.  ~/bin/sway/my-i3b-db-status
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                  case $BLOCK_BUTTON in
+                      1)
+                          sway-www "https://www.dropbox.com/home"  &> /dev/null
+                          ;;
+                      ,*)
+                          ;;
+                  esac
+
+                if pidof dropbox > /dev/null ; then
+                    stat=$(dropbox status | sed -n 1p)
+                    echo "⇄${stat}"; echo "";
+                else
+                    if command -v dropbox > /dev/null; then
+                        echo "⇄Restart Dropbox.."
+                        #dropbox start &> /dev/null &
+                    fi
+                fi
+                ```
+
+            7.  ~/bin/sway/my-i3b-kernel
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                echo "$(uname -sr)"
+                ```
+
+            8.  ~/bin/sway/my-i3b-monitors
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-screen-menu &> /dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+                for i in `seq $l`; do echo -n "🖥️";done
+                ```
+
+            9.  ~/bin/sway/my-i3b-temperature
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec /usr/share/i3blocks/temperature
+                ```
+
+            10. ~/bin/sway/my-i3b-uptime
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        oneterminal "bpytop-kernel" bpytop &>/dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
+                ```
+
+            11. ~/bin/sway/my-i3b-volume
+
+                return the volume %
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-do-tool Pavucontrol pavucontrol &>/dev/null &
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
+                ```
+
+            12. ~/bin/sway/my-i3b-weather
+
+                return the volume %
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1)
+                        sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+                        ;;
+                    *)
+                        ;;
+                esac
+                exec i3bm-weather
+                ```
+
+            13. ~/bin/sway/my-i3b-wifi
+
+                return the volume %
+
+                ```bash
+                #!/usr/bin/bash
+                #Maintained in linux-config.org
+                case $BLOCK_BUTTON in
+                    1) sway-wifi
+                esac
+                exec i3bm-wifi
+                ```
 
 
 ### autostart     :autostart:
@@ -1118,709 +1781,6 @@ exec sleep 2 && $editor
 ```conf
 include /etc/sway/config.d/*
 ```
-
-
-## waybar     :waybar:
-
-repo: <https://github.com/Alexays/Waybar> examples: <https://github.com/Alexays/Waybar/wiki/Examples>
-
-
-### config
-
-stolen from here: <https://github.com/mhdzli/dotfiles/tree/master/src/.config/waybar>
-
-1.  ~/.config/waybar/style.css
-
-    ```css
-    * {
-            border: none;
-            background: rgba(28, 28, 28, 0.6);
-            border-radius: 0;
-            font-family: "monospace";
-            font-size: 15;
-            min-height: 0;
-    }
-
-    #waybar {
-    /*	background: rgba(48,48,59, 0);*/
-            color: #ffffff;
-    }
-
-    #window {
-            color: #e4e4e4;
-            font-weight: bold;
-    }
-
-    #workspaces {
-            font-size: 8px;
-    /*	padding: 0 2px;*/
-            margin-left: 8px;
-            margin-right: 8px;
-            padding-left: 0px;
-            padding-right: 0px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            background: rgba(28, 28, 28, 0.8);
-    }
-
-    #workspaces button {
-            padding: 0 5px;
-    /*	background: rgba(28, 28, 28, 0.9);*/
-            color: #b8b8b8;
-    /*	margin: 0 1px;*/
-    }
-    #workspaces button:hover {
-            box-shadow: inherit;
-            text-shadow: inherit;
-
-    }
-
-    #workspaces button.focused {
-            padding: 0 5px;
-            border-radius: 10;
-    /*	background: #00afd7;*/
-            color: #8af0f0;
-            margin: 0 0px;
-    }
-
-    #workspaces button.urgent {
-            background: #af005f;
-            color: #1b1d1e;
-    }
-
-    #mode {
-            background: #af005f;
-    }
-
-    #clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
-            padding: 0 3px;
-    /*	background-color: #000000; */
-            background: rgba(28, 28, 28, 0.8);
-    /*	margin: 0 2px;*/
-    }
-
-    #clock {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-    }
-
-    #custom-disk_root {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-    }
-
-    #custom-weather {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-    }
-
-    #custom-jalalidate {
-            margin-right: 8px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-    }
-
-    #battery {
-    }
-
-    #battery icon {
-        color: red;
-    }
-
-    #battery.charging {
-    }
-
-    @keyframes blink {
-        to {
-            background-color: #af005f;
-        }
-    }
-
-    #battery.warning:not(.charging) {
-            background-color: #ff8700;
-            color: #1b1d1e;
-    }
-    #battery.critical:not(.charging) {
-        color: white;
-        animation-name: blink;
-        animation-duration: 0.5s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-    }
-
-    #cpu {
-    }
-
-    #memory {
-    }
-
-    #network {
-    }
-
-    #network.disconnected {
-        background: #f53c3c;
-    }
-
-    #pulseaudio {
-    }
-
-    #pulseaudio.muted {
-    }
-
-    #tray {
-            margin-left: 1px;
-    }
-    ```
-
-2.  ~/.config/waybar/config
-
-    ```json
-    {
-      //	"layer": "top", // Waybar at top layer
-      //	"position": "top", // Waybar position (top|bottom|left|right)
-      //	"height": 30, // Waybar height (to be removed for auto height)
-      //	"width": 1280, // Waybar width
-
-      //	Choose the order of the modules
-      "modules-left": [
-        "custom/disk_home",
-        "custom/disk_root",
-        "sway/workspaces",
-        "sway/mode"
-      ],
-
-      "modules-center": [
-        "clock#1",
-        //		"clock#2",
-        "custom/jalalidate"
-      ],
-
-      "modules-right": [
-        "custom/weather",
-        //		"temperature",
-        "cpu",
-        //		"memory",
-        "network",
-        "backlight",
-        "pulseaudio",
-        "battery",
-        "custom/wkblayout",
-        "idle_inhibitor",
-        "tray"],
-
-      "sway/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{name}",
-        "format-icons": {
-          "urgent": "<span color='#e85c5c'></span>",
-          "focused": "<span color='#8af0f0'></span>",
-          "default": "<span color='#b8b8b8'></span>"
-        }
-      },
-
-      "sway/mode": {
-        "format": "{}"
-      },
-
-      "backlight": {
-        //		"device": "acpi_video1",
-        "format": "{icon} {percent}%",
-        "format-icons": ["🔅", "🔆"]
-      },
-
-      "battery": {
-        "states": {
-          // "good": 95,
-          "warning": 20,
-          "critical": 10
-        },
-        "format": "<span color='#e88939'>{icon}</span> {capacity}%",
-
-        "format-charging": "<span color='#e88939'> </span> {capacity}% ({time})",
-        "format-plugged":  "<span color='#e88939'>{icon}  </span> {capacity}%",
-        //		"format-good": "", // An empty format will hide the module
-        "format-discharging": "<span color='#e88939'>{icon}</span> {capacity}% ({time})",
-        "format-icons": ["", "", "", "", ""]
-      },
-
-      "clock#1": {
-        "interval": 60,
-        "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
-        "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-        // "format-alt": "{:%Y-%m-%d}"
-      },
-
-      "clock#2": {
-        "interval": 18000,
-        "format": "{:%F} 📅",
-        "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-        // "format-alt": "{:%Y-%m-%d}"
-      },
-
-      "cpu": {
-        "interval": 5,
-        "format": "<span color='#eb8a60'> {usage}% ({load})</span>", // Icon: microchip
-        "states": {
-          "warning": 70,
-          "critical": 90
-        }
-      },
-
-      /*
-        "cpu": {
-        "format": "🏭 {usage}%",
-        "tooltip": false
-        },
-      */
-      "idle_inhibitor": {
-        "format": "<span color='#589df6'>{icon}</span>",
-        "format-icons": {
-          "activated": "",
-          "deactivated": ""
-        },
-        "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
-      },
-      /*
-        "memory": {
-        "format": "💾 {used:0.1f}G",
-        "tooltip": false
-        },
-      */
-      "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": " ",
-        "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
-        "interval": 60,
-        "tooltip-format": "{ifname}  {ipaddr}"
-      },
-
-      "pulseaudio": {
-        //		"scroll-step": 1, // %, can be a float
-        "format": "{icon} {volume}% {format_source}",
-        "format-muted": "🔇 {format_source}",
-        "format-bluetooth": "{icon} {volume}% {format_source}",
-        "format-bluetooth-muted": "🔇 {format_source}",
-
-        "format-source": " {volume}%",
-        "format-source-muted": "",
-
-        "format-icons": {
-          "headphones": "",
-          "handsfree": "",
-          "headset": "",
-          "phone": "",
-          "portable": "",
-          "car": "",
-          "default": ["🔈", "🔉", "🔊"]
-        },
-        "on-click": "ponymix -N -t sink toggle",
-        "on-click-right": "ponymix -N -t source toggle"
-      },
-      /*
-        "temperature": {
-        //		"thermal-zone": 2,
-        //		"hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        //		"format-critical": "{temperatureC}°C {icon}",
-        "format": "<span color='#e88939'>{icon}</span> {temperatureC}°C",
-        "format-icons": ["", "", ""],
-        "tooltip": false
-        },
-      */
-      "tray": {
-        "icon-size": 18,
-        "spacing": 5
-      },
-
-      "custom/disk_home": {
-        "format": "<span color='#11eec2'> {} </span>",
-        "interval": 3600,
-        "exec": "df -h --output=avail $HOME | tail -1 | tr -d ' '",
-        "tooltip": "false"
-      },
-
-      "custom/disk_root": {
-        "format": "<span color='#a1b5e9'> {} </span>",
-        "interval": 3600,
-        "exec": "df -h --output=avail / | tail -1 | tr -d ' '",
-        "tooltip": "false"
-      },
-
-      // Persian calendar
-      "custom/jalalidate": {
-        "format": "<span color='#cde9f0'>{}</span>",
-        "interval": 18000,
-        //		"exec": "sb-jalalidate"
-        "exec": "pcal -t",
-        "tooltip": "false"
-      },
-
-      "custom/weather": {
-        "format": "<span color='#22dfda'>{}</span>",
-        "interval": 18000,
-        "exec": "sb-forecast",
-        //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
-        "exec-if": "ping openweathermap.org -c1",
-        "tooltip": "false"
-      },
-
-      "custom/wkblayout": {
-        "format": "<span color='#11eec2'>🖋</span> {}",
-        "interval": 30,
-        "signal": 1,
-        // bindsym the grp (switch layout shortcut) option in your sway confik to exec "pkill -SIGRTMIN+1 waybar"
-        "exec": "wkblayout",
-        //swaymsg -t get_inputs | grep -m1 "xkb_active_layout_name" | cut -d '"' -f4
-        "tooltip": "false"
-      }
-
-    }
-    ```
-
-
-## i3blocks     :i3blocks:
-
-
-### ~/.config/i3blocks/config
-
-```conf
-[dropbox]
-interval=15
-command=my-i3b-db-status
-color=#ffd700
-
-[kernel]
-label=🐧
-command=my-i3b-kernel
-interval=once
-color=#ffffff
-
-[uptime]
-
-command=my-i3b-uptime
-interval=60
-
-[cpu_usage]
-markup=pango
-command=my-i3b-cpu
-interval=1
-
-[temperature]
-label=🌡
-command=my-i3b-temperature
-interval=60
-
-[battery]
-markup=pango
-command=my-i3b-battery-status
-interval=60
-
-# [power_draw]
-# label=⚡
-# command=echo "$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)"
-# interval=5
-# color=#00ff00
-
-[weather]
-markup=pango
-command=my-i3b-weather
-interval=300
-
-# [weather]
-# command=curl -s 'wttr.in/{Grömitz}?format=%l:+%c+%t'
-# interval=900
-# color=#A4C2F4
-
-[brightness]
-command=my-i3b-brightness
-interval=2
-
-[monitors]
-command=my-i3b-monitors
-interval=5
-
-[volume]
-markup=pango
-command=my-i3b-volume
-interval=2
-color=#FFD700
-
-[bluetooth]
-command=my-i3b-bluetooth
-interval=60
-color=#4d4dff
-
-[wifi]
-markup=pango
-command=my-i3b-wifi
-interval=60
-
-[time]
-command=my-i3b-date-cal
-interval=60
-
-```
-
-
-### i3blocks utilities
-
-1.  ~/bin/sway/my-i3b-battery-status
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            ;;
-        ,*)
-            ;;
-    esac
-    b=`acpi | grep -m 1 -i "remaining\|charging" | sed 's/.*Battery....//I'`
-    if [ -z "$b" ]; then
-        b="charged";
-    fi
-    echo "⚡$(awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now)h🔋$b"
-    ```
-
-2.  ~/bin/sway/my-i3b-bluetooth
-
-    Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
-
-    ```bash
-    #!/usr/bin/env bash
-
-    case $BLOCK_BUTTON in
-        1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
-    esac
-
-    get_from_file() {
-        dev=$1
-        name=
-        if [ ! -f /tmp/bt-devices.txt ]; then
-            touch /tmp/bt-devices.txt
-            echo ""
-            return
-        fi
-        for i in `cat /tmp/bt-devices.txt`; do
-            d=`echo $i | awk -F:: '{print $1}'`
-            if [ $d = $dev ]; then
-                name=`echo $i | awk -F:: '{print $2}'`
-            fi
-        done
-        echo "${name}"
-    }
-
-    store_file() {
-        dev=$1
-        name="${2}"
-        echo "$dev::${name}" >> /tmp/bt-devices.txt
-    }
-
-    connections=`hcitool con | sed -n 2p`
-    if [ ! -z "$connections" ]; then
-        # We have a connection, we want to get the name from a file if we've had
-        # it from there before because getting the name of the device connected
-        # is very slow and costly.
-        dev=`echo $connections | awk '{print $3}'`
-        name=`get_from_file $dev`
-        if [ -z "$name" ]; then
-            name=`hcitool name $dev | awk '{print $1}'`
-            if [ ! -z "${name}" ]; then
-                store_file $dev "${name}"
-            fi
-        fi
-        echo " $name"
-        echo " $name"
-        echo "#83AF40\n"
-        # echo "#859900\n"
-    else
-        echo ""
-        echo ""
-    fi
-    ```
-
-3.  ~/bin/sway/my-i3b-brightness
-
-    return the brightness %
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    if command -v light &> /dev/null; then
-        echo "🔆$(printf "%.0f\n" $(light -G))"
-    else
-        echo "🔆N/A- install "light""
-    fi
-    ```
-
-4.  ~/bin/sway/my-i3b-cpu
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            oneterminal "Processes" htop &>/dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec i3bm-cpu
-    ```
-
-5.  ~/bin/sway/my-i3b-date-cal
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-www "https://www.gmx.net/#.pc_page.freemail.produktseiten.nav_login.homepage" &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec echo "📅$(date +"%a, %d %b: %H:%M")"
-    ```
-
-6.  ~/bin/sway/my-i3b-db-status
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-      case $BLOCK_BUTTON in
-          1)
-              sway-www "https://www.dropbox.com/home"  &> /dev/null
-              ;;
-          ,*)
-              ;;
-      esac
-
-    if pidof dropbox > /dev/null ; then
-        stat=$(dropbox status | sed -n 1p)
-        echo "⇄${stat}"; echo "";
-    else
-        if command -v dropbox > /dev/null; then
-            echo "⇄Restart Dropbox.."
-            #dropbox start &> /dev/null &
-        fi
-    fi
-    ```
-
-7.  ~/bin/sway/my-i3b-kernel
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    echo "$(uname -sr)"
-    ```
-
-8.  ~/bin/sway/my-i3b-monitors
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-screen-menu &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
-    for i in `seq $l`; do echo -n "🖥️";done
-    ```
-
-9.  ~/bin/sway/my-i3b-temperature
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-do-tool "Hardinfo" "hardinfo" &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec /usr/share/i3blocks/temperature
-    ```
-
-10. ~/bin/sway/my-i3b-uptime
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            oneterminal "bpytop-kernel" bpytop &>/dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec echo "⬆$(awk '{print int($1/3600)":"int(($1%3600)/60)}' /proc/uptime)"
-    ```
-
-11. ~/bin/sway/my-i3b-volume
-
-    return the volume %
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-do-tool Pavucontrol pavucontrol &>/dev/null &
-            ;;
-        *)
-            ;;
-    esac
-    exec echo "🔊$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
-    ```
-
-12. ~/bin/sway/my-i3b-weather
-
-    return the volume %
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1)
-            sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
-            ;;
-        *)
-            ;;
-    esac
-    exec i3bm-weather
-    ```
-
-13. ~/bin/sway/my-i3b-wifi
-
-    return the volume %
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    case $BLOCK_BUTTON in
-        1) oneterminal "wifi" "nmtui"  &>/dev/null &
-    esac
-    exec i3bm-wifi
-    ```
 
 
 ## bin,scripts     :sway:wayland:
@@ -2002,16 +1962,6 @@ exec notify-send -t 5000 "${@}"
 ```
 
 
-### ~/bin/sway/sway-www
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-config.org
-google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-sleep 0.5 && sway-do-tool "Google-chrome"
-```
-
-
 ### ~/bin/sway/sway-screen
 
 ```bash
@@ -2133,6 +2083,25 @@ wl-copy < "${DIR}"/screenshot-latest.png
 muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
 volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
 sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+```
+
+
+### ~/bin/sway/sway-www
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
+sleep 0.5 && sway-do-tool "Google-chrome"
+```
+
+
+### ~/bin/sway/sway-wifi
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+oneterminal "wifi" "nmtui"  &>/dev/null
 ```
 
 

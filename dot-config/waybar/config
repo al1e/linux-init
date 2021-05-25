@@ -1,34 +1,26 @@
 {
-  //	"layer": "top", // Waybar at top layer
-  //	"position": "top", // Waybar position (top|bottom|left|right)
-  //	"height": 30, // Waybar height (to be removed for auto height)
-  //	"width": 1280, // Waybar width
+  "layer": "top",
+  "position": "bottom",
+  "height": 30,
+  "width": 1280,
 
-  //	Choose the order of the modules
   "modules-left": [
-    "custom/disk_home",
-    "custom/disk_root",
     "sway/workspaces",
-    "sway/mode"
+    "sway/mode",
+    "cpu",
+    "memory",
   ],
 
   "modules-center": [
-    "clock#1",
-    //		"clock#2",
-    "custom/jalalidate"
+    "clock#2",
+    "idle_inhibitor",
+    "pulseaudio",
   ],
 
   "modules-right": [
-    "custom/weather",
-    //		"temperature",
-    "cpu",
-    //		"memory",
-    "network",
     "backlight",
-    "pulseaudio",
     "battery",
-    "custom/wkblayout",
-    "idle_inhibitor",
+    "network",
     "tray"],
 
   "sway/workspaces": {
@@ -118,6 +110,7 @@
     "format-disconnected": " ",
     "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
     "interval": 60,
+    "on-click-right": "sway-wifi",
     "tooltip-format": "{ifname}  {ipaddr}"
   },
 
@@ -140,8 +133,8 @@
       "car": "",
       "default": ["🔈", "🔉", "🔊"]
     },
-    "on-click": "ponymix -N -t sink toggle",
-    "on-click-right": "ponymix -N -t source toggle"
+    "on-click": "amixer set Master toggle",
+    "on-click-right": "pavucontrol"
   },
   /*
     "temperature": {
@@ -159,28 +152,6 @@
     "spacing": 5
   },
 
-  "custom/disk_home": {
-    "format": "<span color='#11eec2'> {} </span>",
-    "interval": 3600,
-    "exec": "df -h --output=avail $HOME | tail -1 | tr -d ' '",
-    "tooltip": "false"
-  },
-
-  "custom/disk_root": {
-    "format": "<span color='#a1b5e9'> {} </span>",
-    "interval": 3600,
-    "exec": "df -h --output=avail / | tail -1 | tr -d ' '",
-    "tooltip": "false"
-  },
-
-  // Persian calendar
-  "custom/jalalidate": {
-    "format": "<span color='#cde9f0'>{}</span>",
-    "interval": 18000,
-    //		"exec": "sb-jalalidate"
-    "exec": "pcal -t",
-    "tooltip": "false"
-  },
 
   "custom/weather": {
     "format": "<span color='#22dfda'>{}</span>",
@@ -190,15 +161,5 @@
     "exec-if": "ping openweathermap.org -c1",
     "tooltip": "false"
   },
-
-  "custom/wkblayout": {
-    "format": "<span color='#11eec2'>🖋</span> {}",
-    "interval": 30,
-    "signal": 1,
-    // bindsym the grp (switch layout shortcut) option in your sway confik to exec "pkill -SIGRTMIN+1 waybar"
-    "exec": "wkblayout",
-    //swaymsg -t get_inputs | grep -m1 "xkb_active_layout_name" | cut -d '"' -f4
-    "tooltip": "false"
-  }
 
 }
