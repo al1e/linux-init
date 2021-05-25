@@ -17,6 +17,7 @@
     "clock",
     "custom/weather",
     "idle_inhibitor",
+    "custom/monitors",
   ],
 
   "modules-right": [
@@ -160,6 +161,13 @@
     "exec": "waybar-dropbox-status",
     "tooltip": "false",
     "on-click": "sway-www https://www.dropbox.com/h",
+  },
+  "custom/monitors": {
+    "format": "<span color='white'>{}</span>",
+    "interval": 10,
+    "exec": "waybar-monitors",
+    "tooltip": "false",
+    "on-click": "sway-screen-menu",
   },
   "custom/bluetooth": {
     "format": "<span color='blue'>{}</span>",

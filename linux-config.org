@@ -1621,6 +1621,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "clock",
       "custom/weather",
       "idle_inhibitor",
+      "custom/monitors",
     ],
 
     "modules-right": [
@@ -1764,6 +1765,13 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "exec": "waybar-dropbox-status",
       "tooltip": "false",
       "on-click": "sway-www https://www.dropbox.com/h",
+    },
+    "custom/monitors": {
+      "format": "<span color='white'>{}</span>",
+      "interval": 10,
+      "exec": "waybar-monitors",
+      "tooltip": "false",
+      "on-click": "sway-screen-menu",
     },
     "custom/bluetooth": {
       "format": "<span color='blue'>{}</span>",
@@ -1966,6 +1974,13 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
+#+end_src
+******* ~/bin/sway/waybar-monitors
+#+begin_src bash :tangle "~/bin/sway/waybar-monitors"
+  #!/usr/bin/bash
+  #Maintained in linux-config.org
+  l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+  for i in `seq $l`; do echo -n "🖥️";done
 #+end_src
 ******* ~/bin/sway/waybar-weather
 #+begin_src bash :tangle ~/bin/sway/waybar-weather

@@ -1131,6 +1131,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "clock",
             "custom/weather",
             "idle_inhibitor",
+            "custom/monitors",
           ],
 
           "modules-right": [
@@ -1274,6 +1275,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "exec": "waybar-dropbox-status",
             "tooltip": "false",
             "on-click": "sway-www https://www.dropbox.com/h",
+          },
+          "custom/monitors": {
+            "format": "<span color='white'>{}</span>",
+            "interval": 10,
+            "exec": "waybar-monitors",
+            "tooltip": "false",
+            "on-click": "sway-screen-menu",
           },
           "custom/bluetooth": {
             "format": "<span color='blue'>{}</span>",
@@ -1481,7 +1489,16 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
             ```
 
-        3.  ~/bin/sway/waybar-weather
+        3.  ~/bin/sway/waybar-monitors
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-config.org
+            l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+            for i in `seq $l`; do echo -n "🖥️";done
+            ```
+
+        4.  ~/bin/sway/waybar-weather
 
             ```bash
             #!/usr/bin/env bash
@@ -1494,7 +1511,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             fi
             ```
 
-        4.  ~/bin/sway/waybar-dropbox-status
+        5.  ~/bin/sway/waybar-dropbox-status
 
             ```bash
             #!/usr/bin/bash
