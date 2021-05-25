@@ -843,10 +843,10 @@ bindsym $mod+d exec $menu
 
 # Move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
-
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
+for_window [title=^Scratch] move container to scratchpad
 
 ```
 
@@ -1508,9 +1508,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec sleep 1 && swaymsg workspace $ws1
-exec sleep 2 && gpg-cache
-exec sleep 2 && $editor
+exec gpg-cache
+exec $editor
+exec swaymsg workspace $ws1
 ```
 
 
@@ -1695,8 +1695,9 @@ exec swayidle -w \
 #!/usr/bin/bash
 # Maintained in linux-config.org
 m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
-swaymsg bindswitch lid:on exec "sway-screen disable $m"
-swaymsg bindswitch lid:off exec "sway-screen enable $m"
+#swaymsg bindswitch lid:on exec "sway-screen disable $m"
+#swaymsg bindswitch lid:off exec "sway-screen enable $m"
+echo $m
 ```
 
 
@@ -1762,7 +1763,7 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-config.org
-exec oneterminal "${1:-Terminal}" ""
+exec oneterminal "${1:-ScratchTerminal}" ""
 ```
 
 
