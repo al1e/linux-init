@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+# Maintained in linux-config.org
 if [  "$1" = "-q" ]; then
     ping openweathermap.org -c1
 else

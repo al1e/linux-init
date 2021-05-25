@@ -1753,16 +1753,16 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     },
 
     "custom/bluetooth": {
-      "format": "<span color='blue'>{}</span>",
+      "format": "<span color='cyan'>{}</span>",
       "interval": 30,
       "exec": "waybar-bluetooth",
       "tooltip": "false",
       "on-click": "sway-bluetooth",
     },
     "custom/power-draw": {
-      "format": "⚡<span color='gold'>{}</span>🔋",
+      "format": "<span color='gold'>⚡{}🔋</span>",
       "interval": 5,
-      "exec": "awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now",
+      "exec": "waybar-power-draw",
       "tooltip": "false",
     },
 
@@ -1908,6 +1908,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth
 #+begin_src bash :tangle "~/bin/sway/waybar-bluetooth"
   #!/usr/bin/env bash
+  # Maintained in linux-config.org
 
   get_from_file() {
       dev=$1
@@ -1945,17 +1946,21 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
               store_file $dev "${name}"
           fi
       fi
-      echo " $name"
-      echo " $name"
-      echo "#83AF40\n"
-      # echo "#859900\n"
+      echo "💡$name"
   else
-      echo ""
-      echo ""
+      echo "🔌"
   fi
+#+end_src
+******* ~/bin/sway/waybar-power-draw
+#+begin_src bash :tangle "~/bin/sway/waybar-power-draw"
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+  awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
 #+end_src
 ******* ~/bin/sway/waybar-weather
 #+begin_src bash :tangle ~/bin/sway/waybar-weather
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
   if [  "$1" = "-q" ]; then
       ping openweathermap.org -c1
   else

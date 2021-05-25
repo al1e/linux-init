@@ -154,16 +154,16 @@
   },
 
   "custom/bluetooth": {
-    "format": "<span color='blue'>{}</span>",
+    "format": "<span color='cyan'>{}</span>",
     "interval": 30,
     "exec": "waybar-bluetooth",
     "tooltip": "false",
     "on-click": "sway-bluetooth",
   },
   "custom/power-draw": {
-    "format": "⚡<span color='gold'>{}</span>🔋",
+    "format": "<span color='gold'>⚡{}🔋</span>",
     "interval": 5,
-    "exec": "awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now",
+    "exec": "waybar-power-draw",
     "tooltip": "false",
   },
 
