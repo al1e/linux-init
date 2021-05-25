@@ -1613,15 +1613,16 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
     "modules-center": [
       "clock",
-      "idle_inhibitor",
-      "pulseaudio",
+      "custom/weather",
     ],
 
     "modules-right": [
-      "custom/weather",
+      "idle_inhibitor",
+      "pulseaudio",
       "custom/bluetooth",
       "backlight",
       "battery",
+      "custom/power-draw",
       "network",
     ],
 
@@ -1753,11 +1754,16 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
     "custom/bluetooth": {
       "format": "<span color='blue'>{}</span>",
-      "interval": 18000,
+      "interval": 30,
       "exec": "my-i3b-bluetooth",
-      "exec-if": "ping openweathermap.org -c1",
       "tooltip": "false",
       "on-click": "sway-bluetooth",
+    },
+    "custom/power-draw": {
+      "format": "⚡<span color='gold'>{}</span>🔋",
+      "interval": 5,
+      "exec": "awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now",
+      "tooltip": "false",
     },
 
   }
