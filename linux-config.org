@@ -2516,7 +2516,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
 #+begin_src bash :tangle "~/bin/sway/sway-weather"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  exec sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
+  sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 #+end_src
 *** ~/bin/sway/sway-www
 :PROPERTIES:
@@ -2526,7 +2526,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   #!/usr/bin/bash
   # Maintained in linux-config.org
   google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-  exec sleep 0.5 && sway-do-tool "Google-chrome"
+  sleep 0.5 && sway-do-tool "Google-chrome"
 #+end_src
 *** ~/bin/sway/sway-wifi
 :PROPERTIES:
