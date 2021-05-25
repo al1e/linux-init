@@ -1744,9 +1744,9 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
 
     "custom/weather": {
-      "format": "<span color='#eeeeee'>{}</span>",
+      "format": "<span color='gray'>{}</span>",
       "interval": 18000,
-      "exec": "ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f4-",
+      "exec": "ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-",
       "exec-if": "ping openweathermap.org -c1",
       "tooltip": "false",
       "on-click": "sway-weather",
@@ -1774,77 +1774,77 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 :END:
 #+begin_src css
   ,* {
-          border: none;
-          background: rgba(28, 28, 28, 0.6);
-          border-radius: 0;
-          font-family: "monospace";
-          font-size: 10pt;
-          min-height: 0;
+      border: none;
+      background: rgba(28, 28, 28, 0.6);
+      border-radius: 0;
+      font-family: "monospace";
+      font-size: 10pt;
+      min-height: 0;
   }
 
   #waybar {
-          background: rgba(48,48,59, 0);
-          color: #e4e4e4;
+      background: rgba(48,48,59, 0);
+      color: #e4e4e4;
   }
 
   #window {
-          color: #e4e4e4;
-          font-weight: bold;
+      color: #e4e4e4;
+      font-weight: bold;
   }
 
   #workspaces {
-          font-size: 8px;
-  /*	padding: 0 2px;*/
-          margin-left: 8px;
-          margin-right: 8px;
-          padding-left: 0px;
-          padding-right: 0px;
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
-          border-top-right-radius: 10px;
-          border-bottom-right-radius: 10px;
-          background: rgba(28, 28, 28, 0.8);
+      font-size: 8px;
+      /*	padding: 0 2px;*/
+      margin-left: 8px;
+      margin-right: 8px;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      background: rgba(28, 28, 28, 0.8);
   }
 
   #workspaces button {
-          padding: 0 5px;
-  /*	background: rgba(28, 28, 28, 0.9);*/
-          color: #b8b8b8;
-  /*	margin: 0 1px;*/
+      padding: 0 5px;
+      /*	background: rgba(28, 28, 28, 0.9);*/
+      color: #b8b8b8;
+      /*	margin: 0 1px;*/
   }
   #workspaces button:hover {
-          box-shadow: inherit;
-          text-shadow: inherit;
+      box-shadow: inherit;
+      text-shadow: inherit;
 
   }
 
   #workspaces button.focused {
-          padding: 0 5px;
-          border-radius: 10px;
-  /*	background: #00afd7;*/
-          color: #8af0f0;
-          margin: 0 0px;
+      padding: 0 5px;
+      border-radius: 10px;
+      /*	background: #00afd7;*/
+      color: #8af0f0;
+      margin: 0 0px;
   }
 
   #workspaces button.urgent {
-          background: #af005f;
-          color: #1b1d1e;
+      background: #af005f;
+      color: #1b1d1e;
   }
 
   #mode {
-          background: #af005f;
+      background: #af005f;
   }
 
   #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
-          padding: 0 3px;
-  /*	background-color: #000000; */
-          background: rgba(28, 28, 28, 0.8);
-  /*	margin: 0 2px;*/
+      padding: 0 3px;
+      /*	background-color: #000000; */
+      background: rgba(28, 28, 28, 0.8);
+      /*	margin: 0 2px;*/
   }
 
   #clock {
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
   }
 
   #battery,#battery_icon,#battery.charging {
@@ -1858,8 +1858,8 @@ https://github.com/Alexays/Waybar/wiki/Configuration
   }
 
   #battery.warning:not(.charging) {
-          background-color: #ff8700;
-          color: #1b1d1e;
+      background-color: #ff8700;
+      color: #1b1d1e;
   }
   #battery.critical:not(.charging) {
       color: white;
@@ -1889,8 +1889,12 @@ https://github.com/Alexays/Waybar/wiki/Configuration
   #pulseaudio.muted {
   }
 
+  #custom-weather {
+      font-size:12px;
+  }
+
   #tray {
-          margin-left: 1px;
+      margin-left: 1px;
   }
 #+end_src
 **** i3bar                                                   :i3bar:i3blocks:
