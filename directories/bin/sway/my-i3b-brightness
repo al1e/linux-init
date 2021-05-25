@@ -1,7 +1,0 @@
-#!/usr/bin/bash
-#Maintained in linux-config.org
-if command -v light &> /dev/null; then
-    echo "🔆$(printf "%.0f\n" $(light -G))"
-else
-    echo "🔆N/A- install "light""
-fi

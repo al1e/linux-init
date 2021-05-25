@@ -147,8 +147,8 @@
   "custom/weather": {
     "format": "<span color='gray'>{}</span>",
     "interval": 18000,
-    "exec": "ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-",
-    "exec-if": "ping openweathermap.org -c1",
+    "exec": "waybar-weather",
+    "exec-if": "waybar-weather -q",
     "tooltip": "false",
     "on-click": "sway-weather",
   },
@@ -156,7 +156,7 @@
   "custom/bluetooth": {
     "format": "<span color='blue'>{}</span>",
     "interval": 30,
-    "exec": "my-i3b-bluetooth",
+    "exec": "waybar-bluetooth",
     "tooltip": "false",
     "on-click": "sway-bluetooth",
   },

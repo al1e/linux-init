@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-#Maintained in linux-config.org
-case $BLOCK_BUTTON in
-    1) sway-wifi
-esac
-exec i3bm-wifi
