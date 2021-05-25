@@ -1509,7 +1509,6 @@ exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec sleep 2 && gpg-cache
-exec $editor
 exec swaymsg workspace $ws1
 ```
 
@@ -1625,6 +1624,76 @@ exec oneterminal "Processes" htop
 ```
 
 
+### ~/bin/sway/sway-kanshi
+
+Monitor control with hotplug <https://github.com/emersion/kanshi> Load a host specific kanshi file if it exists
+
+```bash
+#!/usr/bin/bash
+#Maintained in linux-config.org
+# pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+killall -9 kanshi &>/dev/null
+config="$HOME/.config/kanshi/config-$(hostname)"
+if [ -f  "$config" ]; then
+    rgr-logger -t "kanshi"  "$config"
+    exec kanshi -c "$config"
+else
+    rgr-logger -t "kanshi"  "default config"
+    exec kanshi
+fi
+```
+
+1.  config
+
+    ```conf
+    {
+      output eDP-1 enable position 0,0
+    }
+    ```
+
+2.  config-thinkpadt14s
+
+    ```conf
+    {
+    output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+    output eDP-1 mode 1920x1080 position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+3.  config-thinkpadt460
+
+    ```conf
+    {
+    output eDP-1 enable mode 1366×768   position 0,0
+    }
+
+    {
+    output eDP-1 mode 1366×768  position 1920,0
+    output DP-4 mode 1920x1080 position 0,0
+    }
+    ```
+
+4.  config-thinkpadx270
+
+    ```conf
+    {
+    output eDP-1 enable mode 1920x1080  position 0,0
+    }
+
+    {
+    output DP-4 mode 1920x1080 position 0,0
+    output eDP-1 disable
+    }
+
+    ```
+
+    ******\*******
+
+
 ### ~/bin/sway/sway-lock-utils
 
 Just a gathering place of locky/suspendy type things&#x2026;
@@ -1633,7 +1702,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/lock -c 000000
+    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000
 }
 
 lock_gpg_clear() {
@@ -1693,6 +1762,8 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_LOCK:-360} 'sway-lock' \
      resume 'sway-lock-utils unblank' \
+     timeout ${XIDLEHOOK_SUSPEND:-720} 'sway-lock-utils suspend' \
+     resume 'sway-lock-utils unblank' \
      lock 'sway-lock' \
      before-sleep 'sway-lock'
 ```
@@ -1724,7 +1795,7 @@ sway-lock-utils lock
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-notify-send -t 5000 "${@}"
+notify-send -t 3000 "${@}"
 ```
 
 
@@ -1774,7 +1845,7 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```bash
 #!/usr/bin/bash
 #Maintained in linux-config.org
-exec oneterminal "${1:-ScratchTerminal}" ""
+oneterminal "${1:-ScratchTerminal}" ""
 ```
 
 
@@ -1878,74 +1949,8 @@ sleep 0.5 && sway-do-tool "Google-chrome"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-exec oneterminal "wifi" "nmtui"  &>/dev/null
+oneterminal "wifi" "nmtui"  &>/dev/null
 ```
-
-
-### kanshi     :kanshi:
-
-Monitor control with hotplug <https://github.com/emersion/kanshi>
-
-1.  ~/bin/sway/sway-kanshi
-
-    Load a host specific kanshi file if it exists
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-config.org
-    # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
-    killall -9 kanshi &>/dev/null
-    config="$HOME/.config/kanshi/config-$(hostname)"
-    if [ -f  "$config" ]; then
-        rgr-logger -t "kanshi"  "$config"
-        exec kanshi -c "$config"
-    else
-        rgr-logger -t "kanshi"  "default config"
-        exec kanshi
-    fi
-    ```
-
-2.  config-thinkpadt14s
-
-    ```conf
-    {
-    output eDP-1 enable mode 1920x1080  position 0,0
-    }
-
-    {
-    output eDP-1 mode 1920x1080 position 1920,0
-    output DP-4 mode 1920x1080 position 0,0
-    }
-    ```
-
-3.  config-thinkpadt460
-
-    ```conf
-    {
-    output eDP-1 enable mode 1366×768   position 0,0
-    }
-
-    {
-    output eDP-1 mode 1366×768  position 1920,0
-    output DP-4 mode 1920x1080 position 0,0
-    }
-    ```
-
-4.  config-thinkpadx270
-
-    ```conf
-    {
-    output eDP-1 enable mode 1920x1080  position 0,0
-    }
-
-    {
-    output DP-4 mode 1920x1080 position 0,0
-    output eDP-1 disable
-    }
-
-    ```
-
-    ******\*******
 
 
 # Vim
@@ -3505,5 +3510,5 @@ command -v brightnessctl && brightnessctl -r
 ## Late addition to ~/.profile
 
 ```bash
-[ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
+[ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
 ```

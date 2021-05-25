@@ -60,4 +60,4 @@ eval "$(pyenv init --path)"
 
 export USER_STARTX_START=
 
-[ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
+[ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"

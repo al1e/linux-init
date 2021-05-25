@@ -1993,7 +1993,6 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
   exec sleep 2 && gpg-cache
-  exec $editor
   exec swaymsg workspace $ws1
 #+end_src
 *** library include
@@ -2081,13 +2080,72 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   # Maintained in linux-config.org
   exec oneterminal "Processes" htop
 #+end_src
+*** ~/bin/sway/sway-kanshi
+Monitor control with hotplug https://github.com/emersion/kanshi
+Load a host specific kanshi file if it exists
+#+begin_src bash :tangle "~/bin/sway/sway-kanshi"
+  #!/usr/bin/bash
+  #Maintained in linux-config.org
+  # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
+  killall -9 kanshi &>/dev/null
+  config="$HOME/.config/kanshi/config-$(hostname)"
+  if [ -f  "$config" ]; then
+      rgr-logger -t "kanshi"  "$config"
+      exec kanshi -c "$config"
+  else
+      rgr-logger -t "kanshi"  "default config"
+      exec kanshi
+  fi
+#+end_src
+**** config
+#+begin_src conf :tangle "dot-config/kanshi/config"
+{
+  output eDP-1 enable position 0,0
+}
+#+end_src
+**** config-thinkpadt14s
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
+  {
+  output eDP-1 enable mode 1920x1080  position 0,0
+  }
+
+  {
+  output eDP-1 mode 1920x1080 position 1920,0
+  output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+**** config-thinkpadt460
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
+  {
+  output eDP-1 enable mode 1366×768   position 0,0
+  }
+
+  {
+  output eDP-1 mode 1366×768  position 1920,0
+  output DP-4 mode 1920x1080 position 0,0
+  }
+#+end_src
+**** config-thinkpadx270
+#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
+  {
+  output eDP-1 enable mode 1920x1080  position 0,0
+  }
+
+  {
+  output DP-4 mode 1920x1080 position 0,0
+  output eDP-1 disable
+  }
+
+#+end_src
+*******
+
 *** ~/bin/sway/sway-lock-utils
 Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-lock-utils"
   #!/usr/bin/bash
   # Maintained in linux-config.org
   lock() {
-      pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/lock -c 000000
+      pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000
   }
 
   lock_gpg_clear() {
@@ -2151,6 +2209,8 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_LOCK:-360} 'sway-lock' \
        resume 'sway-lock-utils unblank' \
+       timeout ${XIDLEHOOK_SUSPEND:-720} 'sway-lock-utils suspend' \
+       resume 'sway-lock-utils unblank' \
        lock 'sway-lock' \
        before-sleep 'sway-lock'
 #+end_src
@@ -2180,7 +2240,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-notify"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  notify-send -t 5000 "${@}"
+  notify-send -t 3000 "${@}"
 #+end_src
 *** ~/bin/sway/sway-screen
 :PROPERTIES:
@@ -2224,7 +2284,7 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-terminal"
   #!/usr/bin/bash
   #Maintained in linux-config.org
-  exec oneterminal "${1:-ScratchTerminal}" ""
+  oneterminal "${1:-ScratchTerminal}" ""
 #+end_src
 *** ~/bin/sway/sway-display-swap
 https://i3wm.org/docs/user-contributed/swapping-workspaces.html
@@ -2312,62 +2372,8 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
 #+begin_src bash :tangle "~/bin/sway/sway-wifi"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  exec oneterminal "wifi" "nmtui"  &>/dev/null
+  oneterminal "wifi" "nmtui"  &>/dev/null
 #+end_src
-*** kanshi                                                           :kanshi:
-Monitor control with hotplug https://github.com/emersion/kanshi
-**** ~/bin/sway/sway-kanshi
-Load a host specific kanshi file if it exists
-#+begin_src bash :tangle "~/bin/sway/sway-kanshi"
-  #!/usr/bin/bash
-  #Maintained in linux-config.org
-  # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
-  killall -9 kanshi &>/dev/null
-  config="$HOME/.config/kanshi/config-$(hostname)"
-  if [ -f  "$config" ]; then
-      rgr-logger -t "kanshi"  "$config"
-      exec kanshi -c "$config"
-  else
-      rgr-logger -t "kanshi"  "default config"
-      exec kanshi
-  fi
-#+end_src
-**** config-thinkpadt14s
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt14s"
-  {
-  output eDP-1 enable mode 1920x1080  position 0,0
-  }
-
-  {
-  output eDP-1 mode 1920x1080 position 1920,0
-  output DP-4 mode 1920x1080 position 0,0
-  }
-#+end_src
-
-**** config-thinkpadt460
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
-  {
-  output eDP-1 enable mode 1366×768   position 0,0
-  }
-
-  {
-  output eDP-1 mode 1366×768  position 1920,0
-  output DP-4 mode 1920x1080 position 0,0
-  }
-#+end_src
-**** config-thinkpadx270
-#+begin_src conf :tangle "dot-config/kanshi/config-thinkpadx270"
-  {
-  output eDP-1 enable mode 1920x1080  position 0,0
-  }
-
-  {
-  output DP-4 mode 1920x1080 position 0,0
-  output eDP-1 disable
-  }
-
-#+end_src
-*******
 * Vim
 ** ~/.vimrc
 #+begin_src conf :tangle "DotFiles/.vimrc"
@@ -3711,5 +3717,5 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"
-  [ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
+  [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
 #+end_src
