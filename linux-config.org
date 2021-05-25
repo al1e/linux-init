@@ -1609,6 +1609,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "cpu",
       "temperature",
       "memory",
+      "custom/dropbox"
     ],
 
     "modules-center": [
@@ -1752,6 +1753,13 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "on-click": "sway-weather",
     },
 
+    "custom/dropbox": {
+      "format": "<span color='gold'>⇄ {}</span>",
+      "interval": 5,
+      "exec": "waybar-dropbox-status",
+      "tooltip": "false",
+      "on-click": "sway-www https://www.dropbox.com/h",
+    },
     "custom/bluetooth": {
       "format": "<span color='blue'>{}</span>",
       "interval": 30,
@@ -1836,11 +1844,8 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       background: #af005f;
   }
 
-  #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+  #custom-bluetooth,#custom-power-draw,#custom-dropbox,#clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
       padding: 0 3px;
-      /*	background-color: #000000; */
-      background: rgba(28, 28, 28, 0.8);
-      /*	margin: 0 2px;*/
   }
 
   #idle_inhibitor{
@@ -1965,6 +1970,20 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       ping openweathermap.org -c1
   else
       ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
+  fi
+#+end_src
+******* ~/bin/sway/waybar-dropbox-status
+#+begin_src bash :tangle ~/bin/sway/waybar-dropbox-status
+  #!/usr/bin/bash
+  #Maintained in linux-config.org
+  if pidof dropbox > /dev/null ; then
+      stat=$(dropbox status | sed -n 1p)
+      echo "${stat}"; echo "";
+  else
+      if command -v dropbox > /dev/null; then
+          echo "⇄Restart Dropbox.."
+          #dropbox start &> /dev/null &
+      fi
   fi
 #+end_src
 *** autostart                                                     :autostart:
@@ -2338,6 +2357,7 @@ Load a host specific kanshi file if it exists
   }
 
 #+end_src
+*******
 * Vim
 ** ~/.vimrc
 #+begin_src conf :tangle "DotFiles/.vimrc"

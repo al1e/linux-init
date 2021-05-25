@@ -10,6 +10,7 @@
     "cpu",
     "temperature",
     "memory",
+    "custom/dropbox"
   ],
 
   "modules-center": [
@@ -153,6 +154,13 @@
     "on-click": "sway-weather",
   },
 
+  "custom/dropbox": {
+    "format": "<span color='gold'>⇄ {}</span>",
+    "interval": 5,
+    "exec": "waybar-dropbox-status",
+    "tooltip": "false",
+    "on-click": "sway-www https://www.dropbox.com/h",
+  },
   "custom/bluetooth": {
     "format": "<span color='blue'>{}</span>",
     "interval": 30,
