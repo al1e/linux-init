@@ -76,10 +76,6 @@
     border-bottom-left-radius: 10px;
 }
 
-#battery,#battery_icon,#battery.charging {
-    color:green
-}
-
 @keyframes blink {
     to {
         background-color: #af005f;
@@ -98,6 +94,10 @@
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
+#battery,#battery_icon,#battery.charging {
+    color:gold
+}
+
 
 #cpu {
 }

@@ -54,12 +54,12 @@
       "warning": 20,
       "critical": 10
     },
-    "format": "<span color='#e88939'>{icon}</span> {capacity}%",
+    "format": "<span color='gold'>{icon}</span> {capacity}%",
 
-    "format-charging": "<span color='#e88939'> </span> {capacity}% ({time})",
-    "format-plugged":  "<span color='#e88939'>{icon}  </span> {capacity}%",
+    "format-charging": "<span color='gold'> </span> {capacity}% ({time})",
+    "format-plugged":  "<span color='gold'>{icon}  </span> {capacity}%",
     //		"format-good": "", // An empty format will hide the module
-    "format-discharging": "<span color='#e88939'>{icon}</span> {capacity}% ({time})",
+    "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
     "format-icons": ["", "", "", "", ""]
   },
 
@@ -154,7 +154,7 @@
   },
 
   "custom/bluetooth": {
-    "format": "<span color='cyan'>{}</span>",
+    "format": "<span color='blue'>{}</span>",
     "interval": 30,
     "exec": "waybar-bluetooth",
     "tooltip": "false",
