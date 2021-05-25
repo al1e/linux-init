@@ -13,4 +13,4 @@ grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
 ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
 
 #Copy to the buffer
-wl-copy < "${DIR}"/screenshot-latest.png
+exec wl-copy < "${DIR}"/screenshot-latest.png

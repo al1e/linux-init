@@ -1068,9 +1068,9 @@ bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
 bindsym $mod+Control+g exec oneterminal "gdb"
-bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
+bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
-bindsym $mod+Control+p exec oneterminal "Processes" htop
+bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
 bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
 ```
@@ -1109,16 +1109,18 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "sway/workspaces",
             "sway/mode",
             "cpu",
+            "temperature",
             "memory",
           ],
 
           "modules-center": [
-            "clock#2",
+            "clock",
             "idle_inhibitor",
             "pulseaudio",
           ],
 
           "modules-right": [
+            "custom/weather",
             "backlight",
             "battery",
             "network",
@@ -1160,18 +1162,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format-icons": ["", "", "", "", ""]
           },
 
-          "clock#1": {
+          "clock": {
             "interval": 60,
-            "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
-            "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-            // "format-alt": "{:%Y-%m-%d}"
-          },
-
-          "clock#2": {
-            "interval": 18000,
-            "format": "{:%F} 📅",
-            "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-            // "format-alt": "{:%Y-%m-%d}"
+            "format": "{:%a, %d %b: %H:%M}",
+            "max-length": 25,
           },
 
           "cpu": {
@@ -1180,22 +1174,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "states": {
               "warning": 70,
               "critical": 90
-            }
+            },
+            "on-click" : "sway-htop",
           },
 
-          /*
-            "cpu": {
-            "format": "🏭 {usage}%",
-            "tooltip": false
-            },
-          */
           "idle_inhibitor": {
             "format": "<span color='#589df6'>{icon}</span>",
             "format-icons": {
               "activated": "",
               "deactivated": ""
             },
-            "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
+            "on-click-right": "sway-lock"
           },
           /*
             "memory": {
@@ -1255,12 +1244,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 
           "custom/weather": {
-            "format": "<span color='#22dfda'>{}</span>",
+            "format": "<span color='#eeeeee'>{}</span>",
             "interval": 18000,
-            "exec": "sb-forecast",
-            //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
+            "exec": "ansiweather -f 0 -u metric -s true -w true -p true -h false -a false | cut -d' ' -f2,8-",
             "exec-if": "ping openweathermap.org -c1",
-            "tooltip": "false"
+            "tooltip": "false",
+            "on-click": "sway-weather",
           },
 
         }
@@ -1331,7 +1320,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 background: #af005f;
         }
 
-        #clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+        #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
                 padding: 0 3px;
         /*	background-color: #000000; */
                 background: rgba(28, 28, 28, 0.8);
@@ -1341,22 +1330,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         #clock {
                 border-top-left-radius: 10px;
                 border-bottom-left-radius: 10px;
-        }
-
-        #custom-disk_root {
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-        }
-
-        #custom-weather {
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
-        }
-
-        #custom-jalalidate {
-                margin-right: 8px;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
         }
 
         #battery {
@@ -1608,7 +1581,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 #Maintained in linux-config.org
                 case $BLOCK_BUTTON in
                     1)
-                        oneterminal "Processes" htop &>/dev/null
+                        sway-htop
                         ;;
                     *)
                         ;;
@@ -1742,7 +1715,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 #Maintained in linux-config.org
                 case $BLOCK_BUTTON in
                     1)
-                        sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+                        sway-weather
                         ;;
                     *)
                         ;;
@@ -1857,6 +1830,15 @@ currentDPMS="$(swaymsg -t get_outputs | jq -r '.[0]'.dpms)"
 #!/usr/bin/bash
 # Maintained in linux-config.org
 exec emacs-same-frame "$@"
+```
+
+
+### ~/bin/sway/sway-htop
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+exec oneterminal "Processes" htop
 ```
 
 
@@ -2038,7 +2020,7 @@ done
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
+exec dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 ```
 
 
@@ -2071,7 +2053,7 @@ grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
 ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
 
 #Copy to the buffer
-wl-copy < "${DIR}"/screenshot-latest.png
+exec wl-copy < "${DIR}"/screenshot-latest.png
 ```
 
 
@@ -2082,7 +2064,16 @@ wl-copy < "${DIR}"/screenshot-latest.png
 # Maintained in linux-config.org
 muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
 volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
-sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+```
+
+
+### ~/bin/sway/sway-weather
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+exec sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 ```
 
 
@@ -2092,7 +2083,7 @@ sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev
 #!/usr/bin/bash
 # Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-sleep 0.5 && sway-do-tool "Google-chrome"
+exec sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
 
@@ -2101,7 +2092,7 @@ sleep 0.5 && sway-do-tool "Google-chrome"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-oneterminal "wifi" "nmtui"  &>/dev/null
+exec oneterminal "wifi" "nmtui"  &>/dev/null
 ```
 
 
@@ -2499,7 +2490,7 @@ e dbg.bep=main
         # Maintained in linux-config.org
         directory="${1:-`pwd`}"
         session="${2}"
-        ONETERM_PROFILE=gdb ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
+        ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
         ```
 
     3.  DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
@@ -3105,8 +3096,6 @@ title="${ONETERM_TITLE:-${sessionname}}"
 script="${2}"
 tflags="${3}"
 
-profile="${ONETERM_PROFILE:-"$(hostname)"}"
-
 if ! sway-do-tool "$title"; then
     rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
     if tmux has-session -t "${sessionname}" &> /dev/null; then
@@ -3335,7 +3324,7 @@ if tmux has-session -t "${session}"; then
 fi
 tmux new-session -d -s "${session}" "htop -p $pids"
 sleep 0.1
-ONETERM_TITLE="filtered htop:${filter}" ONETERM_PROFILE="Processes" oneterminal "${session}"
+ONETERM_TITLE="filtered htop:${filter}" oneterminal "${session}"
 ```
 
 

@@ -8,16 +8,18 @@
     "sway/workspaces",
     "sway/mode",
     "cpu",
+    "temperature",
     "memory",
   ],
 
   "modules-center": [
-    "clock#2",
+    "clock",
     "idle_inhibitor",
     "pulseaudio",
   ],
 
   "modules-right": [
+    "custom/weather",
     "backlight",
     "battery",
     "network",
@@ -59,18 +61,10 @@
     "format-icons": ["", "", "", "", ""]
   },
 
-  "clock#1": {
+  "clock": {
     "interval": 60,
-    "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
-    "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-    // "format-alt": "{:%Y-%m-%d}"
-  },
-
-  "clock#2": {
-    "interval": 18000,
-    "format": "{:%F} 📅",
-    "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-    // "format-alt": "{:%Y-%m-%d}"
+    "format": "{:%a, %d %b: %H:%M}",
+    "max-length": 25,
   },
 
   "cpu": {
@@ -79,22 +73,17 @@
     "states": {
       "warning": 70,
       "critical": 90
-    }
+    },
+    "on-click" : "sway-htop",
   },
 
-  /*
-    "cpu": {
-    "format": "🏭 {usage}%",
-    "tooltip": false
-    },
-  */
   "idle_inhibitor": {
     "format": "<span color='#589df6'>{icon}</span>",
     "format-icons": {
       "activated": "",
       "deactivated": ""
     },
-    "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
+    "on-click-right": "sway-lock"
   },
   /*
     "memory": {
@@ -154,12 +143,12 @@
 
 
   "custom/weather": {
-    "format": "<span color='#22dfda'>{}</span>",
+    "format": "<span color='#eeeeee'>{}</span>",
     "interval": 18000,
-    "exec": "sb-forecast",
-    //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
+    "exec": "ansiweather -f 0 -u metric -s true -w true -p true -h false -a false | cut -d' ' -f2,8-",
     "exec-if": "ping openweathermap.org -c1",
-    "tooltip": "false"
+    "tooltip": "false",
+    "on-click": "sway-weather",
   },
 
 }

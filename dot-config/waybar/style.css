@@ -60,7 +60,7 @@
         background: #af005f;
 }
 
-#clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+#clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
         padding: 0 3px;
 /*	background-color: #000000; */
         background: rgba(28, 28, 28, 0.8);
@@ -70,22 +70,6 @@
 #clock {
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
-}
-
-#custom-disk_root {
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-}
-
-#custom-weather {
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-}
-
-#custom-jalalidate {
-        margin-right: 8px;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
 }
 
 #battery {

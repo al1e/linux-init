@@ -1566,9 +1566,9 @@ gaps outer  2
   bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
   bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
   bindsym $mod+Control+g exec oneterminal "gdb"
-  bindsym $mod+Control+v exec ONETERM_PROFILE=voltron ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
+  bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
   bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
-  bindsym $mod+Control+p exec oneterminal "Processes" htop
+  bindsym $mod+Control+p exec sway-htop
   bindsym $mod+Control+Shift+p exec htop-regexp
   bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacritty -e zsh
 #+end_src
@@ -1603,16 +1603,18 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "sway/workspaces",
       "sway/mode",
       "cpu",
+      "temperature",
       "memory",
     ],
 
     "modules-center": [
-      "clock#2",
+      "clock",
       "idle_inhibitor",
       "pulseaudio",
     ],
 
     "modules-right": [
+      "custom/weather",
       "backlight",
       "battery",
       "network",
@@ -1654,18 +1656,10 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "format-icons": ["", "", "", "", ""]
     },
 
-    "clock#1": {
+    "clock": {
       "interval": 60,
-      "format": "<span color='#cde9f0'> {:%H:%M %F} </span>",
-      "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-      // "format-alt": "{:%Y-%m-%d}"
-    },
-
-    "clock#2": {
-      "interval": 18000,
-      "format": "{:%F} 📅",
-      "tooltip-format": "{:%Y-%m-%d | %H:%M:%S}"
-      // "format-alt": "{:%Y-%m-%d}"
+      "format": "{:%a, %d %b: %H:%M}",
+      "max-length": 25,
     },
 
     "cpu": {
@@ -1674,22 +1668,17 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "states": {
         "warning": 70,
         "critical": 90
-      }
+      },
+      "on-click" : "sway-htop",
     },
 
-    /*
-      "cpu": {
-      "format": "🏭 {usage}%",
-      "tooltip": false
-      },
-    ,*/
     "idle_inhibitor": {
       "format": "<span color='#589df6'>{icon}</span>",
       "format-icons": {
         "activated": "",
         "deactivated": ""
       },
-      "on-click-right": "swaylock -eFfki ~/Pictures/lockscreen.jpeg"
+      "on-click-right": "sway-lock"
     },
     /*
       "memory": {
@@ -1749,12 +1738,12 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
 
     "custom/weather": {
-      "format": "<span color='#22dfda'>{}</span>",
+      "format": "<span color='#eeeeee'>{}</span>",
       "interval": 18000,
-      "exec": "sb-forecast",
-      //ansiweather -l shiraz,IR -u metric -s true -f 1 -a false | cut -d' ' -f2,8-
+      "exec": "ansiweather -f 0 -u metric -s true -w true -p true -h false -a false | cut -d' ' -f2,8-",
       "exec-if": "ping openweathermap.org -c1",
-      "tooltip": "false"
+      "tooltip": "false",
+      "on-click": "sway-weather",
     },
 
   }
@@ -1826,7 +1815,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
           background: #af005f;
   }
 
-  #clock, #custom-jalalidate, #custom-weather, #custom-disk_home, #custom-disk_root,#custom-wkblayout, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+  #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
           padding: 0 3px;
   /*	background-color: #000000; */
           background: rgba(28, 28, 28, 0.8);
@@ -1836,22 +1825,6 @@ https://github.com/Alexays/Waybar/wiki/Configuration
   #clock {
           border-top-left-radius: 10px;
           border-bottom-left-radius: 10px;
-  }
-
-  #custom-disk_root {
-          border-top-right-radius: 10px;
-          border-bottom-right-radius: 10px;
-  }
-
-  #custom-weather {
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
-  }
-
-  #custom-jalalidate {
-          margin-right: 8px;
-          border-top-right-radius: 10px;
-          border-bottom-right-radius: 10px;
   }
 
   #battery {
@@ -2094,7 +2067,7 @@ return the brightness %
   #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
-          oneterminal "Processes" htop &>/dev/null
+          sway-htop
           ;;
       ,*)
           ;;
@@ -2210,7 +2183,7 @@ return the volume %
   #Maintained in linux-config.org
   case $BLOCK_BUTTON in
       1)
-          sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"  &> /dev/null
+          sway-weather
           ;;
       ,*)
           ;;
@@ -2300,6 +2273,12 @@ return the volume %
   #!/usr/bin/bash
   # Maintained in linux-config.org
   exec emacs-same-frame "$@"
+#+end_src
+*** ~/bin/sway/sway-htop
+#+begin_src bash :tangle "~/bin/sway/sway-htop"
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  exec oneterminal "Processes" htop
 #+end_src
 *** ~/bin/sway/sway-lock-utils
 Just a gathering place of locky/suspendy type things...
@@ -2466,7 +2445,7 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-wofi
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
+  exec dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 #+end_src
 *** ~/bin/sway/sway-launcher-fzf
 #+begin_src bash :tangle ~/bin/sway/sway-launcher-fzf
@@ -2493,7 +2472,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
 
   #Copy to the buffer
-  wl-copy < "${DIR}"/screenshot-latest.png
+  exec wl-copy < "${DIR}"/screenshot-latest.png
 #+end_src
 *** ~/bin/sway/sway-volume-notify
 #+begin_src bash :tangle "~/bin/sway/sway-volume-notify"
@@ -2501,7 +2480,16 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   # Maintained in linux-config.org
   muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
   volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
-  sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+  exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+#+end_src
+*** ~/bin/sway/sway-weather
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway/sway-weather"
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  exec sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 #+end_src
 *** ~/bin/sway/sway-www
 :PROPERTIES:
@@ -2511,7 +2499,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   #!/usr/bin/bash
   # Maintained in linux-config.org
   google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-  sleep 0.5 && sway-do-tool "Google-chrome"
+  exec sleep 0.5 && sway-do-tool "Google-chrome"
 #+end_src
 *** ~/bin/sway/sway-wifi
 :PROPERTIES:
@@ -2520,7 +2508,7 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
 #+begin_src bash :tangle "~/bin/sway/sway-wifi"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  oneterminal "wifi" "nmtui"  &>/dev/null
+  exec oneterminal "wifi" "nmtui"  &>/dev/null
 #+end_src
 *** kanshi                                                           :kanshi:
 Monitor control with hotplug https://github.com/emersion/kanshi
@@ -2886,7 +2874,7 @@ Create a session but let someone else do the attach
   # Maintained in linux-config.org
   directory="${1:-`pwd`}"
   session="${2}"
-  ONETERM_PROFILE=gdb ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
+  ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
 #+end_src
 
 ***** DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
@@ -3425,8 +3413,6 @@ if it exists jump to it else start it
   script="${2}"
   tflags="${3}"
 
-  profile="${ONETERM_PROFILE:-"$(hostname)"}"
-
   if ! sway-do-tool "$title"; then
       rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
       if tmux has-session -t "${sessionname}" &> /dev/null; then
@@ -3622,7 +3608,7 @@ strip debug info and store elsewhere
   fi
   tmux new-session -d -s "${session}" "htop -p $pids"
   sleep 0.1
-  ONETERM_TITLE="filtered htop:${filter}" ONETERM_PROFILE="Processes" oneterminal "${session}"
+  ONETERM_TITLE="filtered htop:${filter}" oneterminal "${session}"
 #+end_src
 ** ~/bin/make-compile_commands
 #+begin_src bash :tangle "~/bin/make-compile_commands"

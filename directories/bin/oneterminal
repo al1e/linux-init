@@ -6,8 +6,6 @@ title="${ONETERM_TITLE:-${sessionname}}"
 script="${2}"
 tflags="${3}"
 
-profile="${ONETERM_PROFILE:-"$(hostname)"}"
-
 if ! sway-do-tool "$title"; then
     rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
     if tmux has-session -t "${sessionname}" &> /dev/null; then
