@@ -145,7 +145,7 @@
   "custom/weather": {
     "format": "<span color='#eeeeee'>{}</span>",
     "interval": 18000,
-    "exec": "ansiweather -f 0 -u metric -s true -w true -p true -h false -a false | cut -d' ' -f2,8-",
+    "exec": "ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f4-",
     "exec-if": "ping openweathermap.org -c1",
     "tooltip": "false",
     "on-click": "sway-weather",
