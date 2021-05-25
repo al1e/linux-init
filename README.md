@@ -1508,7 +1508,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec gpg-cache
+exec sleep 2 && gpg-cache
 exec $editor
 exec swaymsg workspace $ws1
 ```
@@ -1522,6 +1522,15 @@ include /etc/sway/config.d/*
 
 
 ## bin,scripts     :sway:wayland:
+
+
+### ~/bin/sway-sway-active-monitors-count
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
+```
 
 
 ### ~/bin/sway/sway-autostart
@@ -1695,8 +1704,8 @@ exec swayidle -w \
 #!/usr/bin/bash
 # Maintained in linux-config.org
 m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
-#swaymsg bindswitch lid:on exec "sway-screen disable $m"
-#swaymsg bindswitch lid:off exec "sway-screen enable $m"
+swaymsg bindswitch lid:on exec "sway-screen disable $m"
+swaymsg bindswitch lid:off exec "sway-screen enable $m"
 echo $m
 ```
 
@@ -1724,8 +1733,10 @@ notify-send -t 5000 "${@}"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
-swaymsg "output ${m} ${1:-enable}"
+m="${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
+c="${1:-enable}"
+[ "$c" = "disable" ] && [ "$(sway-active-monitors-count)" = "1" ] && sway-notify "Not turning off single display $m" && exit 1
+swaymsg "output ${m} "
 (sleep 2 && sway-notify "${m}:${1:-enable}") &
 ```
 
@@ -1739,7 +1750,7 @@ s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --
 if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
-        numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+        numActive=$(sway-active-monitors-count)
         [ "$numActive" = "1" ] && [ $e = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
         swaymsg "output $s $e"
         (sleep 0.5 && sway-notify "$s:$e") &

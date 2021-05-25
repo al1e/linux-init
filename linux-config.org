@@ -1992,7 +1992,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   exec sway-kanshi
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-  exec gpg-cache
+  exec sleep 2 && gpg-cache
   exec $editor
   exec swaymsg workspace $ws1
 #+end_src
@@ -2001,6 +2001,12 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   include /etc/sway/config.d/*
 #+end_src
 ** bin,scripts                                                 :sway:wayland:
+*** ~/bin/sway-sway-active-monitors-count
+#+begin_src bash :tangle ~/bin/sway/sway-active-monitors-count
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
+#+end_src
 *** ~/bin/sway/sway-autostart
 #+begin_src bash :tangle "~/bin/sway/sway-autostart"
   #!/usr/bin/bash
@@ -2154,8 +2160,8 @@ Just a gathering place of locky/suspendy type things...
   #!/usr/bin/bash
   # Maintained in linux-config.org
   m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
-  #swaymsg bindswitch lid:on exec "sway-screen disable $m"
-  #swaymsg bindswitch lid:off exec "sway-screen enable $m"
+  swaymsg bindswitch lid:on exec "sway-screen disable $m"
+  swaymsg bindswitch lid:off exec "sway-screen enable $m"
   echo $m
 #+end_src
 *** ~/bin/sway/sway-lock
@@ -2183,8 +2189,10 @@ Just a gathering place of locky/suspendy type things...
 #+begin_src bash :tangle "~/bin/sway/sway-screen"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  m=${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}
-  swaymsg "output ${m} ${1:-enable}"
+  m="${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
+  c="${1:-enable}"
+  [ "$c" = "disable" ] && [ "$(sway-active-monitors-count)" = "1" ] && sway-notify "Not turning off single display $m" && exit 1
+  swaymsg "output ${m} "
   (sleep 2 && sway-notify "${m}:${1:-enable}") &
 #+end_src
 *** ~/bin/sway/sway-screen-menu
@@ -2198,7 +2206,7 @@ Just a gathering place of locky/suspendy type things...
   if [ ! -z "$s" ]; then
       e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
       if [ ! -z "$e" ]; then
-          numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+          numActive=$(sway-active-monitors-count)
           [ "$numActive" = "1" ] && [ $e = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
           swaymsg "output $s $e"
           (sleep 0.5 && sway-notify "$s:$e") &

@@ -254,7 +254,7 @@ exec waybar
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec gpg-cache
+exec sleep 2 && gpg-cache
 exec $editor
 exec swaymsg workspace $ws1
 

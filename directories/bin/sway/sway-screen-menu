@@ -4,7 +4,7 @@ s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --
 if [ ! -z "$s" ]; then
     e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
     if [ ! -z "$e" ]; then
-        numActive=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
+        numActive=$(sway-active-monitors-count)
         [ "$numActive" = "1" ] && [ $e = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
         swaymsg "output $s $e"
         (sleep 0.5 && sway-notify "$s:$e") &
