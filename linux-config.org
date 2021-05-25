@@ -731,6 +731,10 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
       export XDG_CONFIG_HOME="$HOME/.config"
   fi
 
+  # for sway waybar tray
+  export XDG_CURRENT_DESKTOP=Unity
+
+
   [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
@@ -1615,10 +1619,11 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
     "modules-right": [
       "custom/weather",
+      "custom/bluetooth",
       "backlight",
       "battery",
       "network",
-      "tray"],
+    ],
 
     "sway/workspaces": {
       "disable-scroll": true,
@@ -1746,6 +1751,15 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "on-click": "sway-weather",
     },
 
+    "custom/bluetooth": {
+      "format": "<span color='blue'>{}</span>",
+      "interval": 18000,
+      "exec": "my-i3b-bluetooth",
+      "exec-if": "ping openweathermap.org -c1",
+      "tooltip": "false",
+      "on-click": "sway-bluetooth",
+    },
+
   }
 #+end_src
 ***** ~/.config/waybar/style.css
@@ -1800,7 +1814,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
   #workspaces button.focused {
           padding: 0 5px;
-          border-radius: 10;
+          border-radius: 10px;
   /*	background: #00afd7;*/
           color: #8af0f0;
           margin: 0 0px;
@@ -1827,14 +1841,8 @@ https://github.com/Alexays/Waybar/wiki/Configuration
           border-bottom-left-radius: 10px;
   }
 
-  #battery {
-  }
-
-  #battery icon {
-      color: red;
-  }
-
-  #battery.charging {
+  #battery,#battery_icon,#battery.charging {
+      color:green
   }
 
   @keyframes blink {
@@ -2002,7 +2010,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   #!/usr/bin/env bash
 
   case $BLOCK_BUTTON in
-      1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+      1) sway-bluetooth
   esac
 
   get_from_file() {
@@ -2226,6 +2234,15 @@ return the volume %
   #!/usr/bin/bash
   # Maintained in linux-config.org
   sway-notify "🔆:$(printf "%.0f" `light -G`)"
+#+end_src
+*** ~/bin/sway/sway-bluetooth
+:PROPERTIES:
+:ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
+:END:
+#+begin_src bash :tangle "~/bin/sway/sway-bluetooth"
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  exec oneterminal "bluetoothctl" "bluetoothctl"
 #+end_src
 *** ~/bin/sway/sway-do-tool
 #+begin_src bash :tangle "~/bin/sway/sway-do-tool"

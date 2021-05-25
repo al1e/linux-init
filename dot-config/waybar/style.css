@@ -45,7 +45,7 @@
 
 #workspaces button.focused {
         padding: 0 5px;
-        border-radius: 10;
+        border-radius: 10px;
 /*	background: #00afd7;*/
         color: #8af0f0;
         margin: 0 0px;
@@ -72,14 +72,8 @@
         border-bottom-left-radius: 10px;
 }
 
-#battery {
-}
-
-#battery icon {
-    color: red;
-}
-
-#battery.charging {
+#battery,#battery_icon,#battery.charging {
+    color:green
 }
 
 @keyframes blink {

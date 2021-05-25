@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 case $BLOCK_BUTTON in
-    1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+    1) sway-bluetooth
 esac
 
 get_from_file() {

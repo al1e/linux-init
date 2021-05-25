@@ -20,10 +20,11 @@
 
   "modules-right": [
     "custom/weather",
+    "custom/bluetooth",
     "backlight",
     "battery",
     "network",
-    "tray"],
+  ],
 
   "sway/workspaces": {
     "disable-scroll": true,
@@ -149,6 +150,15 @@
     "exec-if": "ping openweathermap.org -c1",
     "tooltip": "false",
     "on-click": "sway-weather",
+  },
+
+  "custom/bluetooth": {
+    "format": "<span color='blue'>{}</span>",
+    "interval": 18000,
+    "exec": "my-i3b-bluetooth",
+    "exec-if": "ping openweathermap.org -c1",
+    "tooltip": "false",
+    "on-click": "sway-bluetooth",
   },
 
 }

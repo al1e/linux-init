@@ -42,6 +42,10 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
+# for sway waybar tray
+export XDG_CURRENT_DESKTOP=Unity
+
+
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 export FZF_TMUX_OPTS=1
