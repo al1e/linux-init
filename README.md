@@ -1115,6 +1115,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "cpu",
             "temperature",
             "memory",
+            "custom/dropbox"
           ],
 
           "modules-center": [
@@ -1159,12 +1160,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
               "warning": 20,
               "critical": 10
             },
-            "format": "<span color='#e88939'>{icon}</span> {capacity}%",
+            "format": "<span color='gold'>{icon}</span> {capacity}%",
 
-            "format-charging": "<span color='#e88939'> </span> {capacity}% ({time})",
-            "format-plugged":  "<span color='#e88939'>{icon}  </span> {capacity}%",
+            "format-charging": "<span color='gold'> </span> {capacity}% ({time})",
+            "format-plugged":  "<span color='gold'>{icon}  </span> {capacity}%",
             //		"format-good": "", // An empty format will hide the module
-            "format-discharging": "<span color='#e88939'>{icon}</span> {capacity}% ({time})",
+            "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
             "format-icons": ["", "", "", "", ""]
           },
 
@@ -1258,17 +1259,24 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "sway-weather",
           },
 
+          "custom/dropbox": {
+            "format": "<span color='gold'>⇄ {}</span>",
+            "interval": 5,
+            "exec": "waybar-dropbox-status",
+            "tooltip": "false",
+            "on-click": "sway-www https://www.dropbox.com/h",
+          },
           "custom/bluetooth": {
-            "format": "<span color='blue'>{}</span>",
+            "format": "<span color='blue'>{}</span>",
             "interval": 30,
             "exec": "waybar-bluetooth",
             "tooltip": "false",
             "on-click": "sway-bluetooth",
           },
           "custom/power-draw": {
-            "format": "⚡<span color='gold'>{}</span>🔋",
+            "format": "<span color='gold'>⚡{}🔋</span>",
             "interval": 5,
-            "exec": "awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now",
+            "exec": "waybar-power-draw",
             "tooltip": "false",
           },
 
@@ -1340,11 +1348,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             background: #af005f;
         }
 
-        #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
+        #custom-bluetooth,#custom-power-draw,#custom-dropbox,#clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
             padding: 0 3px;
-            /*	background-color: #000000; */
-            background: rgba(28, 28, 28, 0.8);
-            /*	margin: 0 2px;*/
         }
 
         #idle_inhibitor{
@@ -1354,10 +1359,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         #clock {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
-        }
-
-        #battery,#battery_icon,#battery.charging {
-            color:green
         }
 
         @keyframes blink {
@@ -1378,6 +1379,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             animation-iteration-count: infinite;
             animation-direction: alternate;
         }
+        #battery,#battery_icon,#battery.charging {
+            color:gold
+        }
+
 
         #cpu {
         }
@@ -1415,6 +1420,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
             ```bash
             #!/usr/bin/env bash
+            # Maintained in linux-config.org
 
             get_from_file() {
                 dev=$1
@@ -1452,23 +1458,46 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                         store_file $dev "${name}"
                     fi
                 fi
-                echo " $name"
-                echo " $name"
-                echo "#83AF40\n"
-                # echo "#859900\n"
+                echo "💡$name"
             else
-                echo ""
-                echo ""
+                echo "🔌"
             fi
             ```
 
-        2.  ~/bin/sway/waybar-weather
+        2.  ~/bin/sway/waybar-power-draw
 
             ```bash
+            #!/usr/bin/env bash
+            # Maintained in linux-config.org
+            awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
+            ```
+
+        3.  ~/bin/sway/waybar-weather
+
+            ```bash
+            #!/usr/bin/env bash
+            # Maintained in linux-config.org
             if [  "$1" = "-q" ]; then
                 ping openweathermap.org -c1
             else
-                ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
+                export OPENWEATHERKEY="${OPENWEATHERKEY:-$(pass "WebServices/OpenWeatherMap/freemium")}"
+                ansiweather -l "Grömitz,DE" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
+            fi
+            ```
+
+        4.  ~/bin/sway/waybar-dropbox-status
+
+            ```bash
+            #!/usr/bin/bash
+            #Maintained in linux-config.org
+            if pidof dropbox > /dev/null ; then
+                stat=$(dropbox status | sed -n 1p)
+                echo "${stat}"; echo "";
+            else
+                if command -v dropbox > /dev/null; then
+                    echo "⇄Restart Dropbox.."
+                    #dropbox start &> /dev/null &
+                fi
             fi
             ```
 
@@ -1903,6 +1932,8 @@ Monitor control with hotplug <https://github.com/emersion/kanshi>
     }
 
     ```
+
+    ******\*******
 
 
 # Vim

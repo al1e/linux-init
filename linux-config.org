@@ -1969,7 +1969,8 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   if [  "$1" = "-q" ]; then
       ping openweathermap.org -c1
   else
-      ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
+      export OPENWEATHERKEY="${OPENWEATHERKEY:-$(pass "WebServices/OpenWeatherMap/freemium")}"
+      ansiweather -l "Grömitz,DE" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
   fi
 #+end_src
 ******* ~/bin/sway/waybar-dropbox-status
