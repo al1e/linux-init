@@ -1881,7 +1881,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    pidof swaylock || swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -1931,7 +1931,7 @@ exit 0
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-pidof swayidle  && echo "swayidle process $(pidof swayidle) already running. Exiting." && exit 0
+pidof swayidle  && killall -9 swayidle
 exec swayidle -w \
      timeout 1 '' \
      resume 'sway-lock-utils unblank' \
@@ -1939,7 +1939,7 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+     timeout ${XIDLEHOOK_LOCK:-360} 'sway-lock' \
      resume 'sway-lock-utils unblank' \
      lock 'sway-lock' \
      before-sleep 'sway-lock'
@@ -1962,7 +1962,7 @@ swaymsg bindswitch lid:off exec "sway-screen enable $m"
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-exec sway-lock-utils lock
+sway-lock-utils lock
 ```
 
 
@@ -1971,7 +1971,7 @@ exec sway-lock-utils lock
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-exec notify-send -t 5000 "${@}"
+notify-send -t 5000 "${@}"
 ```
 
 

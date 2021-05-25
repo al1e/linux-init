@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    pidof swaylock || swaylock -i ~/Pictures/LockScreen/lock -c 000000
+    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
