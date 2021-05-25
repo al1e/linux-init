@@ -125,6 +125,10 @@ then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
 
+# for sway waybar tray
+export XDG_CURRENT_DESKTOP=Unity
+
+
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
@@ -1115,16 +1119,18 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
           "modules-center": [
             "clock",
+            "custom/weather",
             "idle_inhibitor",
-            "pulseaudio",
           ],
 
           "modules-right": [
-            "custom/weather",
+            "pulseaudio",
+            "custom/bluetooth",
             "backlight",
             "battery",
+            "custom/power-draw",
             "network",
-            "tray"],
+          ],
 
           "sway/workspaces": {
             "disable-scroll": true,
@@ -1179,10 +1185,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           },
 
           "idle_inhibitor": {
-            "format": "<span color='#589df6'>{icon}</span>",
+            "format": "<span color='GOLD'>{icon}</span>",
             "format-icons": {
-              "activated": "",
-              "deactivated": ""
+              "activated": "📀🎞",
+              "deactivated": "😴🛌"
             },
             "on-click-right": "sway-lock"
           },
@@ -1244,12 +1250,26 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 
           "custom/weather": {
-            "format": "<span color='#eeeeee'>{}</span>",
+            "format": "<span color='gray'>{}</span>",
             "interval": 18000,
-            "exec": "ansiweather -f 0 -u metric -s true -w true -p true -h false -a false | cut -d' ' -f2,8-",
+            "exec": "ansiweather -l Grömitz,DE -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-",
             "exec-if": "ping openweathermap.org -c1",
             "tooltip": "false",
             "on-click": "sway-weather",
+          },
+
+          "custom/bluetooth": {
+            "format": "<span color='blue'>{}</span>",
+            "interval": 30,
+            "exec": "my-i3b-bluetooth",
+            "tooltip": "false",
+            "on-click": "sway-bluetooth",
+          },
+          "custom/power-draw": {
+            "format": "⚡<span color='gold'>{}</span>🔋",
+            "interval": 5,
+            "exec": "awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now",
+            "tooltip": "false",
           },
 
         }
@@ -1259,87 +1279,85 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
         ```css
         * {
-                border: none;
-                background: rgba(28, 28, 28, 0.6);
-                border-radius: 0;
-                font-family: "monospace";
-                font-size: 10pt;
-                min-height: 0;
+            border: none;
+            background: rgba(28, 28, 28, 0.6);
+            border-radius: 0;
+            font-family: "monospace";
+            font-size: 10pt;
+            min-height: 0;
         }
 
         #waybar {
-                background: rgba(48,48,59, 0);
-                color: #e4e4e4;
+            background: rgba(48,48,59, 0);
+            color: #e4e4e4;
         }
 
         #window {
-                color: #e4e4e4;
-                font-weight: bold;
+            color: #e4e4e4;
+            font-weight: bold;
         }
 
         #workspaces {
-                font-size: 8px;
-        /*	padding: 0 2px;*/
-                margin-left: 8px;
-                margin-right: 8px;
-                padding-left: 0px;
-                padding-right: 0px;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-                background: rgba(28, 28, 28, 0.8);
+            font-size: 8px;
+            /*	padding: 0 2px;*/
+            margin-left: 8px;
+            margin-right: 8px;
+            padding-left: 0px;
+            padding-right: 0px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background: rgba(28, 28, 28, 0.8);
         }
 
         #workspaces button {
-                padding: 0 5px;
-        /*	background: rgba(28, 28, 28, 0.9);*/
-                color: #b8b8b8;
-        /*	margin: 0 1px;*/
+            padding: 0 5px;
+            /*	background: rgba(28, 28, 28, 0.9);*/
+            color: #b8b8b8;
+            /*	margin: 0 1px;*/
         }
         #workspaces button:hover {
-                box-shadow: inherit;
-                text-shadow: inherit;
+            box-shadow: inherit;
+            text-shadow: inherit;
 
         }
 
         #workspaces button.focused {
-                padding: 0 5px;
-                border-radius: 10;
-        /*	background: #00afd7;*/
-                color: #8af0f0;
-                margin: 0 0px;
+            padding: 0 5px;
+            border-radius: 10px;
+            /*	background: #00afd7;*/
+            color: #8af0f0;
+            margin: 0 0px;
         }
 
         #workspaces button.urgent {
-                background: #af005f;
-                color: #1b1d1e;
+            background: #af005f;
+            color: #1b1d1e;
         }
 
         #mode {
-                background: #af005f;
+            background: #af005f;
         }
 
         #clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
-                padding: 0 3px;
-        /*	background-color: #000000; */
-                background: rgba(28, 28, 28, 0.8);
-        /*	margin: 0 2px;*/
+            padding: 0 3px;
+            /*	background-color: #000000; */
+            background: rgba(28, 28, 28, 0.8);
+            /*	margin: 0 2px;*/
+        }
+
+        #idle_inhibitor{
+            font-size:16px
         }
 
         #clock {
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
         }
 
-        #battery {
-        }
-
-        #battery icon {
-            color: red;
-        }
-
-        #battery.charging {
+        #battery,#battery_icon,#battery.charging {
+            color:green
         }
 
         @keyframes blink {
@@ -1349,8 +1367,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         }
 
         #battery.warning:not(.charging) {
-                background-color: #ff8700;
-                color: #1b1d1e;
+            background-color: #ff8700;
+            color: #1b1d1e;
         }
         #battery.critical:not(.charging) {
             color: white;
@@ -1380,8 +1398,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         #pulseaudio.muted {
         }
 
+        #custom-weather {
+            font-size:12px;
+        }
+
         #tray {
-                margin-left: 1px;
+            margin-left: 1px;
         }
         ```
 
@@ -1511,7 +1533,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 #!/usr/bin/env bash
 
                 case $BLOCK_BUTTON in
-                    1) oneterminal "bluetoothctl" "bluetoothctl"  &>/dev/null &
+                    1) sway-bluetooth
                 esac
 
                 get_from_file() {
@@ -1777,6 +1799,15 @@ sway-notify "🔆:$(printf "%.0f" `light -G`)"
 ```
 
 
+### ~/bin/sway/sway-bluetooth
+
+```bash
+#!/usr/bin/bash
+# Maintained in linux-config.org
+exec oneterminal "bluetoothctl" "bluetoothctl"
+```
+
+
 ### ~/bin/sway/sway-do-tool
 
 ```bash
@@ -1850,7 +1881,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000 &
+    pidof swaylock || swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -1866,25 +1897,25 @@ case "$1" in
         lock_gpg_clear
         ;;
     logout)
-        exec swaymsg exit
+        swaymsg exit
         ;;
     suspend)
-        exec systemctl suspend && lock
+        systemctl suspend && lock
         ;;
     hibernate)
-        exec systemctl hibernate && lock
+        systemctl hibernate && lock
         ;;
     reboot)
-        exec systemctl reboot
+        systemctl reboot
         ;;
     shutdown)
-        exec systemctl poweroff
+        systemctl poweroff
         ;;
     blank)
-        exec sway-dpms off
+        sway-dpms off
         ;;
     unblank)
-        exec sway-dpms on
+        sway-dpms on
         ;;
     *)
         lock
@@ -2073,7 +2104,7 @@ exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &>
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-exec sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
+sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 ```
 
 
@@ -2083,7 +2114,7 @@ exec sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weath
 #!/usr/bin/bash
 # Maintained in linux-config.org
 google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-exec sleep 0.5 && sway-do-tool "Google-chrome"
+sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
 

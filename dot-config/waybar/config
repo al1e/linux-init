@@ -15,10 +15,10 @@
   "modules-center": [
     "clock",
     "custom/weather",
+    "idle_inhibitor",
   ],
 
   "modules-right": [
-    "idle_inhibitor",
     "pulseaudio",
     "custom/bluetooth",
     "backlight",
@@ -80,10 +80,10 @@
   },
 
   "idle_inhibitor": {
-    "format": "<span color='#589df6'>{icon}</span>",
+    "format": "<span color='GOLD'>{icon}</span>",
     "format-icons": {
-      "activated": "",
-      "deactivated": ""
+      "activated": "📀🎞",
+      "deactivated": "😴🛌"
     },
     "on-click-right": "sway-lock"
   },

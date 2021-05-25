@@ -67,6 +67,10 @@
     /*	margin: 0 2px;*/
 }
 
+#idle_inhibitor{
+    font-size:16px
+}
+
 #clock {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;

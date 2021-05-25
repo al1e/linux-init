@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    swaylock -i ~/Pictures/LockScreen/lock -c 000000 &
+    pidof swaylock || swaylock -i ~/Pictures/LockScreen/lock -c 000000
 }
 
 lock_gpg_clear() {
@@ -17,25 +17,25 @@ case "$1" in
         lock_gpg_clear
         ;;
     logout)
-        exec swaymsg exit
+        swaymsg exit
         ;;
     suspend)
-        exec systemctl suspend && lock
+        systemctl suspend && lock
         ;;
     hibernate)
-        exec systemctl hibernate && lock
+        systemctl hibernate && lock
         ;;
     reboot)
-        exec systemctl reboot
+        systemctl reboot
         ;;
     shutdown)
-        exec systemctl poweroff
+        systemctl poweroff
         ;;
     blank)
-        exec sway-dpms off
+        sway-dpms off
         ;;
     unblank)
-        exec sway-dpms on
+        sway-dpms on
         ;;
     *)
         lock

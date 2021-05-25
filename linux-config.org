@@ -1614,10 +1614,10 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     "modules-center": [
       "clock",
       "custom/weather",
+      "idle_inhibitor",
     ],
 
     "modules-right": [
-      "idle_inhibitor",
       "pulseaudio",
       "custom/bluetooth",
       "backlight",
@@ -1679,10 +1679,10 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     },
 
     "idle_inhibitor": {
-      "format": "<span color='#589df6'>{icon}</span>",
+      "format": "<span color='GOLD'>{icon}</span>",
       "format-icons": {
-        "activated": "",
-        "deactivated": ""
+        "activated": "📀🎞",
+        "deactivated": "😴🛌"
       },
       "on-click-right": "sway-lock"
     },
@@ -1840,6 +1840,10 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       /*	background-color: #000000; */
       background: rgba(28, 28, 28, 0.8);
       /*	margin: 0 2px;*/
+  }
+
+  #idle_inhibitor{
+      font-size:16px
   }
 
   #clock {
@@ -2313,7 +2317,7 @@ Just a gathering place of locky/suspendy type things...
   #!/usr/bin/bash
   # Maintained in linux-config.org
   lock() {
-      swaylock -i ~/Pictures/LockScreen/lock -c 000000 &
+      pidof swaylock || swaylock -i ~/Pictures/LockScreen/lock -c 000000
   }
 
   lock_gpg_clear() {
@@ -2329,25 +2333,25 @@ Just a gathering place of locky/suspendy type things...
           lock_gpg_clear
           ;;
       logout)
-          exec swaymsg exit
+          swaymsg exit
           ;;
       suspend)
-          exec systemctl suspend && lock
+          systemctl suspend && lock
           ;;
       hibernate)
-          exec systemctl hibernate && lock
+          systemctl hibernate && lock
           ;;
       reboot)
-          exec systemctl reboot
+          systemctl reboot
           ;;
       shutdown)
-          exec systemctl poweroff
+          systemctl poweroff
           ;;
       blank)
-          exec sway-dpms off
+          sway-dpms off
           ;;
       unblank)
-          exec sway-dpms on
+          sway-dpms on
           ;;
       ,*)
           lock
