@@ -1833,8 +1833,8 @@ notify-send -t 3000 "${@}"
 m="${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
 c="${1:-enable}"
 [ "$c" = "disable" ] && [ "$(sway-active-monitors-count)" = "1" ] && sway-notify "Not turning off single display $m" && exit 1
-swaymsg "output ${m} "
-(sleep 2 && sway-notify "${m}:${1:-enable}") &
+swaymsg "output ${m} ${c}"
+(sleep 2 && sway-notify "${m}:${c}") &
 ```
 
 
@@ -1843,14 +1843,11 @@ swaymsg "output ${m} "
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-s=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
-if [ ! -z "$s" ]; then
-    e="$(zenity  --list  --title "Enable ${s}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
-    if [ ! -z "$e" ]; then
-        numActive=$(sway-active-monitors-count)
-        [ "$numActive" = "1" ] && [ $e = "disable" ] && sway-notify "Only one active monitor so no...." && exit 1
-        swaymsg "output $s $e"
-        (sleep 0.5 && sway-notify "$s:$e") &
+m=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
+if [ ! -z "$m" ]; then
+    c="$(zenity  --list  --title "Enable ${m}?" --text "" --radiolist  --column "Pick" --column "Enabled" TRUE enable FALSE disable)"
+    if [ ! -z "$c" ]; then
+        sway-screen $c $m
     fi
 fi
 exit 0
