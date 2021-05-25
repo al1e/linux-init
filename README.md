@@ -824,12 +824,13 @@ bindsym $mod+d exec $menu
     bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
     ```
 
-3.  gaps
 
-    ```conf
-    gaps inner  2
-    gaps outer  2
-    ```
+### gaps
+
+```conf
+gaps inner  2
+gaps outer  2
+```
 
 
 ### scratchpad
@@ -1011,6 +1012,13 @@ bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
     ```
 
 
+### wifi     :wifi:
+
+```conf
+bindsym --locked XF86Wlan exec sleep 1 && sway-notify "WLAN is $(nmcli radio wifi)."
+```
+
+
 ### exit, quit, restart, reboot, lock, hibernate, blank, suspend     :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 
 ```conf
@@ -1058,6 +1066,7 @@ for_window [title="bluetoothctl"] floating enable
 ### apps keybindings
 
 ```conf
+
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
 bindsym Print exec sway-screenshot -i
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"

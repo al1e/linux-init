@@ -1348,7 +1348,7 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
   bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
 #+end_src
-**** gaps
+*** gaps
 #+begin_src conf
 gaps inner  2
 gaps outer  2
@@ -1518,6 +1518,10 @@ gaps outer  2
   bindsym $mod+Control+a exec pavucontrol
   bindsym $mod+Control+Shift+a exec pulse-restart
 #+end_src
+*** wifi                                                               :wifi:
+#+begin_src conf
+  bindsym --locked XF86Wlan exec sleep 1 && sway-notify "WLAN is $(nmcli radio wifi)."
+#+end_src
 *** exit, quit, restart, reboot, lock, hibernate, blank, suspend :hibernate:lock:sleep:blank:blank:restart:exit:reboot:
 #+begin_src conf
 
@@ -1556,6 +1560,7 @@ gaps outer  2
 
 *** apps keybindings
 #+begin_src conf
+
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
   bindsym Print exec sway-screenshot -i
   bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
