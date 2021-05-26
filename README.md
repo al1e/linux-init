@@ -774,7 +774,7 @@ set $mod Mod4
 set $menu sway-launcher-fzf
 for_window [title="sway-launcher"] floating enable
 
-set $term  'sway-terminal'
+set $term  'sway-scratch-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
@@ -802,7 +802,6 @@ Bindsym $mod+Shift+r restart
 
 output * bg  $wallpaper fill
 
-bindsym $mod+Return exec $term
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
@@ -847,7 +846,10 @@ bindsym $mod+Shift+minus move scratchpad
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
-for_window [title=^Scratch] move container to scratchpad
+
+for_window [title=^Scratch] move to scratchpad,scratchpad show
+
+bindsym $mod+Return exec sway-scratch-terminal
 
 ```
 
@@ -1786,9 +1788,9 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-360} 'sway-lock' \
+     timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_SUSPEND:-720} 'sway-lock-utils suspend' \
+     timeout ${XIDLEHOOK_SUSPEND:-7200} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \
      lock 'sway-lock' \
      before-sleep 'sway-lock'
@@ -1841,7 +1843,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgdee8f28"></a>
+<a id="orgc3d173e"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1862,7 +1864,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgdee8f28).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc3d173e).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -1889,12 +1891,12 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```
 
 
-### ~/bin/sway/sway-terminal     :swaysock:
+### ~/bin/sway/sway-scratch-terminal     :swaysock:
 
 ```bash
-#!/usr/bin/bash
-#Maintained in linux-config.org
-oneterminal "${1:-ScratchTerminal}" ""
+ #!/usr/bin/bash
+ #Maintained in linux-config.org
+swaymsg "[title=ScratchTerminal] scratchpad show" || alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal"
 ```
 
 
