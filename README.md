@@ -3452,15 +3452,16 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 #!/usr/bin/bash
 #Maintained in linux-config.org
 if ! pidof gpg-agent; then
-    p=$(zenity --password --title "Password for SSH")
-    if [ ! -z "$p" ]
-    then
-        while IFS= read -r p; do
-            [ ! -z "$p" ] && echo "$p" | /usr/lib/gnupg2/gpg-preset-passphrase --preset "$p"
-        done < "$HOME/.gnupg/auth/cache-keys"
+    cachefile="${1:-"$HOME/.gnupg/auth/cache-keys"}"
+    if [ -f "$cachefile" ]; then
+        p=$(zenity --password --title "Password for SSH")
+        if [ ! -z "$p" ]; then
+            while IFS= read -r p; do
+                [ ! -z "$p" ] && echo "$p" | /usr/lib/gnupg2/gpg-preset-passphrase --preset "$p"
+            done < "$cachefile"
+        fi
     fi
 fi
-
 ```
 
 \#+end\_src
