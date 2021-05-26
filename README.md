@@ -1841,7 +1841,13 @@ notify-send -t 3000 "${@}"
 ```
 
 
+<a id="orgdee8f28"></a>
+
 ### ~/bin/sway/sway-screen
+
+`enable` or `disable`. Won't allow you to turn off the sole enabled display.
+
+:ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
 ```bash
 #!/usr/bin/bash
@@ -1855,6 +1861,10 @@ swaymsg "output ${m} ${c}"
 
 
 ### ~/bin/sway/sway-screen-menu
+
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgdee8f28).
+
+:ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
 ```bash
 #!/usr/bin/bash

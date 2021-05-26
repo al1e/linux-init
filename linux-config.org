@@ -2278,6 +2278,10 @@ but in both cases we check if it exists in the sway tree, and, if not, set it it
 #+end_src
 *** ~/bin/sway/sway-screen
 :PROPERTIES:
+:ID:       539e9065-2df6-44ac-9ce8-530f9fd9e3c4
+:END:
+~enable~ or ~disable~. Won't allow you to turn off the sole enabled display.
+:PROPERTIES:
 :ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 :END:
 #+begin_src bash :tangle "~/bin/sway/sway-screen"
@@ -2290,6 +2294,7 @@ but in both cases we check if it exists in the sway tree, and, if not, set it it
   (sleep 2 && sway-notify "${m}:${c}") &
 #+end_src
 *** ~/bin/sway/sway-screen-menu
+Gui to select a display and enable/disable it. Calls down to [[id:539e9065-2df6-44ac-9ce8-530f9fd9e3c4][~/bin/sway/sway-screen]].
 :PROPERTIES:
 :ID:       82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 :END:
