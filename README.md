@@ -1803,8 +1803,9 @@ Here we look for an env `LAPTOP_ID`. In my setup that would be set in `$HOME/.pr
 #!/usr/bin/bash
 # Maintained in linux-config.org
 id="${LAPTOP_ID:-"eDP-1"}"
-if [ -z "$(swaymsg -t get_outputs | jq -r '.[0] | select (.name=="$id")')" ]; then
-   id="$(swaymsg -t get_outputs | jq -r '.[0].name')"
+displays="$(swaymsg -t get_outputs | jq -r '.[0]')"
+if [ -z  "$(jq '.|select(.name=="$id") | .name' <<< $displays)" ];then
+   id="$(jq -r '[.][0].name' <<< $displays)"
 fi
 echo $id
 ```
