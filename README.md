@@ -777,6 +777,7 @@ for_window [title="sway-launcher"] floating enable
 set $term  'sway-scratch-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
+set $laptop-id `sway-laptop-id`
 
 set $trans 0.8
 set $alphamark "α"
@@ -819,7 +820,8 @@ bindsym $mod+d exec $menu
 1.  lid     :lid:clamshell:
 
     ```conf
-    exec sway-lid
+    bindswitch lid:on exec "sway-screen disable $laptop-id"
+    bindswitch lid:off exec "sway-screen enable $laptop-id"
     ```
 
 2.  brightness     :brightness:
@@ -1818,18 +1820,6 @@ echo $id
 ```
 
 
-### ~/bin/sway/sway-lid
-
-```bash
-#!/usr/bin/bash
-# Maintained in linux-config.org
-m="$(sway-laptop-id)"
-swaymsg bindswitch lid:on exec "sway-screen disable $m"
-swaymsg bindswitch lid:off exec "sway-screen enable $m"
-echo $m
-```
-
-
 ### ~/bin/sway/sway-lock
 
 ```bash
@@ -1848,7 +1838,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgac28aae"></a>
+<a id="org06cd628"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1869,7 +1859,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgac28aae).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org06cd628).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

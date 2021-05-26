@@ -10,6 +10,7 @@ for_window [title="sway-launcher"] floating enable
 set $term  'sway-scratch-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
+set $laptop-id `sway-laptop-id`
 
 set $trans 0.8
 set $alphamark "α"
@@ -44,7 +45,8 @@ output * bg  $wallpaper fill
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
-exec sway-lid
+bindswitch lid:on exec "sway-screen disable $laptop-id"
+bindswitch lid:off exec "sway-screen enable $laptop-id"
 
 bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
 bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
