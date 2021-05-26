@@ -3,6 +3,6 @@
 id="${LAPTOP_ID:-"eDP-1"}"
 displays="$(swaymsg -t get_outputs | jq -r '.[0]')"
 if [ -z  "$(jq '.|select(.name=="$id") | .name' <<< $displays)" ];then
-   id="$(jq -r '[.][0].name' <<< $displays)"
+    id="$(jq -r '[.][0].name' <<< $displays)"
 fi
 echo $id
