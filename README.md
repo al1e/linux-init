@@ -3456,8 +3456,8 @@ if ! pidof gpg-agent; then
     if [ -f "$cachefile" ]; then
         p=$(zenity --password --title "Password for SSH")
         if [ ! -z "$p" ]; then
-            while IFS= read -r p; do
-                [ ! -z "$p" ] && echo "$p" | /usr/lib/gnupg2/gpg-preset-passphrase --preset "$p"
+            while IFS= read -r k; do
+                [ ! -z "$p" ] && echo "$p" | /usr/lib/gnupg2/gpg-preset-passphrase --preset "$k"
             done < "$cachefile"
         fi
     fi
