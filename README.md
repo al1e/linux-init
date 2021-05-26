@@ -1506,8 +1506,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             if [  "$1" = "-q" ]; then
                 ping openweathermap.org -c1
             else
-                export OPENWEATHERKEY="${OPENWEATHERKEY:-$(pass "WebServices/OpenWeatherMap/freemium")}"
-                ansiweather -l "Grömitz,DE" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
+                export OPENWEATHERKEY="${OPENWEATHERKEY:-$(head -n 1 $HOME/.config/openweathermap/freemium)}"
+                ansiweather -l "${OPENWEATHER_LOCATION:-"Grömitz,DE"}" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
             fi
             ```
 
@@ -1800,7 +1800,7 @@ exec swayidle -w \
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-m="$(swaymsg -t get_outputs | jq -r '.[0].name')"
+m="${LAPTOP_ID:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
 swaymsg bindswitch lid:on exec "sway-screen disable $m"
 swaymsg bindswitch lid:off exec "sway-screen enable $m"
 echo $m
