@@ -3,12 +3,11 @@ exec xrdb -merge ~/.Xresources
 # Maintained in linux-config.org
 
 set $mod Mod4
+set $term 'oneterminal'
+set $menu 'sway-launcher-fzf'
+set $editor 'sway-editor'
+set $wallpaper '~/Pictures/Wallpapers/current'
 
-set $menu sway-launcher-fzf
-for_window [title="sway-launcher"] floating enable
-
-set $term  'sway-scratch-terminal'
-set $editor  'sway-editor'
 include /etc/sway/config-vars.d/*
 include config-vars.d/*
 
@@ -31,7 +30,8 @@ Bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
-#+begin_src conf
+for_window [title="sway-launcher"] floating enable
+
 set $wallpaper "~/Pictures/Wallpapers/current"
 output * bg  $wallpaper fill
 

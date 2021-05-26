@@ -770,23 +770,10 @@ Use mako as the notification daemon
 # Maintained in linux-config.org
 
 set $mod Mod4
-
-set $menu sway-launcher-fzf
-for_window [title="sway-launcher"] floating enable
-
-set $term  'sway-scratch-terminal'
-set $editor  'sway-editor'
-set $wallpaper "~/Pictures/Wallpapers/current"
-set $laptop-id `sway-laptop-id`
-
-set $trans 0.8
-set $alphamark "α"
-for_window [con_mark=$alphamark] opacity set $trans
-
-bindsym $mod+Control+a mark --toggle "$alphamark" ; [con_id=__focused__] opacity set 1 ; [con_mark=$alphamark con_id=__focused__] opacity set $trans
-
-set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
-exec sleep 2 && sway-notify $monitor
+set $term 'oneterminal'
+set $menu 'sway-launcher-fzf'
+set $editor 'sway-editor'
+set $wallpaper '~/Pictures/Wallpapers/current'
 
 include /etc/sway/config-vars.d/*
 include config-vars.d/*
@@ -807,37 +794,58 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 Bindsym $mod+Shift+r restart
 
-output * bg  $wallpaper fill
-
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
 ```
 
 
+### launcher
+
+```conf
+for_window [title="sway-launcher"] floating enable
+```
+
+
 ### display
 
-1.  lid     :lid:clamshell:
+1.  wallpaper
 
     ```conf
+    set $wallpaper "~/Pictures/Wallpapers/current"
+    output * bg  $wallpaper fill
+    ```
+
+2.  transparency
+
+    ```conf
+    set $trans 0.8
+    set $alphamark "α"
+    for_window [con_mark=$alphamark] opacity set $trans
+    bindsym $mod+Control+a mark --toggle "$alphamark" ; [con_id=__focused__] opacity set 1 ; [con_mark=$alphamark con_id=__focused__] opacity set $trans
+    ```
+
+3.  lid     :lid:clamshell:
+
+    ```conf
+    set $laptop-id `sway-laptop-id`
     bindswitch lid:on exec "sway-screen disable $laptop-id"
     bindswitch lid:off exec "sway-screen enable $laptop-id"
     ```
 
-2.  brightness     :brightness:
+4.  brightness     :brightness:
 
     ```conf
     bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10 && sway-brightness-notify
     bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10 && sway-brightness-notify
     ```
 
+5.  gaps
 
-### gaps
-
-```conf
-gaps inner  2
-gaps outer  2
-```
+    ```conf
+    gaps inner  2
+    gaps outer  2
+    ```
 
 
 ### scratchpad terminal
@@ -856,8 +864,8 @@ for_window [title=ScratchTerminal] mark "$alphamark", move to scratchpad; [title
 1.  ~/bin/sway/sway-scratch-terminal     :swaysock:
 
     ```bash
-     #!/usr/bin/bash
-     #Maintained in linux-config.org
+    #!/usr/bin/bash
+    #Maintained in linux-config.org
     swaymsg "[title=ScratchTerminal] scratchpad show " || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
     ```
 
@@ -865,131 +873,131 @@ for_window [title=ScratchTerminal] mark "$alphamark", move to scratchpad; [title
 ### navigation                                  :navigation
 
 ```conf
-  # change focus
-  # bindsym $mod+h focus left
-  # bindsym $mod+j focus down
-  # bindsym $mod+k focus up
-  # bindsym $mod+l focus right
+# change focus
+# bindsym $mod+h focus left
+# bindsym $mod+j focus down
+# bindsym $mod+k focus up
+# bindsym $mod+l focus right
 
-  bindsym $mod+o focus left
+bindsym $mod+o focus left
 
-  # alternatively, you can use the cursor keys:
-  bindsym $mod+Left focus left
-  bindsym $mod+Down focus down
-  bindsym $mod+Up focus up
-  bindsym $mod+Right focus right
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
-  # move focused window
-  bindsym $mod+Shift+h move left
-  bindsym $mod+Shift+j move down
-  bindsym $mod+Shift+k move up
-  bindsym $mod+Shift+l move right
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
-  # alternatively, you can use the cursor keys:
-  bindsym $mod+Shift+Left move left
-  bindsym $mod+Shift+Down move down
-  bindsym $mod+Shift+Up move up
-  bindsym $mod+Shift+Right move right
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
 
-  # split in horizontal orientation
-  bindsym $mod+h split h
-  # split in vertical orientation
-  bindsym $mod+v split v
+# split in horizontal orientation
+bindsym $mod+h split h
+# split in vertical orientation
+bindsym $mod+v split v
 
-  # enter fullscreen mode for the focused container
-  bindsym $mod+f fullscreen toggle
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
 
-  # change container layout (stacked, tabbed, toggle split)
-  bindsym $mod+s layout stacking
-  bindsym $mod+w layout tabbed
-  bindsym $mod+e layout toggle split
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
 
-  # toggle tiling / floatving
-  bindsym $mod+Shift+space floating toggle
+# toggle tiling / floatving
+bindsym $mod+Shift+space floating toggle
 
-  # change focus between tiling / floating windows
-  bindsym $mod+space focus mode_toggle
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
 
-  # focus the parent container
-  bindsym $mod+a focus parent
+# focus the parent container
+bindsym $mod+a focus parent
 
-  bindsym $mod+Shift+s sticky toggle
+bindsym $mod+Shift+s sticky toggle
 
-  bindsym $mod+m move workspace to output left
-  bindsym $mod+Control+m exec sway-display-swap
-  bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+m move workspace to output left
+bindsym $mod+Control+m exec sway-display-swap
+bindsym $mod+Tab workspace back_and_forth
 
-  # focus the child container
-  #bindsym $mod+d focus child
+# focus the child container
+#bindsym $mod+d focus child
 
-  # Define names for default workspaces for which we configure key bindings later on.
-  # We use variables to avoid repeating the names in multiple places.
-  set $ws1 "1:edit"
-  set $ws2 "2:research"
-  set $ws3 "3:shell"
-  set $ws4 "4:browse"
-  set $ws5 "5:dired"
-  set $ws6 "6:music"
-  set $ws7 "7:video"
-  set $ws8 "8:irc"
-  set $ws9 "9:steam"
-  set $ws10 "10"
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1:edit"
+set $ws2 "2:research"
+set $ws3 "3:shell"
+set $ws4 "4:browse"
+set $ws5 "5:dired"
+set $ws6 "6:music"
+set $ws7 "7:video"
+set $ws8 "8:irc"
+set $ws9 "9:steam"
+set $ws10 "10"
 
-  workspace $ws3 gaps inner 2
-  workspace $ws3 gaps outer 2
+workspace $ws3 gaps inner 2
+workspace $ws3 gaps outer 2
 
-  assign [title="dbg:"] $ws3
+assign [title="dbg:"] $ws3
 
-  # switch to workspace
-  bindsym $mod+1 workspace number $ws1
-  bindsym $mod+2 workspace number $ws2
-  bindsym $mod+3 workspace number $ws3
-  bindsym $mod+4 workspace number $ws4
-  bindsym $mod+5 workspace number $ws5
-  bindsym $mod+6 workspace number $ws6
-  bindsym $mod+7 workspace number $ws7
-  bindsym $mod+8 workspace number $ws8
-  bindsym $mod+9 workspace number $ws9
+# switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
 #  bindsym $mod+0 workspace number $ws10
 
-  # move focused container to workspace
-  bindsym $mod+Shift+1 move container to workspace number $ws1
-  bindsym $mod+Shift+2 move container to workspace number $ws2
-  bindsym $mod+Shift+3 move container to workspace number $ws3
-  bindsym $mod+Shift+4 move container to workspace number $ws4
-  bindsym $mod+Shift+5 move container to workspace number $ws5
-  bindsym $mod+Shift+6 move container to workspace number $ws6
-  bindsym $mod+Shift+7 move container to workspace number $ws7
-  bindsym $mod+Shift+8 move container to workspace number $ws8
-  bindsym $mod+Shift+9 move container to workspace number $ws9
-  bindsym $mod+Shift+0 move container to workspace number $ws10
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
 
-  # resize window (you can also use the mouse for that)
-  mode "resize" {
-  # These bindings trigger as soon as you enter the resize mode
+# resize window (you can also use the mouse for that)
+mode "resize" {
+# These bindings trigger as soon as you enter the resize mode
 
-  # Pressing left will shrink the window’s width.
-  # Pressing right will grow the window’s width.
-  # Pressing up will shrink the window’s height.
-  # Pressing down will grow the window’s height.
-  bindsym j resize shrink width 10 px or 10 ppt
-  bindsym k resize grow height 10 px or 10 ppt
-  bindsym l resize shrink height 10 px or 10 ppt
-  bindsym odiaeresis resize grow width 10 px or 10 ppt
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+bindsym j resize shrink width 10 px or 10 ppt
+bindsym k resize grow height 10 px or 10 ppt
+bindsym l resize shrink height 10 px or 10 ppt
+bindsym odiaeresis resize grow width 10 px or 10 ppt
 
-  # same bindings, but for the arrow keys
-  bindsym Left resize shrink width 10 px or 10 ppt
-  bindsym Down resize grow height 10 px or 10 ppt
-  bindsym Up resize shrink height 10 px or 10 ppt
-  bindsym Right resize grow width 10 px or 10 ppt
+# same bindings, but for the arrow keys
+bindsym Left resize shrink width 10 px or 10 ppt
+bindsym Down resize grow height 10 px or 10 ppt
+bindsym Up resize shrink height 10 px or 10 ppt
+bindsym Right resize grow width 10 px or 10 ppt
 
-  # back to normal: Enter or Escape or $mod+r
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-  bindsym $mod+r mode "default"
-  }
+# back to normal: Enter or Escape or $mod+r
+bindsym Return mode "default"
+bindsym Escape mode "default"
+bindsym $mod+r mode "default"
+}
 
-  bindsym $mod+r mode "resize"
+bindsym $mod+r mode "resize"
 
 ```
 
@@ -1682,7 +1690,7 @@ fi
 
     ```conf
     {
-      output eDP-1 enable position 0,0
+    output eDP-1 enable position 0,0
     }
     ```
 
@@ -1814,7 +1822,7 @@ Here we look for an env `LAPTOP_ID`. In my setup that would be set in `$HOME/.pr
 id="${LAPTOP_ID:-"eDP-1"}"
 displays="$(swaymsg -t get_outputs | jq -r '.[0]')"
 if [ -z  "$(jq '.|select(.name=="$id") | .name' <<< $displays)" ];then
-   id="$(jq -r '[.][0].name' <<< $displays)"
+    id="$(jq -r '[.][0].name' <<< $displays)"
 fi
 echo $id
 ```
@@ -1838,7 +1846,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org06cd628"></a>
+<a id="org21f6ad9"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1859,7 +1867,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org06cd628).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org21f6ad9).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2113,40 +2121,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 conky.config = {
-    alignment = 'top_left',
-    background = false,
-    border_width = 1,
-    cpu_avg_samples = 2,
-    default_color = 'white',
-    default_outline_color = 'white',
-    default_shade_color = 'white',
-    double_buffer = true,
-    draw_borders = false,
-    draw_graph_borders = true,
-    draw_outline = false,
-    draw_shades = false,
-    extra_newline = false,
-    font = 'DejaVu Sans Mono:size=8',
-    gap_x = 60,
-    gap_y = 60,
-    minimum_height = 5,
-    minimum_width = 5,
-    net_avg_samples = 2,
-    no_buffers = true,
-    out_to_console = false,
-    out_to_ncurses = false,
-    out_to_stderr = false,
-    out_to_x = true,
-    own_window = true,
-    own_window_class = 'Conky',
-    own_window_type = 'desktop',
-    show_graph_range = false,
-    show_graph_scale = false,
-    stippled_borders = 0,
-    update_interval = 1.0,
-    uppercase = false,
-    use_spacer = 'none',
-    use_xft = true,
+alignment = 'top_left',
+background = false,
+border_width = 1,
+cpu_avg_samples = 2,
+default_color = 'white',
+default_outline_color = 'white',
+default_shade_color = 'white',
+double_buffer = true,
+draw_borders = false,
+draw_graph_borders = true,
+draw_outline = false,
+draw_shades = false,
+extra_newline = false,
+font = 'DejaVu Sans Mono:size=8',
+gap_x = 60,
+gap_y = 60,
+minimum_height = 5,
+minimum_width = 5,
+net_avg_samples = 2,
+no_buffers = true,
+out_to_console = false,
+out_to_ncurses = false,
+out_to_stderr = false,
+out_to_x = true,
+own_window = true,
+own_window_class = 'Conky',
+own_window_type = 'desktop',
+show_graph_range = false,
+show_graph_scale = false,
+stippled_borders = 0,
+update_interval = 1.0,
+uppercase = false,
+use_spacer = 'none',
+use_xft = true,
 }
 
 conky.text = [[
@@ -2161,7 +2169,7 @@ ${color grey}CPU Usage:$color $cpu% ${cpubar 4}
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
 $hr
 ${color grey}File systems:
- / $color${fs_used /}/${fs_size /} ${fs_bar 6 /}
+/ $color${fs_used /}/${fs_size /} ${fs_bar 6 /}
 ${color grey}Networking:
 Up:$color ${upspeed} ${color grey} - Down:$color ${downspeed}
 $hr

@@ -1301,12 +1301,11 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   # Maintained in linux-config.org
 
   set $mod Mod4
+  set $term 'oneterminal'
+  set $menu 'sway-launcher-fzf'
+  set $editor 'sway-editor'
+  set $wallpaper '~/Pictures/Wallpapers/current'
 
-  set $menu sway-launcher-fzf
-  for_window [title="sway-launcher"] floating enable
-
-  set $term  'sway-scratch-terminal'
-  set $editor  'sway-editor'
   include /etc/sway/config-vars.d/*
   include config-vars.d/*
 
@@ -1330,13 +1329,15 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   bindsym $mod+d exec $menu
 
 #+end_src
+*** launcher
+#+begin_src conf
+  for_window [title="sway-launcher"] floating enable
+#+end_src
 *** display
 **** wallpaper
 #+begin_src conf
-  ,#+begin_src conf
   set $wallpaper "~/Pictures/Wallpapers/current"
   output * bg  $wallpaper fill
-#+end_src
 #+end_src
 **** transparency
 #+begin_src conf
