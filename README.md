@@ -778,6 +778,9 @@ set $term  'sway-scratch-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
+set $trans 0.8
+for_window [con_mark=^alpha] opacity set $trans
+
 set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
 exec sleep 2 && sway-notify $monitor
 
@@ -842,7 +845,7 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym $mod+Return exec sway-scratch-terminal
 
-for_window [title=ScratchTerminal] move to scratchpad; [title=ScratchTerminal] scratchpad show
+for_window [title=ScratchTerminal] mark "alphaterm", move to scratchpad; [title=ScratchTerminal] scratchpad show
 ```
 
 1.  ~/bin/sway/sway-scratch-terminal     :swaysock:
@@ -850,7 +853,7 @@ for_window [title=ScratchTerminal] move to scratchpad; [title=ScratchTerminal] s
     ```bash
      #!/usr/bin/bash
      #Maintained in linux-config.org
-    swaymsg "[title=ScratchTerminal] scratchpad show" || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
+    swaymsg "[title=ScratchTerminal] scratchpad show " || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
     ```
 
 
@@ -1843,7 +1846,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orga3e87f8"></a>
+<a id="org9286e8d"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1864,7 +1867,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga3e87f8).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9286e8d).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

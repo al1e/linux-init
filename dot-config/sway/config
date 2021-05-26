@@ -11,6 +11,9 @@ set $term  'sway-scratch-terminal'
 set $editor  'sway-editor'
 set $wallpaper "~/Pictures/Wallpapers/current"
 
+set $trans 0.8
+for_window [con_mark=^alpha] opacity set $trans
+
 set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
 exec sleep 2 && sway-notify $monitor
 
@@ -50,7 +53,7 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym $mod+Return exec sway-scratch-terminal
 
-for_window [title=ScratchTerminal] move to scratchpad; [title=ScratchTerminal] scratchpad show
+for_window [title=ScratchTerminal] mark "alphaterm", move to scratchpad; [title=ScratchTerminal] scratchpad show
 
 # change focus
   # bindsym $mod+h focus left

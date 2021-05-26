@@ -1309,6 +1309,9 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   set $editor  'sway-editor'
   set $wallpaper "~/Pictures/Wallpapers/current"
 
+  set $trans 0.8
+  for_window [con_mark=^alpha] opacity set $trans
+
   set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
   exec sleep 2 && sway-notify $monitor
 
@@ -1361,13 +1364,13 @@ I want a key to create and then toggle a terminal.
   bindsym $mod+minus scratchpad show
   bindsym $mod+Return exec sway-scratch-terminal
 
-  for_window [title=ScratchTerminal] move to scratchpad; [title=ScratchTerminal] scratchpad show
+  for_window [title=ScratchTerminal] mark "alphaterm", move to scratchpad; [title=ScratchTerminal] scratchpad show
 #+end_src
 **** ~/bin/sway/sway-scratch-terminal                              :swaysock:
 #+begin_src bash :tangle "~/bin/sway/sway-scratch-terminal"
   #!/usr/bin/bash
   #Maintained in linux-config.org
- swaymsg "[title=ScratchTerminal] scratchpad show" || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
+ swaymsg "[title=ScratchTerminal] scratchpad show " || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
 #+end_src
 *** navigation                                  :navigation
 #+begin_src conf
