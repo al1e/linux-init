@@ -13,7 +13,7 @@ if ! sway-do-tool "$title"; then
     else
         rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
     fi
-    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}" &
 else
     rgr-logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then

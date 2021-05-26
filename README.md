@@ -832,26 +832,26 @@ gaps outer  2
 ```
 
 
-### scratchpad
+### scratchpad terminal
+
+I want a key to create and then toggle a terminal.
 
 ```conf
-#
-# Scratchpad:
-#
-# Sway has a "scratchpad", which is a bag of holding for windows.
-# You can send windows there and get them back later.
 
-# Move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
-
-for_window [title=^Scratch] move to scratchpad,scratchpad show
-
 bindsym $mod+Return exec sway-scratch-terminal
 
+for_window [title=ScratchTerminal] move to scratchpad; [title=ScratchTerminal] scratchpad show
 ```
+
+1.  ~/bin/sway/sway-scratch-terminal     :swaysock:
+
+    ```bash
+     #!/usr/bin/bash
+     #Maintained in linux-config.org
+    swaymsg "[title=ScratchTerminal] scratchpad show" || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
+    ```
 
 
 ### navigation                                  :navigation
@@ -1843,7 +1843,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc3d173e"></a>
+<a id="orga3e87f8"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1864,7 +1864,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc3d173e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga3e87f8).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -1888,15 +1888,6 @@ exit 0
 #!/usr/bin/bash
 #Maintained in linux-config.org
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
-```
-
-
-### ~/bin/sway/sway-scratch-terminal     :swaysock:
-
-```bash
- #!/usr/bin/bash
- #Maintained in linux-config.org
-swaymsg "[title=ScratchTerminal] scratchpad show" || alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal"
 ```
 
 
@@ -2947,7 +2938,7 @@ if ! sway-do-tool "$title"; then
     else
         rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
     fi
-    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}"
+    alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}" &
 else
     rgr-logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
