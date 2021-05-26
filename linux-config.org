@@ -1310,7 +1310,9 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   set $wallpaper "~/Pictures/Wallpapers/current"
 
   set $trans 0.8
-  for_window [con_mark=^alpha] opacity set $trans
+  for_window [con_mark=alpha] opacity set $trans
+
+  bindsym $mod+Control+a mark --toggle "alpha" ; [con_id=__focused__] opacity set 1 ; [con_mark=alpha con_id=__focused__] opacity set $trans
 
   set $monitor `swaymsg -t get_outputs | jq -r '.[0].name')`
   exec sleep 2 && sway-notify $monitor
@@ -1364,7 +1366,7 @@ I want a key to create and then toggle a terminal.
   bindsym $mod+minus scratchpad show
   bindsym $mod+Return exec sway-scratch-terminal
 
-  for_window [title=ScratchTerminal] mark "alphaterm", move to scratchpad; [title=ScratchTerminal] scratchpad show
+  for_window [title=ScratchTerminal] mark "alpha", move to scratchpad; [title=ScratchTerminal] scratchpad show
 #+end_src
 **** ~/bin/sway/sway-scratch-terminal                              :swaysock:
 #+begin_src bash :tangle "~/bin/sway/sway-scratch-terminal"
@@ -1517,7 +1519,6 @@ I want a key to create and then toggle a terminal.
 **** pavucontrol
 #+begin_src conf
   for_window [app_id="pavucontrol"] floating enable
-  bindsym $mod+Control+a exec pavucontrol
   bindsym $mod+Control+Shift+a exec pulse-restart
 #+end_src
 *** wifi                                                               :wifi:
