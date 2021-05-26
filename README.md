@@ -1141,6 +1141,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "cpu",
             "temperature",
             "memory",
+            "custom/uptime",
             "custom/dropbox"
           ],
 
@@ -1193,7 +1194,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format-plugged":  "<span color='gold'>{icon}  </span> {capacity}%",
             //		"format-good": "", // An empty format will hide the module
             "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
-            "format-icons": ["", "", "", "", ""]
+            "format-icons": ["", "", "", "", ""],
+            "on-click" : "sway-htop",
           },
 
           "clock": {
@@ -1209,7 +1211,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
               "warning": 70,
               "critical": 90
             },
-            "on-click" : "sway-htop",
+            "on-click" : "hardinfo",
           },
 
           "idle_inhibitor": {
@@ -1286,6 +1288,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "sway-weather",
           },
 
+          "custom/uptime": {
+            "format": "<span color='white'>⌛{}</span>",
+            "interval": 60,
+            "exec": "uptime -p",
+          },
           "custom/dropbox": {
             "format": "<span color='gold'>⇄ {}</span>",
             "interval": 5,
@@ -1846,7 +1853,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org21f6ad9"></a>
+<a id="orge83005b"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1867,7 +1874,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org21f6ad9).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge83005b).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

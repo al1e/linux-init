@@ -10,6 +10,7 @@
     "cpu",
     "temperature",
     "memory",
+    "custom/uptime",
     "custom/dropbox"
   ],
 
@@ -62,7 +63,8 @@
     "format-plugged":  "<span color='gold'>{icon}  </span> {capacity}%",
     //		"format-good": "", // An empty format will hide the module
     "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
-    "format-icons": ["", "", "", "", ""]
+    "format-icons": ["", "", "", "", ""],
+    "on-click" : "sway-htop",
   },
 
   "clock": {
@@ -78,7 +80,7 @@
       "warning": 70,
       "critical": 90
     },
-    "on-click" : "sway-htop",
+    "on-click" : "hardinfo",
   },
 
   "idle_inhibitor": {
@@ -155,6 +157,11 @@
     "on-click": "sway-weather",
   },
 
+  "custom/uptime": {
+    "format": "<span color='white'>⌛{}</span>",
+    "interval": 60,
+    "exec": "uptime -p",
+  },
   "custom/dropbox": {
     "format": "<span color='gold'>⇄ {}</span>",
     "interval": 5,
