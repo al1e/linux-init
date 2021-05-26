@@ -2235,11 +2235,24 @@ Just a gathering place of locky/suspendy type things...
        before-sleep 'sway-lock'
 #+end_src
 
+*** ~/bin/sway/sway-laptop-id
+Here we look for an env ~LAPTOP_ID~. In my setup that would be set in ~$HOME/.profile.local~. If thats not set we assume ~eDP-1~
+but in both cases we check if it exists in the sway tree, and, if not, set it it to the first one found.
+
+#+begin_src bash :tangle ~/bin/sway/sway-laptop-id
+  #!/usr/bin/bash
+  # Maintained in linux-config.org
+  id="${LAPTOP_ID:-"eDP-1"}"
+  if [ -z "$(swaymsg -t get_outputs | jq -r '.[0] | select (.name=="$id")')" ]; then
+     id="$(swaymsg -t get_outputs | jq -r '.[0].name')"
+  fi
+  echo $id
+#+end_src
 *** ~/bin/sway/sway-lid
 #+begin_src bash :tangle ~/bin/sway/sway-lid
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  m="${LAPTOP_ID:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
+  m="$(sway-laptop-id)"
   swaymsg bindswitch lid:on exec "sway-screen disable $m"
   swaymsg bindswitch lid:off exec "sway-screen enable $m"
   echo $m
