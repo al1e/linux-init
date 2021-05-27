@@ -1123,7 +1123,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
     <https://github.com/Alexays/Waybar/wiki/Configuration>
 
     ```conf
-    exec waybar
+    bar {
+      swaybar_command waybar
+    }
     ```
 
     1.  ~/.config/waybar/config
@@ -1337,7 +1339,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         }
 
         #waybar {
-            background: rgba(48,48,59, 0);
+            background: rgba(28, 28, 28, 0.6);
             color: #e4e4e4;
         }
 
@@ -1357,7 +1359,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             border-bottom-left-radius: 10px;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
-            background: rgba(28, 28, 28, 0.8);
+            background: rgba(28, 28, 28, 0.6);
         }
 
         #workspaces button {
@@ -1853,7 +1855,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge83005b"></a>
+<a id="org1d7b445"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1874,7 +1876,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge83005b).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1d7b445).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

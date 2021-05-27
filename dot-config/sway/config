@@ -246,7 +246,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 for_window [class="steam_app.*"] fullscreen enable
 for_window [class="steam_app*"] inhibit_idle focus
 
-exec waybar
+bar {
+  swaybar_command waybar
+}
 
 exec sway-kanshi
 exec sway-idle
