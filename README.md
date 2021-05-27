@@ -1306,10 +1306,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "sway-www https://www.dropbox.com/h",
           },
           "custom/monitors": {
-            "format": "<span color='white'>{}</span>",
+            "format": "<span color='gold'>{}</span>",
+            "return-type" : "json",
             "interval": 10,
             "exec": "waybar-monitors",
-            "tooltip": "false",
+            "tooltip": "true",
             "on-click": "sway-screen-menu",
           },
           "custom/bluetooth": {
@@ -1533,7 +1534,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             #!/usr/bin/bash
             #Maintained in linux-config.org
             l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
-            for i in `seq $l`; do echo -n "🖥️";done
+            o=$(swaymsg -t get_outputs | jq  -r '. | map(.name) | join(",")')
+            t=""
+            for i in `seq $l`; do t="${t}🖥️";done
+            text="{\"text\":\""$t"\",\"tooltip\":\""$o"\"}"
+            echo $text
             ```
 
         4.  ~/bin/sway/waybar-weather
@@ -1867,7 +1872,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgf2aff65"></a>
+<a id="org3c812f1"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1888,7 +1893,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgf2aff65).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3c812f1).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

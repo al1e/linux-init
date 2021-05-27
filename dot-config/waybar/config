@@ -171,10 +171,11 @@
     "on-click": "sway-www https://www.dropbox.com/h",
   },
   "custom/monitors": {
-    "format": "<span color='white'>{}</span>",
+    "format": "<span color='gold'>{}</span>",
+    "return-type" : "json",
     "interval": 10,
     "exec": "waybar-monitors",
-    "tooltip": "false",
+    "tooltip": "true",
     "on-click": "sway-screen-menu",
   },
   "custom/bluetooth": {
