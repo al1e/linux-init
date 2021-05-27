@@ -1163,6 +1163,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "battery",
             "custom/power-draw",
             "network",
+            "wlr/taskbar",
           ],
 
           "sway/workspaces": {
@@ -1323,6 +1324,15 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 5,
             "exec": "waybar-power-draw",
             "tooltip": "false",
+          },
+
+          "wlr/taskbar": {
+            "format": "{icon}",
+            "icon-size": 14,
+            "icon-theme": "Numix-Circle",
+            "tooltip-format": "{title}",
+            "on-click": "activate",
+            "on-click-middle": "close",
           },
 
         }
@@ -1857,7 +1867,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org2344947"></a>
+<a id="orgf2aff65"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1878,7 +1888,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2344947).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgf2aff65).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

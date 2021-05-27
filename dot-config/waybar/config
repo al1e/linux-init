@@ -28,6 +28,7 @@
     "battery",
     "custom/power-draw",
     "network",
+    "wlr/taskbar",
   ],
 
   "sway/workspaces": {
@@ -188,6 +189,15 @@
     "interval": 5,
     "exec": "waybar-power-draw",
     "tooltip": "false",
+  },
+
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 14,
+    "icon-theme": "Numix-Circle",
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
   },
 
 }
