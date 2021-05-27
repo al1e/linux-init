@@ -2385,13 +2385,15 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   mkdir -p "${DIR}"
 
   FILENAME="screenshot-$(date +%F-%T).png"
-  grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
-
-  #Create a link, so don't have to search for the newest
-  ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
-
-  #Copy to the buffer
-  exec wl-copy < "${DIR}"/screenshot-latest.png
+  region="$(slurp)"
+  if [ ! -z "$region" ]; then
+      sway-notify "Taking pic in 5s.."
+      sleep 5
+      grim -g "$region" "${DIR}"/"${FILENAME}" || exit 1
+      #Create a link, so don't have to search for the newest
+      ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+      sway-notify "Done! see ${DIR}/screenshot-latest.png"
+  fi
 #+end_src
 *** ~/bin/sway/sway-volume-notify
 #+begin_src bash :tangle "~/bin/sway/sway-volume-notify"
