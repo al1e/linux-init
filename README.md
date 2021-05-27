@@ -861,7 +861,7 @@ bindsym $mod+Return exec sway-scratch-terminal
 for_window [title=ScratchTerminal] mark "$alphamark", move to scratchpad; [title=ScratchTerminal] scratchpad show
 ```
 
-1.  ~/bin/sway/sway-scratch-terminal     :swaysock:
+1.  ~/bin/sway/sway-scratch-terminal
 
     ```bash
     #!/usr/bin/bash
@@ -1872,7 +1872,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org3c812f1"></a>
+<a id="orgc2ddd83"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1893,7 +1893,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3c812f1).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc2ddd83).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -1975,13 +1975,15 @@ DIR=${HOME}/tmp/Screenshots
 mkdir -p "${DIR}"
 
 FILENAME="screenshot-$(date +%F-%T).png"
-grim -g "$(slurp)" "${DIR}"/"${FILENAME}" || exit 1
-
-#Create a link, so don't have to search for the newest
-ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
-
-#Copy to the buffer
-exec wl-copy < "${DIR}"/screenshot-latest.png
+region="$(slurp)"
+if [ ! -z "$region" ]; then
+    sway-notify "Taking pic in 5s.."
+    sleep 5
+    grim -g "$region" "${DIR}"/"${FILENAME}" || exit 1
+    #Create a link, so don't have to search for the newest
+    ln -sf "${DIR}"/"${FILENAME}" "${DIR}"/screenshot-latest.png
+    sway-notify "Done! see ${DIR}/screenshot-latest.png"
+fi
 ```
 
 
