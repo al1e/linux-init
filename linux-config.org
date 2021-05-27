@@ -1373,7 +1373,7 @@ I want a key to create and then toggle a terminal.
 
   for_window [title=ScratchTerminal] mark "$alphamark", move to scratchpad; [title=ScratchTerminal] scratchpad show
 #+end_src
-**** ~/bin/sway/sway-scratch-terminal                              :swaysock:
+**** ~/bin/sway/sway-scratch-terminal
 #+begin_src bash :tangle "~/bin/sway/sway-scratch-terminal"
   #!/usr/bin/bash
   #Maintained in linux-config.org
