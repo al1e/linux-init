@@ -247,8 +247,9 @@ for_window [class="steam_app.*"] fullscreen enable
 for_window [class="steam_app*"] inhibit_idle focus
 
 bar {
-  swaybar_command waybar
+swaybar_command waybar
 }
+bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
 
 exec sway-kanshi
 exec sway-idle

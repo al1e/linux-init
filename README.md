@@ -1124,8 +1124,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
     ```conf
     bar {
-      swaybar_command waybar
+    swaybar_command waybar
     }
+    bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
+
     ```
 
     1.  ~/.config/waybar/config
@@ -1855,7 +1857,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org1d7b445"></a>
+<a id="org2344947"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1876,7 +1878,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1d7b445).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2344947).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

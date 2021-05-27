@@ -1603,9 +1603,11 @@ I want a key to create and then toggle a terminal.
 **** waybar                                                          :waybar:
 https://github.com/Alexays/Waybar/wiki/Configuration
 #+begin_src conf
-bar {
+  bar {
   swaybar_command waybar
-}
+  }
+  bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
+
 #+end_src
 ***** ~/.config/waybar/config
 :PROPERTIES:
