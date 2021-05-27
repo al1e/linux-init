@@ -409,6 +409,7 @@ logger -t "startup-initfile"  ZLOGIN
     then
         export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
     fi
+    xhost +SI:localuser:root
     ```
 
 
@@ -1419,7 +1420,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
         @keyframes blink {
             to {
-                background-color: #af005f;
+                background-color: gold;
             }
         }
 
@@ -1872,7 +1873,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc2ddd83"></a>
+<a id="orgac3a8dc"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1893,7 +1894,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc2ddd83).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgac3a8dc).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

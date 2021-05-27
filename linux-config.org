@@ -997,6 +997,7 @@ Link this into $HOME
   then
       export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
   fi
+  xhost +SI:localuser:root
 #+end_src
 ** Oh-My-Zsh Related
 Directory is [[file:.oh-my-zsh/][here]].
@@ -1291,6 +1292,250 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   Name=org.freedesktop.Notifications
   Exec=/usr/lib/notification-daemon/notification-daemon
 #+end_src
+** sway json fun                                                   :noexport:
+*** cur ws
+#+name: cur_ws_json
+#+begin_src bash :results output drawer
+  swaymsg -t get_workspaces | jq '.[] | select (.focused)'
+#+end_src
+
+#+RESULTS: cur_ws_json
+:results:
+{
+  "id": 23,
+  "name": "1:edit",
+  "rect": {
+    "x": 4,
+    "y": 4,
+    "width": 1912,
+    "height": 1042
+  },
+  "focus": [
+    26
+  ],
+  "border": "none",
+  "current_border_width": 0,
+  "layout": "tabbed",
+  "orientation": "none",
+  "percent": null,
+  "window_rect": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "deco_rect": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "geometry": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "window": null,
+  "urgent": false,
+  "marks": [],
+  "fullscreen_mode": 1,
+  "nodes": [],
+  "floating_nodes": [],
+  "sticky": false,
+  "num": 1,
+  "output": "eDP-1",
+  "type": "workspace",
+  "representation": "T[Emacs]",
+  "focused": true,
+  "visible": true
+}
+:end:
+{
+  "id": 23,
+  "name": "1:edit",
+  "rect": {
+    "x": 4,
+    "y": 4,
+    "width": 1912,
+    "height": 1042
+  },
+  "focus": [
+    26
+  ],
+  "border": "none",
+  "current_border_width": 0,
+  "layout": "tabbed",
+  "orientation": "none",
+  "percent": null,
+  "window_rect": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "deco_rect": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "geometry": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+  },
+  "window": null,
+  "urgent": false,
+  "marks": [],
+  "fullscreen_mode": 1,
+  "nodes": [],
+  "floating_nodes": [],
+  "sticky": false,
+  "num": 1,
+  "output": "eDP-1",
+  "type": "workspace",
+  "representation": "T[Emacs]",
+  "focused": true,
+  "visible": true
+}
+*** cur ws id
+#+name: cur_ws_id
+#+begin_src bash :var json=cur_ws_json
+ echo $json | jq '.id'
+#+end_src
+
+#+RESULTS: cur_ws_id
+: 23
+*** cur ws nodes
+#+name: cur_ws_nodes
+#+begin_src bash :var id=cur_ws_id :results output drawer
+  swaymsg -t get_tree | jq '.nodes[1] | .nodes[] | select(.id==23).nodes'
+#+end_src
+
+#+RESULTS: cur_ws_nodes
+:results:
+[
+  {
+    "id": 26,
+    "name": "Emacs: linux-config.org",
+    "rect": {
+      "x": 4,
+      "y": 30,
+      "width": 955,
+      "height": 1016
+    },
+    "focused": true,
+    "focus": [],
+    "border": "normal",
+    "current_border_width": 2,
+    "layout": "none",
+    "orientation": "none",
+    "percent": 0.49947698744769875,
+    "window_rect": {
+      "x": 2,
+      "y": 0,
+      "width": 951,
+      "height": 1014
+    },
+    "deco_rect": {
+      "x": 0,
+      "y": 0,
+      "width": 955,
+      "height": 26
+    },
+    "geometry": {
+      "x": 0,
+      "y": 0,
+      "width": 658,
+      "height": 722
+    },
+    "window": 4194616,
+    "urgent": false,
+    "marks": [],
+    "fullscreen_mode": 0,
+    "nodes": [],
+    "floating_nodes": [],
+    "sticky": false,
+    "type": "con",
+    "pid": 72665,
+    "app_id": null,
+    "visible": true,
+    "max_render_time": 0,
+    "shell": "xwayland",
+    "inhibit_idle": false,
+    "idle_inhibitors": {
+      "user": "none",
+      "application": "none"
+    },
+    "window_properties": {
+      "class": "Emacs",
+      "instance": "emacs",
+      "title": "Emacs: linux-config.org",
+      "transient_for": null
+    }
+  },
+  {
+    "id": 83,
+    "name": "rgr@thinkpadt14s:~",
+    "rect": {
+      "x": 961,
+      "y": 30,
+      "width": 955,
+      "height": 1016
+    },
+    "focused": false,
+    "focus": [],
+    "border": "normal",
+    "current_border_width": 2,
+    "layout": "none",
+    "orientation": "none",
+    "percent": 0.49947698744769875,
+    "window_rect": {
+      "x": 2,
+      "y": 0,
+      "width": 951,
+      "height": 1014
+    },
+    "deco_rect": {
+      "x": 957,
+      "y": 0,
+      "width": 955,
+      "height": 26
+    },
+    "geometry": {
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 600
+    },
+    "window": null,
+    "urgent": false,
+    "marks": [],
+    "fullscreen_mode": 0,
+    "nodes": [],
+    "floating_nodes": [],
+    "sticky": false,
+    "type": "con",
+    "pid": 1053132,
+    "app_id": "Alacritty",
+    "visible": true,
+    "max_render_time": 0,
+    "shell": "xdg_shell",
+    "inhibit_idle": false,
+    "idle_inhibitors": {
+      "user": "none",
+      "application": "none"
+    }
+  }
+]
+:end:
+
+#+RESULTS:
+:results:
+:end:
+
 ** Sway config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/sway/config"
@@ -1902,7 +2147,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
   @keyframes blink {
       to {
-          background-color: #af005f;
+          background-color: gold;
       }
   }
 
