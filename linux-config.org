@@ -1213,15 +1213,6 @@ X11 apps still need resource definitions when launched under XWayland.
   #endif
   ! }}}
 #+end_src
-*** sway integration
-:PROPERTIES:
-:header-args:conf: :tangle "~/.config/sway/config"
-:ID:       28b74638-3fc4-499c-bb15-3360f58bccae
-:END:
-#+begin_src conf
-  exec xrdb -merge ~/.Xresources
-#+end_src
-
 ** Building from source
 
 *** wayland
@@ -1302,7 +1293,7 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+RESULTS: cur_ws_json
 :results:
 {
-  "id": 23,
+  "id": 20,
   "name": "1:edit",
   "rect": {
     "x": 4,
@@ -1311,12 +1302,14 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
     "height": 1042
   },
   "focus": [
-    26
+    14,
+    21,
+    11
   ],
   "border": "none",
   "current_border_width": 0,
-  "layout": "tabbed",
-  "orientation": "none",
+  "layout": "splith",
+  "orientation": "horizontal",
   "percent": null,
   "window_rect": {
     "x": 0,
@@ -1341,12 +1334,68 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   "marks": [],
   "fullscreen_mode": 1,
   "nodes": [],
-  "floating_nodes": [],
+  "floating_nodes": [
+    {
+      "id": 11,
+      "name": "ScratchTerminal",
+      "rect": {
+        "x": 480,
+        "y": 146,
+        "width": 960,
+        "height": 783
+      },
+      "focused": false,
+      "focus": [],
+      "border": "normal",
+      "current_border_width": 2,
+      "layout": "none",
+      "orientation": "none",
+      "percent": 0.38982002746568795,
+      "window_rect": {
+        "x": 2,
+        "y": 0,
+        "width": 956,
+        "height": 781
+      },
+      "deco_rect": {
+        "x": 476,
+        "y": 116,
+        "width": 960,
+        "height": 26
+      },
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 600
+      },
+      "window": null,
+      "urgent": false,
+      "marks": [
+        "α"
+      ],
+      "fullscreen_mode": 0,
+      "nodes": [],
+      "floating_nodes": [],
+      "sticky": false,
+      "type": "floating_con",
+      "pid": 227866,
+      "app_id": "Alacritty",
+      "visible": true,
+      "max_render_time": 0,
+      "shell": "xdg_shell",
+      "inhibit_idle": false,
+      "idle_inhibitors": {
+        "user": "none",
+        "application": "none"
+      }
+    }
+  ],
   "sticky": false,
   "num": 1,
   "output": "eDP-1",
   "type": "workspace",
-  "representation": "T[Emacs]",
+  "representation": "H[Emacs Alacritty]",
   "focused": true,
   "visible": true
 }
@@ -1407,7 +1456,7 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+end_src
 
 #+RESULTS: cur_ws_id
-: 23
+: 20
 *** cur ws nodes
 #+name: cur_ws_nodes
 #+begin_src bash :var id=cur_ws_id :results output drawer
@@ -1416,125 +1465,8 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 
 #+RESULTS: cur_ws_nodes
 :results:
-[
-  {
-    "id": 26,
-    "name": "Emacs: linux-config.org",
-    "rect": {
-      "x": 4,
-      "y": 30,
-      "width": 955,
-      "height": 1016
-    },
-    "focused": true,
-    "focus": [],
-    "border": "normal",
-    "current_border_width": 2,
-    "layout": "none",
-    "orientation": "none",
-    "percent": 0.49947698744769875,
-    "window_rect": {
-      "x": 2,
-      "y": 0,
-      "width": 951,
-      "height": 1014
-    },
-    "deco_rect": {
-      "x": 0,
-      "y": 0,
-      "width": 955,
-      "height": 26
-    },
-    "geometry": {
-      "x": 0,
-      "y": 0,
-      "width": 658,
-      "height": 722
-    },
-    "window": 4194616,
-    "urgent": false,
-    "marks": [],
-    "fullscreen_mode": 0,
-    "nodes": [],
-    "floating_nodes": [],
-    "sticky": false,
-    "type": "con",
-    "pid": 72665,
-    "app_id": null,
-    "visible": true,
-    "max_render_time": 0,
-    "shell": "xwayland",
-    "inhibit_idle": false,
-    "idle_inhibitors": {
-      "user": "none",
-      "application": "none"
-    },
-    "window_properties": {
-      "class": "Emacs",
-      "instance": "emacs",
-      "title": "Emacs: linux-config.org",
-      "transient_for": null
-    }
-  },
-  {
-    "id": 83,
-    "name": "rgr@thinkpadt14s:~",
-    "rect": {
-      "x": 961,
-      "y": 30,
-      "width": 955,
-      "height": 1016
-    },
-    "focused": false,
-    "focus": [],
-    "border": "normal",
-    "current_border_width": 2,
-    "layout": "none",
-    "orientation": "none",
-    "percent": 0.49947698744769875,
-    "window_rect": {
-      "x": 2,
-      "y": 0,
-      "width": 951,
-      "height": 1014
-    },
-    "deco_rect": {
-      "x": 957,
-      "y": 0,
-      "width": 955,
-      "height": 26
-    },
-    "geometry": {
-      "x": 0,
-      "y": 0,
-      "width": 800,
-      "height": 600
-    },
-    "window": null,
-    "urgent": false,
-    "marks": [],
-    "fullscreen_mode": 0,
-    "nodes": [],
-    "floating_nodes": [],
-    "sticky": false,
-    "type": "con",
-    "pid": 1053132,
-    "app_id": "Alacritty",
-    "visible": true,
-    "max_render_time": 0,
-    "shell": "xdg_shell",
-    "inhibit_idle": false,
-    "idle_inhibitors": {
-      "user": "none",
-      "application": "none"
-    }
-  }
-]
 :end:
 
-#+RESULTS:
-:results:
-:end:
 
 ** Sway config
 :PROPERTIES:
@@ -1573,6 +1505,14 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   bindsym $mod+Shift+e exec $editor
   bindsym $mod+d exec $menu
 
+#+end_src
+*** xrdb integration
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/config"
+:ID:       28b74638-3fc4-499c-bb15-3360f58bccae
+:END:
+#+begin_src conf
+  exec xrdb -merge ~/.Xresources
 #+end_src
 *** launcher
 #+begin_src conf
@@ -2147,7 +2087,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
   @keyframes blink {
       to {
-          background-color: gold;
+          background-color: darkred;
       }
   }
 
@@ -2288,6 +2228,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+end_src
 *** autostart                                                     :autostart:
 #+begin_src conf
+  exec sway-lock
   exec sway-kanshi
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -2444,7 +2385,7 @@ Just a gathering place of locky/suspendy type things...
   #!/usr/bin/bash
   # Maintained in linux-config.org
   lock() {
-      pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000
+      pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000 &
   }
 
   lock_gpg_clear() {

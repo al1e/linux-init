@@ -75,7 +75,7 @@
 
 @keyframes blink {
     to {
-        background-color: gold;
+        background-color: darkred;
     }
 }
 

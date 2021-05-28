@@ -667,13 +667,6 @@ Xft.dpi:       188
 ```
 
 
-### sway integration
-
-```conf
-exec xrdb -merge ~/.Xresources
-```
-
-
 ## Building from source
 
 
@@ -798,6 +791,13 @@ Bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
+```
+
+
+### xrdb integration
+
+```conf
+exec xrdb -merge ~/.Xresources
 ```
 
 
@@ -1420,7 +1420,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
         @keyframes blink {
             to {
-                background-color: gold;
+                background-color: darkred;
             }
         }
 
@@ -1575,6 +1575,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 ### autostart     :autostart:
 
 ```conf
+exec sway-lock
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -1772,7 +1773,7 @@ Just a gathering place of locky/suspendy type things&#x2026;
 #!/usr/bin/bash
 # Maintained in linux-config.org
 lock() {
-    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000
+    pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000 &
 }
 
 lock_gpg_clear() {
@@ -1873,7 +1874,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgac3a8dc"></a>
+<a id="orgade1e64"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1894,7 +1895,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgac3a8dc).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgade1e64).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
