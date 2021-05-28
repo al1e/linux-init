@@ -198,9 +198,13 @@
   },
 
   "custom/mynetwork": {
-    "format": "{}",
-    "exec": "waybar-ip-info-json wlp3s0",
-    "return-type" : "json",
+    "format":  "{}",
+    "format-wifi":  "📶{ssid}",
+    "format-ipaddr": "{ipaddr}",
+    "format-ssid": "xx{ssid}xx",
+    "format-alt": "{alt}:{}",
+    "exec": "waybar-ip-info-json",
+    "return-type": "json",
     "interval": 60,
     "on-click-right": "sway-wifi",
     "tooltip-format": "{ssid}",

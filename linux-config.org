@@ -2019,9 +2019,13 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     },
 
     "custom/mynetwork": {
-      "format": "{}",
-      "exec": "waybar-ip-info-json wlp3s0",
-      "return-type" : "json",
+      "format":  "{}",
+      "format-wifi":  "📶{ssid}",
+      "format-ipaddr": "{ipaddr}",
+      "format-ssid": "xx{ssid}xx",
+      "format-alt": "{alt}:{}",
+      "exec": "waybar-ip-info-json",
+      "return-type": "json",
       "interval": 60,
       "on-click-right": "sway-wifi",
       "tooltip-format": "{ssid}",
@@ -2227,7 +2231,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
     ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
     jq --unbuffered --compact-output -n \
                       --arg text "📶 $ssid" \
-                      --arg alt "" \
+                      --arg alt "$ifname:🌎$pubip,🔌$lip" \
                       --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
                       --arg class "" \
                       --arg percentage "1" \

@@ -7,7 +7,7 @@ lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
 ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
 jq --unbuffered --compact-output -n \
                   --arg text "📶 $ssid" \
-                  --arg alt "" \
+                  --arg alt "$ifname:🌎$pubip,🔌$lip" \
                   --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
                   --arg class "" \
                   --arg percentage "1" \

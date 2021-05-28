@@ -1353,9 +1353,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           },
 
           "custom/mynetwork": {
-            "format": "{}",
-            "exec": "waybar-ip-info-json wlp3s0",
-            "return-type" : "json",
+            "format":  "{}",
+            "format-wifi":  "📶{ssid}",
+            "format-ipaddr": "{ipaddr}",
+            "format-ssid": "xx{ssid}xx",
+            "format-alt": "{alt}:{}",
+            "exec": "waybar-ip-info-json",
+            "return-type": "json",
             "interval": 60,
             "on-click-right": "sway-wifi",
             "tooltip-format": "{ssid}",
@@ -1566,7 +1570,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
             jq --unbuffered --compact-output -n \
                               --arg text "📶 $ssid" \
-                              --arg alt "" \
+                              --arg alt "$ifname:🌎$pubip,🔌$lip" \
                               --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
                               --arg class "" \
                               --arg percentage "1" \
@@ -1922,7 +1926,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgcf2b810"></a>
+<a id="org65f2a03"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1943,7 +1947,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcf2b810).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org65f2a03).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
