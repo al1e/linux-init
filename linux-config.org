@@ -2019,7 +2019,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     },
 
     "custom/mynetwork": {
-      "format": "IF{ifname}",
+      "format": "{}",
       "exec": "waybar-ip-info-json wlp3s0",
       "return-type" : "json",
       "interval": 60,
@@ -2224,11 +2224,11 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
     pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
     lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
     lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
-    ssid="Stan"
+    ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
     jq --unbuffered --compact-output -n \
-                      --arg text "{ifname}" \
-                      --arg alt "b" \
-                      --arg tooltip "c" \
+                      --arg text "📶 $ssid" \
+                      --arg alt "" \
+                      --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
                       --arg class "" \
                       --arg percentage "1" \
                       --arg ifname "$ifname" \

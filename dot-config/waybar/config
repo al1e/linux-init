@@ -198,7 +198,7 @@
   },
 
   "custom/mynetwork": {
-    "format": "IF{ifname}",
+    "format": "{}",
     "exec": "waybar-ip-info-json wlp3s0",
     "return-type" : "json",
     "interval": 60,

@@ -1353,7 +1353,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           },
 
           "custom/mynetwork": {
-            "format": "IF{ifname}",
+            "format": "{}",
             "exec": "waybar-ip-info-json wlp3s0",
             "return-type" : "json",
             "interval": 60,
@@ -1563,11 +1563,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
             lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
             lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
-            ssid="Stan"
+            ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
             jq --unbuffered --compact-output -n \
-                              --arg text "{ifname}" \
-                              --arg alt "b" \
-                              --arg tooltip "c" \
+                              --arg text "📶 $ssid" \
+                              --arg alt "" \
+                              --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
                               --arg class "" \
                               --arg percentage "1" \
                               --arg ifname "$ifname" \
@@ -1922,7 +1922,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgec43bea"></a>
+<a id="orgcf2b810"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1943,7 +1943,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgec43bea).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcf2b810).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
