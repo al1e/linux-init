@@ -58,6 +58,25 @@ If using startx on debian this is taken care of by the system XSession loading e
 
 # Bash Startup Files
 
+
+# Auto login for tty
+
+,-&#x2014;
+
+| <https://unix.stackexchange.com/a/401798/228272>                              |
+| Edit your /etc/systemd/logind.conf , change #NAutoVTs=6 to NAutoVTs=1         |
+| Create a /etc/systemd/system/getty@tty1.service.d/override.conf through ;     |
+| systemctl edit getty@tty1                                                     |
+| Paste the following lines                                                     |
+| [Service]                                                                     |
+| ExecStart=                                                                    |
+| ExecStart=-/sbin/agetty &#x2013;autologin root &#x2013;noclear %I 38400 linux |
+| enable the getty@tty1.service then reboot                                     |
+| systemctl enable getty@tty1.service                                           |
+| reboot                                                                        |
+
+\`-&#x2014;
+
 <https://linuxize.com/post/bashrc-vs-bash-profile/> ,-&#x2014;
 
 | Bash Startup Files                                                                                                                                                                                                                                                                                                |
@@ -1529,7 +1548,19 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
             ```
 
-        3.  ~/bin/sway/waybar-monitors
+        3.  ~/bin/sway/waybar-ip-info-json
+
+            ```bash
+            ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
+            [ -z "$ifname" ] && exit 1
+            pubip="$(curl -s -m 1 ipinfo.io/ip)"
+            pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
+            lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
+            lip="$([ -z "$lip" ] && echo "Offline" || echo "$lip")"
+            echo "{  \"text\" = \"$lip\", \"tooltip\" = \"$pubip\",\"ifname\" = \"$ifname\",\"public_ip\" = \"$pubip\",\"local_ip\" = \"$lip\"}"
+            ```
+
+        4.  ~/bin/sway/waybar-monitors
 
             ```bash
             #!/usr/bin/bash
@@ -1542,7 +1573,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             echo $text
             ```
 
-        4.  ~/bin/sway/waybar-weather
+        5.  ~/bin/sway/waybar-weather
 
             ```bash
             #!/usr/bin/env bash
@@ -1555,7 +1586,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             fi
             ```
 
-        5.  ~/bin/sway/waybar-dropbox-status
+        6.  ~/bin/sway/waybar-dropbox-status
 
             ```bash
             #!/usr/bin/bash
@@ -1874,7 +1905,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgade1e64"></a>
+<a id="orgc51c93b"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1895,7 +1926,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgade1e64).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc51c93b).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
