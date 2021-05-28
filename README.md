@@ -1182,7 +1182,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "backlight",
             "battery",
             "custom/power-draw",
-            "network",
+            "custom/net",
             "wlr/taskbar",
           ],
 
@@ -1345,6 +1345,16 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 5,
             "exec": "waybar-power-draw",
             "tooltip": "false",
+          },
+
+          "custom/net": {
+            "return-type" : "json",
+            "format": "Interface:{}",
+            "exec": "waybar-ip-info-json wlp3s0",
+            "interval": 60,
+            "on-click-right": "sway-wifi",
+            "tooltip-format": "TT{}",
+            "tooltip": "true",
           },
 
           "wlr/taskbar": {
@@ -1551,13 +1561,22 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         3.  ~/bin/sway/waybar-ip-info-json
 
             ```bash
-            ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
-            [ -z "$ifname" ] && exit 1
-            pubip="$(curl -s -m 1 ipinfo.io/ip)"
-            pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
-            lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
-            lip="$([ -z "$lip" ] && echo "Offline" || echo "$lip")"
-            echo "{  \"text\" = \"$lip\", \"tooltip\" = \"$pubip\",\"ifname\" = \"$ifname\",\"public_ip\" = \"$pubip\",\"local_ip\" = \"$lip\"}"
+              ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
+              [ -z "$ifname" ] && exit 1
+              pubip="$(curl -s -m 1 ipinfo.io/ip)"
+              pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
+              lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
+              lip="$([ -z "$lip" ] && echo "Offline" || echo "$lip")"
+              ssid="Stan"
+              jq --unbuffered --compact-output -n \
+                                --arg text "WIFI" \
+                                --arg tooltip "TT" \
+                                --arg ifname "$ifname" \
+                                --arg ssid "$ssid" \
+                                --arg public_ip "$pubip" \
+                                --arg ippadr "$lip" \
+                                '{text: $text, tooltip: $tooltip, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
+            #  jq --unbuffered --compact-output $JSON_STRING
             ```
 
         4.  ~/bin/sway/waybar-monitors
@@ -1905,7 +1924,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc51c93b"></a>
+<a id="orgfe03b0b"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1926,7 +1945,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc51c93b).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfe03b0b).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

@@ -27,7 +27,7 @@
     "backlight",
     "battery",
     "custom/power-draw",
-    "network",
+    "custom/net",
     "wlr/taskbar",
   ],
 
@@ -190,6 +190,16 @@
     "interval": 5,
     "exec": "waybar-power-draw",
     "tooltip": "false",
+  },
+
+  "custom/net": {
+    "return-type" : "json",
+    "format": "Interface:{}",
+    "exec": "waybar-ip-info-json wlp3s0",
+    "interval": 60,
+    "on-click-right": "sway-wifi",
+    "tooltip-format": "TT{}",
+    "tooltip": "true",
   },
 
   "wlr/taskbar": {

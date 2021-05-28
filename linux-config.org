@@ -1848,7 +1848,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "backlight",
       "battery",
       "custom/power-draw",
-      "network",
+      "custom/net",
       "wlr/taskbar",
     ],
 
@@ -2011,6 +2011,16 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 5,
       "exec": "waybar-power-draw",
       "tooltip": "false",
+    },
+
+    "custom/net": {
+      "return-type" : "json",
+      "format": "Interface:{}",
+      "exec": "waybar-ip-info-json wlp3s0",
+      "interval": 60,
+      "on-click-right": "sway-wifi",
+      "tooltip-format": "TT{}",
+      "tooltip": "true",
     },
 
     "wlr/taskbar": {
@@ -2218,7 +2228,16 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
   lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
   lip="$([ -z "$lip" ] && echo "Offline" || echo "$lip")"
-  echo "{  \"text\" = \"$lip\", \"tooltip\" = \"$pubip\",\"ifname\" = \"$ifname\",\"public_ip\" = \"$pubip\",\"local_ip\" = \"$lip\"}"
+  ssid="Stan"
+  jq --unbuffered --compact-output -n \
+                    --arg text "WIFI" \
+                    --arg tooltip "TT" \
+                    --arg ifname "$ifname" \
+                    --arg ssid "$ssid" \
+                    --arg public_ip "$pubip" \
+                    --arg ippadr "$lip" \
+                    '{text: $text, tooltip: $tooltip, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
+#  jq --unbuffered --compact-output $JSON_STRING
 #+end_src
 ******* ~/bin/sway/waybar-monitors
 #+begin_src bash :tangle "~/bin/sway/waybar-monitors"
