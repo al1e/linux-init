@@ -15,7 +15,7 @@
   ],
 
   "modules-center": [
-    "clock",
+    "custom/clock",
     "custom/weather",
     "idle_inhibitor",
     "custom/monitors",
@@ -27,9 +27,22 @@
     "backlight",
     "battery",
     "custom/power-draw",
-    "custom/net",
+    "custom/mynetwork",
     "wlr/taskbar",
   ],
+
+  "network": {
+    "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
+    "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": " ",
+    "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
+    "interval": 60,
+    "on-click-right": "sway-wifi",
+    "tooltip-format": "{ifname}  {ipaddr}"
+  },
+
 
   "sway/workspaces": {
     "disable-scroll": true,
@@ -68,9 +81,10 @@
     "on-click" : "sway-htop",
   },
 
-  "clock": {
+  "custom/clock": {
     "interval": 60,
-    "format": "{:%a, %d %b: %H:%M}",
+    "exec": "date +'%a, %d %b: %H:%M'",
+    "format": "{} ",
     "max-length": 25,
   },
 
@@ -92,24 +106,6 @@
     },
     "on-click-right": "sway-lock"
   },
-  /*
-    "memory": {
-    "format": "💾 {used:0.1f}G",
-    "tooltip": false
-    },
-  */
-  "network": {
-    // "interface": "wlp2*", // (Optional) To force the use of this interface
-    "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
-    "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": " ",
-    "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
-    "interval": 60,
-    "on-click-right": "sway-wifi",
-    "tooltip-format": "{ifname}  {ipaddr}"
-  },
-
   "pulseaudio": {
     //		"scroll-step": 1, // %, can be a float
     "format": "{icon} {volume}% {format_source}",
@@ -192,16 +188,6 @@
     "tooltip": "false",
   },
 
-  "custom/net": {
-    "return-type" : "json",
-    "format": "Interface:{}",
-    "exec": "waybar-ip-info-json wlp3s0",
-    "interval": 60,
-    "on-click-right": "sway-wifi",
-    "tooltip-format": "TT{}",
-    "tooltip": "true",
-  },
-
   "wlr/taskbar": {
     "format": "{icon}",
     "icon-size": 14,
@@ -209,6 +195,16 @@
     "tooltip-format": "{title}",
     "on-click": "activate",
     "on-click-middle": "close",
+  },
+
+  "custom/mynetwork": {
+    "format": "IF{ifname}",
+    "exec": "waybar-ip-info-json wlp3s0",
+    "return-type" : "json",
+    "interval": 60,
+    "on-click-right": "sway-wifi",
+    "tooltip-format": "{ssid}",
+    "tooltip": "true",
   },
 
 }

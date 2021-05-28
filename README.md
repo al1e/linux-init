@@ -1170,7 +1170,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           ],
 
           "modules-center": [
-            "clock",
+            "custom/clock",
             "custom/weather",
             "idle_inhibitor",
             "custom/monitors",
@@ -1182,9 +1182,22 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "backlight",
             "battery",
             "custom/power-draw",
-            "custom/net",
+            "custom/mynetwork",
             "wlr/taskbar",
           ],
+
+          "network": {
+            "interface": "wlp2*", // (Optional) To force the use of this interface
+            "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
+            "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+            "format-linked": "{ifname} (No IP) ",
+            "format-disconnected": " ",
+            "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
+            "interval": 60,
+            "on-click-right": "sway-wifi",
+            "tooltip-format": "{ifname}  {ipaddr}"
+          },
+
 
           "sway/workspaces": {
             "disable-scroll": true,
@@ -1223,9 +1236,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click" : "sway-htop",
           },
 
-          "clock": {
+          "custom/clock": {
             "interval": 60,
-            "format": "{:%a, %d %b: %H:%M}",
+            "exec": "date +'%a, %d %b: %H:%M'",
+            "format": "{} ",
             "max-length": 25,
           },
 
@@ -1247,24 +1261,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             },
             "on-click-right": "sway-lock"
           },
-          /*
-            "memory": {
-            "format": "💾 {used:0.1f}G",
-            "tooltip": false
-            },
-          */
-          "network": {
-            // "interface": "wlp2*", // (Optional) To force the use of this interface
-            "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
-            "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-            "format-linked": "{ifname} (No IP) ",
-            "format-disconnected": " ",
-            "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
-            "interval": 60,
-            "on-click-right": "sway-wifi",
-            "tooltip-format": "{ifname}  {ipaddr}"
-          },
-
           "pulseaudio": {
             //		"scroll-step": 1, // %, can be a float
             "format": "{icon} {volume}% {format_source}",
@@ -1347,16 +1343,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "tooltip": "false",
           },
 
-          "custom/net": {
-            "return-type" : "json",
-            "format": "Interface:{}",
-            "exec": "waybar-ip-info-json wlp3s0",
-            "interval": 60,
-            "on-click-right": "sway-wifi",
-            "tooltip-format": "TT{}",
-            "tooltip": "true",
-          },
-
           "wlr/taskbar": {
             "format": "{icon}",
             "icon-size": 14,
@@ -1364,6 +1350,16 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "tooltip-format": "{title}",
             "on-click": "activate",
             "on-click-middle": "close",
+          },
+
+          "custom/mynetwork": {
+            "format": "IF{ifname}",
+            "exec": "waybar-ip-info-json wlp3s0",
+            "return-type" : "json",
+            "interval": 60,
+            "on-click-right": "sway-wifi",
+            "tooltip-format": "{ssid}",
+            "tooltip": "true",
           },
 
         }
@@ -1561,22 +1557,24 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         3.  ~/bin/sway/waybar-ip-info-json
 
             ```bash
-              ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
-              [ -z "$ifname" ] && exit 1
-              pubip="$(curl -s -m 1 ipinfo.io/ip)"
-              pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
-              lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
-              lip="$([ -z "$lip" ] && echo "Offline" || echo "$lip")"
-              ssid="Stan"
-              jq --unbuffered --compact-output -n \
-                                --arg text "WIFI" \
-                                --arg tooltip "TT" \
-                                --arg ifname "$ifname" \
-                                --arg ssid "$ssid" \
-                                --arg public_ip "$pubip" \
-                                --arg ippadr "$lip" \
-                                '{text: $text, tooltip: $tooltip, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
-            #  jq --unbuffered --compact-output $JSON_STRING
+            ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
+            [ -z "$ifname" ] && exit 1
+            pubip="$(curl -s -m 1 ipinfo.io/ip)"
+            pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
+            lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
+            lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
+            ssid="Stan"
+            jq --unbuffered --compact-output -n \
+                              --arg text "{ifname}" \
+                              --arg alt "b" \
+                              --arg tooltip "c" \
+                              --arg class "" \
+                              --arg percentage "1" \
+                              --arg ifname "$ifname" \
+                              --arg ssid "$ssid" \
+                              --arg public_ip "$pubip" \
+                              --arg ippadr "$lip" \
+                              '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
             ```
 
         4.  ~/bin/sway/waybar-monitors
@@ -1924,7 +1922,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgfe03b0b"></a>
+<a id="orgec43bea"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1945,7 +1943,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfe03b0b).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgec43bea).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2064,7 +2062,8 @@ sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-fo
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
+#google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
+google-chrome  "$@" &> /dev/null &
 sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
