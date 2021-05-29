@@ -166,11 +166,6 @@ logger -t "startup-initfile"  BASH_PROFILE
 
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
-dropbox-start-once async
-
-# # disable tracker
-# gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
-# gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
 
 ```
 
@@ -1626,6 +1621,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 ```conf
 exec sway-lock
+exec dropbox-start-once
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -1924,7 +1920,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org85f5195"></a>
+<a id="org6b3ea57"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1945,7 +1941,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org85f5195).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org6b3ea57).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

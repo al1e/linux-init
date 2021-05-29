@@ -32,7 +32,6 @@
   ],
 
   "network": {
-    // "interface": "wlp2*", // (Optional) To force the use of this interface
     "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
     "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
     "format-linked": "{ifname} (No IP) ",
