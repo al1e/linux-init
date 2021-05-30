@@ -82,6 +82,7 @@ ZSH_THEME=robbyrussell
 plugins=(
     zsh-autosuggestions
     dotenv
+    chucknorris
     vi-mode
     tmux
     safe-paste
@@ -119,5 +120,6 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 # DEFAULT_USER means we dont show user and host in normal shell prompt
 DEFAULT_USER=$USER
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+chuck
 
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock

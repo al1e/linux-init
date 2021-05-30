@@ -315,6 +315,7 @@ ZSH_THEME=robbyrussell
 plugins=(
     zsh-autosuggestions
     dotenv
+    chucknorris
     vi-mode
     tmux
     safe-paste
@@ -352,6 +353,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 # DEFAULT_USER means we dont show user and host in normal shell prompt
 DEFAULT_USER=$USER
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+chuck
 ```
 
 
@@ -1605,13 +1607,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             ```bash
             #!/usr/bin/bash
             #Maintained in linux-config.org
-            if pidof dropbox > /dev/null ; then
+            if pidof dropbox &> /dev/null ; then
                 stat=$(dropbox status | sed -n 1p)
                 echo "${stat}"; echo "";
             else
                 if command -v dropbox > /dev/null; then
-                    echo "⇄Restart Dropbox.."
-                    #dropbox start &> /dev/null &
+                    echo "⇄Restarting Dropbox.."
+                    dropbox start &> /dev/null &
                 fi
             fi
             ```
@@ -1920,7 +1922,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org6b3ea57"></a>
+<a id="orge9eaa0d"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1941,7 +1943,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org6b3ea57).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge9eaa0d).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

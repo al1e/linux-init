@@ -917,6 +917,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
   plugins=(
       zsh-autosuggestions
       dotenv
+      chucknorris
       vi-mode
       tmux
       safe-paste
@@ -954,6 +955,7 @@ https://linuxize.com/post/bashrc-vs-bash-profile/
   # DEFAULT_USER means we dont show user and host in normal shell prompt
   DEFAULT_USER=$USER
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  chuck
 #+end_src
 
 #+RESULTS:
@@ -2260,13 +2262,13 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src bash :tangle ~/bin/sway/waybar-dropbox-status
   #!/usr/bin/bash
   #Maintained in linux-config.org
-  if pidof dropbox > /dev/null ; then
+  if pidof dropbox &> /dev/null ; then
       stat=$(dropbox status | sed -n 1p)
       echo "${stat}"; echo "";
   else
       if command -v dropbox > /dev/null; then
-          echo "⇄Restart Dropbox.."
-          #dropbox start &> /dev/null &
+          echo "⇄Restarting Dropbox.."
+          dropbox start &> /dev/null &
       fi
   fi
 #+end_src
