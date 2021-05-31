@@ -1310,10 +1310,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "exec": "uptime -p",
           },
           "custom/dropbox": {
-            "format": "<span color='gold'>⇄ {}</span>",
+            "format": "<span color='gold'>⇄{}</span>",
+            "return-type" : "json",
             "interval": 5,
-            "exec": "waybar-dropbox-status",
-            "tooltip": "false",
+            "exec": "waybar-dropbox-json",
+            "tooltip": "true",
             "on-click": "sway-www https://www.dropbox.com/h",
           },
           "custom/monitors": {
@@ -1553,7 +1554,28 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
             ```
 
-        3.  ~/bin/sway/waybar-ip-info-json
+        3.  ~/bin/sway/waybar-dropbox-json
+
+            ```bash
+            #!/usr/bin/env bash
+            # Maintained in linux-config.org
+            if pidof dropbox &>/dev/null; then
+                stat="$(dropbox status | sed -n 1p)"
+            else
+                stat="Restarting Dropbox.."
+                dropbox start &> /dev/null
+            fi
+
+            jq --unbuffered --compact-output -n \
+                   --arg text "$stat" \
+                   --arg alt "$stat" \
+                   --arg tooltip "$stat" \
+                   --arg class "dropbox-status" \
+                   --arg percentage "100" \
+                   '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
+            ```
+
+        4.  ~/bin/sway/waybar-ip-info-json
 
             ```bash
             ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
@@ -1576,7 +1598,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                               '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
             ```
 
-        4.  ~/bin/sway/waybar-monitors
+        5.  ~/bin/sway/waybar-monitors
 
             ```bash
             #!/usr/bin/bash
@@ -1589,7 +1611,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             echo $text
             ```
 
-        5.  ~/bin/sway/waybar-weather
+        6.  ~/bin/sway/waybar-weather
 
             ```bash
             #!/usr/bin/env bash
@@ -1602,7 +1624,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             fi
             ```
 
-        6.  ~/bin/sway/waybar-dropbox-status
+        7.  ~/bin/sway/waybar-dropbox-status
 
             ```bash
             #!/usr/bin/bash
@@ -1922,7 +1944,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge9eaa0d"></a>
+<a id="org41a0cd4"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1943,7 +1965,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge9eaa0d).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org41a0cd4).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

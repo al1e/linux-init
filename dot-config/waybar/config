@@ -158,10 +158,11 @@
     "exec": "uptime -p",
   },
   "custom/dropbox": {
-    "format": "<span color='gold'>⇄ {}</span>",
+    "format": "<span color='gold'>⇄{}</span>",
+    "return-type" : "json",
     "interval": 5,
-    "exec": "waybar-dropbox-status",
-    "tooltip": "false",
+    "exec": "waybar-dropbox-json",
+    "tooltip": "true",
     "on-click": "sway-www https://www.dropbox.com/h",
   },
   "custom/monitors": {
