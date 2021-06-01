@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-if pidof dropbox &>/dev/null; then
+if ( ! dropbox running ); then
     stat="$(dropbox status | sed -n 1p)"
 else
     stat="Restarting Dropbox.."
@@ -8,9 +8,9 @@ else
 fi
 
 jq --unbuffered --compact-output -n \
-       --arg text "$stat" \
-       --arg alt "$stat" \
-       --arg tooltip "$stat" \
-       --arg class "dropbox-status" \
-       --arg percentage "100" \
-       '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
+   --arg text "$stat" \
+   --arg alt "$stat" \
+   --arg tooltip "$stat" \
+   --arg class "dropbox-status" \
+   --arg percentage "100" \
+   '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'

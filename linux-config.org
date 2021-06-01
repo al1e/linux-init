@@ -25,7 +25,7 @@ gah. just trying to find value of export file name
 #+begin_src emacs-lisp
   (defun org-global-props-key-re (key)
     "Construct a regular expression matching key and an optional plus and eating the spaces behind.
-  Test for existence of the plus: (match-beginning 1)"
+    Test for existence of the plus: (match-beginning 1)"
     (concat "^" (regexp-quote key) "\\(\\+\\)?[[:space:]]+"))
 
   (defun org-global-props (&optional buffer)
@@ -35,7 +35,7 @@ gah. just trying to find value of export file name
 
   (defun org-global-prop-value (key)
     "Get global org property KEY of current buffer.
-  Adding up values for one key is supported."
+    Adding up values for one key is supported."
     (let ((key-re (org-global-props-key-re key))
           (props (org-global-props))
           ret)
@@ -656,52 +656,7 @@ If using startx on debian this is taken care of by the system XSession loading e
 see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
 * Bash Startup Files
-
-* Auto login for tty
-,----
-| https://unix.stackexchange.com/a/401798/228272
-| Edit your /etc/systemd/logind.conf , change #NAutoVTs=6 to NAutoVTs=1
-|
-| Create a /etc/systemd/system/getty@tty1.service.d/override.conf through ;
-|
-| systemctl edit getty@tty1
-| Paste the following lines
-|
-| [Service]
-| ExecStart=
-| ExecStart=-/sbin/agetty --autologin root --noclear %I 38400 linux
-| enable the getty@tty1.service then reboot
-|
-| systemctl enable getty@tty1.service
-| reboot
-`----
-
-https://linuxize.com/post/bashrc-vs-bash-profile/
-,----
-|   Bash Startup Files
-|   When invoked as an interactive login shell, Bash looks for the /etc/profile file, and if the file exists , it runs the commands listed in the file. Then Bash searches for ~/.bash_profile, ~/.bash_login, and ~/.profile files, in the listed order, and executes commands from the first readable file found.
-|
-|   When Bash is invoked as an interactive non-login shell, it reads and executes commands from ~/.bashrc, if that file exists, and it is readable.
-|
-|   Difference Between .bashrc and .bash_profile
-|   .bash_profile is read and executed when Bash is invoked as an interactive login shell, while .bashrc is executed for an interactive non-login shell.
-|
-|   Use .bash_profile to run commands that should run only once, such as customizing the $PATH environment variable .
-|
-|   Put the commands that should run every time you launch a new shell in the .bashrc file. This include your aliases and functions , custom prompts, history customizations , and so on.
-|   Typically, ~/.bash_profile contains lines like below that source the .bashrc file. This means each time you log in to the terminal, both files are read and executed.
-|
-|   if [ -f ~/.bashrc ]; then
-|   . ~/.bashrc
-|   fi
-|   Copy
-|   Most Linux distributions are using ~/.profile instead of ~/.bash_profile. The ~/.profile file is read by all shells, while ~/.bash_profile only by Bash.
-|
-|   If any startup file is not present on your system, you can create it.
-`----
-
-
-**  ~/.profile
+** ~/.profile
 :PROPERTIES:
 :ID:       a0ce8c14-82b5-468b-b942-5ca9cdc4d832
 :END:
@@ -1310,166 +1265,166 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 #+RESULTS: cur_ws_json
 :results:
 {
-  "id": 20,
-  "name": "1:edit",
-  "rect": {
-    "x": 4,
-    "y": 4,
-    "width": 1912,
-    "height": 1042
-  },
-  "focus": [
-    14,
-    21,
-    11
-  ],
-  "border": "none",
-  "current_border_width": 0,
-  "layout": "splith",
-  "orientation": "horizontal",
-  "percent": null,
-  "window_rect": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "deco_rect": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "geometry": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "window": null,
-  "urgent": false,
-  "marks": [],
-  "fullscreen_mode": 1,
-  "nodes": [],
-  "floating_nodes": [
-    {
-      "id": 11,
-      "name": "ScratchTerminal",
-      "rect": {
-        "x": 480,
-        "y": 146,
-        "width": 960,
-        "height": 783
-      },
-      "focused": false,
-      "focus": [],
-      "border": "normal",
-      "current_border_width": 2,
-      "layout": "none",
-      "orientation": "none",
-      "percent": 0.38982002746568795,
-      "window_rect": {
-        "x": 2,
-        "y": 0,
-        "width": 956,
-        "height": 781
-      },
-      "deco_rect": {
-        "x": 476,
-        "y": 116,
-        "width": 960,
-        "height": 26
-      },
-      "geometry": {
-        "x": 0,
-        "y": 0,
-        "width": 800,
-        "height": 600
-      },
-      "window": null,
-      "urgent": false,
-      "marks": [
-        "α"
-      ],
-      "fullscreen_mode": 0,
-      "nodes": [],
-      "floating_nodes": [],
-      "sticky": false,
-      "type": "floating_con",
-      "pid": 227866,
-      "app_id": "Alacritty",
-      "visible": true,
-      "max_render_time": 0,
-      "shell": "xdg_shell",
-      "inhibit_idle": false,
-      "idle_inhibitors": {
-        "user": "none",
-        "application": "none"
-      }
-    }
-  ],
-  "sticky": false,
-  "num": 1,
-  "output": "eDP-1",
-  "type": "workspace",
-  "representation": "H[Emacs Alacritty]",
-  "focused": true,
-  "visible": true
+"id": 20,
+"name": "1:edit",
+"rect": {
+"x": 4,
+"y": 4,
+"width": 1912,
+"height": 1042
+},
+"focus": [
+14,
+21,
+11
+],
+"border": "none",
+"current_border_width": 0,
+"layout": "splith",
+"orientation": "horizontal",
+"percent": null,
+"window_rect": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"deco_rect": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"geometry": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"window": null,
+"urgent": false,
+"marks": [],
+"fullscreen_mode": 1,
+"nodes": [],
+"floating_nodes": [
+{
+"id": 11,
+"name": "ScratchTerminal",
+"rect": {
+"x": 480,
+"y": 146,
+"width": 960,
+"height": 783
+},
+"focused": false,
+"focus": [],
+"border": "normal",
+"current_border_width": 2,
+"layout": "none",
+"orientation": "none",
+"percent": 0.38982002746568795,
+"window_rect": {
+"x": 2,
+"y": 0,
+"width": 956,
+"height": 781
+},
+"deco_rect": {
+"x": 476,
+"y": 116,
+"width": 960,
+"height": 26
+},
+"geometry": {
+"x": 0,
+"y": 0,
+"width": 800,
+"height": 600
+},
+"window": null,
+"urgent": false,
+"marks": [
+"α"
+],
+"fullscreen_mode": 0,
+"nodes": [],
+"floating_nodes": [],
+"sticky": false,
+"type": "floating_con",
+"pid": 227866,
+"app_id": "Alacritty",
+"visible": true,
+"max_render_time": 0,
+"shell": "xdg_shell",
+"inhibit_idle": false,
+"idle_inhibitors": {
+"user": "none",
+"application": "none"
+}
+}
+],
+"sticky": false,
+"num": 1,
+"output": "eDP-1",
+"type": "workspace",
+"representation": "H[Emacs Alacritty]",
+"focused": true,
+"visible": true
 }
 :end:
 {
-  "id": 23,
-  "name": "1:edit",
-  "rect": {
-    "x": 4,
-    "y": 4,
-    "width": 1912,
-    "height": 1042
-  },
-  "focus": [
-    26
-  ],
-  "border": "none",
-  "current_border_width": 0,
-  "layout": "tabbed",
-  "orientation": "none",
-  "percent": null,
-  "window_rect": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "deco_rect": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "geometry": {
-    "x": 0,
-    "y": 0,
-    "width": 0,
-    "height": 0
-  },
-  "window": null,
-  "urgent": false,
-  "marks": [],
-  "fullscreen_mode": 1,
-  "nodes": [],
-  "floating_nodes": [],
-  "sticky": false,
-  "num": 1,
-  "output": "eDP-1",
-  "type": "workspace",
-  "representation": "T[Emacs]",
-  "focused": true,
-  "visible": true
+"id": 23,
+"name": "1:edit",
+"rect": {
+"x": 4,
+"y": 4,
+"width": 1912,
+"height": 1042
+},
+"focus": [
+26
+],
+"border": "none",
+"current_border_width": 0,
+"layout": "tabbed",
+"orientation": "none",
+"percent": null,
+"window_rect": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"deco_rect": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"geometry": {
+"x": 0,
+"y": 0,
+"width": 0,
+"height": 0
+},
+"window": null,
+"urgent": false,
+"marks": [],
+"fullscreen_mode": 1,
+"nodes": [],
+"floating_nodes": [],
+"sticky": false,
+"num": 1,
+"output": "eDP-1",
+"type": "workspace",
+"representation": "T[Emacs]",
+"focused": true,
+"visible": true
 }
 *** cur ws id
 #+name: cur_ws_id
 #+begin_src bash :var json=cur_ws_json
- echo $json | jq '.id'
+  echo $json | jq '.id'
 #+end_src
 
 #+RESULTS: cur_ws_id
@@ -1975,6 +1930,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 60,
       "exec": "uptime -p",
     },
+
     "custom/dropbox": {
       "format": "<span color='gold'>⇄{}</span>",
       "return-type" : "json",
@@ -2220,7 +2176,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src bash :tangle ~/bin/sway/waybar-dropbox-json
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  if pidof dropbox &>/dev/null; then
+  if ( ! dropbox running ); then
       stat="$(dropbox status | sed -n 1p)"
   else
       stat="Restarting Dropbox.."
@@ -2228,33 +2184,33 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   fi
 
   jq --unbuffered --compact-output -n \
-         --arg text "$stat" \
-         --arg alt "$stat" \
-         --arg tooltip "$stat" \
-         --arg class "dropbox-status" \
-         --arg percentage "100" \
-         '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
+     --arg text "$stat" \
+     --arg alt "$stat" \
+     --arg tooltip "$stat" \
+     --arg class "dropbox-status" \
+     --arg percentage "100" \
+     '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
 #+end_src
 ******* ~/bin/sway/waybar-ip-info-json
 #+begin_src bash :tangle ~/bin/sway/waybar-ip-info-json
-    ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
-    [ -z "$ifname" ] && exit 1
-    pubip="$(curl -s -m 1 ipinfo.io/ip)"
-    pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
-    lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
-    lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
-    ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
-    jq --unbuffered --compact-output -n \
-                      --arg text "📶 $ssid" \
-                      --arg alt "$ifname:🌎$pubip,🔌$lip" \
-                      --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
-                      --arg class "" \
-                      --arg percentage "1" \
-                      --arg ifname "$ifname" \
-                      --arg ssid "$ssid" \
-                      --arg public_ip "$pubip" \
-                      --arg ippadr "$lip" \
-                      '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
+  ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
+  [ -z "$ifname" ] && exit 1
+  pubip="$(curl -s -m 1 ipinfo.io/ip)"
+  pubip="$([ -z "$pubip" ] && echo "Offline" || echo "$pubip")"
+  lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] | select(.family=="inet").local')
+  lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
+  ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
+  jq --unbuffered --compact-output -n \
+     --arg text "📶 $ssid" \
+     --arg alt "$ifname:🌎$pubip,🔌$lip" \
+     --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
+     --arg class "" \
+     --arg percentage "1" \
+     --arg ifname "$ifname" \
+     --arg ssid "$ssid" \
+     --arg public_ip "$pubip" \
+     --arg ippadr "$lip" \
+     '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
 #+end_src
 ******* ~/bin/sway/waybar-monitors
 #+begin_src bash :tangle "~/bin/sway/waybar-monitors"
@@ -2960,16 +2916,16 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 #+begin_src python :tangle ~/bin/gdb-scripts/tmux-pane-tty.py
   import os
 
-  class TmuxPaneTTY (gdb.Command):
-    """return the tty value in use for a certain session and pane"""
+    class TmuxPaneTTY (gdb.Command):
+        """return the tty value in use for a certain session and pane"""
 
-   def__init__(self):
-   super(TmuxPaneTTY, self).__init__("tmux-pane-tty", gdb.COMMAND_USER)
+     def__init__(self):
+     super(TmuxPaneTTY, self).__init__("tmux-pane-tty", gdb.COMMAND_USER)
 
-   def invoke(self, arg, from_tty):
-     os.system("tmux-pane-tty voltron 4")
+     def invoke(self, arg, from_tty):
+         os.system("tmux-pane-tty voltron 4")
 
-  TMuxPaneTTY()
+    TMuxPaneTTY()
 #+end_src
 *** desktop
 **** tmux gdb setup scripts                                            :tmux:
@@ -3621,17 +3577,10 @@ if it exists jump to it else start it
 #+begin_src bash :tangle "~/bin/dropbox-start-once"
   #!/usr/bin/bash
   # Maintained in linux-config.org
-  if pidof dropbox > /dev/null ; then
+  if (! dropbox running) ; then
       echo "Dropbox is already running"
   else
-      if command -v dropbox &> /dev/null; then
-          echo "Starting Dropbox.."
-          if [ "$1" = "async" ]; then
-              dropbox start &> /dev/null &
-          else
-              dropbox start &> /dev/null
-          fi
-      fi
+      "$HOME/.dropbox-dist/dropboxd" &> /dev/null  &
   fi
 #+end_src
 ** ~/bin/edit

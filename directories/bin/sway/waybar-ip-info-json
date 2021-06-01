@@ -6,13 +6,13 @@ lip=$(ip -j address | jq -r '.[] | select (.ifname=='\"$ifname\"').addr_info[] |
 lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
 ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
 jq --unbuffered --compact-output -n \
-                  --arg text "📶 $ssid" \
-                  --arg alt "$ifname:🌎$pubip,🔌$lip" \
-                  --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
-                  --arg class "" \
-                  --arg percentage "1" \
-                  --arg ifname "$ifname" \
-                  --arg ssid "$ssid" \
-                  --arg public_ip "$pubip" \
-                  --arg ippadr "$lip" \
-                  '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
+   --arg text "📶 $ssid" \
+   --arg alt "$ifname:🌎$pubip,🔌$lip" \
+   --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
+   --arg class "" \
+   --arg percentage "1" \
+   --arg ifname "$ifname" \
+   --arg ssid "$ssid" \
+   --arg public_ip "$pubip" \
+   --arg ippadr "$lip" \
+   '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
