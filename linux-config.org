@@ -1921,7 +1921,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "format": "{}",
       "tooltip": true,
       "interval": 3600,
-      "exec": "waybar-wttr.py",
+      "exec": "waybar-weather-json",
       "return-type": "json"
     },
 
@@ -2223,12 +2223,12 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   text="{\"text\":\""$t"\",\"tooltip\":\""$o"\"}"
   echo $text
 #+end_src
-******* ~/bin/sway/waybar-wttr.py
-#+begin_src python :tangle "~/bin/sway/waybar-wttr.py"
+******* ~/bin/sway/waybar-wttr
+#+begin_src python :tangle "~/bin/sway/waybar-wttr"
   #!/usr/bin/env python
+  # Maintained in linux-config.org
 
   import json
-  import time
   import requests
   from datetime import datetime
 
@@ -2285,7 +2285,6 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 
   data = {}
 
-  time.sleep(5)   # Delays for 5 seconds. You can also use a float value.
   weather = requests.get("https://wttr.in/?format=j1").json()
 
 
@@ -2341,16 +2340,12 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 
   print(json.dumps(data))
 #+end_src
-******* ~/bin/sway/waybar-weather
-#+begin_src bash :tangle ~/bin/sway/waybar-weather
+******* ~/bin/sway/waybar-weather-json
+#+begin_src bash :tangle ~/bin/sway/waybar-weather-json
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  if [  "$1" = "-q" ]; then
-      ping openweathermap.org -c1
-  else
-      export OPENWEATHERKEY="${OPENWEATHERKEY:-$(head -n 1 $HOME/.config/openweathermap/freemium)}"
-      ansiweather -l "${OPENWEATHER_LOCATION:-"Grömitz,DE"}" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
-  fi
+  sleep 5
+  exec waybar-wttr
 #+end_src
 ******* ~/bin/sway/waybar-dropbox-status
 #+begin_src bash :tangle ~/bin/sway/waybar-dropbox-status

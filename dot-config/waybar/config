@@ -147,7 +147,7 @@
     "format": "{}",
     "tooltip": true,
     "interval": 3600,
-    "exec": "waybar-wttr.py",
+    "exec": "waybar-weather-json",
     "return-type": "json"
   },
 

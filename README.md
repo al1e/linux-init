@@ -1261,7 +1261,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format": "{}",
             "tooltip": true,
             "interval": 3600,
-            "exec": "waybar-wttr.py",
+            "exec": "waybar-weather-json",
             "return-type": "json"
           },
 
@@ -1573,13 +1573,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             echo $text
             ```
 
-        6.  ~/bin/sway/waybar-wttr.py
+        6.  ~/bin/sway/waybar-wttr
 
             ```python
             #!/usr/bin/env python
+            # Maintained in linux-config.org
 
             import json
-            import time
             import requests
             from datetime import datetime
 
@@ -1636,7 +1636,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
             data = {}
 
-            time.sleep(5)   # Delays for 5 seconds. You can also use a float value.
             weather = requests.get("https://wttr.in/?format=j1").json()
 
 
@@ -1693,17 +1692,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             print(json.dumps(data))
             ```
 
-        7.  ~/bin/sway/waybar-weather
+        7.  ~/bin/sway/waybar-weather-json
 
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
-            if [  "$1" = "-q" ]; then
-                ping openweathermap.org -c1
-            else
-                export OPENWEATHERKEY="${OPENWEATHERKEY:-$(head -n 1 $HOME/.config/openweathermap/freemium)}"
-                ansiweather -l "${OPENWEATHER_LOCATION:-"Grömitz,DE"}" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
-            fi
+            sleep 5
+            exec waybar-wttr
             ```
 
         8.  ~/bin/sway/waybar-dropbox-status
@@ -2026,7 +2021,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org534166f"></a>
+<a id="org1bc1ff5"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2047,7 +2042,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org534166f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1bc1ff5).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

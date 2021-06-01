@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-# Maintained in linux-config.org
-if [  "$1" = "-q" ]; then
-    ping openweathermap.org -c1
-else
-    export OPENWEATHERKEY="${OPENWEATHERKEY:-$(head -n 1 $HOME/.config/openweathermap/freemium)}"
-    ansiweather -l "${OPENWEATHER_LOCATION:-"Grömitz,DE"}" -k"$OPENWEATHERKEY" -f 0 -u metric -s true -w true -p true -h false -a false | cut -d ' '  -f6-
-fi
