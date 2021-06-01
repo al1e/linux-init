@@ -2287,7 +2287,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 
   data = {}
 
-  weather = requests.get("https://wttr.in/" + os.environ['WTTR_LOCATION'] + "?format=j1").json()
+  weather = requests.get("https://wttr.in/" + os.getenv('WTTR_LOCATION',"") + "?format=j1").json()
 
   def format_time(time):
       return time.replace("00", "").zfill(2)

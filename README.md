@@ -1637,7 +1637,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
             data = {}
 
-            weather = requests.get("https://wttr.in/" + os.environ['WTTR_LOCATION'] + "?format=j1").json()
+            weather = requests.get("https://wttr.in/" + os.getenv('WTTR_LOCATION',"") + "?format=j1").json()
 
             def format_time(time):
                 return time.replace("00", "").zfill(2)
@@ -2021,7 +2021,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org0867406"></a>
+<a id="orgd71c8f4"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2042,7 +2042,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org0867406).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgd71c8f4).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
