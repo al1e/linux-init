@@ -1781,11 +1781,9 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
     "modules-left": [
       "sway/workspaces",
-      "sway/mode",
       "cpu",
       "temperature",
       "memory",
-      "custom/uptime",
       "custom/dropbox"
     ],
 

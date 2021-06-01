@@ -6,11 +6,9 @@
 
   "modules-left": [
     "sway/workspaces",
-    "sway/mode",
     "cpu",
     "temperature",
     "memory",
-    "custom/uptime",
     "custom/dropbox"
   ],
 
