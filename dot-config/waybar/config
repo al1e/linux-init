@@ -144,12 +144,11 @@
 
 
   "custom/weather": {
-    "format": "<span color='gray'>{}</span>",
-    "interval": 18000,
-    "exec": "waybar-weather",
-    "exec-if": "waybar-weather -q",
-    "tooltip": "false",
-    "on-click": "sway-weather",
+    "format": "{}",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "waybar-wttr.py",
+    "return-type": "json"
   },
 
   "custom/uptime": {
