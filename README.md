@@ -1273,12 +1273,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           },
 
           "custom/dropbox": {
-            "format": "<span color='gold'>⇄{}</span>",
+            "format": "🧊<span color='gold'>{}</span>",
             "return-type" : "json",
             "interval": 5,
             "exec": "waybar-dropbox-json",
             "tooltip": "true",
-            "on-click": "sway-www https://www.dropbox.com/h",
+            "on-click-right": "sway-www https://www.dropbox.com/h",
           },
           "custom/monitors": {
             "format": "<span color='gold'>{}</span>",
@@ -1523,19 +1523,19 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             if ( ! dropbox running ); then
-                stat="$(dropbox status | sed -n 1p)"
+                fullstat="$(dropbox status)"
+                stat="$(sed -n 1p <<< $fullstat)"
             else
+                fullstat=""
                 stat="Restarting Dropbox.."
                 dropbox start &> /dev/null
             fi
 
             jq --unbuffered --compact-output -n \
                --arg text "$stat" \
-               --arg alt "$stat" \
-               --arg tooltip "$stat" \
+               --arg tooltip "$fullstat" \
                --arg class "dropbox-status" \
-               --arg percentage "100" \
-               '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
+               '{text: $text, tooltip: $tooltip, class: $class}'
             ```
 
         4.  ~/bin/sway/waybar-ip-info-json
@@ -2043,7 +2043,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org14a6c17"></a>
+<a id="org07fdc36"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2064,7 +2064,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org14a6c17).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org07fdc36).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

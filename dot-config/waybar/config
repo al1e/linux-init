@@ -158,12 +158,12 @@
   },
 
   "custom/dropbox": {
-    "format": "<span color='gold'>⇄{}</span>",
+    "format": "🧊<span color='gold'>{}</span>",
     "return-type" : "json",
     "interval": 5,
     "exec": "waybar-dropbox-json",
     "tooltip": "true",
-    "on-click": "sway-www https://www.dropbox.com/h",
+    "on-click-right": "sway-www https://www.dropbox.com/h",
   },
   "custom/monitors": {
     "format": "<span color='gold'>{}</span>",
