@@ -1130,8 +1130,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           ],
 
           "modules-center": [
-            "custom/clock",
             "custom/weather",
+            "custom/clock",
             "idle_inhibitor",
             "custom/monitors",
           ],
@@ -1259,7 +1259,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 
           "custom/weather": {
-            "format": "{}",
+            "format": "{} ",
             "tooltip": true,
             "interval": 3600,
             "exec": "waybar-weather-json",
@@ -1637,8 +1637,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             }
 
             data = {}
+            location = os.getenv('WTTR_LOCATION',"")
 
-            weather = requests.get("https://wttr.in/" + os.getenv('WTTR_LOCATION',"") + "?format=j1").json()
+            weather = requests.get("https://wttr.in/" + location + "?format=j1").json()
 
             def format_time(time):
                 return time.replace("00", "").zfill(2)
@@ -1667,10 +1668,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 return ", ".join(conditions)
 
 
-            data['text'] = WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
+            data['text'] = location+":"+WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
                 " "+weather['current_condition'][0]['FeelsLikeC']+"°"
 
-            data['tooltip'] = f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
+            data['tooltip'] = f"<b>{location}</b>\n"
+            data['tooltip'] += f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
             data['tooltip'] += f"Feels like: {weather['current_condition'][0]['FeelsLikeC']}°\n"
             data['tooltip'] += f"Wind: {weather['current_condition'][0]['windspeedKmph']}Km/h\n"
             data['tooltip'] += f"Humidity: {weather['current_condition'][0]['humidity']}%\n"
@@ -1699,7 +1701,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             sleep 5
-            WTTR_LOCATION="${1:-'Grömitz,DE'}"  waybar-wttr
+            WTTR_LOCATION="${1:-"Grömitz,DE"}"  waybar-wttr
             ```
 
         8.  ~/bin/sway/waybar-dropbox-status
@@ -2043,7 +2045,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org07fdc36"></a>
+<a id="org6537866"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2064,7 +2066,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org07fdc36).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org6537866).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

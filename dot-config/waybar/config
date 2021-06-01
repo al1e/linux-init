@@ -15,8 +15,8 @@
   ],
 
   "modules-center": [
-    "custom/clock",
     "custom/weather",
+    "custom/clock",
     "idle_inhibitor",
     "custom/monitors",
   ],
@@ -144,7 +144,7 @@
 
 
   "custom/weather": {
-    "format": "{}",
+    "format": "{} ",
     "tooltip": true,
     "interval": 3600,
     "exec": "waybar-weather-json",

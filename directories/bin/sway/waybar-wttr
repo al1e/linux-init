@@ -58,8 +58,9 @@ WEATHER_CODES = {
 }
 
 data = {}
+location = os.getenv('WTTR_LOCATION',"")
 
-weather = requests.get("https://wttr.in/" + os.getenv('WTTR_LOCATION',"") + "?format=j1").json()
+weather = requests.get("https://wttr.in/" + location + "?format=j1").json()
 
 def format_time(time):
     return time.replace("00", "").zfill(2)
@@ -88,10 +89,11 @@ def format_chances(hour):
     return ", ".join(conditions)
 
 
-data['text'] = WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
+data['text'] = location+":"+WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
     " "+weather['current_condition'][0]['FeelsLikeC']+"°"
 
-data['tooltip'] = f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
+data['tooltip'] = f"<b>{location}</b>\n"
+data['tooltip'] += f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
 data['tooltip'] += f"Feels like: {weather['current_condition'][0]['FeelsLikeC']}°\n"
 data['tooltip'] += f"Wind: {weather['current_condition'][0]['windspeedKmph']}Km/h\n"
 data['tooltip'] += f"Humidity: {weather['current_condition'][0]['humidity']}%\n"
