@@ -2021,7 +2021,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org943742d"></a>
+<a id="org0867406"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2042,7 +2042,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org943742d).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org0867406).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3719,7 +3719,7 @@ command -v brightnessctl && brightnessctl -r
 
 ```bash
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-[ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway
+[ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway --my-next-gpu-wont-be-nvidia
 ```
 
 

@@ -4087,7 +4087,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 ** ~/.bash_profile
 #+begin_src bash :tangle "DotFiles/.bash_profile"
   [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-  [ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway
+  [ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway --my-next-gpu-wont-be-nvidia
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"
