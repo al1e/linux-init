@@ -2377,6 +2377,16 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src conf
   include /etc/sway/config.d/*
 #+end_src
+*** host specific
+#+begin_src conf
+  include "$HOME/.config/sway/host-config-$(hostname)"
+#+end_src
+**** XMG Neo
+#+begin_src conf :tangle ~/.config/sway/host-config-xmgneo
+  #Maintained in linux-config.org
+  output eDP-1 mode 2560x1440@165hz scale 1.15
+#+end_src
+
 ** bin,scripts                                                 :sway:wayland:
 *** ~/bin/sway-sway-active-monitors-count
 #+begin_src bash :tangle ~/bin/sway/sway-active-monitors-count

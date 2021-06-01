@@ -260,3 +260,5 @@ exec sleep 2 && gpg-cache
 exec swaymsg workspace $ws1
 
 include /etc/sway/config.d/*
+
+include "$HOME/.config/sway/host-config-$(hostname)"

@@ -1739,6 +1739,20 @@ include /etc/sway/config.d/*
 ```
 
 
+### host specific
+
+```conf
+include "$HOME/.config/sway/host-config-$(hostname)"
+```
+
+1.  XMG Neo
+
+    ```conf
+    #Maintained in linux-config.org
+    output eDP-1 mode 2560x1440@165hz scale 1.15
+    ```
+
+
 ## bin,scripts     :sway:wayland:
 
 
@@ -2022,7 +2036,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org61d86ad"></a>
+<a id="org80e7f46"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2043,7 +2057,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org61d86ad).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org80e7f46).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
