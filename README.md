@@ -1745,7 +1745,14 @@ include /etc/sway/config.d/*
 include "$HOME/.config/sway/host-config-$(hostname)"
 ```
 
-1.  XMG Neo
+1.  Thinkpad T14s
+
+    ```conf
+    #Maintained in linux-config.org
+    output eDP-1 mode 1920x1080@60hz scale 1.0
+    ```
+
+2.  XMG Neo
 
     ```conf
     #Maintained in linux-config.org
@@ -2036,7 +2043,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org80e7f46"></a>
+<a id="org14a6c17"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2057,7 +2064,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org80e7f46).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org14a6c17).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

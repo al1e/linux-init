@@ -40,6 +40,7 @@
 
 !/dot-config/sway
 !/dot-config/sway/config
+!/dot-config/sway/host-config-*
 
 !/dot-config/zsh
 !/dot-config/zsh/.zshenv
