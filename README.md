@@ -716,6 +716,7 @@ Use mako as the notification daemon
     ```conf
     anchor=top-right
     background-color=#da4f37
+    default-timeout=5000
     ```
 
 3.  notification daemon
@@ -2021,7 +2022,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgd71c8f4"></a>
+<a id="org61d86ad"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2042,7 +2043,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgd71c8f4).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org61d86ad).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

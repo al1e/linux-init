@@ -1244,6 +1244,7 @@ Use mako as the notification daemon
 #+begin_src conf :tangle "~/.config/mako/config"
   anchor=top-right
   background-color=#da4f37
+  default-timeout=5000
 #+end_src
 **** notification daemon
 #+begin_src bash

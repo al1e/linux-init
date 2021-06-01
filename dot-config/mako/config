@@ -1,2 +1,3 @@
 anchor=top-right
 background-color=#da4f37
+default-timeout=5000
