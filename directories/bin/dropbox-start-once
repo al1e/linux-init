@@ -3,5 +3,5 @@
 if (! dropbox running) ; then
     echo "Dropbox is already running"
 else
-    "$HOME/.dropbox-dist/dropboxd" &> /dev/null  &
+    dropbox start &> /dev/null &
 fi

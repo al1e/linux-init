@@ -16,7 +16,7 @@ Work in progress!! Keep all config and scripts in a single org file for document
 ```
 
 
-### ~/.gitconfig
+### ~/.config/git/config
 
 global git settings NB - NOT Exported as lots of things want to update it
 
@@ -57,44 +57,6 @@ If using startx on debian this is taken care of by the system XSession loading e
 
 
 # Bash Startup Files
-
-
-# Auto login for tty
-
-,-&#x2014;
-
-| <https://unix.stackexchange.com/a/401798/228272>                              |
-| Edit your /etc/systemd/logind.conf , change #NAutoVTs=6 to NAutoVTs=1         |
-| Create a /etc/systemd/system/getty@tty1.service.d/override.conf through ;     |
-| systemctl edit getty@tty1                                                     |
-| Paste the following lines                                                     |
-| [Service]                                                                     |
-| ExecStart=                                                                    |
-| ExecStart=-/sbin/agetty &#x2013;autologin root &#x2013;noclear %I 38400 linux |
-| enable the getty@tty1.service then reboot                                     |
-| systemctl enable getty@tty1.service                                           |
-| reboot                                                                        |
-
-\`-&#x2014;
-
-<https://linuxize.com/post/bashrc-vs-bash-profile/> ,-&#x2014;
-
-| Bash Startup Files                                                                                                                                                                                                                                                                                                |
-| When invoked as an interactive login shell, Bash looks for the *etc/profile file, and if the file exists , it runs the commands listed in the file. Then Bash searches for ~*.bash\_profile, ~/.bash\_login, and ~/.profile files, in the listed order, and executes commands from the first readable file found. |
-| When Bash is invoked as an interactive non-login shell, it reads and executes commands from ~/.bashrc, if that file exists, and it is readable.                                                                                                                                                                   |
-| Difference Between .bashrc and .bash\_profile                                                                                                                                                                                                                                                                     |
-| .bash\_profile is read and executed when Bash is invoked as an interactive login shell, while .bashrc is executed for an interactive non-login shell.                                                                                                                                                             |
-| Use .bash\_profile to run commands that should run only once, such as customizing the $PATH environment variable .                                                                                                                                                                                                |
-| Put the commands that should run every time you launch a new shell in the .bashrc file. This include your aliases and functions , custom prompts, history customizations , and so on.                                                                                                                             |
-| Typically, ~/.bash\_profile contains lines like below that source the .bashrc file. This means each time you log in to the terminal, both files are read and executed.                                                                                                                                            |
-| if [ -f ~/.bashrc ]; then                                                                                                                                                                                                                                                                                         |
-| . ~/.bashrc                                                                                                                                                                                                                                                                                                       |
-| fi                                                                                                                                                                                                                                                                                                                |
-| Copy                                                                                                                                                                                                                                                                                                              |
-| Most Linux distributions are using ~/.profile instead of ~/.bash\_profile. The ~/.profile file is read by all shells, while ~/.bash\_profile only by Bash.                                                                                                                                                        |
-| If any startup file is not present on your system, you can create it.                                                                                                                                                                                                                                             |
-
-\`-&#x2014;
 
 
 ## ~/.profile
@@ -1296,12 +1258,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 
           "custom/weather": {
-            "format": "<span color='gray'>{}</span>",
-            "interval": 18000,
-            "exec": "waybar-weather",
-            "exec-if": "waybar-weather -q",
-            "tooltip": "false",
-            "on-click": "sway-weather",
+            "format": "{}",
+            "tooltip": true,
+            "interval": 3600,
+            "exec": "waybar-wttr.py",
+            "return-type": "json"
           },
 
           "custom/uptime": {
@@ -1309,6 +1270,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 60,
             "exec": "uptime -p",
           },
+
           "custom/dropbox": {
             "format": "<span color='gold'>⇄{}</span>",
             "return-type" : "json",
@@ -1559,7 +1521,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
-            if pidof dropbox &>/dev/null; then
+            if ( ! dropbox running ); then
                 stat="$(dropbox status | sed -n 1p)"
             else
                 stat="Restarting Dropbox.."
@@ -1567,12 +1529,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             fi
 
             jq --unbuffered --compact-output -n \
-                   --arg text "$stat" \
-                   --arg alt "$stat" \
-                   --arg tooltip "$stat" \
-                   --arg class "dropbox-status" \
-                   --arg percentage "100" \
-                   '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
+               --arg text "$stat" \
+               --arg alt "$stat" \
+               --arg tooltip "$stat" \
+               --arg class "dropbox-status" \
+               --arg percentage "100" \
+               '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage}'
             ```
 
         4.  ~/bin/sway/waybar-ip-info-json
@@ -1586,16 +1548,16 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             lip="$([ -z "$lip" ] && echo -n "Offline" || echo -n "$lip")"
             ssid="$(/sbin/iwconfig $ifname | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')"
             jq --unbuffered --compact-output -n \
-                              --arg text "📶 $ssid" \
-                              --arg alt "$ifname:🌎$pubip,🔌$lip" \
-                              --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
-                              --arg class "" \
-                              --arg percentage "1" \
-                              --arg ifname "$ifname" \
-                              --arg ssid "$ssid" \
-                              --arg public_ip "$pubip" \
-                              --arg ippadr "$lip" \
-                              '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
+               --arg text "📶 $ssid" \
+               --arg alt "$ifname:🌎$pubip,🔌$lip" \
+               --arg tooltip "$ifname:🌎$pubip,🔌$lip" \
+               --arg class "" \
+               --arg percentage "1" \
+               --arg ifname "$ifname" \
+               --arg ssid "$ssid" \
+               --arg public_ip "$pubip" \
+               --arg ippadr "$lip" \
+               '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
             ```
 
         5.  ~/bin/sway/waybar-monitors
@@ -1611,7 +1573,127 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             echo $text
             ```
 
-        6.  ~/bin/sway/waybar-weather
+        6.  ~/bin/sway/waybar-wttr.py
+
+            ```python
+            #!/usr/bin/env python
+
+            import json
+            import time
+            import requests
+            from datetime import datetime
+
+            WEATHER_CODES = {
+                '113': '☀️',
+                '116': '⛅️',
+                '119': '☁️',
+                '122': '☁️',
+                '143': '🌫',
+                '176': '🌦',
+                '179': '🌧',
+                '182': '🌧',
+                '185': '🌧',
+                '200': '⛈',
+                '227': '🌨',
+                '230': '❄️',
+                '248': '🌫',
+                '260': '🌫',
+                '263': '🌦',
+                '266': '🌦',
+                '281': '🌧',
+                '284': '🌧',
+                '293': '🌦',
+                '296': '🌦',
+                '299': '🌧',
+                '302': '🌧',
+                '305': '🌧',
+                '308': '🌧',
+                '311': '🌧',
+                '314': '🌧',
+                '317': '🌧',
+                '320': '🌨',
+                '323': '🌨',
+                '326': '🌨',
+                '329': '❄️',
+                '332': '❄️',
+                '335': '❄️',
+                '338': '❄️',
+                '350': '🌧',
+                '353': '🌦',
+                '356': '🌧',
+                '359': '🌧',
+                '362': '🌧',
+                '365': '🌧',
+                '368': '🌨',
+                '371': '❄️',
+                '374': '🌧',
+                '377': '🌧',
+                '386': '⛈',
+                '389': '🌩',
+                '392': '⛈',
+                '395': '❄️'
+            }
+
+            data = {}
+
+            time.sleep(5)   # Delays for 5 seconds. You can also use a float value.
+            weather = requests.get("https://wttr.in/?format=j1").json()
+
+
+            def format_time(time):
+                return time.replace("00", "").zfill(2)
+
+
+            def format_temp(temp):
+                return (hour['FeelsLikeC']+"°").ljust(3)
+
+
+            def format_chances(hour):
+                chances = {
+                    "chanceoffog": "Fog",
+                    "chanceoffrost": "Frost",
+                    "chanceofovercast": "Overcast",
+                    "chanceofrain": "Rain",
+                    "chanceofsnow": "Snow",
+                    "chanceofsunshine": "Sunshine",
+                    "chanceofthunder": "Thunder",
+                    "chanceofwindy": "Wind"
+                }
+
+                conditions = []
+                for event in chances.keys():
+                    if int(hour[event]) > 0:
+                        conditions.append(chances[event]+" "+hour[event]+"%")
+                return ", ".join(conditions)
+
+
+            data['text'] = WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
+                " "+weather['current_condition'][0]['FeelsLikeC']+"°"
+
+            data['tooltip'] = f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
+            data['tooltip'] += f"Feels like: {weather['current_condition'][0]['FeelsLikeC']}°\n"
+            data['tooltip'] += f"Wind: {weather['current_condition'][0]['windspeedKmph']}Km/h\n"
+            data['tooltip'] += f"Humidity: {weather['current_condition'][0]['humidity']}%\n"
+            for i, day in enumerate(weather['weather']):
+                data['tooltip'] += f"\n<b>"
+                if i == 0:
+                    data['tooltip'] += "Today, "
+                if i == 1:
+                    data['tooltip'] += "Tomorrow, "
+                data['tooltip'] += f"{day['date']}</b>\n"
+                data['tooltip'] += f"⬆️ {day['maxtempC']}° ⬇️ {day['mintempC']}° "
+                data['tooltip'] += f"🌅 {day['astronomy'][0]['sunrise']} 🌇 {day['astronomy'][0]['sunset']}\n"
+                for hour in day['hourly']:
+                    if i == 0:
+                        if int(format_time(hour['time'])) < datetime.now().hour-2:
+                            continue
+                    data['tooltip'] += f"{format_time(hour['time'])} {WEATHER_CODES[hour['weatherCode']]} {format_temp(hour['FeelsLikeC'])} {hour['weatherDesc'][0]['value']}, {format_chances(hour)}\n"
+
+
+            print(json.dumps(data))
+            ```
+
+        7.  ~/bin/sway/waybar-weather
 
             ```bash
             #!/usr/bin/env bash
@@ -1624,7 +1706,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             fi
             ```
 
-        7.  ~/bin/sway/waybar-dropbox-status
+        8.  ~/bin/sway/waybar-dropbox-status
 
             ```bash
             #!/usr/bin/bash
@@ -1944,7 +2026,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org41a0cd4"></a>
+<a id="org534166f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -1965,7 +2047,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org41a0cd4).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org534166f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3141,17 +3223,10 @@ fi
 ```bash
 #!/usr/bin/bash
 # Maintained in linux-config.org
-if pidof dropbox > /dev/null ; then
+if (! dropbox running) ; then
     echo "Dropbox is already running"
 else
-    if command -v dropbox &> /dev/null; then
-        echo "Starting Dropbox.."
-        if [ "$1" = "async" ]; then
-            dropbox start &> /dev/null &
-        else
-            dropbox start &> /dev/null
-        fi
-    fi
+    dropbox start &> /dev/null &
 fi
 ```
 

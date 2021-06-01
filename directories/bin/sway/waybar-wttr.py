@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+import time
 import requests
 from datetime import datetime
 
@@ -57,7 +58,7 @@ WEATHER_CODES = {
 
 data = {}
 
-
+time.sleep(5)   # Delays for 5 seconds. You can also use a float value.
 weather = requests.get("https://wttr.in/?format=j1").json()
 
 
