@@ -1580,6 +1580,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             # Maintained in linux-config.org
 
             import json
+            import os
             import requests
             from datetime import datetime
 
@@ -1636,8 +1637,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
             data = {}
 
-            weather = requests.get("https://wttr.in/?format=j1").json()
-
+            weather = requests.get("https://wttr.in/" + os.environ['WTTR_LOCATION'] + "?format=j1").json()
 
             def format_time(time):
                 return time.replace("00", "").zfill(2)
@@ -1698,7 +1698,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             sleep 5
-            exec waybar-wttr
+            WTTR_LOCATION="${1:-'Grömitz,DE'}"  waybar-wttr
             ```
 
         8.  ~/bin/sway/waybar-dropbox-status
@@ -2021,7 +2021,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org1bc1ff5"></a>
+<a id="org943742d"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2042,7 +2042,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1bc1ff5).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org943742d).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

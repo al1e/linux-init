@@ -2,6 +2,7 @@
 # Maintained in linux-config.org
 
 import json
+import os
 import requests
 from datetime import datetime
 
@@ -58,8 +59,7 @@ WEATHER_CODES = {
 
 data = {}
 
-weather = requests.get("https://wttr.in/?format=j1").json()
-
+weather = requests.get("https://wttr.in/" + os.environ['WTTR_LOCATION'] + "?format=j1").json()
 
 def format_time(time):
     return time.replace("00", "").zfill(2)

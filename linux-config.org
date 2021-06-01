@@ -2224,11 +2224,13 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   echo $text
 #+end_src
 ******* ~/bin/sway/waybar-wttr
+
 #+begin_src python :tangle "~/bin/sway/waybar-wttr"
   #!/usr/bin/env python
   # Maintained in linux-config.org
 
   import json
+  import os
   import requests
   from datetime import datetime
 
@@ -2285,8 +2287,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 
   data = {}
 
-  weather = requests.get("https://wttr.in/?format=j1").json()
-
+  weather = requests.get("https://wttr.in/" + os.environ['WTTR_LOCATION'] + "?format=j1").json()
 
   def format_time(time):
       return time.replace("00", "").zfill(2)
@@ -2345,7 +2346,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   sleep 5
-  exec waybar-wttr
+  WTTR_LOCATION="${1:-'Grömitz,DE'}"  waybar-wttr
 #+end_src
 ******* ~/bin/sway/waybar-dropbox-status
 #+begin_src bash :tangle ~/bin/sway/waybar-dropbox-status
