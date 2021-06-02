@@ -947,10 +947,28 @@ bindsym $mod+r mode "resize"
     ```conf
     set $clipboard "~/.local/share/clipman.json"
     exec wl-paste -t text --watch clipman store --max-items 1024
-    bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
+    bindsym $mod+y exec sway-clipboard-history-select
+    bindsym $mod+Control+y exec sway-clipboard-history-clear
     ```
 
-    1.  Wofi Config
+    1.  sway-clipboard-history-select
+
+        ```bash
+        #!/usr/bin/env bash
+        # Maintained in linux-config.org
+        clipman pick --tool="wofi" --max-items=30
+        ```
+
+    2.  sway-clipboard-history-clear
+
+        ```bash
+        #!/usr/bin/env bash
+        # Maintained in linux-config.org
+        clipman clear -a
+        sway-notify "Clipboard history cleared."
+        ```
+
+    3.  Wofi Config
 
         [Configuration](http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html) file and styling
 
@@ -2015,7 +2033,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org3ff2034"></a>
+<a id="org5710881"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2036,7 +2054,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3ff2034).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5710881).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3751,7 +3769,16 @@ command -v brightnessctl && brightnessctl -r
 
 ```bash
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-[ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway "$( [ $(hostname) = "xmgneo" ] && echo "--my-next-gpu-wont-be-nvidia")"
+
+if [ -f "${HOME}/.START_SWAY" ]; then
+    if [ $(tty) = /dev/tty1 ];then
+        if  [ $(hostname) = "xmgneo" ];then
+            exec sway --my-next-gpu-wont-be-nvidia
+        else
+            exec sway
+        fi
+    fi
+fi
 ```
 
 
