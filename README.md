@@ -985,8 +985,10 @@ bindsym $mod+r mode "resize"
 ### clipboard
 
 ```conf
-exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.config/clipman/clipman.json"
-bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --
+set $clipboard "~/.clipboard"
+exec wl-paste -t text --watch clipman store --max-items 1024 --histpath=$clipboard
+exec wl-paste -t text -p --watch clipman store --max-items 1024 --histpath=$clipboard
+bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --histpath=$clipboard
 ```
 
 
@@ -2043,7 +2045,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org7495c60"></a>
+<a id="orgb3364d5"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2064,7 +2066,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org7495c60).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb3364d5).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
