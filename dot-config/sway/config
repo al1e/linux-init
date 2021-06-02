@@ -1,5 +1,7 @@
 # Maintained in linux-config.org
 
+# xwayland disable
+
 set $mod Mod4
 set $term 'oneterminal'
 set $menu 'sway-launcher-fzf'
@@ -182,7 +184,7 @@ bindsym $mod+r mode "default"
 
 bindsym $mod+r mode "resize"
 
-set $clipboard "~/.clipboard"
+set $clipboard "~/.local/share/clipman.json"
 exec wl-paste -t text --watch clipman store --max-items 1024
 bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
 

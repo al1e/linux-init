@@ -572,16 +572,6 @@ tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tt
 ```
 
 
-# zellij terminal
-
-
-## config
-
-```conf
-simplified_ui: true
-```
-
-
 # Sway Wayland Compositing Tile Manager     :i3:swaywm:sway:
 
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11. It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
@@ -698,42 +688,6 @@ build/sway/sway
 ```
 
 
-## notification daemon
-
-
-### mako
-
-Use mako as the notification daemon
-
-1.  install
-
-    ```bash
-    sudo apt install mako-notifier
-    ```
-
-2.  ~/.config/mako/config
-
-    ```conf
-    anchor=top-right
-    background-color=#da4f37
-    default-timeout=5000
-    ```
-
-3.  notification daemon
-
-    ```bash
-    sudo apt install notification-daemon libnotifier-bin
-    ```
-
-    Enable it as a dbus service <https://wiki.archlinux.org/title/Desktop_notifications> $XDG\_DATA\_HOME/dbus-1/services/org.freedesktop.Notifications.service
-
-    ```conf
-    [D-BUS Service]
-    Name=org.freedesktop.Notifications
-    Exec=/usr/lib/notification-daemon/notification-daemon
-    ```
-
-
 ## Sway config
 
 
@@ -741,6 +695,8 @@ Use mako as the notification daemon
 
 ```conf
 # Maintained in linux-config.org
+
+# xwayland disable
 
 set $mod Mod4
 set $term 'oneterminal'
@@ -984,11 +940,26 @@ bindsym $mod+r mode "resize"
 
 ### clipboard
 
-```conf
-set $clipboard "~/.clipboard"
-exec wl-paste -t text --watch clipman store --max-items 1024
-bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
-```
+1.  clipman and wofi
+
+    A basic [clipboard manager](https://github.com/yory8/clipman) for Wayland, with support for persisting copy buffers after an application exits.
+
+    ```conf
+    set $clipboard "~/.local/share/clipman.json"
+    exec wl-paste -t text --watch clipman store --max-items 1024
+    bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
+    ```
+
+    1.  Wofi Config
+
+        [Configuration](http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html) file and styling
+
+        ```conf
+        # Maintained in linux-config.org
+        dynamic_lines=true
+        gtk_dark=true
+        terminal=alacritty
+        ```
 
 
 ### audio     :audio:
@@ -2044,7 +2015,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org8e5656a"></a>
+<a id="org3ff2034"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2065,7 +2036,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org8e5656a).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3ff2034).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2197,6 +2168,44 @@ sleep 0.5 && sway-do-tool "Google-chrome"
 # Maintained in linux-config.org
 oneterminal "wifi" "nmtui"  &>/dev/null
 ```
+
+
+## wayland utils
+
+
+### notification daemon
+
+1.  mako
+
+    Use mako as the notification daemon
+
+    1.  install
+
+        ```bash
+        sudo apt install mako-notifier
+        ```
+
+    2.  ~/.config/mako/config
+
+        ```conf
+        anchor=top-right
+        background-color=#da4f37
+        default-timeout=5000
+        ```
+
+    3.  notification daemon
+
+        ```bash
+        sudo apt install notification-daemon libnotifier-bin
+        ```
+
+        Enable it as a dbus service <https://wiki.archlinux.org/title/Desktop_notifications> $XDG\_DATA\_HOME/dbus-1/services/org.freedesktop.Notifications.service
+
+        ```conf
+        [D-BUS Service]
+        Name=org.freedesktop.Notifications
+        Exec=/usr/lib/notification-daemon/notification-daemon
+        ```
 
 
 # Vim

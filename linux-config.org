@@ -1127,11 +1127,6 @@ Written to find the tty for a pane in order to redirect gef context source to a 
   window="${3:-0}"
   tmux list-panes -t "${session}:${window}" -F 'pane_index:#{pane_index} #{pane_tty}' | awk '/pane_index:'"${pane_index}"'/ {print $2 }'
 #+end_src
-* zellij terminal
-** config
-#+begin_src conf :tangle "~/.config/zellij/config"
-  simplified_ui: true
-#+end_src
 * Sway Wayland Compositing Tile Manager                      :i3:swaywm:sway:
 Sway is a tiling Wayland compositor and a drop-in replacement for the i3 window manager for X11.
 It works with your existing i3 configuration and supports most of i3's features, plus a few extras.
@@ -1232,30 +1227,6 @@ X11 apps still need resource definitions when launched under XWayland.
 
   # Start sway
   build/sway/sway
-#+end_src
-** notification daemon
-*** mako
-Use mako as the notification daemon
-**** install
-#+begin_src bash
-  sudo apt install mako-notifier
-#+end_src
-**** ~/.config/mako/config
-#+begin_src conf :tangle "~/.config/mako/config"
-  anchor=top-right
-  background-color=#da4f37
-  default-timeout=5000
-#+end_src
-**** notification daemon
-#+begin_src bash
-  sudo apt install notification-daemon libnotifier-bin
-#+end_src
-Enable it as a dbus service https://wiki.archlinux.org/title/Desktop_notifications
-$XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
-#+begin_src conf :tangle no
-  [D-BUS Service]
-  Name=org.freedesktop.Notifications
-  Exec=/usr/lib/notification-daemon/notification-daemon
 #+end_src
 ** sway json fun                                                   :noexport:
 *** cur ws
@@ -1441,7 +1412,6 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 :results:
 :end:
 
-
 ** Sway config
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/sway/config"
@@ -1450,6 +1420,8 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 *** general
 #+begin_src conf
   # Maintained in linux-config.org
+
+  # xwayland disable
 
   set $mod Mod4
   set $term 'oneterminal'
@@ -1668,10 +1640,21 @@ I want a key to create and then toggle a terminal.
 
 #+end_src
 *** clipboard
+**** clipman and wofi
+A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, with support for persisting copy buffers after an application exits.
+
 #+begin_src conf
-    set $clipboard "~/.clipboard"
-    exec wl-paste -t text --watch clipman store --max-items 1024
-    bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
+  set $clipboard "~/.local/share/clipman.json"
+  exec wl-paste -t text --watch clipman store --max-items 1024
+  bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
+#+end_src
+***** Wofi Config
+[[http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html][Configuration]] file and styling
+#+begin_src conf :tangle ~/.config/wofi/config
+  # Maintained in linux-config.org
+  dynamic_lines=true
+  gtk_dark=true
+  terminal=alacritty
 #+end_src
 *** audio                                                             :audio:
 **** volume                                                          :volume:
@@ -2771,6 +2754,31 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   #!/usr/bin/bash
   # Maintained in linux-config.org
   oneterminal "wifi" "nmtui"  &>/dev/null
+#+end_src
+** wayland utils
+*** notification daemon
+**** mako
+Use mako as the notification daemon
+***** install
+#+begin_src bash
+  sudo apt install mako-notifier
+#+end_src
+***** ~/.config/mako/config
+#+begin_src conf :tangle "~/.config/mako/config"
+  anchor=top-right
+  background-color=#da4f37
+  default-timeout=5000
+#+end_src
+***** notification daemon
+#+begin_src bash
+  sudo apt install notification-daemon libnotifier-bin
+#+end_src
+Enable it as a dbus service https://wiki.archlinux.org/title/Desktop_notifications
+$XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
+#+begin_src conf :tangle no
+  [D-BUS Service]
+  Name=org.freedesktop.Notifications
+  Exec=/usr/lib/notification-daemon/notification-daemon
 #+end_src
 * Vim
 ** ~/.vimrc
@@ -4102,9 +4110,18 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 
 * tailends
 ** ~/.bash_profile
-#+begin_src bash :tangle "DotFiles/.bash_profile"
+#+begin_src bash   :tangle "DotFiles/.bash_profile"
   [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-  [ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway "$( [ $(hostname) = "xmgneo" ] && echo "--my-next-gpu-wont-be-nvidia")"
+
+  if [ -f "${HOME}/.START_SWAY" ]; then
+      if [ $(tty) = /dev/tty1 ];then
+          if  [ $(hostname) = "xmgneo" ];then
+              exec sway --my-next-gpu-wont-be-nvidia
+          else
+              exec sway
+          fi
+      fi
+  fi
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"

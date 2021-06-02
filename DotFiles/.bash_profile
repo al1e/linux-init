@@ -9,4 +9,13 @@ logger -t "startup-initfile"  BASH_PROFILE
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
-[ -f "${HOME}/.START_SWAY" ] && [ $(tty) = /dev/tty1 ] && exec sway "$( [ $(hostname) = "xmgneo" ] && echo "--my-next-gpu-wont-be-nvidia")"
+
+if [ -f "${HOME}/.START_SWAY" ]; then
+    if [ $(tty) = /dev/tty1 ];then
+        if  [ $(hostname) = "xmgneo" ];then
+            exec sway --my-next-gpu-wont-be-nvidia
+        else
+            exec sway
+        fi
+    fi
+fi
