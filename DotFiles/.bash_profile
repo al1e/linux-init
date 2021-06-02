@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 logger -t "startup-initfile"  BASH_PROFILE
 

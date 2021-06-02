@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 
 # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to

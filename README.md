@@ -119,7 +119,7 @@ export XDG_CURRENT_DESKTOP=Unity
 ## ~/.bash\_profile
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 logger -t "startup-initfile"  BASH_PROFILE
 
@@ -135,7 +135,7 @@ systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 ## ~/.bashrc
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 logger -t "startup-initfile"  BASHRC
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -551,7 +551,7 @@ run -b '~/.tmux/plugins/tpm/tpm'
 ## ~/bin/tmux-current-session
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 echo "$(tmux list-panes -t "$TMUX_PANE" -F '#S' | head -n1)"
 ```
@@ -562,7 +562,7 @@ echo "$(tmux list-panes -t "$TMUX_PANE" -F '#S' | head -n1)"
 Written to find the tty for a pane in order to redirect gef context source to a voltron pane
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 session="${1:-""}"
 [ -z ${session} ] && exit 1
@@ -800,7 +800,7 @@ for_window [title=ScratchTerminal] mark "$alphamark", move to scratchpad; [title
 1.  ~/bin/sway/sway-scratch-terminal
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     swaymsg "[title=ScratchTerminal] scratchpad show " || ( sway-notify "created new scratchpad terminal" && alacritty --title "ScratchTerminal" --command bash -c "tmux new-session -A -s ScratchTerminal")
     ```
@@ -1552,7 +1552,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         5.  ~/bin/sway/waybar-monitors
 
             ```bash
-            #!/usr/bin/bash
+            #!/usr/bin/env bash
             #Maintained in linux-config.org
             l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
             o=$(swaymsg -t get_outputs | jq  -r '. | map(.name) | join(",")')
@@ -1695,7 +1695,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         8.  ~/bin/sway/waybar-dropbox-status
 
             ```bash
-            #!/usr/bin/bash
+            #!/usr/bin/env bash
             #Maintained in linux-config.org
             if pidof dropbox &> /dev/null ; then
                 stat=$(dropbox status | sed -n 1p)
@@ -1756,7 +1756,7 @@ include "$HOME/.config/sway/host-config-$(hostname)"
 ### ~/bin/sway-sway-active-monitors-count
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
 ```
@@ -1765,7 +1765,7 @@ swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
 ### ~/bin/sway/sway-autostart
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 [ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart"
 ```
@@ -1774,7 +1774,7 @@ swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
 ### ~/bin/sway/sway-brightness-notify
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 sway-notify "🔆:$(printf "%.0f" `light -G`)"
 ```
@@ -1783,7 +1783,7 @@ sway-notify "🔆:$(printf "%.0f" `light -G`)"
 ### ~/bin/sway/sway-bluetooth
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 exec oneterminal "bluetoothctl" "bluetoothctl"
 ```
@@ -1792,7 +1792,7 @@ exec oneterminal "bluetoothctl" "bluetoothctl"
 ### ~/bin/sway/sway-do-tool
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 
 # NB ths is currently lazy. It uses brute force, and i need to do some get_tree jq stuff instead to
@@ -1827,7 +1827,7 @@ exit 0
 ### ~/bin/sway/sway-dpms
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 DPMS="${1:-on}"
 DISP="${2:-*}"
@@ -1839,7 +1839,7 @@ currentDPMS="$(swaymsg -t get_outputs | jq -r '.[0]'.dpms)"
 ### ~/bin/sway/sway-editor
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 exec emacs-same-frame "$@"
 ```
@@ -1848,7 +1848,7 @@ exec emacs-same-frame "$@"
 ### ~/bin/sway/sway-htop
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 exec oneterminal "Processes" htop
 ```
@@ -1859,7 +1859,7 @@ exec oneterminal "Processes" htop
 Monitor control with hotplug <https://github.com/emersion/kanshi> Load a host specific kanshi file if it exists
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
 killall -9 kanshi &>/dev/null
@@ -1929,7 +1929,7 @@ fi
 Just a gathering place of locky/suspendy type things&#x2026;
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 lock() {
     pidof swaylock || swaylock -f -i ~/Pictures/LockScreen/current -s fill -c 000000 &
@@ -1980,7 +1980,7 @@ exit 0
 ### ~/bin/sway/sway-idle     :sleep:lock:idle:
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 pidof swayidle  && killall -9 swayidle
 exec swayidle -w \
@@ -2004,7 +2004,7 @@ exec swayidle -w \
 Here we look for an env `LAPTOP_ID`. In my setup that would be set in `$HOME/.profile.local`. If thats not set we assume `eDP-1` but in both cases we check if it exists in the sway tree, and, if not, set it it to the first one found.
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 id="${LAPTOP_ID:-"eDP-1"}"
 displays="$(swaymsg -t get_outputs | jq -r '.[0]')"
@@ -2018,7 +2018,7 @@ echo $id
 ### ~/bin/sway/sway-lock
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 sway-lock-utils lock
 ```
@@ -2027,13 +2027,13 @@ sway-lock-utils lock
 ### ~/bin/sway/sway-notify
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org5710881"></a>
+<a id="orgecc42fe"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2042,7 +2042,7 @@ notify-send -t 3000 "${@}"
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 m="${2:-$(swaymsg -t get_outputs | jq -r '.[0].name')}"
 c="${1:-enable}"
@@ -2054,12 +2054,12 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5710881).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgecc42fe).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 m=$(swaymsg -t get_outputs | jq -r '.[] |  "\(.name)\n\(.active)"'  | zenity  --title "Select Display" --list  --text "" --column "Monitor" --column "Enabled")
 if [ ! -z "$m" ]; then
@@ -2075,7 +2075,7 @@ exit 0
 ### ~/bin/sway/sway-swaysock     :swaysock:
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 ```
@@ -2086,7 +2086,7 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 <https://i3wm.org/docs/user-contributed/swapping-workspaces.html>
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 
 DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
@@ -2107,7 +2107,7 @@ done
 ### ~/bin/sway/sway-launcher-wofi
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 exec dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 ```
@@ -2116,7 +2116,7 @@ exec dmenu_path | wofi --show drun,dmenu -i | xargs swaymsg exec --
 ### ~/bin/sway/sway-launcher-fzf
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs swaymsg exec"
 ```
@@ -2127,7 +2127,7 @@ exec alacritty --title "sway-launcher" -e bash -c "dmenu_path | fzf | xargs sway
 Thanks: <https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/>
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 # thanks to: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivial_wrapper_for_taking_screenshots/
 
@@ -2151,7 +2151,7 @@ fi
 ### ~/bin/sway/sway-volume-notify
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
 volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
@@ -2162,7 +2162,7 @@ exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &>
 ### ~/bin/sway/sway-weather
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 ```
@@ -2171,7 +2171,7 @@ sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-fo
 ### ~/bin/sway/sway-www
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 #google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
 google-chrome  "$@" &> /dev/null &
@@ -2182,7 +2182,7 @@ sleep 0.5 && sway-do-tool "Google-chrome"
 ### ~/bin/sway/sway-wifi
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 oneterminal "wifi" "nmtui"  &>/dev/null
 ```
@@ -2535,7 +2535,7 @@ e dbg.bep=main
         Create a session but let someone else do the attach
 
         ```bash
-        #!/usr/bin/bash
+        #!/usr/bin/env bash
         # Maintained in linux-config.org
         directory="$(realpath -s "${1:-`pwd`}")"
         cd "${directory}"
@@ -2552,7 +2552,7 @@ e dbg.bep=main
     2.  ~/bin/gdb-run
 
         ```bash
-        #!/usr/bin/bash
+        #!/usr/bin/env bash
         # Maintained in linux-config.org
         directory="${1:-`pwd`}"
         session="${2}"
@@ -2739,7 +2739,7 @@ e dbg.bep=main
     1.  ~/bin/voltron-panes-h
 
         ```bash
-        #!/usr/bin/bash
+        #!/usr/bin/env bash
         # Maintained in linux-config.org
         session=${1:-"voltron"}
         window=${2:-"0"}
@@ -2754,7 +2754,7 @@ e dbg.bep=main
 2.  ~/bin/voltron-session
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     # Maintained in linux-config.org
     session="${1:-voltron}"
     if ! tmux has-session -t "${session}" &> /dev/null; then
@@ -2890,7 +2890,7 @@ You must copy these into [/etc/acpi/actions](file:///etc/acpi/actions) if you ha
 1.  /etc/acpi/actions/user-powerstate.sh
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     # Maintained in linux-config.org
     # /etc/acpi/actions/user-powerstate
     . /usr/share/acpi-support/power-funcs
@@ -2903,7 +2903,7 @@ You must copy these into [/etc/acpi/actions](file:///etc/acpi/actions) if you ha
 2.  /etc/acpi/actions/xmg-neo-powerstate.sh
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     # Maintained in linux-config.org
     # /etc/acpi/actions/xmg-neo-powerstate
     . /usr/share/acpi-support/power-funcs
@@ -3116,7 +3116,7 @@ mu index
 ## ~/bin/getmails
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 if [ $# -eq 0 ]
 then
@@ -3154,7 +3154,7 @@ fi
 ### ~/bin/oneterminal
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 
 sessionname="${1:-`pwd`}"
@@ -3187,7 +3187,7 @@ exit 0
 ### ~/bin/pop-window
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 sway-do-tool "$@"
 ```
@@ -3198,7 +3198,7 @@ sway-do-tool "$@"
 1.  ~/bin/my-iface-active-query
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     nmcli device show ${IFACE_ACTIVE:-$(my-iface-active)} | grep -i -m 1 "${1:-".*"}.*:" | awk '{print $2}'
     ```
@@ -3206,7 +3206,7 @@ sway-do-tool "$@"
 2.  ~/bin/my-iface-active
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     IFACE_ACTIVE="$(nmcli device show | grep -m 1 "GENERAL.DEVICE" | awk '{print $2}')"
     export IFACE_ACTIVE
@@ -3216,7 +3216,7 @@ sway-do-tool "$@"
 3.  ~/bin/my-iface-active-ssid
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     my-iface-active-query "GENERAL.CONNECTION"
     ```
@@ -3224,7 +3224,7 @@ sway-do-tool "$@"
 4.  ~/bin/my-iface-active-ipaddr
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     my-iface-active-query "IP4.ADDRESS"
     ```
@@ -3232,7 +3232,7 @@ sway-do-tool "$@"
 5.  ~/bin/my-iface-active-quality
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     #Maintained in linux-config.org
     my-iface-active-query "GENERAL.STATE"
     ```
@@ -3241,7 +3241,7 @@ sway-do-tool "$@"
 ## ~/bin/confirm-suspend
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 delay=10;
 message="Almost out of juice."
@@ -3266,7 +3266,7 @@ fi
 ## ~/bin/dropbox-start-once
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 if (! dropbox running) ; then
     echo "Dropbox is already running"
@@ -3279,7 +3279,7 @@ fi
 ## ~/bin/edit
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 ${VISUAL:-${EDITOR:-vi}} "${@}"
 ```
@@ -3290,7 +3290,7 @@ ${VISUAL:-${EDITOR:-vi}} "${@}"
 Use emacs for manpages if it's running might be an idea set an alias such as 'alias man=eman'
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 mp="${1:-man}"
 if pidof emacs; then
@@ -3304,7 +3304,7 @@ fi
 ## ~/bin/expert-advice
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 f=$(command -v fortune &>/dev/null && fortune || echo "I don't need to study a subject to have my own truths. Because own truths ARE a thing in 2020.")
 if [ "$1" = "t" ]
@@ -3320,7 +3320,7 @@ echo $f
 strip debug info and store elsewhere
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 scriptdir=`dirname ${0}`
 scriptdir=`(cd ${scriptdir}; pwd)`
@@ -3371,7 +3371,7 @@ chmod -x "${debugdir}/${debugfile}"
 ## ~/bin/htop-regexp
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
 [ -z "$filter" ] && exit 1
@@ -3390,7 +3390,7 @@ ONETERM_TITLE="filtered htop:${filter}" oneterminal "${session}"
 ## ~/bin/make-compile\_commands
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 make --always-make --dry-run \
     | grep -wE 'gcc|g++' \
@@ -3405,7 +3405,7 @@ make --always-make --dry-run \
 restart pulseaudio
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 pulseaudio -k &> /dev/null
 pulseaudio -D &> /dev/null
@@ -3416,7 +3416,7 @@ start-pulseaudio-x11
 ## ~/bin/random-man-page
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 page="$(find /usr/share/man/man1 -type f | sort -R | head -n1)"
 eman "$page"
@@ -3426,7 +3426,7 @@ eman "$page"
 ## ~/bin/remove-broken-symlinks
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 ```
@@ -3435,7 +3435,7 @@ find -L . -name . -o -type d -prune -o -type l -exec rm {} +
 ## ~/bin/remove-conflicted-copies
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 if [ "$1" == "--f" ]; then
     find ~/Dropbox/ -path "*(*'s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
@@ -3478,7 +3478,7 @@ fi
 ## ~/bin/rgr-logger
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 [ -z "$RGR_LOGGER" ] || logger "$@"
 ```
@@ -3487,7 +3487,7 @@ fi
 ## ~/bin/sharemouse
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 exec ssh -X ${1-192.168.2.100} x2x -east -to :0
 ```
@@ -3498,7 +3498,7 @@ exec ssh -X ${1-192.168.2.100} x2x -east -to :0
 update sw
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 export DEBIAN_FRONTEND=noninteractive
 sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
@@ -3513,7 +3513,7 @@ sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo
 See [XMGNeo 15 keyboard backlight controller](https://github.com/pobrn/ite8291r3-ctl) for the controller code.
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 
 sf="$HOME/.xmg-neo-kbd"
@@ -3624,7 +3624,7 @@ xmg-neo-rgb-kbd-lights set-color red
 ### ~/bin/acpi-powerstate
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 . /usr/share/acpi-support/power-funcs
 . /usr/share/acpi-support/policy-funcs
@@ -3639,7 +3639,7 @@ export POWERSTATE=$STATE
 1.  ~/bin/nvidia-power-usage
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     # Maintained in linux-config.org
     for i in $(seq 1 ${1:-5})
     do
@@ -3659,7 +3659,7 @@ sudo apt install translate-shell
 ### ~/bin/google-trans
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 src=$1;shift;
 dst=$1;shift;
@@ -3671,7 +3671,7 @@ trans -e google -s ${src} -t ${dst} -show-original y -show-original-phonetics y 
 ### ~/bin/google-trans-de-en
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 trans -e google -s de -t en -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 ```
@@ -3680,7 +3680,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics y -show-tr
 ### ~/bin/google-trans-en-de
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 trans -e google -s en -t de -show-original y -show-original-phonetics y -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary y -show-dictionary y -show-alternatives y "$@"
 ```
@@ -3692,7 +3692,7 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 ### ~/bin/gpg-cache
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 if ! pidof gpg-agent; then
     cachefile="${1:-"$HOME/.gnupg/auth/cache-keys"}"
@@ -3713,7 +3713,7 @@ fi
 ### ~/bin/pre-lock
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 [ -f "${HOME}"/.pre-lock ]  && . "${HOME}"/.pre-lock
 ```
@@ -3721,7 +3721,7 @@ fi
 1.  Sample .pre-lock
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     xmg-neo-rgb-kbd-lights sleep
     ```
 
@@ -3729,7 +3729,7 @@ fi
 ### ~/bin/post-lock
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 [ -f "${HOME}"/.post-lock  ]  && . "${HOME}"/.post-lock
 ```
@@ -3737,7 +3737,7 @@ fi
 1.  Sample .post-lock
 
     ```bash
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     xmg-neo-rgb-kbd-lights wake
     ```
 
@@ -3745,7 +3745,7 @@ fi
 ### ~/bin/pre-blank
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 command -v brightnessctl && brightnessctl -s
 [ -f ~/.pre-blank ]  && . ~/.pre-blank
@@ -3755,7 +3755,7 @@ command -v brightnessctl && brightnessctl -s
 ### ~/bin/post-blank
 
 ```bash
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 [ -f ~/.post-blank ]  && . ~/.post-blank
 command -v brightnessctl && brightnessctl -r

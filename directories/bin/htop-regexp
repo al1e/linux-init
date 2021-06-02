@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 filter="${1:-"$(zenity --entry --text "HTop filter" --title "htop regexp")"}"
 [ -z "$filter" ] && exit 1

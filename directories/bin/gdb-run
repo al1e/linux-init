@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 directory="${1:-`pwd`}"
 session="${2}"

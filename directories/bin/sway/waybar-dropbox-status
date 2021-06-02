@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #Maintained in linux-config.org
 if pidof dropbox &> /dev/null ; then
     stat=$(dropbox status | sed -n 1p)

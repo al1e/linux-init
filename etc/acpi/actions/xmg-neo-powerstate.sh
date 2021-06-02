@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in linux-config.org
 # /etc/acpi/actions/xmg-neo-powerstate
 . /usr/share/acpi-support/power-funcs
