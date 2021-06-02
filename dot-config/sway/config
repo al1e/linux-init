@@ -183,8 +183,8 @@ bindsym $mod+r mode "default"
 bindsym $mod+r mode "resize"
 
 set $clipboard "~/.clipboard"
-exec wl-paste -t text --watch clipman store --max-items 1024 --histpath=$clipboard
-bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30 --histpath=$clipboard
+exec wl-paste -t text --watch clipman store --max-items 1024
+bindsym $mod+y exec clipman pick --tool="wofi" --max-items=30
 
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && sway-volume-notify
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && sway-volume-notify
