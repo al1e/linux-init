@@ -999,8 +999,8 @@ bindsym $mod+r mode "resize"
         #input {
             margin: 2 px;
             border: none;
-            color: #f8f8f2;
-            background-color: #44475a;
+            color: #222222;
+            background-color: #eeeeee;
         }
 
         #inner-box {
@@ -1786,7 +1786,7 @@ include /etc/sway/config.d/*
 ```
 
 
-### host specific
+### host specific     :scale:scaling:
 
 ```conf
 include "$HOME/.config/sway/host-config-$(hostname)"
@@ -1794,17 +1794,21 @@ include "$HOME/.config/sway/host-config-$(hostname)"
 
 1.  Thinkpad T14s
 
-    ```conf
-    #Maintained in linux-config.org
-    output eDP-1 mode 1920x1080@60hz scale 1.0
-    ```
+    1.  scaling
+
+        ```conf
+        #Maintained in linux-config.org
+        output eDP-1 mode 1920x1080@60hz scale 1.0
+        ```
 
 2.  XMG Neo
 
-    ```conf
-    #Maintained in linux-config.org
-    output eDP-1 mode 2560x1440@165hz scale 1.15
-    ```
+    1.  scaling
+
+        ```conf
+        #Maintained in linux-config.org
+        output eDP-1 mode 2560x1440@165hz scale 1.15
+        ```
 
 
 ## bin,scripts     :sway:wayland:
@@ -2090,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgb175865"></a>
+<a id="org63dda69"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2111,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb175865).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org63dda69).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

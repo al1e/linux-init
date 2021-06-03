@@ -2429,18 +2429,26 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src conf
   include /etc/sway/config.d/*
 #+end_src
-*** host specific
+*** host specific                                             :scale:scaling:
 #+begin_src conf
   include "$HOME/.config/sway/host-config-$(hostname)"
 #+end_src
 **** Thinkpad T14s
-#+begin_src conf :tangle ~/.config/sway/host-config-thinkpadt14s
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/host-config-thinkpadt14s"
+:END:
+***** scaling
+#+begin_src conf
   #Maintained in linux-config.org
   output eDP-1 mode 1920x1080@60hz scale 1.0
 #+end_src
 
 **** XMG Neo
-#+begin_src conf :tangle ~/.config/sway/host-config-xmgneo
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/host-config-xmgneo"
+:END:
+***** scaling
+#+begin_src conf
   #Maintained in linux-config.org
   output eDP-1 mode 2560x1440@165hz scale 1.15
 #+end_src
