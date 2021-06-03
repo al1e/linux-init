@@ -975,13 +975,65 @@ bindsym $mod+r mode "resize"
 
     3.  Wofi Config
 
-        [Configuration](http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html) file and styling
+    4.  ~/.config/wofi/config
+
+        [Configuration](http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html) file
 
         ```conf
         # Maintained in linux-config.org
         dynamic_lines=true
         gtk_dark=true
         terminal=alacritty
+        ```
+
+    5.  ~/.config/wofi/style.css
+
+        ```css
+        /* Maintained in linux-config.org */
+        window {
+            margin: 0px;
+            border: 1px solid #c0c0c0;
+            background-color: #282a36;
+        }
+
+        #input {
+            margin: 2 px;
+            border: none;
+            color: #f8f8f2;
+            background-color: #44475a;
+        }
+
+        #inner-box {
+            margin: 2px;
+            border: none;
+            background-color: #282a36;
+        }
+
+        #outer-box {
+            margin: 2px;
+            border: none;
+            background-color: #282a36;
+        }
+
+        #scroll {
+            margin: 0px;
+            border: none;
+        }
+
+        #text {
+            margin: 2px;
+            border: none;
+            color: #f8f8f2;
+        }
+
+        #entry:selected {
+            background-color: #44475a;
+        }
+        #entry {
+            border-bottom-style: solid;
+            border-width: 1px;
+            border-color: #d4af37;
+        }
         ```
 
 
@@ -2038,7 +2090,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org7eb67c4"></a>
+<a id="orgb175865"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2059,7 +2111,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org7eb67c4).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb175865).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

@@ -42,6 +42,10 @@
 !/dot-config/sway/config
 !/dot-config/sway/host-config-*
 
+!/dot-config/wofi
+!/dot-config/wofi/config
+!/dot-config/wofi/style.css
+
 !/dot-config/zsh
 !/dot-config/zsh/.zshenv
 !/dot-config/zsh/.zlogin

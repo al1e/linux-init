@@ -1668,12 +1668,61 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   sway-notify "Clipboard history cleared."
   #+end_src
 ***** Wofi Config
-[[http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html][Configuration]] file and styling
+***** ~/.config/wofi/config
+[[http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html][Configuration]] file
 #+begin_src conf :tangle ~/.config/wofi/config
   # Maintained in linux-config.org
   dynamic_lines=true
   gtk_dark=true
   terminal=alacritty
+#+end_src
+***** ~/.config/wofi/style.css
+#+begin_src css :tangle ~/.config/wofi/style.css
+  /* Maintained in linux-config.org */
+  window {
+      margin: 0px;
+      border: 1px solid #c0c0c0;
+      background-color: #282a36;
+  }
+
+  #input {
+      margin: 2 px;
+      border: none;
+      color: #f8f8f2;
+      background-color: #44475a;
+  }
+
+  #inner-box {
+      margin: 2px;
+      border: none;
+      background-color: #282a36;
+  }
+
+  #outer-box {
+      margin: 2px;
+      border: none;
+      background-color: #282a36;
+  }
+
+  #scroll {
+      margin: 0px;
+      border: none;
+  }
+
+  #text {
+      margin: 2px;
+      border: none;
+      color: #f8f8f2;
+  }
+
+  #entry:selected {
+      background-color: #44475a;
+  }
+  #entry {
+      border-bottom-style: solid;
+      border-width: 1px;
+      border-color: #d4af37;
+  }
 #+end_src
 *** audio                                                             :audio:
 **** volume                                                          :volume:
