@@ -1982,6 +1982,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 5,
       "exec": "waybar-dropbox-json",
       "tooltip": "true",
+      "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
       "on-click-right": "sway-www https://www.dropbox.com/h",
     },
     "custom/monitors": {
@@ -2226,8 +2227,13 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       stat="$(sed -n 1p <<< $fullstat)"
   else
       fullstat=""
-      stat="Restarting Dropbox.."
-      dropbox start &> /dev/null
+      if [ -f "$HOME/RESTART_DROPBOX" ];then
+          stat="Restarting Dropbox.."
+          sway-notify "$stat"
+          dropbox start &> /dev/null
+      else
+          stat="click to restart DB"
+      fi
   fi
 
   jq --unbuffered --compact-output -n \
@@ -2640,11 +2646,10 @@ Just a gathering place of locky/suspendy type things...
 
 #+RESULTS:
 
-*** ~/bin/sway/sway-idle                                    :sleep:lock:idle:
+*** swayidle, ~/bin/sway/sway-idle                          :sleep:lock:idle:
 :PROPERTIES:
 :ID:       8283982c-0ea2-4d44-a1e6-38e5c9edd3b2
 :END:
-
 #+begin_src bash :tangle "~/bin/sway/sway-idle"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
@@ -2654,9 +2659,9 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout 10 'pidof swaylock && sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+       timeout ${XIDLEHOOK_BLANK:-900} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+       timeout ${XIDLEHOOK_LOCK:-1800} 'sway-lock' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_SUSPEND:-7200} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \

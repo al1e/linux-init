@@ -160,6 +160,7 @@
     "interval": 5,
     "exec": "waybar-dropbox-json",
     "tooltip": "true",
+    "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
     "on-click-right": "sway-www https://www.dropbox.com/h",
   },
   "custom/monitors": {

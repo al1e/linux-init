@@ -1315,6 +1315,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 5,
             "exec": "waybar-dropbox-json",
             "tooltip": "true",
+            "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
             "on-click-right": "sway-www https://www.dropbox.com/h",
           },
           "custom/monitors": {
@@ -1564,8 +1565,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 stat="$(sed -n 1p <<< $fullstat)"
             else
                 fullstat=""
-                stat="Restarting Dropbox.."
-                dropbox start &> /dev/null
+                if [ -f "$HOME/RESTART_DROPBOX" ];then
+                    stat="Restarting Dropbox.."
+                    sway-notify "$stat"
+                    dropbox start &> /dev/null
+                else
+                    stat="click to restart DB"
+                fi
             fi
 
             jq --unbuffered --compact-output -n \
@@ -2032,7 +2038,7 @@ exit 0
 ```
 
 
-### ~/bin/sway/sway-idle     :sleep:lock:idle:
+### swayidle, ~/bin/sway/sway-idle     :sleep:lock:idle:
 
 ```bash
 #!/usr/bin/env bash
@@ -2043,9 +2049,9 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout 10 'pidof swaylock && sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_BLANK:-300} 'sway-lock-utils blank' \
+     timeout ${XIDLEHOOK_BLANK:-900} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-900} 'sway-lock' \
+     timeout ${XIDLEHOOK_LOCK:-1800} 'sway-lock' \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_SUSPEND:-7200} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \
@@ -2088,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgfbb5e17"></a>
+<a id="orgd0b4e5f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2109,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfbb5e17).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgd0b4e5f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
