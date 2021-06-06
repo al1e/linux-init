@@ -261,6 +261,8 @@ exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec sleep 2 && gpg-cache
+exec blueman-applet
+exec nm-applet --indicator
 exec swaymsg workspace $ws1
 
 include /etc/sway/config.d/*

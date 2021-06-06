@@ -3,17 +3,10 @@
 
 ## Status
 
-Work in progress!! Keep all config and scripts in a single org file for documentation. Use org tangling for exporting them.
+Work in progress!! Keep most config and scripts in a single org file for documentation. Use org tangling for exporting them.
 
 
 ## GIT
-
-
-### gitconfig-mode
-
-```emacs-lisp
-(use-package gitconfig-mode)
-```
 
 
 ### ~/.config/git/config
@@ -1183,12 +1176,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
           "modules-right": [
             "pulseaudio",
-            "custom/bluetooth",
             "backlight",
             "battery",
             "custom/power-draw",
-            "network",
             "wlr/taskbar",
+            "tray",
           ],
 
           "network": {
@@ -1297,11 +1289,11 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "tooltip": false
             },
           */
+
           "tray": {
-            "icon-size": 18,
+            "icon-size": 21,
             "spacing": 5
           },
-
 
           "custom/weather": {
             "format": "{} ",
@@ -1775,6 +1767,8 @@ exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec sleep 2 && gpg-cache
+exec blueman-applet
+exec nm-applet --indicator
 exec swaymsg workspace $ws1
 ```
 
@@ -2094,7 +2088,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org63dda69"></a>
+<a id="orgfbb5e17"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2109,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org63dda69).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfbb5e17).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 

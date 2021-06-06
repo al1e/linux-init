@@ -20,7 +20,6 @@
 #+PROPERTY: export:md yes
 
 * Introduction
-
 ** scratch :noexport:
 gah. just trying to find value of export file name
 #+begin_src emacs-lisp
@@ -56,12 +55,8 @@ gah. just trying to find value of export file name
 #+end_src
 ** Status
 Work in progress!!
-Keep all config and scripts in a single org file for documentation. Use org tangling for exporting them.
+Keep most  config and scripts in a single org file for documentation. Use org tangling for exporting them.
 ** GIT
-*** gitconfig-mode
-#+begin_src emacs-lisp
-  (use-package gitconfig-mode)
-#+end_src
 *** ~/.config/git/config
 :PROPERTIES:
 :header-args:bash: :tangle no
@@ -1848,12 +1843,11 @@ https://github.com/Alexays/Waybar/wiki/Configuration
 
     "modules-right": [
       "pulseaudio",
-      "custom/bluetooth",
       "backlight",
       "battery",
       "custom/power-draw",
-      "network",
       "wlr/taskbar",
+      "tray",
     ],
 
     "network": {
@@ -1962,11 +1956,11 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "tooltip": false
       },
     ,*/
+
     "tray": {
-      "icon-size": 18,
+      "icon-size": 21,
       "spacing": 5
     },
-
 
     "custom/weather": {
       "format": "{} ",
@@ -2423,6 +2417,8 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
   exec sleep 2 && gpg-cache
+  exec blueman-applet
+  exec nm-applet --indicator
   exec swaymsg workspace $ws1
 #+end_src
 *** library include
