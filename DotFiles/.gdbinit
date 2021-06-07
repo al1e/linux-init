@@ -7,6 +7,8 @@ set history filename ~/.gdb_history
 set history size 32768
 set history expansion on
 
+define pretty
+
 set print pretty on
 
 set print symbol-filename on
@@ -16,6 +18,8 @@ set confirm off
 
 set print address off
 set print symbol-filename off
+
+end
 
 define lsource
 list *$rip
@@ -80,6 +84,7 @@ end
 
 #### Initialise utility extensions
 define ext-init
+pretty
 gef-init
 voltron-init
 end
