@@ -9,4 +9,4 @@ if [ -d "$XDG_CONFIG_HOME/zsh" ]
 then
     export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 fi
-xhost +SI:localuser:root
+xhost +SI:localuser:root &> /dev/null

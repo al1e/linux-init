@@ -965,7 +965,7 @@ Link this into $HOME
   then
       export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
   fi
-  xhost +SI:localuser:root
+  xhost +SI:localuser:root &> /dev/null
 #+end_src
 ** Oh-My-Zsh Related
 Directory is [[file:.oh-my-zsh/][here]].
