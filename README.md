@@ -2094,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org8338bb6"></a>
+<a id="org689968f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org8338bb6).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org689968f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2217,7 +2217,12 @@ fi
 if [ ! -z "$1" ]; then
     pactl set-sink-volume @DEFAULT_SINK@ "$1";
 fi
-pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'
+volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
+if [ $volume -gt 100 ]; then
+    volume="100"
+    pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+fi
+echo "$volume"
 ```
 
 
@@ -2240,7 +2245,7 @@ pactl list sinks | grep Mute | awk '{print $2}'
 # Maintained in linux-config.org
 muted="$(sway-muted)"
 volume="$(sway-volume)"
-exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo "$volume%")" &> /dev/null
 ```
 
 

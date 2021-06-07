@@ -2,4 +2,4 @@
 # Maintained in linux-config.org
 muted="$(sway-muted)"
 volume="$(sway-volume)"
-exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
+exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo "$volume%")" &> /dev/null
