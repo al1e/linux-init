@@ -2,10 +2,13 @@
 # Maintained in linux-config.org
 if [ ! -z "$1" ]; then
     pactl set-sink-volume @DEFAULT_SINK@ "$1";
-fi
-volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
-if [ $volume -gt 100 ]; then
-    volume="100"
-    pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+    sway-muted 0
+    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
+    if [ $volume -gt 100 ]; then
+        volume="100"
+        pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+    fi
+else
+    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
 fi
 echo "$volume"

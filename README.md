@@ -2094,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org689968f"></a>
+<a id="orgcc6a516"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org689968f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcc6a516).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2216,11 +2216,14 @@ fi
 # Maintained in linux-config.org
 if [ ! -z "$1" ]; then
     pactl set-sink-volume @DEFAULT_SINK@ "$1";
-fi
-volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
-if [ $volume -gt 100 ]; then
-    volume="100"
-    pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+    sway-muted 0
+    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
+    if [ $volume -gt 100 ]; then
+        volume="100"
+        pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+    fi
+else
+    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
 fi
 echo "$volume"
 ```
@@ -2231,8 +2234,8 @@ echo "$volume"
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-if [ "$1" = "toggle" ]; then
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
+if [ ! -z "$1" ]; then
+    pactl set-sink-mute @DEFAULT_SINK@ "$1"
 fi
 pactl list sinks | grep Mute | awk '{print $2}'
 ```
