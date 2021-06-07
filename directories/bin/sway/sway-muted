@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+if [ "$1" = "toggle" ]; then
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+fi
+pactl list sinks | grep Mute | awk '{print $2}'

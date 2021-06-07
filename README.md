@@ -380,7 +380,7 @@ logger -t "startup-initfile"  ZLOGIN
     then
         export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
     fi
-    xhost +SI:localuser:root
+    xhost +SI:localuser:root &> /dev/null
     ```
 
 
@@ -1035,9 +1035,9 @@ bindsym $mod+r mode "resize"
 1.  volume     :volume:
 
     ```conf
-    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && sway-volume-notify
-    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && sway-volume-notify
-    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && sway-volume-notify
+    bindsym XF86AudioRaiseVolume exec sway-volume "+5%" && sway-volume-notify
+    bindsym XF86AudioLowerVolume exec sway-volume "-5%" && sway-volume-notify
+    bindsym XF86AudioMute exec sway-muted "toggle" && sway-volume-notify
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
     ```
 
@@ -2094,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgd0b4e5f"></a>
+<a id="org8338bb6"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgd0b4e5f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org8338bb6).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2209,13 +2209,37 @@ fi
 ```
 
 
+### ~/bin/sway/sway-volume
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+if [ ! -z "$1" ]; then
+    pactl set-sink-volume @DEFAULT_SINK@ "$1";
+fi
+pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'
+```
+
+
+### ~/bin/sway/sway-muted
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+if [ "$1" = "toggle" ]; then
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+fi
+pactl list sinks | grep Mute | awk '{print $2}'
+```
+
+
 ### ~/bin/sway/sway-volume-notify
 
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-muted=$(pacmd list-sinks | awk '/muted/ { print $2 }')
-volume=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))
+muted="$(sway-muted)"
+volume="$(sway-volume)"
 exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo $volume)" &> /dev/null
 ```
 
@@ -2505,6 +2529,8 @@ e dbg.bep=main
     set history size 32768
     set history expansion on
 
+    define pretty
+
     set print pretty on
 
     set print symbol-filename on
@@ -2514,6 +2540,8 @@ e dbg.bep=main
 
     set print address off
     set print symbol-filename off
+
+    end
 
     define lsource
     list *$rip
@@ -2578,6 +2606,7 @@ e dbg.bep=main
 
     #### Initialise utility extensions
     define ext-init
+    pretty
     gef-init
     voltron-init
     end
