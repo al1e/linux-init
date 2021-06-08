@@ -2094,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org1b2a62a"></a>
+<a id="orgb181ff8"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1b2a62a).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb181ff8).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2211,7 +2211,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgccdef14).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org238fd36).
 
 ```bash
 #!/usr/bin/env bash
@@ -2221,6 +2221,7 @@ getVolume(){
     if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
         echo "off"
     else
+        SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
         echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
     fi
 }
@@ -2236,7 +2237,7 @@ case "$v" in
             pactl set-sink-mute @DEFAULT_SINK@ 0
             pactl set-sink-volume @DEFAULT_SINK@ "$v"
             if [ "$(getVolume)" -gt 100 ]; then
-                pactl set-sink-volume @DEFAULT_SINK@ "100%";
+                pactl set-sink-volume @DEFAULT_SINK@ "100%"
             fi
         fi
         ;;
