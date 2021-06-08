@@ -180,6 +180,16 @@ export GPG_TTY
 ```
 
 
+### bash git prompt
+
+```bash
+if [ -f "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    source "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh"
+fi
+```
+
+
 # ZSH Related
 
 
@@ -2094,7 +2104,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgb181ff8"></a>
+<a id="org47e392d"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2125,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb181ff8).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org47e392d).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2211,7 +2221,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org238fd36).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgeec2ee0).
 
 ```bash
 #!/usr/bin/env bash
