@@ -14,22 +14,16 @@ v="$1"
 case "$v" in
     "on"|"off"|"toggle")
         pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
-        volume="$(pactl list sinks | grep Mute | awk '{print $2}')"
-        echo "$volume"
         ;;
     *)
-        if [ -z "$v" ];then
-            volume="$(getVolume)"
-        else
+        if [ ! -z "$v" ];then
+            pactl set-sink-mute @DEFAULT_SINK@ 0
             pactl set-sink-volume @DEFAULT_SINK@ "$v"
-            pulse-volume-mute "no" &> /dev/null
-            volume="$(getVolume)"
-            if [ $volume -gt 100 ]; then
-                volume="100"
-                pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+            if [ "$(getVolume)" -gt 100 ]; then
+                pactl set-sink-volume @DEFAULT_SINK@ "100%";
             fi
         fi
         ;;
 esac
 
-echo "$volume"
+echo "$(getVolume)"

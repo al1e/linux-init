@@ -2796,8 +2796,9 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
   fi
 #+end_src
 *** ~/bin/pulse-volume
-Sway/pipeline volume control.
-Pass in a volume string to change the volume or on/off/toggle. It wont allow larger than 100%.Always returns the current volume status.
+pulse/pipeline volume control.
+Pass in a volume string to change the volume  (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status.
+See [[id:d7ab0b28-ce54-4fa3-a318-d8b0caaced52][examples]].
 #+begin_src bash :tangle "~/bin/pulse-volume"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
@@ -2815,27 +2816,24 @@ Pass in a volume string to change the volume or on/off/toggle. It wont allow lar
   case "$v" in
       "on"|"off"|"toggle")
           pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
-          volume="$(pactl list sinks | grep Mute | awk '{print $2}')"
-          echo "$volume"
           ;;
       ,*)
-          if [ -z "$v" ];then
-              volume="$(getVolume)"
-          else
+          if [ ! -z "$v" ];then
+              pactl set-sink-mute @DEFAULT_SINK@ 0
               pactl set-sink-volume @DEFAULT_SINK@ "$v"
-              pulse-volume-mute "no" &> /dev/null
-              volume="$(getVolume)"
-              if [ $volume -gt 100 ]; then
-                  volume="100"
-                  pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+              if [ "$(getVolume)" -gt 100 ]; then
+                  pactl set-sink-volume @DEFAULT_SINK@ "100%";
               fi
           fi
           ;;
   esac
 
-  echo "$volume"
+  echo "$(getVolume)"
 #+end_src
 **** Examples:
+:PROPERTIES:
+:ID:       d7ab0b28-ce54-4fa3-a318-d8b0caaced52
+:END:
 ***** increase by 10%
 #+begin_src bash
   pulse-volume "+10%"
