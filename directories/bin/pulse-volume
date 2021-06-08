@@ -22,7 +22,7 @@ case "$v" in
             volume="$(getVolume)"
         else
             pactl set-sink-volume @DEFAULT_SINK@ "$v"
-            sway-volume-mute "no" &> /dev/null
+            pulse-volume-mute "no" &> /dev/null
             volume="$(getVolume)"
             if [ $volume -gt 100 ]; then
                 volume="100"

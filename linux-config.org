@@ -1722,9 +1722,9 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
 *** audio                                                             :audio:
 **** volume                                                          :volume:
 #+begin_src conf
-  bindsym XF86AudioRaiseVolume exec sway-volume "+5%" && sway-volume-notify
-  bindsym XF86AudioLowerVolume exec sway-volume "-5%" && sway-volume-notify
-  bindsym XF86AudioMute exec sway-volume "toggle" && sway-volume-notify
+  bindsym XF86AudioRaiseVolume exec pulse-volume "+5%" && sway-volume-notify
+  bindsym XF86AudioLowerVolume exec pulse-volume "-5%" && sway-volume-notify
+  bindsym XF86AudioMute exec pulse-volume "toggle" && sway-volume-notify
   bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
 #+end_src
 **** pavucontrol
@@ -2795,10 +2795,10 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
       sway-notify "Done! see ${DIR}/screenshot-latest.png"
   fi
 #+end_src
-*** ~/bin/sway/sway-volume
+*** ~/bin/pulse-volume
 Sway/pipeline volume control.
 Pass in a volume string to change the volume or on/off/toggle. It wont allow larger than 100%.Always returns the current volume status.
-#+begin_src bash :tangle "~/bin/sway/sway-volume"
+#+begin_src bash :tangle "~/bin/pulse-volume"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
 
@@ -2823,7 +2823,7 @@ Pass in a volume string to change the volume or on/off/toggle. It wont allow lar
               volume="$(getVolume)"
           else
               pactl set-sink-volume @DEFAULT_SINK@ "$v"
-              sway-volume-mute "no" &> /dev/null
+              pulse-volume-mute "no" &> /dev/null
               volume="$(getVolume)"
               if [ $volume -gt 100 ]; then
                   volume="100"
@@ -2838,33 +2838,33 @@ Pass in a volume string to change the volume or on/off/toggle. It wont allow lar
 **** Examples:
 ***** increase by 10%
 #+begin_src bash
-  sway-volume "+10%"
+  pulse-volume "+10%"
 #+end_src
 ***** decrease by 10%
 #+begin_src bash
-  sway-volume "-10%"
+  pulse-volume "-10%"
 #+end_src
 ***** set to 50%
 #+begin_src bash
-  sway-volume "50%"
+  pulse-volume "50%"
 #+end_src
 ***** mute
 #+begin_src bash
-  sway-volume "off"
+  pulse-volume "off"
 #+end_src
 ***** unmute
 #+begin_src bash
-  sway-volume "on"
+  pulse-volume "on"
 #+end_src
 ***** toggle mute
 #+begin_src bash
-  sway-volume "toggle"
+  pulse-volume "toggle"
 #+end_src
 *** ~/bin/sway/sway-volume-notify
 #+begin_src bash :tangle "~/bin/sway/sway-volume-notify"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  volume="$(sway-volume)"
+  volume="$(pulse-volume)"
   exec sway-notify "🔊$([ $volume = "off" ] && echo "Muted" || echo "$volume%")" &> /dev/null
 #+end_src
 *** ~/bin/sway/sway-weather
