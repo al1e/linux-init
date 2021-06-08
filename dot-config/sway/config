@@ -191,7 +191,7 @@ bindsym $mod+Control+y exec sway-clipboard-history-clear
 
 bindsym XF86AudioRaiseVolume exec sway-volume "+5%" && sway-volume-notify
 bindsym XF86AudioLowerVolume exec sway-volume "-5%" && sway-volume-notify
-bindsym XF86AudioMute exec sway-muted "toggle" && sway-volume-notify
+bindsym XF86AudioMute exec sway-volume "toggle" && sway-volume-notify
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
 
 for_window [app_id="pavucontrol"] floating enable

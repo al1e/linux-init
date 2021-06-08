@@ -1037,7 +1037,7 @@ bindsym $mod+r mode "resize"
     ```conf
     bindsym XF86AudioRaiseVolume exec sway-volume "+5%" && sway-volume-notify
     bindsym XF86AudioLowerVolume exec sway-volume "-5%" && sway-volume-notify
-    bindsym XF86AudioMute exec sway-muted "toggle" && sway-volume-notify
+    bindsym XF86AudioMute exec sway-volume "toggle" && sway-volume-notify
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
     ```
 
@@ -2094,7 +2094,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgcc6a516"></a>
+<a id="org80252ba"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2115,7 +2115,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcc6a516).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org80252ba).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2211,34 +2211,83 @@ fi
 
 ### ~/bin/sway/sway-volume
 
+Sway/pipeline volume control. Pass in a volume string to change the volume or on/off/toggle. It wont allow larger than 100%.Always returns the current volume status.
+
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-if [ ! -z "$1" ]; then
-    pactl set-sink-volume @DEFAULT_SINK@ "$1";
-    sway-muted 0
-    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
-    if [ $volume -gt 100 ]; then
-        volume="100"
-        pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+
+getVolume(){
+    if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
+        echo "off"
+    else
+        echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
     fi
-else
-    volume=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
-fi
+}
+
+v="$1"
+
+case "$v" in
+    "on"|"off"|"toggle")
+        pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
+        volume="$(pactl list sinks | grep Mute | awk '{print $2}')"
+        echo "$volume"
+        ;;
+    *)
+        if [ -z "$v" ];then
+            volume="$(getVolume)"
+        else
+            pactl set-sink-volume @DEFAULT_SINK@ "$v"
+            sway-volume-mute "no" &> /dev/null
+            volume="$(getVolume)"
+            if [ $volume -gt 100 ]; then
+                volume="100"
+                pactl set-sink-volume @DEFAULT_SINK@ "$volume%";
+            fi
+        fi
+        ;;
+esac
+
 echo "$volume"
 ```
 
+1.  Examples:
 
-### ~/bin/sway/sway-muted
+    1.  increase by 10%
 
-```bash
-#!/usr/bin/env bash
-# Maintained in linux-config.org
-if [ ! -z "$1" ]; then
-    pactl set-sink-mute @DEFAULT_SINK@ "$1"
-fi
-pactl list sinks | grep Mute | awk '{print $2}'
-```
+        ```bash
+        sway-volume "+10%"
+        ```
+
+    2.  decrease by 10%
+
+        ```bash
+        sway-volume "-10%"
+        ```
+
+    3.  set to 50%
+
+        ```bash
+        sway-volume "50%"
+        ```
+
+    4.  mute
+
+        ```bash
+        sway-volume "off"
+        ```
+
+    5.  unmute
+
+        ```bash
+        sway-volume "on"
+        ```
+
+    6.  toggle mute
+
+        ```bash
+        sway-volume "toggle"
+        ```
 
 
 ### ~/bin/sway/sway-volume-notify
@@ -2246,9 +2295,8 @@ pactl list sinks | grep Mute | awk '{print $2}'
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-muted="$(sway-muted)"
 volume="$(sway-volume)"
-exec sway-notify "🔊$([ $muted == "yes" ] && echo "Muted" || echo "$volume%")" &> /dev/null
+exec sway-notify "🔊$([ $volume = "off" ] && echo "Muted" || echo "$volume%")" &> /dev/null
 ```
 
 
