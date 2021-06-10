@@ -5,7 +5,7 @@ if ( ! dropbox running ); then
     stat="$(sed -n 1p <<< $fullstat)"
 else
     fullstat=""
-    if [ -f "$HOME/RESTART_DROPBOX" ];then
+    if [ -f "$HOME/.RESTART_DROPBOX" ];then
         stat="Restarting Dropbox.."
         sway-notify "$stat"
         dropbox start &> /dev/null

@@ -1948,7 +1948,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
         "car": "",
         "default": ["🔈", "🔉", "🔊"]
       },
-      "on-click": "amixer set Master toggle",
+      "on-click": "pulse-volume toggle",
       "on-click-right": "pavucontrol"
     },
     /*
@@ -1988,7 +1988,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 5,
       "exec": "waybar-dropbox-json",
       "tooltip": "true",
-      "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
+      "on-click": "dropbox start && sway-notify 'Restarting Dropbox.'",
       "on-click-right": "sway-www https://www.dropbox.com/h",
     },
     "custom/monitors": {
@@ -2233,7 +2233,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       stat="$(sed -n 1p <<< $fullstat)"
   else
       fullstat=""
-      if [ -f "$HOME/RESTART_DROPBOX" ];then
+      if [ -f "$HOME/.RESTART_DROPBOX" ];then
           stat="Restarting Dropbox.."
           sway-notify "$stat"
           dropbox start &> /dev/null

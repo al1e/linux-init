@@ -120,7 +120,7 @@
       "car": "",
       "default": ["🔈", "🔉", "🔊"]
     },
-    "on-click": "amixer set Master toggle",
+    "on-click": "pulse-volume toggle",
     "on-click-right": "pavucontrol"
   },
   /*
@@ -160,7 +160,7 @@
     "interval": 5,
     "exec": "waybar-dropbox-json",
     "tooltip": "true",
-    "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
+    "on-click": "dropbox start && sway-notify 'Restarting Dropbox.'",
     "on-click-right": "sway-www https://www.dropbox.com/h",
   },
   "custom/monitors": {

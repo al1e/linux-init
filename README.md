@@ -1285,7 +1285,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
               "car": "",
               "default": ["🔈", "🔉", "🔊"]
             },
-            "on-click": "amixer set Master toggle",
+            "on-click": "pulse-volume toggle",
             "on-click-right": "pavucontrol"
           },
           /*
@@ -1325,7 +1325,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 5,
             "exec": "waybar-dropbox-json",
             "tooltip": "true",
-            "on-click": "(dropbox start &> /dev/null)&  && sway-notify 'Restarting DB...'",
+            "on-click": "dropbox start && sway-notify 'Restarting Dropbox.'",
             "on-click-right": "sway-www https://www.dropbox.com/h",
           },
           "custom/monitors": {
@@ -1575,7 +1575,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 stat="$(sed -n 1p <<< $fullstat)"
             else
                 fullstat=""
-                if [ -f "$HOME/RESTART_DROPBOX" ];then
+                if [ -f "$HOME/.RESTART_DROPBOX" ];then
                     stat="Restarting Dropbox.."
                     sway-notify "$stat"
                     dropbox start &> /dev/null
@@ -2104,7 +2104,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org47e392d"></a>
+<a id="org1e2a650"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2125,7 +2125,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org47e392d).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1e2a650).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2221,7 +2221,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgeec2ee0).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org2d99603).
 
 ```bash
 #!/usr/bin/env bash
