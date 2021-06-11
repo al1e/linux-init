@@ -1122,7 +1122,7 @@ bindsym $mod+Control+b exec oneterminal "Process-Monitor-bpytop" bpytop
 bindsym $mod+Control+c exec conky
 bindsym $mod+Control+s exec sway-do-tool "Signal" "signal-desktop"
 bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
-bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start) (run-at-time 1 nil (lambda()(erc-switch-to-buffer))))'
+bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
@@ -2104,7 +2104,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc91f3b5"></a>
+<a id="org9265bff"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2125,7 +2125,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc91f3b5).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9265bff).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2221,7 +2221,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org1e8f6d1).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org857c769).
 
 ```bash
 #!/usr/bin/env bash
