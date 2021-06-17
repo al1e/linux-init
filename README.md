@@ -872,7 +872,7 @@ bindsym $mod+Tab workspace back_and_forth
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:edit"
-set $ws3 "3:shll"
+set $ws3 "3:shell"
 set $ws2 "2:research"
 set $ws4 "4:browse"
 set $ws5 "5:dired"
@@ -884,8 +884,6 @@ set $ws10 "10"
 
 workspace $ws3 gaps inner 2
 workspace $ws3 gaps outer 2
-
-assign [title="dbg:"] $ws3
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -1092,6 +1090,8 @@ bindsym $mod+Control+q mode "$mode_system"
 ### apps default workspace
 
 ```conf
+assign [title="dbg:"] $ws3
+assign [class="Ardour"] $ws6
 assign [class="Signal"] $ws8
 assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
@@ -1127,6 +1127,7 @@ bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
+bindsym $mod+Control+u exec gdb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1
 bindsym $mod+Control+g exec oneterminal "gdb"
 bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
@@ -2104,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org9265bff"></a>
+<a id="orged3430c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2125,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9265bff).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orged3430c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2221,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org857c769).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org637b550).
 
 ```bash
 #!/usr/bin/env bash
