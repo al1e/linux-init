@@ -1115,6 +1115,8 @@ for_window [title="bluetoothctl"] floating enable
 ```conf
 
 bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
+bindsym $mod+b exec sway-lock-utils blank
+bindsym $mod+l exec sway-lock-utils lock
 bindsym Print exec sway-screenshot -i
 bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
 bindsym $mod+Control+Shift+f exec  "sway-www"
@@ -1126,10 +1128,10 @@ bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src
-bindsym $mod+Control+u exec gdb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1
+bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src; workspace $ws3
+bindsym $mod+Control+u exec gdb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "gdb"
-bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session)
+bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session); workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2105,7 +2107,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orged3430c"></a>
+<a id="org0c19f79"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2128,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orged3430c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org0c19f79).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2224,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org637b550).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org9e23b68).
 
 ```bash
 #!/usr/bin/env bash
@@ -2641,11 +2643,11 @@ e dbg.bep=main
     context
     end
 
-    # gef save updates ~/.gef.rc
-    # gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
-    # gef config context.nb_lines_code 13
-    # gef config context.nb_lines_code_prev 6
-    # gef config context.nb_lines_stack 4
+    gef save updates ~/.gef.rc
+    gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
+    gef config context.nb_lines_code 13
+    gef config context.nb_lines_code_prev 6
+    gef config context.nb_lines_stack 4
     tmux-setup
     # context
     # shell tmux select-pane -t .0
@@ -2896,11 +2898,14 @@ e dbg.bep=main
         session=${1:-"voltron"}
         window=${2:-"0"}
         pane=${3:-"0"}
-        tmux send-keys -t "${session}:${window}.${pane}" "voltron v disasm" C-m
-        tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
-        tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
+        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c ila --lexer gdb_intel" C-m
+        tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
         tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
         tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
+        # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
+        # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
+        # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
+        # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
         ```
 
 2.  ~/bin/voltron-session
@@ -3642,6 +3647,22 @@ fi
 #!/usr/bin/env bash
 #Maintained in linux-config.org
 exec ssh -X ${1-192.168.2.100} x2x -east -to :0
+```
+
+
+## ~/bin/wifi-toggle
+
+```bash
+#!/usr/bin/env bash
+#Maintained in linux-config.org
+status="$(nmcli radio wifi)"
+if [ "$status" = "enabled" ]; then
+    nmcli radio wifi off
+    echo "Wifi Off"
+else
+    nmcli radio wifi on
+    echo "Wifi On"
+fi
 ```
 
 

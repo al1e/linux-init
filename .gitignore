@@ -126,6 +126,7 @@
 !/directories/bin/sharemouse
 !/directories/bin/sys-logger
 !/directories/bin/tmux-pane-tty
+!/directories/bin/wifi-toggle
 !/directories/bin/upd
 !/directories/bin/voltron-*
 !/directories/bin/x-idlehook

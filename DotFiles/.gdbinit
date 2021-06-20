@@ -57,11 +57,11 @@ define hook-down
 context
 end
 
-# gef save updates ~/.gef.rc
-# gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
-# gef config context.nb_lines_code 13
-# gef config context.nb_lines_code_prev 6
-# gef config context.nb_lines_stack 4
+gef save updates ~/.gef.rc
+gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
+gef config context.nb_lines_code 13
+gef config context.nb_lines_code_prev 6
+gef config context.nb_lines_stack 4
 tmux-setup
 # context
 # shell tmux select-pane -t .0
