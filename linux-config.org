@@ -1573,8 +1573,8 @@ I want a key to create and then toggle a terminal.
   # Define names for default workspaces for which we configure key bindings later on.
   # We use variables to avoid repeating the names in multiple places.
   set $ws1 "1:edit"
-  set $ws3 "3:shell"
   set $ws2 "2:research"
+  set $ws3 "3:shell"
   set $ws4 "4:browse"
   set $ws5 "5:dired"
   set $ws6 "6:music"
@@ -1583,8 +1583,6 @@ I want a key to create and then toggle a terminal.
   set $ws9 "9:steam"
   set $ws10 "10"
 
-  workspace $ws3 gaps inner 2
-  workspace $ws3 gaps outer 2
 
   # switch to workspace
   bindsym $mod+1 workspace number $ws1
@@ -1795,10 +1793,10 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
   bindsym $mod+Control+Shift+d exec sway-screen-menu
   bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-  bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src; workspace $ws3
-  bindsym $mod+Control+u exec gdb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
-  bindsym $mod+Control+g exec oneterminal "gdb"
-  bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session); workspace $ws3
+  bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
+  bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
+  bindsym $mod+Control+g exec oneterminal "lldb"
+  bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(voltron-session-lldb); workspace $ws3
   bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
   bindsym $mod+Control+p exec sway-htop
   bindsym $mod+Control+Shift+p exec htop-regexp
@@ -3463,13 +3461,15 @@ export PURE_PYTHON=1
 #+begin_src conf :tangle "DotFiles/.lldbinit"
   # Maintained in linux-config.org
 
+  settings set target.load-cwd-lldbinit true
+
   command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 
-  alias vtty = shell tmux-pane-tty voltron 4
+  #alias vtty = shell tmux-pane-tty voltron 4
 
-  define voltron-source-tty
-  shell tmux-pane-tty
-  end
+  #define voltron-source-tty
+  #shell tmux-pane-tty
+  #end
 
 #+end_src
 **** tmux lldb setup scripts                                           :tmux:
@@ -3516,14 +3516,11 @@ add voltron panes to an existing session
   session=${1:-"voltron"}
   window=${2:-"0"}
   pane=${3:-"0"}
-  tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'frame variable' --lexer gdb_intel" C-m
-  tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
-  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
-  # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
-  # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
-  # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
-  # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
+  tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
+  tmux splitw -h -p 66 -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
+  tmux splitw -h -p 50 -t "${session}:${window}.$(expr $pane + 1)" "voltron v c 'frame variable' --lexer c"
+  tmux splitw -v -p 66 -t "${session}:${window}.$(expr $pane + 2)" "voltron v register --general --no-sse --no-fpu --info"
+  tmux splitw -v -p 50 -t "${session}:${window}.$(expr $pane + 3)" "voltron v breakpoints"
 #+end_src
 **** ~/bin/voltron-session-lldb
 #+begin_src bash :tangle ~/bin/voltron-session-lldb

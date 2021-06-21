@@ -872,8 +872,8 @@ bindsym $mod+Tab workspace back_and_forth
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:edit"
-set $ws3 "3:shell"
 set $ws2 "2:research"
+set $ws3 "3:shell"
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
@@ -882,8 +882,6 @@ set $ws8 "8:irc"
 set $ws9 "9:steam"
 set $ws10 "10"
 
-workspace $ws3 gaps inner 2
-workspace $ws3 gaps outer 2
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -1128,10 +1126,10 @@ bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec gdb-run ~/development/projects/emacs/emacs/src; workspace $ws3
-bindsym $mod+Control+u exec gdb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
-bindsym $mod+Control+g exec oneterminal "gdb"
-bindsym $mod+Control+v exec ONETERM_TITLE="dbg:voltron" oneterminal $(voltron-session); workspace $ws3
+bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
+bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
+bindsym $mod+Control+g exec oneterminal "lldb"
+bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(voltron-session-lldb); workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2107,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc416130"></a>
+<a id="org5265abf"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2128,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc416130).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5265abf).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2224,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge45eaae).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgdd16d8f).
 
 ```bash
 #!/usr/bin/env bash
@@ -2594,18 +2592,17 @@ e dbg.bep=main
     set history expansion on
 
     define pretty
-
     set print pretty on
-
     set print symbol-filename on
-
     set pagination off
     set confirm off
-
+    set print array off
+    set print array-indexes on
     set print address off
     set print symbol-filename off
-
     end
+
+    pretty
 
     define lsource
     list *$rip
@@ -2644,7 +2641,7 @@ e dbg.bep=main
     end
 
     gef save updates ~/.gef.rc
-    gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
+    gef config context.layout "legend regs stack -args source code -threads -trace -extra -memory"
     gef config context.nb_lines_code 13
     gef config context.nb_lines_code_prev 6
     gef config context.nb_lines_stack 4
@@ -2670,7 +2667,6 @@ e dbg.bep=main
 
     #### Initialise utility extensions
     define ext-init
-    pretty
     gef-init
     voltron-init
     end
@@ -2898,9 +2894,9 @@ e dbg.bep=main
         session=${1:-"voltron"}
         window=${2:-"0"}
         pane=${3:-"0"}
-        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c ila --lexer gdb_intel" C-m
+        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'info locals' --lexer gdb_intel" C-m
         tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-        tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
+        tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
         tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
         # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
         # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
@@ -2917,6 +2913,113 @@ e dbg.bep=main
     if ! tmux has-session -t "${session}" &> /dev/null; then
         tmux new-session -d -s "${session}" &> /dev/null
         voltron-panes-h "${session}"
+    fi
+    echo "${session}"
+    ```
+
+
+### gdbgui
+
+<https://www.gdbgui.com/>
+
+1.  fix for python 3.9
+
+    ```conf
+    export PURE_PYTHON=1
+    ```
+
+
+### python     :python:
+
+
+## lldb     :lldb:
+
+
+### scripts
+
+1.  ~/.lldbinit
+
+    ```conf
+    # Maintained in linux-config.org
+
+    settings set target.load-cwd-lldbinit true
+
+    command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+
+    #alias vtty = shell tmux-pane-tty voltron 4
+
+    #define voltron-source-tty
+    #shell tmux-pane-tty
+    #end
+
+    ```
+
+2.  tmux lldb setup scripts     :tmux:
+
+    1.  ~/bin/lldb-session
+
+        Create a session but let someone else do the attach
+
+        ```bash
+        #!/usr/bin/env bash
+        # Maintained in linux-config.org
+        directory="$(realpath -s "${1:-`pwd`}")"
+        cd "${directory}"
+        session="${2:-${directory//[^[:alnum:]]/}}"
+        window=${2:-"0"}
+        pane=${3:-"0"}
+        if ! tmux has-session -t "${session}" &> /dev/null; then
+            tmux new-session -c ${directory} -d -s "${session}"
+            tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
+        fi
+        echo "$session"
+        ```
+
+    2.  ~/bin/lldb-run
+
+        ```bash
+        #!/usr/bin/env bash
+        # Maintained in linux-config.org
+        directory="${1:-`pwd`}"
+        session="${2}"
+        ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
+        ```
+
+    3.  DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
+
+
+### voltron     :voltron:
+
+<https://github.com/snare/voltron>
+
+1.  voltron panes
+
+    add voltron panes to an existing session
+
+    1.  ~/bin/voltron-panes-lldb-h
+
+        ```bash
+        #!/usr/bin/env bash
+        # Maintained in linux-config.org
+        session=${1:-"voltron"}
+        window=${2:-"0"}
+        pane=${3:-"0"}
+        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
+        tmux splitw -h -p 66 -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
+        tmux splitw -h -p 50 -t "${session}:${window}.$(expr $pane + 1)" "voltron v c 'frame variable' --lexer c"
+        tmux splitw -v -p 66 -t "${session}:${window}.$(expr $pane + 2)" "voltron v register --general --no-sse --no-fpu --info"
+        tmux splitw -v -p 50 -t "${session}:${window}.$(expr $pane + 3)" "voltron v breakpoints"
+        ```
+
+2.  ~/bin/voltron-session-lldb
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    session="${1:-voltron}"
+    if ! tmux has-session -t "${session}" &> /dev/null; then
+        tmux new-session -d -s "${session}" &> /dev/null
+        voltron-panes-lldb-h "${session}"
     fi
     echo "${session}"
     ```

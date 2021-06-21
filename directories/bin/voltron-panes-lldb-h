@@ -3,11 +3,8 @@
 session=${1:-"voltron"}
 window=${2:-"0"}
 pane=${3:-"0"}
-tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'frame variable' --lexer gdb_intel" C-m
-tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
-tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
-# tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
-# tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
-# tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
-# tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
+tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
+tmux splitw -h -p 66 -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
+tmux splitw -h -p 50 -t "${session}:${window}.$(expr $pane + 1)" "voltron v c 'frame variable' --lexer c"
+tmux splitw -v -p 66 -t "${session}:${window}.$(expr $pane + 2)" "voltron v register --general --no-sse --no-fpu --info"
+tmux splitw -v -p 50 -t "${session}:${window}.$(expr $pane + 3)" "voltron v breakpoints"
