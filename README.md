@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org5265abf"></a>
+<a id="org5ff15e8"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5265abf).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5ff15e8).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgdd16d8f).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3d303c9).
 
 ```bash
 #!/usr/bin/env bash
@@ -3005,10 +3005,17 @@ e dbg.bep=main
         window=${2:-"0"}
         pane=${3:-"0"}
         tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
-        tmux splitw -h -p 66 -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-        tmux splitw -h -p 50 -t "${session}:${window}.$(expr $pane + 1)" "voltron v c 'frame variable' --lexer c"
-        tmux splitw -v -p 66 -t "${session}:${window}.$(expr $pane + 2)" "voltron v register --general --no-sse --no-fpu --info"
-        tmux splitw -v -p 50 -t "${session}:${window}.$(expr $pane + 3)" "voltron v breakpoints"
+        srcPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -h -p 66 -t "$srcPane" "voltron v disasm"
+        disassPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -h -p 50 -t "$disassPane" "voltron v c 'frame variable' --lexer c"
+        localsPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -v -p 50 -t "$disassPane" "voltron v backtrace"
+        backTracePane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -v -p 66 -t "$localsPane" "voltron v register"
+        registerPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -v -p 50 -t "$registerPane" "voltron v breakpoints"
+        breakpointsPane=$(tmux display-message -p "#{pane_id}")
         ```
 
 2.  ~/bin/voltron-session-lldb

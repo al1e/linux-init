@@ -3517,10 +3517,17 @@ add voltron panes to an existing session
   window=${2:-"0"}
   pane=${3:-"0"}
   tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
-  tmux splitw -h -p 66 -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-  tmux splitw -h -p 50 -t "${session}:${window}.$(expr $pane + 1)" "voltron v c 'frame variable' --lexer c"
-  tmux splitw -v -p 66 -t "${session}:${window}.$(expr $pane + 2)" "voltron v register --general --no-sse --no-fpu --info"
-  tmux splitw -v -p 50 -t "${session}:${window}.$(expr $pane + 3)" "voltron v breakpoints"
+  srcPane=$(tmux display-message -p "#{pane_id}")
+  tmux splitw -h -p 66 -t "$srcPane" "voltron v disasm"
+  disassPane=$(tmux display-message -p "#{pane_id}")
+  tmux splitw -h -p 50 -t "$disassPane" "voltron v c 'frame variable' --lexer c"
+  localsPane=$(tmux display-message -p "#{pane_id}")
+  tmux splitw -v -p 50 -t "$disassPane" "voltron v backtrace"
+  backTracePane=$(tmux display-message -p "#{pane_id}")
+  tmux splitw -v -p 66 -t "$localsPane" "voltron v register"
+  registerPane=$(tmux display-message -p "#{pane_id}")
+  tmux splitw -v -p 50 -t "$registerPane" "voltron v breakpoints"
+  breakpointsPane=$(tmux display-message -p "#{pane_id}")
 #+end_src
 **** ~/bin/voltron-session-lldb
 #+begin_src bash :tangle ~/bin/voltron-session-lldb
