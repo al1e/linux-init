@@ -1793,8 +1793,8 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
   bindsym $mod+Control+Shift+d exec sway-screen-menu
   bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-  bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
-  bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
+  bindsym $mod+Control+e exec lldb-run "~/development/projects/emacs/emacs/src"; workspace $ws3
+  bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
   bindsym $mod+Control+g exec oneterminal "lldb"
   bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
   bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore

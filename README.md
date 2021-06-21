@@ -1126,8 +1126,8 @@ bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
-bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
+bindsym $mod+Control+e exec lldb-run "~/development/projects/emacs/emacs/src"; workspace $ws3
+bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
 bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org9227019"></a>
+<a id="org15eea5e"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9227019).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org15eea5e).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3d190a1).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge51ef34).
 
 ```bash
 #!/usr/bin/env bash
