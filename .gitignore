@@ -70,6 +70,7 @@
 !/DotFiles/.xsessionrc
 !/DotFiles/.Xresources
 !/DotFiles/.gdbinit
+!/DotFiles/.lldbinit
 !/DotFiles/.tmux.conf
 
 !/directories
@@ -99,6 +100,7 @@
 !/directories/bin/extract-debug-info
 !/directories/bin/expert-advice
 !/directories/bin/gdb-*
+!/directories/bin/lldb-*
 !/directories/bin/getmails
 !/directories/bin/google-trans
 !/directories/bin/google-trans-de-en

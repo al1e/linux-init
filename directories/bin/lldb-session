@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+directory="$(realpath -s "${1:-`pwd`}")"
+cd "${directory}"
+session="${2:-${directory//[^[:alnum:]]/}}"
+window=${2:-"0"}
+pane=${3:-"0"}
+if ! tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -c ${directory} -d -s "${session}"
+    tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
+fi
+echo "$session"

@@ -1,0 +1,9 @@
+# Maintained in linux-config.org
+
+command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+
+alias vtty = shell tmux-pane-tty voltron 4
+
+define voltron-source-tty
+shell tmux-pane-tty
+end

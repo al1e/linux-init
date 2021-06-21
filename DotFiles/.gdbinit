@@ -8,18 +8,17 @@ set history size 32768
 set history expansion on
 
 define pretty
-
 set print pretty on
-
 set print symbol-filename on
-
 set pagination off
 set confirm off
-
+set print array off
+set print array-indexes on
 set print address off
 set print symbol-filename off
-
 end
+
+pretty
 
 define lsource
 list *$rip
@@ -58,7 +57,7 @@ context
 end
 
 gef save updates ~/.gef.rc
-gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
+gef config context.layout "legend regs stack -args source code -threads -trace -extra -memory"
 gef config context.nb_lines_code 13
 gef config context.nb_lines_code_prev 6
 gef config context.nb_lines_stack 4
@@ -84,7 +83,6 @@ end
 
 #### Initialise utility extensions
 define ext-init
-pretty
 gef-init
 voltron-init
 end

@@ -56,6 +56,8 @@ export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
 export PURE_PYTHON=1
 
+export PURE_PYTHON=1
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"

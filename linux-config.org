@@ -3119,18 +3119,17 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   set history expansion on
 
   define pretty
-
   set print pretty on
-
   set print symbol-filename on
-
   set pagination off
   set confirm off
-
+  set print array off
+  set print array-indexes on
   set print address off
   set print symbol-filename off
-
   end
+
+  pretty
 
   define lsource
   list *$rip
@@ -3169,7 +3168,7 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   end
 
   gef save updates ~/.gef.rc
-  gef config context.layout "legend -regs stack -args source -code -threads -trace -extra -memory"
+  gef config context.layout "legend regs stack -args source code -threads -trace -extra -memory"
   gef config context.nb_lines_code 13
   gef config context.nb_lines_code_prev 6
   gef config context.nb_lines_stack 4
@@ -3195,7 +3194,6 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 
   #### Initialise utility extensions
   define ext-init
-  pretty
   gef-init
   voltron-init
   end
@@ -3425,9 +3423,9 @@ add voltron panes to an existing session
   session=${1:-"voltron"}
   window=${2:-"0"}
   pane=${3:-"0"}
-  tmux send-keys -t "${session}:${window}.${pane}" "voltron v c ila --lexer gdb_intel" C-m
+  tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'info locals' --lexer gdb_intel" C-m
   tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
+  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
   tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
   # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
   # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
@@ -3442,6 +3440,99 @@ add voltron panes to an existing session
   if ! tmux has-session -t "${session}" &> /dev/null; then
       tmux new-session -d -s "${session}" &> /dev/null
       voltron-panes-h "${session}"
+  fi
+  echo "${session}"
+#+end_src
+
+*** gdbgui
+https://www.gdbgui.com/
+**** fix for python 3.9
+#+begin_src conf :tangle "DotFiles/.profile"
+export PURE_PYTHON=1
+#+end_src
+*** python                                                           :python:
+**** SOMEDAY 00:40 time to look into python inside gdb              :WAITING:
+:LOGBOOK:
+- State "SOMEDAY"    from "TODO"       [2021-03-29 Mon 22:51]
+- State "TODO"       from              [2021-03-14 Sun 00:40]
+:END:
+***** [[https://sourceware.org/gdb/onlinedocs/gdb/Python-Commands.html#Python-Commands][gdb python]]
+** lldb                                                                 :lldb:
+*** scripts
+**** ~/.lldbinit
+#+begin_src conf :tangle "DotFiles/.lldbinit"
+  # Maintained in linux-config.org
+
+  command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+
+  alias vtty = shell tmux-pane-tty voltron 4
+
+  define voltron-source-tty
+  shell tmux-pane-tty
+  end
+
+#+end_src
+**** tmux lldb setup scripts                                           :tmux:
+***** ~/bin/lldb-session
+Create a session but let someone else do the attach
+#+begin_src bash :tangle ~/bin/lldb-session
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+  directory="$(realpath -s "${1:-`pwd`}")"
+  cd "${directory}"
+  session="${2:-${directory//[^[:alnum:]]/}}"
+  window=${2:-"0"}
+  pane=${3:-"0"}
+  if ! tmux has-session -t "${session}" &> /dev/null; then
+      tmux new-session -c ${directory} -d -s "${session}"
+      tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
+  fi
+  echo "$session"
+#+end_src
+
+***** ~/bin/lldb-run
+#+begin_src bash :tangle ~/bin/lldb-run
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+  directory="${1:-`pwd`}"
+  session="${2}"
+  ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
+#+end_src
+
+***** DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
+CLOSED: [2021-03-11 Thu 20:45] SCHEDULED: <2021-03-11 Thu>
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2021-03-11 Thu 20:45]
+- State "TODO"       from              [2021-03-11 Thu 19:34]
+:END:
+*** voltron                                                         :voltron:
+https://github.com/snare/voltron
+**** voltron panes
+add voltron panes to an existing session
+***** ~/bin/voltron-panes-lldb-h
+#+begin_src bash :tangle ~/bin/voltron-panes-lldb-h
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+  session=${1:-"voltron"}
+  window=${2:-"0"}
+  pane=${3:-"0"}
+  tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'frame variable' --lexer gdb_intel" C-m
+  tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
+  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
+  tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
+  # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
+  # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
+  # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
+  # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
+#+end_src
+**** ~/bin/voltron-session-lldb
+#+begin_src bash :tangle ~/bin/voltron-session-lldb
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+  session="${1:-voltron}"
+  if ! tmux has-session -t "${session}" &> /dev/null; then
+      tmux new-session -d -s "${session}" &> /dev/null
+      voltron-panes-lldb-h "${session}"
   fi
   echo "${session}"
 #+end_src
