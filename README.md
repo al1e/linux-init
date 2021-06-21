@@ -1129,7 +1129,7 @@ bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
 bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
-bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(lldb-extras-session); workspace $ws3
+bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org9571b4e"></a>
+<a id="org9227019"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9571b4e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9227019).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgded74ef).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3d190a1).
 
 ```bash
 #!/usr/bin/env bash
@@ -2606,19 +2606,17 @@ e dbg.bep=main
     directory="$(realpath -s "${1:-`pwd`}")"
     cd "${directory}"
     session="${2:-${directory//[^[:alnum:]]/}}"
-    window=${2:-"0"}
-    pane=${3:-"0"}
     if ! tmux has-session -t "${session}" &> /dev/null; then
-        tmux new-session -c ${directory} -d -s "${session}"
-        tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
-        gdbPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -v -p 60 -t "$gdbPane" "voltron v c 'source list -a \$rip -c 32'"
+        tmux new-session -c ${directory} -d -s "${session}" "lldb"
+        lldbPane=$(tmux display-message -p "#{pane_id}")
+        # tmux send-keys -t  "$lldbpane" "lldb"  C-m
+        tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
         srcPane=$(tmux display-message -p "#{pane_id}")
         tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
         localsPane=$(tmux display-message -p "#{pane_id}")
         tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
         breakpointsPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 50 -t "$gdbPane" "voltron v backtrace"
+        tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
         backTracePane=$(tmux display-message -p "#{pane_id}")
     fi
     echo "$session"
@@ -2640,12 +2638,9 @@ e dbg.bep=main
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-session=${1:-"lldb-extras-session"}
-window=${2:-"0"}
-pane=${3:-"0"}
+session="${1:-"lldb-extras-session"}"
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -s "${session}" &> /dev/null
-    tmux send-keys -t "${session}:${window}.${pane}" "voltron v disasm" C-m
+    tmux new-session -d -s "${session}" "voltron v disasm" &> /dev/null
     disassPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 40 -t "$disassPane" "voltron v register"
     registerPane=$(tmux display-message -p "#{pane_id}")

@@ -3,19 +3,17 @@
 directory="$(realpath -s "${1:-`pwd`}")"
 cd "${directory}"
 session="${2:-${directory//[^[:alnum:]]/}}"
-window=${2:-"0"}
-pane=${3:-"0"}
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -c ${directory} -d -s "${session}"
-    tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
-    gdbPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -v -p 60 -t "$gdbPane" "voltron v c 'source list -a \$rip -c 32'"
+    tmux new-session -c ${directory} -d -s "${session}" "lldb"
+    lldbPane=$(tmux display-message -p "#{pane_id}")
+    # tmux send-keys -t  "$lldbpane" "lldb"  C-m
+    tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
     localsPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
     breakpointsPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 50 -t "$gdbPane" "voltron v backtrace"
+    tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
     backTracePane=$(tmux display-message -p "#{pane_id}")
 fi
 echo "$session"

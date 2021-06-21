@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-session=${1:-"lldb-extras-session"}
-window=${2:-"0"}
-pane=${3:-"0"}
+session="${1:-"lldb-extras-session"}"
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -s "${session}" &> /dev/null
-    tmux send-keys -t "${session}:${window}.${pane}" "voltron v disasm" C-m
+    tmux new-session -d -s "${session}" "voltron v disasm" &> /dev/null
     disassPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 40 -t "$disassPane" "voltron v register"
     registerPane=$(tmux display-message -p "#{pane_id}")
