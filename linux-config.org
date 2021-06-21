@@ -3446,6 +3446,12 @@ add voltron panes to an existing session
   echo "${session}"
 #+end_src
 
+*** gdbgui
+https://www.gdbgui.com/
+**** fix for python 3.9
+#+begin_src conf :tangle "DotFiles/.profile"
+export PURE_PYTHON=1
+#+end_src
 *** python                                                           :python:
 **** SOMEDAY 00:40 time to look into python inside gdb              :WAITING:
 :LOGBOOK:

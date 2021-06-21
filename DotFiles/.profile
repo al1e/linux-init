@@ -54,6 +54,8 @@ export FZF_TMUX_OPTS="-d 40%"
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
+export PURE_PYTHON=1
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"

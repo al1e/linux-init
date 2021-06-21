@@ -2107,7 +2107,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org0c19f79"></a>
+<a id="orgc416130"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2128,7 +2128,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org0c19f79).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc416130).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2224,7 +2224,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org9e23b68).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge45eaae).
 
 ```bash
 #!/usr/bin/env bash
@@ -2919,6 +2919,17 @@ e dbg.bep=main
         voltron-panes-h "${session}"
     fi
     echo "${session}"
+    ```
+
+
+### gdbgui
+
+<https://www.gdbgui.com/>
+
+1.  fix for python 3.9
+
+    ```conf
+    export PURE_PYTHON=1
     ```
 
 
