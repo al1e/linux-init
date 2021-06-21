@@ -3104,8 +3104,7 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 #+end_src
 * Programming Related                                           :programming:
 ** lldb                                                                 :lldb:
-*** scripts
-**** ~/.lldbinit
+*** ~/.lldbinit
 #+begin_src conf :tangle "DotFiles/.lldbinit"
   # Maintained in linux-config.org
 
@@ -3120,7 +3119,7 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   #end
 
 #+end_src
-**** ~/bin/lldb-session
+*** ~/bin/lldb-session
 Create a session but let someone else do the attach
 #+begin_src bash :tangle ~/bin/lldb-session
   #!/usr/bin/env bash
@@ -3140,11 +3139,12 @@ Create a session but let someone else do the attach
       breakpointsPane=$(tmux display-message -p "#{pane_id}")
       tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
       backTracePane=$(tmux display-message -p "#{pane_id}")
+      tmux select-pane -t "$lldbPane"
   fi
   echo "$session"
 #+end_src
 
-**** ~/bin/lldb-run
+*** ~/bin/lldb-run
 #+begin_src bash :tangle ~/bin/lldb-run
   #!/usr/bin/env bash
   # Maintained in linux-config.org

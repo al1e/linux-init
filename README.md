@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org15eea5e"></a>
+<a id="org3a113ec"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org15eea5e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3a113ec).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge51ef34).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd713307).
 
 ```bash
 #!/usr/bin/env bash
@@ -2577,60 +2577,61 @@ e dbg.bep=main
 ## lldb     :lldb:
 
 
-### scripts
+### ~/.lldbinit
 
-1.  ~/.lldbinit
+```conf
+# Maintained in linux-config.org
 
-    ```conf
-    # Maintained in linux-config.org
+settings set target.load-cwd-lldbinit true
 
-    settings set target.load-cwd-lldbinit true
+command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 
-    command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+#alias vtty = shell tmux-pane-tty voltron 4
 
-    #alias vtty = shell tmux-pane-tty voltron 4
+#define voltron-source-tty
+#shell tmux-pane-tty
+#end
 
-    #define voltron-source-tty
-    #shell tmux-pane-tty
-    #end
+```
 
-    ```
 
-2.  ~/bin/lldb-session
+### ~/bin/lldb-session
 
-    Create a session but let someone else do the attach
+Create a session but let someone else do the attach
 
-    ```bash
-    #!/usr/bin/env bash
-    # Maintained in linux-config.org
-    directory="$(realpath -s "${1:-`pwd`}")"
-    cd "${directory}"
-    session="${2:-${directory//[^[:alnum:]]/}}"
-    if ! tmux has-session -t "${session}" &> /dev/null; then
-        tmux new-session -c ${directory} -d -s "${session}" "lldb"
-        lldbPane=$(tmux display-message -p "#{pane_id}")
-        # tmux send-keys -t  "$lldbpane" "lldb"  C-m
-        tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
-        srcPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
-        localsPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
-        breakpointsPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
-        backTracePane=$(tmux display-message -p "#{pane_id}")
-    fi
-    echo "$session"
-    ```
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+directory="$(realpath -s "${1:-`pwd`}")"
+cd "${directory}"
+session="${2:-${directory//[^[:alnum:]]/}}"
+if ! tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -c ${directory} -d -s "${session}" "lldb"
+    lldbPane=$(tmux display-message -p "#{pane_id}")
+    # tmux send-keys -t  "$lldbpane" "lldb"  C-m
+    tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
+    srcPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
+    localsPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
+    breakpointsPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
+    backTracePane=$(tmux display-message -p "#{pane_id}")
+    tmux select-pane -t "$lldbPane"
+fi
+echo "$session"
+```
 
-3.  ~/bin/lldb-run
 
-    ```bash
-    #!/usr/bin/env bash
-    # Maintained in linux-config.org
-    directory="${1:-`pwd`}"
-    session="${2}"
-    ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
-    ```
+### ~/bin/lldb-run
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+directory="${1:-`pwd`}"
+session="${2}"
+ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
+```
 
 
 ### ~/bin/lldb-extras-session

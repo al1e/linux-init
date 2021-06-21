@@ -15,5 +15,6 @@ if ! tmux has-session -t "${session}" &> /dev/null; then
     breakpointsPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
     backTracePane=$(tmux display-message -p "#{pane_id}")
+    tmux select-pane -t "$lldbPane"
 fi
 echo "$session"
