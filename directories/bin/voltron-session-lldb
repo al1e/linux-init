@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-# Maintained in linux-config.org
-session="${1:-voltron}"
-if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -s "${session}" &> /dev/null
-    voltron-panes-lldb-h "${session}"
-fi
-echo "${session}"

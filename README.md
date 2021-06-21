@@ -1129,7 +1129,7 @@ bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
 bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
-bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(voltron-session-lldb); workspace $ws3
+bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(lldb-extras-session); workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org5ff15e8"></a>
+<a id="org9571b4e"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5ff15e8).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9571b4e).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3d303c9).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgded74ef).
 
 ```bash
 #!/usr/bin/env bash
@@ -2574,364 +2574,6 @@ e dbg.bep=main
 # Programming Related     :programming:
 
 
-## gdb     :gdb:
-
-
-### scripts
-
-1.  ~/.gdbinit
-
-    ```conf
-    # Maintained in linux-config.org
-
-    set auto-load safe-path /
-    set auto-load local-gdbinit on
-    set history save on
-    set history filename ~/.gdb_history
-    set history size 32768
-    set history expansion on
-
-    define pretty
-    set print pretty on
-    set print symbol-filename on
-    set pagination off
-    set confirm off
-    set print array off
-    set print array-indexes on
-    set print address off
-    set print symbol-filename off
-    end
-
-    pretty
-
-    define lsource
-    list *$rip
-    end
-
-    define il
-    info locals $arg0
-    end
-
-    define ila
-    info locals
-    end
-
-
-    define hook-quit
-    shell tmux kill-session -t "$(voltron-session)" &> /dev/null
-    shell tmux kill-session -t "$(tmux-current-session)" &> /dev/null
-    end
-
-    #### Initialise GEF Session
-    define gef-init
-
-    source ~/bin/thirdparty/gef/gef.py
-
-    define f
-    frame $arg0
-    context
-    end
-
-    define hook-up
-    context
-    end
-
-    define hook-down
-    context
-    end
-
-    gef save updates ~/.gef.rc
-    gef config context.layout "legend regs stack -args source code -threads -trace -extra -memory"
-    gef config context.nb_lines_code 13
-    gef config context.nb_lines_code_prev 6
-    gef config context.nb_lines_stack 4
-    tmux-setup
-    # context
-    # shell tmux select-pane -t .0
-
-    end
-
-    #### Initialise Voltron Session
-    define voltron-init
-    source /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
-
-    alias vtty = shell tmux-pane-tty voltron 4
-
-    define voltron-source-tty
-    shell tmux-pane-tty
-    end
-
-    voltron init
-
-    end
-
-    #### Initialise utility extensions
-    define ext-init
-    gef-init
-    voltron-init
-    end
-
-    ```
-
-2.  python
-
-
-### desktop
-
-1.  tmux gdb setup scripts     :tmux:
-
-    1.  ~/bin/gdb-session
-
-        Create a session but let someone else do the attach
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        directory="$(realpath -s "${1:-`pwd`}")"
-        cd "${directory}"
-        session="${2:-${directory//[^[:alnum:]]/}}"
-        window=${2:-"0"}
-        pane=${3:-"0"}
-        if ! tmux has-session -t "${session}" &> /dev/null; then
-            tmux new-session -c ${directory} -d -s "${session}"
-            tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "gdb"  C-m
-        fi
-        echo "$session"
-        ```
-
-    2.  ~/bin/gdb-run
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        directory="${1:-`pwd`}"
-        session="${2}"
-        ONETERM_TITLE="dbg:gdb"  oneterminal "$(gdb-session "${directory}" "${session}")" &
-        ```
-
-    3.  DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
-
-
-### gef     :gef:
-
-[GEF](https://github.com/hugsy/gef) provided additional features to GDB using the Python API to assist during the process of dynamic analysis and exploit development
-
-1.  ~/.gef.rc  NOT TANGLED -  as can save it from gef
-
-    The default gef config
-
-    ```conf
-    [context]
-    clear_screen = True
-    enable = True
-    grow_stack_down = False
-    ignore_registers =
-    layout = legend regs stack code args source memory threads trace extra
-    nb_lines_backtrace = 10
-    nb_lines_code = 6
-    nb_lines_code_prev = 3
-    nb_lines_stack = 8
-    nb_lines_threads = -1
-    peek_calls = True
-    peek_ret = True
-    redirect =
-    show_registers_raw = False
-    show_stack_raw = False
-    use_capstone = False
-
-    [dereference]
-    max_recursion = 7
-
-    [entry-break]
-    entrypoint_symbols = main _main __libc_start_main __uClibc_main start _start
-
-    [gef-remote]
-    clean_on_exit = False
-
-    [gef]
-    autosave_breakpoints_file =
-    debug = False
-    disable_color = False
-    extra_plugins_dir = ~/bin/thirdparty/gef-extras/scripts
-    follow_child = True
-    readline_compat = False
-    tempdir = /tmp/gef
-
-    [got]
-    function_not_resolved = yellow
-    function_resolved = green
-
-    [heap-analysis-helper]
-    check_double_free = True
-    check_free_null = False
-    check_heap_overlap = True
-    check_uaf = True
-    check_weird_free = True
-
-    [heap-chunks]
-    peek_nb_byte = 16
-
-    [hexdump]
-    always_show_ascii = False
-
-    [highlight]
-    regex = False
-
-    [ida-interact]
-    host = 127.0.0.1
-    port = 1337
-    sync_cursor = False
-
-    [pattern]
-    length = 40
-
-    [pcustom]
-    max_depth = 4
-    struct_path = ~/bin/thirdparty/gef-extras/structs
-
-    [process-search]
-    ps_command = /usr/bin/ps auxww
-
-    [syscall-args]
-    path = ~/bin/thirdparty/gef-extras/syscall-tables
-
-    [theme]
-    address_code = red
-    address_heap = green
-    address_stack = pink
-    context_title_line = gray
-    context_title_message = cyan
-    default_title_line = gray
-    default_title_message = cyan
-    dereference_base_address = cyan
-    dereference_code = gray
-    dereference_register_value = bold blue
-    dereference_string = yellow
-    disassemble_current_instruction = green
-    registers_register_name = blue
-    registers_value_changed = bold red
-    source_current_line = green
-    table_heading = blue
-
-    [trace-run]
-    max_tracing_recursion = 1
-    tracefile_prefix = ./gef-trace-
-
-    [unicorn-emulate]
-    show_disassembly = False
-    verbose = False
-
-    [aliases]
-    pf = print-format
-    status = process-status
-    binaryninja-interact = ida-interact
-    bn = ida-interact
-    binja = ida-interact
-    lookup = scan
-    grep = search-pattern
-    xref = search-pattern
-    flags = edit-flags
-    mprotect = set-permission
-    emulate = unicorn-emulate
-    cs-dis = capstone-disassemble
-    sc-search = shellcode search
-    sc-get = shellcode get
-    asm = assemble
-    ps = process-search
-    start = entry-break
-    nb = name-break
-    ctx = context
-    telescope = dereference
-    pattern offset = pattern search
-    hl = highlight
-    highlight ls = highlight list
-    hll = highlight list
-    hlc = highlight clear
-    highlight set = highlight add
-    hla = highlight add
-    highlight delete = highlight remove
-    highlight del = highlight remove
-    highlight unset = highlight remove
-    highlight rm = highlight remove
-    hlr = highlight remove
-    fmtstr-helper = format-string-helper
-    dps = dereference
-    dq = hexdump qword
-    dd = hexdump dword
-    dw = hexdump word
-    dc = hexdump byte
-    dt = pcustom
-    bl = info breakpoints
-    bp = break
-    be = enable breakpoints
-    bd = disable breakpoints
-    bc = delete breakpoints
-    tbp = tbreak
-    tba = thbreak
-    pa = advance
-    ptc = finish
-    t = stepi
-    p = nexti
-    g = gef run
-    uf = disassemble
-    screen-setup = tmux-setup
-    ```
-
-
-### voltron     :voltron:
-
-<https://github.com/snare/voltron>
-
-1.  voltron panes
-
-    add voltron panes to an existing session
-
-    1.  ~/bin/voltron-panes-h
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        session=${1:-"voltron"}
-        window=${2:-"0"}
-        pane=${3:-"0"}
-        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'info locals' --lexer gdb_intel" C-m
-        tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v disasm"
-        tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register --general --no-sse --no-fpu --info"
-        tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
-        # tmux splitw -h -t "${session}:${window}.$(expr $pane + 0)" "voltron v c ila --lexer gdb_intel"
-        # tmux splitw -h -t "${session}:${window}.$(expr $pane + 1)"
-        # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v register"
-        # tmux splitw -v -t "${session}:${window}.$(expr $pane + 1)" "voltron v breakpoints"
-        ```
-
-2.  ~/bin/voltron-session
-
-    ```bash
-    #!/usr/bin/env bash
-    # Maintained in linux-config.org
-    session="${1:-voltron}"
-    if ! tmux has-session -t "${session}" &> /dev/null; then
-        tmux new-session -d -s "${session}" &> /dev/null
-        voltron-panes-h "${session}"
-    fi
-    echo "${session}"
-    ```
-
-
-### gdbgui
-
-<https://www.gdbgui.com/>
-
-1.  fix for python 3.9
-
-    ```conf
-    export PURE_PYTHON=1
-    ```
-
-
-### python     :python:
-
-
 ## lldb     :lldb:
 
 
@@ -2954,96 +2596,74 @@ e dbg.bep=main
 
     ```
 
-2.  tmux lldb setup scripts     :tmux:
+2.  ~/bin/lldb-session
 
-    1.  ~/bin/lldb-session
-
-        Create a session but let someone else do the attach
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        directory="$(realpath -s "${1:-`pwd`}")"
-        cd "${directory}"
-        session="${2:-${directory//[^[:alnum:]]/}}"
-        window=${2:-"0"}
-        pane=${3:-"0"}
-        if ! tmux has-session -t "${session}" &> /dev/null; then
-            tmux new-session -c ${directory} -d -s "${session}"
-            tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
-        fi
-        echo "$session"
-        ```
-
-    2.  ~/bin/lldb-run
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        directory="${1:-`pwd`}"
-        session="${2}"
-        ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
-        ```
-
-    3.  DONE 19:33 change gdb-session to use directory for session name unless passed in specifically
-
-
-### voltron     :voltron:
-
-<https://github.com/snare/voltron>
-
-1.  voltron panes
-
-    add voltron panes to an existing session
-
-    1.  ~/bin/voltron-panes-lldb-h
-
-        ```bash
-        #!/usr/bin/env bash
-        # Maintained in linux-config.org
-        session=${1:-"voltron"}
-        window=${2:-"0"}
-        pane=${3:-"0"}
-        tmux send-keys -t "${session}:${window}.${pane}" "voltron v c 'source list -a \$rip -c 16'" C-m
-        srcPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 66 -t "$srcPane" "voltron v disasm"
-        disassPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -h -p 50 -t "$disassPane" "voltron v c 'frame variable' --lexer c"
-        localsPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -v -p 50 -t "$disassPane" "voltron v backtrace"
-        backTracePane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -v -p 66 -t "$localsPane" "voltron v register"
-        registerPane=$(tmux display-message -p "#{pane_id}")
-        tmux splitw -v -p 50 -t "$registerPane" "voltron v breakpoints"
-        breakpointsPane=$(tmux display-message -p "#{pane_id}")
-        ```
-
-2.  ~/bin/voltron-session-lldb
+    Create a session but let someone else do the attach
 
     ```bash
     #!/usr/bin/env bash
     # Maintained in linux-config.org
-    session="${1:-voltron}"
+    directory="$(realpath -s "${1:-`pwd`}")"
+    cd "${directory}"
+    session="${2:-${directory//[^[:alnum:]]/}}"
+    window=${2:-"0"}
+    pane=${3:-"0"}
     if ! tmux has-session -t "${session}" &> /dev/null; then
-        tmux new-session -d -s "${session}" &> /dev/null
-        voltron-panes-lldb-h "${session}"
+        tmux new-session -c ${directory} -d -s "${session}"
+        tmux send-keys -t  "${session}:${window}.$(expr $pane + 0)" "lldb"  C-m
+        gdbPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -v -p 60 -t "$gdbPane" "voltron v c 'source list -a \$rip -c 32'"
+        srcPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
+        localsPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
+        breakpointsPane=$(tmux display-message -p "#{pane_id}")
+        tmux splitw -h -p 50 -t "$gdbPane" "voltron v backtrace"
+        backTracePane=$(tmux display-message -p "#{pane_id}")
     fi
-    echo "${session}"
+    echo "$session"
+    ```
+
+3.  ~/bin/lldb-run
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    directory="${1:-`pwd`}"
+    session="${2}"
+    ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
     ```
 
 
-### gdbgui
+### ~/bin/lldb-extras-session
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+session=${1:-"lldb-extras-session"}
+window=${2:-"0"}
+pane=${3:-"0"}
+if ! tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -d -s "${session}" &> /dev/null
+    tmux send-keys -t "${session}:${window}.${pane}" "voltron v disasm" C-m
+    disassPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 40 -t "$disassPane" "voltron v register"
+    registerPane=$(tmux display-message -p "#{pane_id}")
+fi
+echo "${session}"
+```
+
+
+## gdbgui
 
 <https://www.gdbgui.com/>
 
-1.  fix for python 3.9
 
-    ```conf
-    export PURE_PYTHON=1
-    ```
+### fix for python 3.9
 
-
-### python     :python:
+```conf
+export PURE_PYTHON=1
+```
 
 
 ## python

@@ -242,7 +242,7 @@ bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec lldb-run ~/development/projects/emacs/emacs/src; workspace $ws3
 bindsym $mod+Control+u exec lldb-run /home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
-bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(voltron-session-lldb); workspace $ws3
+bindsym $mod+Control+v exec ONETERM_TITLE="lldb:voltron" oneterminal $(lldb-extras-session); workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
 bindsym $mod+Control+Shift+p exec htop-regexp
