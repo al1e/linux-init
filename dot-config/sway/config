@@ -195,8 +195,6 @@ bindsym $mod+Control+Shift+a exec pulse-restart
 
 bindsym --locked XF86Wlan exec sleep 1 && sway-notify "WLAN is $(nmcli radio wifi)."
 
-bindsym  $mod+Control+l exec sway-lock-utils lock
-
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 bindsym b exec sway-lock-utils blank, mode "default"

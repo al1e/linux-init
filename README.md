@@ -1066,8 +1066,6 @@ bindsym --locked XF86Wlan exec sleep 1 && sway-notify "WLAN is $(nmcli radio wif
 
 ```conf
 
-bindsym  $mod+Control+l exec sway-lock-utils lock
-
 set $mode_system System (b) blank (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 bindsym b exec sway-lock-utils blank, mode "default"
@@ -2105,7 +2103,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgcdb86fa"></a>
+<a id="org3cb8ade"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2124,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcdb86fa).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3cb8ade).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2220,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8416f7b).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3ded045).
 
 ```bash
 #!/usr/bin/env bash
@@ -2584,11 +2582,12 @@ e dbg.bep=main
 
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
+settings set target.x86-disassembly-flavor intel
 
 settings set stop-line-count-before 0
 settings set stop-line-count-after 0
 
-settings set stop-disassembly-display always
+settings set stop-disassembly-display no-debuginfo
 
 command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 
@@ -2615,7 +2614,7 @@ if ! tmux has-session -t "${session}" &> /dev/null; then
     tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
     lldbPane=$(tmux display-message -p "#{pane_id}")
     # tmux send-keys -t  "$lldbpane" "lldb"  C-m
-    tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
+    tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
     localsPane=$(tmux display-message -p "#{pane_id}")
@@ -2623,9 +2622,7 @@ if ! tmux has-session -t "${session}" &> /dev/null; then
     stackPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
     btPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -v -p 50 -t "$btPane" "voltron v breakpoints"
-    breakpointsPane=$(tmux display-message -p "#{pane_id}")
-     tmux select-pane -t "$lldbPane"
+    tmux select-pane -t "$lldbPane"
 fi
 echo "$session"
 ```
@@ -2649,7 +2646,7 @@ ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}
 # Maintained in linux-config.org
 session="${1:-"lldb-extras-session"}"
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -s "${session}" "voltron v disasm" &> /dev/null
+    tmux new-session -d -s "${session}" "voltron v c 'disassemble --mixed -p'" &> /dev/null
     disassPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 40 -t "$disassPane" "voltron v register"
     registerPane=$(tmux display-message -p "#{pane_id}")

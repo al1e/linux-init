@@ -2,11 +2,12 @@
 
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
+settings set target.x86-disassembly-flavor intel
 
 settings set stop-line-count-before 0
 settings set stop-line-count-after 0
 
-settings set stop-disassembly-display always
+settings set stop-disassembly-display no-debuginfo
 
 command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 

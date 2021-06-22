@@ -2,7 +2,7 @@
 # Maintained in linux-config.org
 session="${1:-"lldb-extras-session"}"
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -s "${session}" "voltron v disasm" &> /dev/null
+    tmux new-session -d -s "${session}" "voltron v c 'disassemble --mixed -p'" &> /dev/null
     disassPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 40 -t "$disassPane" "voltron v register"
     registerPane=$(tmux display-message -p "#{pane_id}")
