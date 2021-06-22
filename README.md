@@ -1126,7 +1126,7 @@ bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec lldb-run "~/development/projects/emacs/emacs/src"; workspace $ws3
+bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
 bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
 bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
@@ -2105,7 +2105,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org3a113ec"></a>
+<a id="orgcdb86fa"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2126,7 +2126,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3a113ec).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcdb86fa).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2222,7 +2222,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd713307).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8416f7b).
 
 ```bash
 #!/usr/bin/env bash
@@ -2583,6 +2583,12 @@ e dbg.bep=main
 # Maintained in linux-config.org
 
 settings set target.load-cwd-lldbinit true
+settings set interpreter.prompt-on-quit false
+
+settings set stop-line-count-before 0
+settings set stop-line-count-after 0
+
+settings set stop-disassembly-display always
 
 command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 
@@ -2606,18 +2612,20 @@ directory="$(realpath -s "${1:-`pwd`}")"
 cd "${directory}"
 session="${2:-${directory//[^[:alnum:]]/}}"
 if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -c ${directory} -d -s "${session}" "lldb"
+    tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
     lldbPane=$(tmux display-message -p "#{pane_id}")
     # tmux send-keys -t  "$lldbpane" "lldb"  C-m
     tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
+    tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
     localsPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
-    breakpointsPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 50 -t "$localsPane" "voltron v stack"
+    stackPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
-    backTracePane=$(tmux display-message -p "#{pane_id}")
-    tmux select-pane -t "$lldbPane"
+    btPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -v -p 50 -t "$btPane" "voltron v breakpoints"
+    breakpointsPane=$(tmux display-message -p "#{pane_id}")
+     tmux select-pane -t "$lldbPane"
 fi
 echo "$session"
 ```

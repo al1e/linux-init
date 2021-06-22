@@ -1793,7 +1793,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
   bindsym $mod+Control+Shift+d exec sway-screen-menu
   bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-  bindsym $mod+Control+e exec lldb-run "~/development/projects/emacs/emacs/src"; workspace $ws3
+  bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
   bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
   bindsym $mod+Control+g exec oneterminal "lldb"
   bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
@@ -3109,6 +3109,12 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   # Maintained in linux-config.org
 
   settings set target.load-cwd-lldbinit true
+  settings set interpreter.prompt-on-quit false
+
+  settings set stop-line-count-before 0
+  settings set stop-line-count-after 0
+
+  settings set stop-disassembly-display always
 
   command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
 
@@ -3128,18 +3134,20 @@ Create a session but let someone else do the attach
   cd "${directory}"
   session="${2:-${directory//[^[:alnum:]]/}}"
   if ! tmux has-session -t "${session}" &> /dev/null; then
-      tmux new-session -c ${directory} -d -s "${session}" "lldb"
+      tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
       lldbPane=$(tmux display-message -p "#{pane_id}")
       # tmux send-keys -t  "$lldbpane" "lldb"  C-m
       tmux splitw -v -p 60 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
       srcPane=$(tmux display-message -p "#{pane_id}")
-      tmux splitw -h -p 60 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
+      tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
       localsPane=$(tmux display-message -p "#{pane_id}")
-      tmux splitw -h -p 50 -t "$localsPane" "voltron v breakpoints"
-      breakpointsPane=$(tmux display-message -p "#{pane_id}")
+      tmux splitw -h -p 50 -t "$localsPane" "voltron v stack"
+      stackPane=$(tmux display-message -p "#{pane_id}")
       tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
-      backTracePane=$(tmux display-message -p "#{pane_id}")
-      tmux select-pane -t "$lldbPane"
+      btPane=$(tmux display-message -p "#{pane_id}")
+      tmux splitw -v -p 50 -t "$btPane" "voltron v breakpoints"
+      breakpointsPane=$(tmux display-message -p "#{pane_id}")
+       tmux select-pane -t "$lldbPane"
   fi
   echo "$session"
 #+end_src
