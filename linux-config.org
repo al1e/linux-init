@@ -1491,8 +1491,8 @@ X11 apps still need resource definitions when launched under XWayland.
 #+end_src
 **** gaps
 #+begin_src conf
-  gaps inner  2
-  gaps outer  2
+  gaps inner  1
+  gaps outer  0
 #+end_src
 
 *** scratchpad terminal

@@ -782,8 +782,8 @@ for_window [title="sway-launcher"] floating enable
 5.  gaps
 
     ```conf
-    gaps inner  2
-    gaps outer  2
+    gaps inner  1
+    gaps outer  0
     ```
 
 
@@ -2103,7 +2103,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgc986b49"></a>
+<a id="orgdbba3be"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2124,7 +2124,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc986b49).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgdbba3be).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2220,7 +2220,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgbcdf9f3).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc31d56c).
 
 ```bash
 #!/usr/bin/env bash
