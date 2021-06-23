@@ -1758,7 +1758,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
 #+end_src
 *** apps default workspace
 #+begin_src conf
-  assign [title="dbg:"] $ws3
+  # assign [title="dbg:"] $ws3
   assign [class="Ardour"] $ws6
   assign [class="Signal"] $ws8
   assign [class="Hexchat"] $ws8
@@ -1792,7 +1792,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   bindsym $mod+Control+Shift+d exec sway-screen-menu
   bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
   bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
-  bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
+  bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
   bindsym $mod+Control+g exec oneterminal "lldb"
   bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
   bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
@@ -3129,13 +3129,17 @@ Create a session but let someone else do the attach
 #+begin_src bash :tangle ~/bin/lldb-session
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  directory="$(realpath -s "${1:-`pwd`}")"
-  cd "${directory}"
+
+  # create a lldb debug session unless it already exists.
+  # the -d to new session says "dont attach to current terminal"
+  # there is a bug where the splt panes split that of a tmux session in the terminal
+  # we issue the command from. No idea why or how.
+  # directory="$(realpath -s "${1:-`pwd`}")"
+  directory="${1:-`pwd`}"
   session="${2:-${directory//[^[:alnum:]]/}}"
-  if ! tmux has-session -t "${session}" &> /dev/null; then
-      tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
+  if ! TMUX= tmux has-session -t "${session}" &> /dev/null; then
+      tmux new-session -d -c "$directory" -s "$session" "lldb && tmux kill-session -t $session"
       lldbPane=$(tmux display-message -p "#{pane_id}")
-      # tmux send-keys -t  "$lldbpane" "lldb"  C-m
       tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
       srcPane=$(tmux display-message -p "#{pane_id}")
       tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
@@ -3154,8 +3158,8 @@ Create a session but let someone else do the attach
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   directory="${1:-`pwd`}"
-  session="${2}"
-  ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
+  session="$(lldb-session "${directory}" "$2")"
+  ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 #+end_src
 
 *** ~/bin/lldb-extras-session
@@ -3510,23 +3514,12 @@ if it exists jump to it else start it
   sessionname="${1:-`pwd`}"
   title="${ONETERM_TITLE:-${sessionname}}"
   script="${2}"
-  tflags="${3}"
 
   if ! sway-do-tool "$title"; then
-      rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-      if tmux has-session -t "${sessionname}" &> /dev/null; then
-          rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
-      else
-          rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
-      fi
       alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}" &
   else
-      rgr-logger -t "oneterminal" "Found an existing terminal $title."
       if ! tmux has-session -t  "${sessionname}"; then
-          rgr-logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
           tmux attach -t "${sessionname}"
-      else
-          rgr-logger -t "oneterminal" "It was already attached to session ${sessionname}"
       fi
   fi
   exit 0

@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-directory="$(realpath -s "${1:-`pwd`}")"
-cd "${directory}"
+
+# create a lldb debug session unless it already exists.
+# the -d to new session says "dont attach to current terminal"
+# there is a bug where the splt panes split that of a tmux session in the terminal
+# we issue the command from. No idea why or how.
+# directory="$(realpath -s "${1:-`pwd`}")"
+directory="${1:-`pwd`}"
 session="${2:-${directory//[^[:alnum:]]/}}"
-if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
+if ! TMUX= tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -d -c "$directory" -s "$session" "lldb && tmux kill-session -t $session"
     lldbPane=$(tmux display-message -p "#{pane_id}")
-    # tmux send-keys -t  "$lldbpane" "lldb"  C-m
     tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"

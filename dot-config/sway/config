@@ -210,7 +210,7 @@ bindsym Escape mode "default"
 }
 bindsym $mod+Control+q mode "$mode_system"
 
-assign [title="dbg:"] $ws3
+# assign [title="dbg:"] $ws3
 assign [class="Ardour"] $ws6
 assign [class="Signal"] $ws8
 assign [class="Hexchat"] $ws8
@@ -238,7 +238,7 @@ bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
-bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
+bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
 bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore

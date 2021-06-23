@@ -1086,7 +1086,7 @@ bindsym $mod+Control+q mode "$mode_system"
 ### apps default workspace
 
 ```conf
-assign [title="dbg:"] $ws3
+# assign [title="dbg:"] $ws3
 assign [class="Ardour"] $ws6
 assign [class="Signal"] $ws8
 assign [class="Hexchat"] $ws8
@@ -1125,7 +1125,7 @@ bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
 bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
-bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1" "udemy"; workspace $ws3
+bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
 bindsym $mod+Control+v exec ONETERM_TITLE="lldb:extras-session" oneterminal "$(lldb-extras-session)"; workspace $ws3
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
@@ -2103,7 +2103,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org3cb8ade"></a>
+<a id="org9de7b75"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2124,7 +2124,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3cb8ade).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9de7b75).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2220,7 +2220,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3ded045).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgab59b2e).
 
 ```bash
 #!/usr/bin/env bash
@@ -2607,13 +2607,17 @@ Create a session but let someone else do the attach
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-directory="$(realpath -s "${1:-`pwd`}")"
-cd "${directory}"
+
+# create a lldb debug session unless it already exists.
+# the -d to new session says "dont attach to current terminal"
+# there is a bug where the splt panes split that of a tmux session in the terminal
+# we issue the command from. No idea why or how.
+# directory="$(realpath -s "${1:-`pwd`}")"
+directory="${1:-`pwd`}"
 session="${2:-${directory//[^[:alnum:]]/}}"
-if ! tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -c ${directory} -d -s "${session}" -x - -y - "lldb && tmux kill-session -t ${session}"
+if ! TMUX= tmux has-session -t "${session}" &> /dev/null; then
+    tmux new-session -d -c "$directory" -s "$session" "lldb && tmux kill-session -t $session"
     lldbPane=$(tmux display-message -p "#{pane_id}")
-    # tmux send-keys -t  "$lldbpane" "lldb"  C-m
     tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
@@ -2634,8 +2638,8 @@ echo "$session"
 #!/usr/bin/env bash
 # Maintained in linux-config.org
 directory="${1:-`pwd`}"
-session="${2}"
-ONETERM_TITLE="dbg:lldb"  oneterminal "$(lldb-session "${directory}" "${session}")" &
+session="$(lldb-session "${directory}" "$2")"
+ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 ```
 
 
@@ -3059,23 +3063,12 @@ fi
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
 script="${2}"
-tflags="${3}"
 
 if ! sway-do-tool "$title"; then
-    rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-    if tmux has-session -t "${sessionname}" &> /dev/null; then
-        rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
-    else
-        rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
-    fi
     alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}" &
 else
-    rgr-logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
-        rgr-logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
         tmux attach -t "${sessionname}"
-    else
-        rgr-logger -t "oneterminal" "It was already attached to session ${sessionname}"
     fi
 fi
 exit 0

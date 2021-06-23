@@ -4,23 +4,12 @@
 sessionname="${1:-`pwd`}"
 title="${ONETERM_TITLE:-${sessionname}}"
 script="${2}"
-tflags="${3}"
 
 if ! sway-do-tool "$title"; then
-    rgr-logger -t "oneterminal" "Didn't find a terminal $title so starting a terminal"
-    if tmux has-session -t "${sessionname}" &> /dev/null; then
-        rgr-logger -t "oneterminal" "and attaching a session ${sessionname}"
-    else
-        rgr-logger -t "oneterminal" "creating ${sessionname} with script ${script}."
-    fi
     alacritty --title "${title}" --command bash -c "tmux new-session -A -s ${sessionname} ${script}" &
 else
-    rgr-logger -t "oneterminal" "Found an existing terminal $title."
     if ! tmux has-session -t  "${sessionname}"; then
-        rgr-logger -t "oneterminal" "It wasnt attached to session ${sessionname} so attaching it."
         tmux attach -t "${sessionname}"
-    else
-        rgr-logger -t "oneterminal" "It was already attached to session ${sessionname}"
     fi
 fi
 exit 0
