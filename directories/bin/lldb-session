@@ -11,14 +11,19 @@ session="${2:-${directory//[^[:alnum:]]/}}"
 if ! TMUX= tmux has-session -t "${session}" &> /dev/null; then
     tmux new-session -d -c "$directory" -s "$session" "lldb && tmux kill-session -t $session"
     lldbPane=$(tmux display-message -p "#{pane_id}")
+    lldbWindow=$(tmux display-message -p "#{window_id}")
     tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
     srcPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
     localsPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 50 -t "$localsPane" "voltron v stack"
-    stackPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 50 -t "$localsPane" "voltron v c 'disassemble --mixed --pc'"
+    disassPane=$(tmux display-message -p "#{pane_id}")
     tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
     btPane=$(tmux display-message -p "#{pane_id}")
+    tmux new-window "voltron v stack" &> /dev/null
+    stackPane=$(tmux display-message -p "#{pane_id}")
+    tmux splitw -h -p 40 -t "$stackPane" "voltron v register"
+    tmux select-window -t "$lldbWindow"
     tmux select-pane -t "$lldbPane"
 fi
 echo "$session"
