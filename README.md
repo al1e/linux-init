@@ -1935,11 +1935,11 @@ Monitor control with hotplug <https://github.com/emersion/kanshi> Load a host sp
 killall -9 kanshi &>/dev/null
 config="$HOME/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then
-    rgr-logger -t "kanshi"  "$config"
-    exec kanshi -c "$config"
+    echo  "kanshi -c $config"
+    kanshi -c "$config"
 else
-    rgr-logger -t "kanshi"  "default config"
-    exec kanshi
+    echo "kanshi default config"
+    kanshi
 fi
 ```
 
@@ -2103,7 +2103,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org9de7b75"></a>
+<a id="orgc986b49"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2124,7 +2124,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9de7b75).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc986b49).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2220,7 +2220,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgab59b2e).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgbcdf9f3).
 
 ```bash
 #!/usr/bin/env bash

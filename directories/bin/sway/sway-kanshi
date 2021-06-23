@@ -4,9 +4,9 @@
 killall -9 kanshi &>/dev/null
 config="$HOME/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then
-    rgr-logger -t "kanshi"  "$config"
-    exec kanshi -c "$config"
+    echo  "kanshi -c $config"
+    kanshi -c "$config"
 else
-    rgr-logger -t "kanshi"  "default config"
-    exec kanshi
+    echo "kanshi default config"
+    kanshi
 fi
