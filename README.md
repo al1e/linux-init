@@ -1124,8 +1124,8 @@ bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
 bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
-bindsym $mod+Control+e exec lldb-run "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
-bindsym $mod+Control+u exec lldb-run "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
+bindsym $mod+Control+e exec lldb-ui "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
+bindsym $mod+Control+u exec lldb-ui "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
 bindsym $mod+Control+o exec xmg-neo-rgb-kbd-lights toggle && x-backlight-persist restore
 bindsym $mod+Control+p exec sway-htop
@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgfeb3545"></a>
+<a id="org67d2bee"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfeb3545).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org67d2bee).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgb239457).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org65b6c40).
 
 ```bash
 #!/usr/bin/env bash
@@ -2599,7 +2599,7 @@ command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry
 ```
 
 
-### ~/bin/lldb-session
+### ~/bin/lldb-ui-session
 
 Create a session but let someone else do the attach
 
@@ -2613,40 +2613,119 @@ Create a session but let someone else do the attach
 # we issue the command from. No idea why or how.
 # directory="$(realpath -s "${1:-`pwd`}")"
 directory="${1:-`pwd`}"
-session="${2:-${directory//[^[:alnum:]]/}}"
-if ! TMUX= tmux has-session -t "${session}" &> /dev/null; then
-    tmux new-session -d -c "$directory" -s "$session" "lldb && tmux kill-session -t $session"
-    lldbPane=$(tmux display-message -p "#{pane_id}")
-    lldbWindow=$(tmux display-message -p "#{window_id}")
-    tmux splitw -vb -p 80 -t "$lldbPane" "voltron v c 'source list -a \$rip -c 32'"
-    srcPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 66 -t "$srcPane" "voltron v c 'frame variable' --lexer c"
-    localsPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 50 -t "$localsPane" "voltron v c 'disassemble --mixed --pc'"
+session="${2:-"tmx:$(basename "$directory")"}"
+if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
+
+    tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'
+    firstPane=$(tmux display-message -p "#{pane_id}")
+    firstWindow=$(tmux display-message -p "#{window_id}")
+
+    srcPane="$firstPane"
+
+    tmux splitw -h -p 70 -t "$srcPane" lldb-voltron-disassembly-mixed
     disassPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 50 -t "$lldbPane" "voltron v backtrace"
-    btPane=$(tmux display-message -p "#{pane_id}")
-    tmux new-window "voltron v stack" &> /dev/null
+
+
+    tmux splitw -v -p 50 -t "$srcPane" lldb-voltron-locals
+    localsPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux new-window lldb-voltron-stack &> /dev/null
     stackPane=$(tmux display-message -p "#{pane_id}")
-    tmux splitw -h -p 40 -t "$stackPane" "voltron v register"
-    tmux select-window -t "$lldbWindow"
-    tmux select-pane -t "$lldbPane"
+
+    tmux splitw -v -p 60 -t "$stackPane" lldb-voltron-registers
+    registersPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux select-window -t "$firstWindow"
+    tmux select-pane -t "$firstPane"
+
 fi
 echo "$session"
 ```
 
 
-### ~/bin/lldb-run
+### ~/bin/lldb-ui
 
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
 directory="${1:-`pwd`}"
-session="$(lldb-session "${directory}" "$2")"
+session="$(lldb-ui-session "${directory}" "$2")"
 ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 ```
 
-\#+end\_src
+
+### lldb voltron scripts
+
+1.  ~/bin/lldb-voltron-backtrace
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'thread backtrace'
+    ```
+
+2.  ~/bin/lldb-voltron-breakpoints
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'breakpoint list'
+    ```
+
+3.  ~/bin/lldb-voltron-disassembly
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
+    ```
+
+4.  ~/bin/lldb-voltron-disassembly-mixed
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-4}"''
+    ```
+
+5.  ~/bin/lldb-voltron-locals
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'frame variable' --lexer c
+    ```
+
+6.  ~/bin/lldb-voltron-registers
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v registers
+    ```
+
+7.  ~/bin/lldb-voltron-source
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v c 'source list -a $rip -c '"${1:-32}"''
+    ```
+
+8.  ~/bin/lldb-voltron-stack
+
+    ```bash
+    #!/usr/bin/env bash
+    # Maintained in linux-config.org
+    voltron v stack
+    ```
+
+
+### lldb python scripting     :python:
+
+lldb also has a built-in Python interpreter, which is accessible by the “script” command. All the functionality of the debugger is available as classes in the Python interpreter, so the more complex commands that in gdb you would introduce with the “define” command can be done by writing Python functions using the lldb-Python library, then loading the scripts into your running session and accessing them with the “script” command.
+
+<https://lldb.llvm.org/use/python.html>
 
 
 ## gdbgui

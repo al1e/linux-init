@@ -7,10 +7,10 @@
 # we issue the command from. No idea why or how.
 # directory="$(realpath -s "${1:-`pwd`}")"
 directory="${1:-`pwd`}"
-session="${2:-${directory//[^[:alnum:]]/}}"
+session="${2:-"tmx:$(basename "$directory")"}"
 if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
 
-    tmux new-session -d -c "$directory" -s "$session" lldb-voltron-source
+    tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'
     firstPane=$(tmux display-message -p "#{pane_id}")
     firstWindow=$(tmux display-message -p "#{window_id}")
 
@@ -23,10 +23,11 @@ if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
     tmux splitw -v -p 50 -t "$srcPane" lldb-voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -v -p 70 -t "$disassPane" lldb-voltron-registers
-
     tmux new-window lldb-voltron-stack &> /dev/null
     stackPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux splitw -v -p 60 -t "$stackPane" lldb-voltron-registers
+    registersPane=$(tmux display-message -p "#{pane_id}")
 
     tmux select-window -t "$firstWindow"
     tmux select-pane -t "$firstPane"
