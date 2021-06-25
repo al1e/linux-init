@@ -2887,7 +2887,7 @@ See [[id:d7ab0b28-ce54-4fa3-a318-d8b0caaced52][examples]].
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   #google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-  google-chrome  "$@" &> /dev/null &
+  google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
   sleep 0.5 && sway-do-tool "Google-chrome"
 #+end_src
 *** ~/bin/sway/sway-wifi
@@ -3104,6 +3104,9 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 *** ~/.lldbinit
 #+begin_src conf :tangle "DotFiles/.lldbinit"
   # Maintained in linux-config.org
+
+  settings write -f .lldb-settings-local-start
+  settings read  -f .lldb-settings-local
 
   settings set target.load-cwd-lldbinit true
   settings set interpreter.prompt-on-quit false

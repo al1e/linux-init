@@ -1,5 +1,8 @@
 # Maintained in linux-config.org
 
+settings write -f .lldb-settings-local-start
+settings read  -f .lldb-settings-local
+
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
