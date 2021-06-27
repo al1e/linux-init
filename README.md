@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org67d2bee"></a>
+<a id="orge41b57c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org67d2bee).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge41b57c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org65b6c40).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org20698f6).
 
 ```bash
 #!/usr/bin/env bash
@@ -2318,7 +2318,7 @@ sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-fo
 #!/usr/bin/env bash
 # Maintained in linux-config.org
 #google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-google-chrome  "$@" &> /dev/null &
+google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
 sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
@@ -2579,6 +2579,9 @@ e dbg.bep=main
 ```conf
 # Maintained in linux-config.org
 
+settings write -f .lldb-settings-local-start
+settings read  -f .lldb-settings-local
+
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
@@ -2588,7 +2591,7 @@ settings set stop-line-count-after 0
 
 settings set stop-disassembly-display no-debuginfo
 
-command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
 
 #alias vtty = shell tmux-pane-tty voltron 4
 

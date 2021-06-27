@@ -12,7 +12,7 @@ settings set stop-line-count-after 0
 
 settings set stop-disassembly-display no-debuginfo
 
-command script import /home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py
+command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
 
 #alias vtty = shell tmux-pane-tty voltron 4
 
