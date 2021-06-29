@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgb5212fc"></a>
+<a id="orgeb25f75"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb5212fc).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgeb25f75).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd7f7729).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgda0489b).
 
 ```bash
 #!/usr/bin/env bash
@@ -2631,14 +2631,20 @@ if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
     disassPane=$(tmux display-message -p "#{pane_id}")
 
 
-    tmux splitw -v -p 50 -t "$srcPane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$srcPane" lldb-voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux new-window lldb-voltron-stack &> /dev/null
-    stackPane=$(tmux display-message -p "#{pane_id}")
+    tmux new-window lldb-voltron-source &> /dev/null
+    sourcePane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -v -p 60 -t "$stackPane" lldb-voltron-registers
+    tmux splitw -v -p 30 -t "$sourcePane" lldb-voltron-locals
+    localsPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux splitw -h -p 70 -t "$sourcePane" lldb-voltron-registers
     registersPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux splitw -h -p 70 -t "$localsPane" lldb-voltron-backtrace
+    backTracePane=$(tmux display-message -p "#{pane_id}")
 
     tmux select-window -t "$firstWindow"
     tmux select-pane -t "$firstPane"

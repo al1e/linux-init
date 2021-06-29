@@ -20,14 +20,20 @@ if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
     disassPane=$(tmux display-message -p "#{pane_id}")
 
 
-    tmux splitw -v -p 50 -t "$srcPane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$srcPane" lldb-voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux new-window lldb-voltron-stack &> /dev/null
-    stackPane=$(tmux display-message -p "#{pane_id}")
+    tmux new-window lldb-voltron-source &> /dev/null
+    sourcePane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -v -p 60 -t "$stackPane" lldb-voltron-registers
+    tmux splitw -v -p 30 -t "$sourcePane" lldb-voltron-locals
+    localsPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux splitw -h -p 70 -t "$sourcePane" lldb-voltron-registers
     registersPane=$(tmux display-message -p "#{pane_id}")
+
+    tmux splitw -h -p 70 -t "$localsPane" lldb-voltron-backtrace
+    backTracePane=$(tmux display-message -p "#{pane_id}")
 
     tmux select-window -t "$firstWindow"
     tmux select-pane -t "$firstPane"
