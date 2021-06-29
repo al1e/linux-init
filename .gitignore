@@ -111,7 +111,6 @@
 !/directories/bin/gpg-cache
 !/directories/bin/htop-regexp
 !/directories/bin/i3-display-swap
-!/directories/bin/lldb*
 !/directories/bin/make-compile_commands
 !/directories/bin/my-*
 !/directories/bin/nvidia-power-usage

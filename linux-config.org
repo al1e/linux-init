@@ -692,7 +692,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   #alias man=eman
 
-  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/lldb":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -3182,9 +3182,9 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
       debugger.HandleCommand("command script add -c disassembly_mode.DisassemblyMode toggle-disassembly")
 
  #+end_src
-*** ~/bin/lldb-ui-session
+*** ~/bin/lldb/lldb-ui-session
 Create a session but let someone else do the attach
-#+begin_src bash :tangle ~/bin/lldb-ui-session
+#+begin_src bash :tangle ~/bin/lldb/lldb-ui-session
   #!/usr/bin/env bash
   # Maintained in linux-config.org
 
@@ -3229,8 +3229,8 @@ Create a session but let someone else do the attach
   echo "$session"
 #+end_src
 
-*** ~/bin/lldb-ui
-#+begin_src bash :tangle ~/bin/lldb-ui
+*** ~/bin/lldb/lldb-ui
+#+begin_src bash :tangle ~/bin/lldb/lldb-ui
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   directory="${1:-`pwd`}"

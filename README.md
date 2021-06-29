@@ -89,7 +89,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/lldb":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgeb25f75"></a>
+<a id="orgb70d0dd"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgeb25f75).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb70d0dd).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgda0489b).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge1bd29c).
 
 ```bash
 #!/usr/bin/env bash
@@ -2595,6 +2595,8 @@ settings set stop-disassembly-display no-debuginfo
 
 command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
 
+command script import "/home/rgr/bin/lldb/disassembly_mode.py"
+
 #alias vtty = shell tmux-pane-tty voltron 4
 
 #define voltron-source-tty
@@ -2604,7 +2606,62 @@ command alias lv command script import "/home/rgr/.local/lib/python3.9/site-pack
 ```
 
 
-### ~/bin/lldb-ui-session
+### ~/bin/lldb/disassembly\_mode.py
+
+```python
+""" Adds the 'toggle-disassembly' command to switch you into a disassembly only mode """
+import lldb
+
+class DisassemblyMode:
+    def __init__(self, debugger, unused):
+        self.dbg = debugger
+        self.interp = debugger.GetCommandInterpreter()
+        self.store_state()
+        self.mode_off = True
+
+    def store_state(self):
+        self.dis_count = self.get_string_value("stop-disassembly-count")
+        self.dis_display = self.get_string_value("stop-disassembly-display")
+        self.before_count = self.get_string_value("stop-line-count-before")
+        self.after_count = self.get_string_value("stop-line-count-after")
+
+    def get_string_value(self, setting):
+        result = lldb.SBCommandReturnObject()
+        self.interp.HandleCommand("settings show " + setting, result)
+        value = result.GetOutput().split(" = ")[1].rstrip("\n")
+        return value
+
+    def set_value(self, setting, value):
+        result = lldb.SBCommandReturnObject()
+        self.interp.HandleCommand("settings set " + setting + " " + value, result)
+
+    def __call__(self, debugger, command, exe_ctx, result):
+        if self.mode_off:
+            self.mode_off = False
+            self.store_state()
+            self.set_value("stop-disassembly-display","always")
+            self.set_value("stop-disassembly-count", "8")
+            self.set_value("stop-line-count-before", "0")
+            self.set_value("stop-line-count-after", "0")
+            result.AppendMessage("Disassembly mode on.")
+        else:
+            self.mode_off = True
+            self.set_value("stop-disassembly-display",self.dis_display)
+            self.set_value("stop-disassembly-count", self.dis_count)
+            self.set_value("stop-line-count-before", self.before_count)
+            self.set_value("stop-line-count-after", self.after_count)
+            result.AppendMessage("Disassembly mode off.")
+
+    def get_short_help(self):
+        return "Toggles between a disassembly only mode and normal source mode\n"
+
+def __lldb_init_module(debugger, unused):
+    debugger.HandleCommand("command script add -c disassembly_mode.DisassemblyMode toggle-disassembly")
+
+```
+
+
+### ~/bin/lldb/lldb-ui-session
 
 Create a session but let someone else do the attach
 
@@ -2621,29 +2678,29 @@ directory="${1:-`pwd`}"
 session="${2:-"voltron-$(basename "$directory")"}"
 if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
 
-    tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'
+    tmux new-session -d -c "$directory" -s "$session" 'voltron-source 32'
     firstPane=$(tmux display-message -p "#{pane_id}")
     firstWindow=$(tmux display-message -p "#{window_id}")
 
     srcPane="$firstPane"
 
-    tmux splitw -h -p 70 -t "$srcPane" lldb-voltron-disassembly-mixed
+    tmux splitw -h -p 70 -t "$srcPane" voltron-disassembly-mixed
     disassPane=$(tmux display-message -p "#{pane_id}")
 
 
-    tmux splitw -v -p 30 -t "$srcPane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$srcPane" voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux new-window lldb-voltron-source &> /dev/null
+    tmux new-window voltron-source &> /dev/null
     sourcePane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -v -p 30 -t "$sourcePane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$sourcePane" voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -h -p 70 -t "$sourcePane" lldb-voltron-registers
+    tmux splitw -h -p 70 -t "$sourcePane" voltron-registers
     registersPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -h -p 70 -t "$localsPane" lldb-voltron-backtrace
+    tmux splitw -h -p 70 -t "$localsPane" voltron-backtrace
     backTracePane=$(tmux display-message -p "#{pane_id}")
 
     tmux select-window -t "$firstWindow"
@@ -2654,7 +2711,7 @@ echo "$session"
 ```
 
 
-### ~/bin/lldb-ui
+### ~/bin/lldb/lldb-ui
 
 ```bash
 #!/usr/bin/env bash
@@ -2667,7 +2724,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 
 ### lldb voltron scripts
 
-1.  ~/bin/lldb-voltron-backtrace
+1.  ~/bin/lldb/voltron-backtrace
 
     ```bash
     #!/usr/bin/env bash
@@ -2675,7 +2732,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'thread backtrace'
     ```
 
-2.  ~/bin/lldb-voltron-breakpoints
+2.  ~/bin/lldb/voltron-breakpoints
 
     ```bash
     #!/usr/bin/env bash
@@ -2683,7 +2740,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'breakpoint list'
     ```
 
-3.  ~/bin/lldb-voltron-disassembly
+3.  ~/bin/lldb/voltron-disassembly
 
     ```bash
     #!/usr/bin/env bash
@@ -2691,15 +2748,15 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
     ```
 
-4.  ~/bin/lldb-voltron-disassembly-mixed
+4.  ~/bin/lldb/voltron-disassembly-mixed
 
     ```bash
     #!/usr/bin/env bash
     # Maintained in linux-config.org
-    voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-4}"''
+    voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-32}"''
     ```
 
-5.  ~/bin/lldb-voltron-locals
+5.  ~/bin/lldb/voltron-locals
 
     ```bash
     #!/usr/bin/env bash
@@ -2707,7 +2764,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'frame variable' --lexer c
     ```
 
-6.  ~/bin/lldb-voltron-registers
+6.  ~/bin/lldb/voltron-registers
 
     ```bash
     #!/usr/bin/env bash
@@ -2715,7 +2772,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v registers
     ```
 
-7.  ~/bin/lldb-voltron-source
+7.  ~/bin/lldb/voltron-source
 
     ```bash
     #!/usr/bin/env bash
@@ -2723,7 +2780,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'source list -a $rip -c '"${1:-32}"''
     ```
 
-8.  ~/bin/lldb-voltron-stack
+8.  ~/bin/lldb/voltron-stack
 
     ```bash
     #!/usr/bin/env bash
