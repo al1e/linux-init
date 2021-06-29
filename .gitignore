@@ -89,6 +89,10 @@
 
 !/directories/bin/i3bm-*
 
+!/directories/bin/lldb/
+!/directories/bin/lldb/*
+
+
 !/directories/bin/acpi-powerstate
 !/directories/bin/add-user-paths
 !/directories/bin/battery-warning*
@@ -100,7 +104,6 @@
 !/directories/bin/extract-debug-info
 !/directories/bin/expert-advice
 !/directories/bin/gdb-*
-!/directories/bin/lldb-*
 !/directories/bin/getmails
 !/directories/bin/google-trans
 !/directories/bin/google-trans-de-en

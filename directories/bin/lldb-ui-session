@@ -10,29 +10,29 @@ directory="${1:-`pwd`}"
 session="${2:-"voltron-$(basename "$directory")"}"
 if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
 
-    tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'
+    tmux new-session -d -c "$directory" -s "$session" 'voltron-source 32'
     firstPane=$(tmux display-message -p "#{pane_id}")
     firstWindow=$(tmux display-message -p "#{window_id}")
 
     srcPane="$firstPane"
 
-    tmux splitw -h -p 70 -t "$srcPane" lldb-voltron-disassembly-mixed
+    tmux splitw -h -p 70 -t "$srcPane" voltron-disassembly-mixed
     disassPane=$(tmux display-message -p "#{pane_id}")
 
 
-    tmux splitw -v -p 30 -t "$srcPane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$srcPane" voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux new-window lldb-voltron-source &> /dev/null
+    tmux new-window voltron-source &> /dev/null
     sourcePane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -v -p 30 -t "$sourcePane" lldb-voltron-locals
+    tmux splitw -v -p 30 -t "$sourcePane" voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -h -p 70 -t "$sourcePane" lldb-voltron-registers
+    tmux splitw -h -p 70 -t "$sourcePane" voltron-registers
     registersPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux splitw -h -p 70 -t "$localsPane" lldb-voltron-backtrace
+    tmux splitw -h -p 70 -t "$localsPane" voltron-backtrace
     backTracePane=$(tmux display-message -p "#{pane_id}")
 
     tmux select-window -t "$firstWindow"
