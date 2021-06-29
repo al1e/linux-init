@@ -1,14 +1,16 @@
 # Maintained in linux-config.org
 
-settings write -f .lldb-settings-local-start
-settings read  -f .lldb-settings-local
+#settings write -f .lldb-settings-local-start
+#settings read  -f .lldb-settings-local
 
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
 
-settings set stop-line-count-before 0
-settings set stop-line-count-after 0
+command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
+srcb 0
+command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
+srca 0
 
 settings set stop-disassembly-display no-debuginfo
 

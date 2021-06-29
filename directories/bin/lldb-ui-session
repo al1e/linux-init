@@ -7,7 +7,7 @@
 # we issue the command from. No idea why or how.
 # directory="$(realpath -s "${1:-`pwd`}")"
 directory="${1:-`pwd`}"
-session="${2:-"tmx:$(basename "$directory")"}"
+session="${2:-"voltron-$(basename "$directory")"}"
 if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
 
     tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'

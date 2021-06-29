@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge41b57c"></a>
+<a id="orgb5212fc"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge41b57c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb5212fc).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org20698f6).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd7f7729).
 
 ```bash
 #!/usr/bin/env bash
@@ -2579,15 +2579,17 @@ e dbg.bep=main
 ```conf
 # Maintained in linux-config.org
 
-settings write -f .lldb-settings-local-start
-settings read  -f .lldb-settings-local
+#settings write -f .lldb-settings-local-start
+#settings read  -f .lldb-settings-local
 
 settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
 
-settings set stop-line-count-before 0
-settings set stop-line-count-after 0
+command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
+srcb 0
+command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
+srca 0
 
 settings set stop-disassembly-display no-debuginfo
 
@@ -2616,7 +2618,7 @@ Create a session but let someone else do the attach
 # we issue the command from. No idea why or how.
 # directory="$(realpath -s "${1:-`pwd`}")"
 directory="${1:-`pwd`}"
-session="${2:-"tmx:$(basename "$directory")"}"
+session="${2:-"voltron-$(basename "$directory")"}"
 if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
 
     tmux new-session -d -c "$directory" -s "$session" 'lldb-voltron-source 32'
