@@ -1,8 +1,15 @@
+
 """ Adds the 'toggle-disassembly' command to switch you into a disassembly only mode """
 import lldb
 
+print("About to break")
+import pdb
+breakpoint()
+
 class DisassemblyMode:
     def __init__(self, debugger, unused):
+        breakpoint()
+        print("Back from break.")
         self.dbg = debugger
         self.interp = debugger.GetCommandInterpreter()
         self.store_state()
