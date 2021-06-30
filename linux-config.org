@@ -692,7 +692,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   #alias man=eman
 
-  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/lldb":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/llvm":"${HOME}/bin/llvm/build/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -3140,11 +3140,11 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   #end
 
 #+end_src
-*** ~/bin/lldb/disassembly_mode.py
+*** ~/bin/llvm/disassembly_mode.py
 [[file:directories/bin/lldb/disassembly_mode.py::""" Adds the 'toggle-disassembly' command to switch you into a disassembly only mode """][disassembly_mode.py]]
-*** ~/bin/lldb/lldb-ui-session
+*** ~/bin/llvm/lldb-ui-session
 Create a session but let someone else do the attach
-#+begin_src bash :tangle ~/bin/lldb/lldb-ui-session
+#+begin_src bash :tangle ~/bin/llvm/lldb-ui-session
   #!/usr/bin/env bash
   # Maintained in linux-config.org
 
@@ -3189,8 +3189,8 @@ Create a session but let someone else do the attach
   echo "$session"
 #+end_src
 
-*** ~/bin/lldb/lldb-ui
-#+begin_src bash :tangle ~/bin/lldb/lldb-ui
+*** ~/bin/llvm/lldb-ui
+#+begin_src bash :tangle ~/bin/llvm/lldb-ui
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   directory="${1:-`pwd`}"
@@ -3200,50 +3200,50 @@ Create a session but let someone else do the attach
 
 *** lldb voltron scripts
 
-**** ~/bin/lldb/voltron-backtrace
-#+begin_src bash :tangle ~/bin/lldb/voltron-backtrace
+**** ~/bin/llvm/voltron-backtrace
+#+begin_src bash :tangle ~/bin/llvm/voltron-backtrace
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'thread backtrace'
 #+end_src
-**** ~/bin/lldb/voltron-breakpoints
-#+begin_src bash :tangle ~/bin/lldb/voltron-breakpoints
+**** ~/bin/llvm/voltron-breakpoints
+#+begin_src bash :tangle ~/bin/llvm/voltron-breakpoints
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'breakpoint list'
 #+end_src
-**** ~/bin/lldb/voltron-disassembly
-#+begin_src bash :tangle ~/bin/lldb/voltron-disassembly
+**** ~/bin/llvm/voltron-disassembly
+#+begin_src bash :tangle ~/bin/llvm/voltron-disassembly
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
 #+end_src
-**** ~/bin/lldb/voltron-disassembly-mixed
-#+begin_src bash :tangle ~/bin/lldb/voltron-disassembly-mixed
+**** ~/bin/llvm/voltron-disassembly-mixed
+#+begin_src bash :tangle ~/bin/llvm/voltron-disassembly-mixed
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-32}"''
 #+end_src
-**** ~/bin/lldb/voltron-locals
-#+begin_src bash :tangle ~/bin/lldb/voltron-locals
+**** ~/bin/llvm/voltron-locals
+#+begin_src bash :tangle ~/bin/llvm/voltron-locals
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'frame variable' --lexer c
 #+end_src
-**** ~/bin/lldb/voltron-registers
-#+begin_src bash :tangle ~/bin/lldb/voltron-registers
+**** ~/bin/llvm/voltron-registers
+#+begin_src bash :tangle ~/bin/llvm/voltron-registers
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v registers
 #+end_src
-**** ~/bin/lldb/voltron-source
-#+begin_src bash :tangle ~/bin/lldb/voltron-source
+**** ~/bin/llvm/voltron-source
+#+begin_src bash :tangle ~/bin/llvm/voltron-source
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'source list -a $rip -c '"${1:-32}"''
   #+end_src
-**** ~/bin/lldb/voltron-stack
-#+begin_src bash :tangle ~/bin/lldb/voltron-stack
+**** ~/bin/llvm/voltron-stack
+#+begin_src bash :tangle ~/bin/llvm/voltron-stack
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v stack

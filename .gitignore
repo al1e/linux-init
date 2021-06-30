@@ -89,8 +89,8 @@
 
 !/directories/bin/i3bm-*
 
-!/directories/bin/lldb/
-!/directories/bin/lldb/*
+!/directories/bin/llvm/
+!/directories/bin/llvm/*
 
 
 !/directories/bin/acpi-powerstate
