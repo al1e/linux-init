@@ -254,7 +254,6 @@ swaybar_command waybar
 bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
 
 exec sway-lock
-exec dropbox-start-once
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'

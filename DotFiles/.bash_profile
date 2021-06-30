@@ -4,9 +4,10 @@ logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
-
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
+
+dropbox-start-once &> /dev/null  &
 
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
 

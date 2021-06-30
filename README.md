@@ -118,10 +118,10 @@ logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
-
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
+dropbox-start-once &> /dev/null  &
 ```
 
 
@@ -1776,7 +1776,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 
 ```conf
 exec sway-lock
-exec dropbox-start-once
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -2102,7 +2101,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org2d3aa4c"></a>
+<a id="org810524a"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2122,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2d3aa4c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org810524a).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2218,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8d73700).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org6eea704).
 
 ```bash
 #!/usr/bin/env bash

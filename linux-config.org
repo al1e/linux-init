@@ -723,10 +723,10 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
-
   ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
   systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
+  dropbox-start-once &> /dev/null  &
 #+end_src
 ** ~/.bashrc
 #+begin_src bash :tangle "DotFiles/.bashrc"
@@ -2422,7 +2422,6 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 *** autostart                                                     :autostart:
 #+begin_src conf
   exec sway-lock
-  exec dropbox-start-once
   exec sway-kanshi
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
