@@ -2102,7 +2102,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgb70d0dd"></a>
+<a id="org2d3aa4c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2123,7 +2123,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb70d0dd).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2d3aa4c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2219,7 +2219,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge1bd29c).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8d73700).
 
 ```bash
 #!/usr/bin/env bash
@@ -2317,8 +2317,8 @@ sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-fo
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-#google-chrome --use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@" &> /dev/null &
-google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
+# google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
+google-chrome  "$@" &> /dev/null &
 sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
