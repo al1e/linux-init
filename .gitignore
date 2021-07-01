@@ -91,6 +91,7 @@
 
 !/directories/bin/llvm/
 !/directories/bin/llvm/*
+/directories/bin/llvm/build
 
 
 !/directories/bin/acpi-powerstate

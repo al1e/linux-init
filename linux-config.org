@@ -3253,6 +3253,13 @@ lldb also has a built-in Python interpreter, which is accessible by the “scrip
 
 https://lldb.llvm.org/use/python.html
 
+**** TODO follow up on SE post
+SCHEDULED: <2021-07-02 Fri>
+:PROPERTIES:
+:DateCreated: <2021-07-01 Thu 11:13>
+:END:
+https://stackoverflow.com/questions/68207020/trying-to-run-pdb-in-an-imported-lldb-python-script-results-in-error-attributeer
+
 ** gdbgui
 https://www.gdbgui.com/
 *** fix for python 3.9

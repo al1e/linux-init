@@ -89,7 +89,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/lldb":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/llvm":"${HOME}/bin/llvm/build/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -2109,7 +2109,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org2d1750e"></a>
+<a id="org6f69653"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2130,7 +2130,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2d1750e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org6f69653).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2226,7 +2226,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org4f663a5).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc82eda3).
 
 ```bash
 #!/usr/bin/env bash
@@ -2611,12 +2611,12 @@ command alias lv command script import "/home/rgr/.local/lib/python3.9/site-pack
 ```
 
 
-### ~/bin/lldb/disassembly\_mode.py
+### ~/bin/llvm/disassembly\_mode.py
 
 [disassembly\_mode.py](directories/bin/lldb/disassembly_mode.py)
 
 
-### ~/bin/lldb/lldb-ui-session
+### ~/bin/llvm/lldb-ui-session
 
 Create a session but let someone else do the attach
 
@@ -2666,7 +2666,7 @@ echo "$session"
 ```
 
 
-### ~/bin/lldb/lldb-ui
+### ~/bin/llvm/lldb-ui
 
 ```bash
 #!/usr/bin/env bash
@@ -2679,7 +2679,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 
 ### lldb voltron scripts
 
-1.  ~/bin/lldb/voltron-backtrace
+1.  ~/bin/llvm/voltron-backtrace
 
     ```bash
     #!/usr/bin/env bash
@@ -2687,7 +2687,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'thread backtrace'
     ```
 
-2.  ~/bin/lldb/voltron-breakpoints
+2.  ~/bin/llvm/voltron-breakpoints
 
     ```bash
     #!/usr/bin/env bash
@@ -2695,7 +2695,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'breakpoint list'
     ```
 
-3.  ~/bin/lldb/voltron-disassembly
+3.  ~/bin/llvm/voltron-disassembly
 
     ```bash
     #!/usr/bin/env bash
@@ -2703,7 +2703,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
     ```
 
-4.  ~/bin/lldb/voltron-disassembly-mixed
+4.  ~/bin/llvm/voltron-disassembly-mixed
 
     ```bash
     #!/usr/bin/env bash
@@ -2711,7 +2711,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-32}"''
     ```
 
-5.  ~/bin/lldb/voltron-locals
+5.  ~/bin/llvm/voltron-locals
 
     ```bash
     #!/usr/bin/env bash
@@ -2719,7 +2719,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'frame variable' --lexer c
     ```
 
-6.  ~/bin/lldb/voltron-registers
+6.  ~/bin/llvm/voltron-registers
 
     ```bash
     #!/usr/bin/env bash
@@ -2727,7 +2727,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v registers
     ```
 
-7.  ~/bin/lldb/voltron-source
+7.  ~/bin/llvm/voltron-source
 
     ```bash
     #!/usr/bin/env bash
@@ -2735,7 +2735,7 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
     voltron v c 'source list -a $rip -c '"${1:-32}"''
     ```
 
-8.  ~/bin/lldb/voltron-stack
+8.  ~/bin/llvm/voltron-stack
 
     ```bash
     #!/usr/bin/env bash
@@ -2749,6 +2749,10 @@ ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 lldb also has a built-in Python interpreter, which is accessible by the “script” command. All the functionality of the debugger is available as classes in the Python interpreter, so the more complex commands that in gdb you would introduce with the “define” command can be done by writing Python functions using the lldb-Python library, then loading the scripts into your running session and accessing them with the “script” command.
 
 <https://lldb.llvm.org/use/python.html>
+
+1.  TODO follow up on SE post
+
+    <https://stackoverflow.com/questions/68207020/trying-to-run-pdb-in-an-imported-lldb-python-script-results-in-error-attributeer>
 
 
 ## gdbgui
