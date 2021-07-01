@@ -692,7 +692,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   #alias man=eman
 
-  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/llvm":"${HOME}/bin/llvm/build/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+  export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -3112,8 +3112,13 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   e dbg.bep=main
 #+end_src
 * Programming Related                                           :programming:
-** lldb                                                                 :lldb:
-*** ~/.lldbinit
+** llvm                                                           :llvm:
+*** path
+#+begin_src bash :tangle "DotFiles/.profile"
+  export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
+#+end_src
+*** lldb                                                               :lldb:
+**** ~/.lldbinit
 #+begin_src conf :tangle "DotFiles/.lldbinit"
   # Maintained in linux-config.org
 
@@ -3140,9 +3145,9 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   #end
 
 #+end_src
-*** ~/bin/llvm/disassembly_mode.py
+**** ~/bin/llvm/disassembly_mode.py
 [[file:directories/bin/lldb/disassembly_mode.py::""" Adds the 'toggle-disassembly' command to switch you into a disassembly only mode """][disassembly_mode.py]]
-*** ~/bin/llvm/lldb-ui-session
+**** ~/bin/llvm/lldb-ui-session
 Create a session but let someone else do the attach
 #+begin_src bash :tangle ~/bin/llvm/lldb-ui-session
   #!/usr/bin/env bash
@@ -3189,7 +3194,7 @@ Create a session but let someone else do the attach
   echo "$session"
 #+end_src
 
-*** ~/bin/llvm/lldb-ui
+**** ~/bin/llvm/lldb-ui
 #+begin_src bash :tangle ~/bin/llvm/lldb-ui
   #!/usr/bin/env bash
   # Maintained in linux-config.org
@@ -3198,62 +3203,62 @@ Create a session but let someone else do the attach
   ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
 #+end_src
 
-*** lldb voltron scripts
+**** lldb voltron scripts
 
-**** ~/bin/llvm/voltron-backtrace
+***** ~/bin/llvm/voltron-backtrace
 #+begin_src bash :tangle ~/bin/llvm/voltron-backtrace
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'thread backtrace'
 #+end_src
-**** ~/bin/llvm/voltron-breakpoints
+***** ~/bin/llvm/voltron-breakpoints
 #+begin_src bash :tangle ~/bin/llvm/voltron-breakpoints
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'breakpoint list'
 #+end_src
-**** ~/bin/llvm/voltron-disassembly
+***** ~/bin/llvm/voltron-disassembly
 #+begin_src bash :tangle ~/bin/llvm/voltron-disassembly
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
 #+end_src
-**** ~/bin/llvm/voltron-disassembly-mixed
+***** ~/bin/llvm/voltron-disassembly-mixed
 #+begin_src bash :tangle ~/bin/llvm/voltron-disassembly-mixed
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-32}"''
 #+end_src
-**** ~/bin/llvm/voltron-locals
+***** ~/bin/llvm/voltron-locals
 #+begin_src bash :tangle ~/bin/llvm/voltron-locals
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'frame variable' --lexer c
 #+end_src
-**** ~/bin/llvm/voltron-registers
+***** ~/bin/llvm/voltron-registers
 #+begin_src bash :tangle ~/bin/llvm/voltron-registers
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v registers
 #+end_src
-**** ~/bin/llvm/voltron-source
+***** ~/bin/llvm/voltron-source
 #+begin_src bash :tangle ~/bin/llvm/voltron-source
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v c 'source list -a $rip -c '"${1:-32}"''
   #+end_src
-**** ~/bin/llvm/voltron-stack
+***** ~/bin/llvm/voltron-stack
 #+begin_src bash :tangle ~/bin/llvm/voltron-stack
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   voltron v stack
   #+end_src
-*** lldb python scripting                                            :python:
+**** lldb python scripting                                           :python:
 lldb also has a built-in Python interpreter, which is accessible by the “script” command. All the functionality of the debugger is available as classes in the Python interpreter, so the more complex commands that in gdb you would introduce with the “define” command can be done by writing Python functions using the lldb-Python library, then loading the scripts into your running session and accessing them with the “script” command.
 
 https://lldb.llvm.org/use/python.html
 
-**** TODO follow up on SE post
+***** TODO follow up on SE post
 SCHEDULED: <2021-07-02 Fri>
 :PROPERTIES:
 :DateCreated: <2021-07-01 Thu 11:13>

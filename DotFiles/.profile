@@ -32,7 +32,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/bin/llvm":"${HOME}/bin/llvm/build/bin":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -53,6 +53,8 @@ export FZF_TMUX_OPTS="-d 40%"
 
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+
+export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
 export PURE_PYTHON=1
 

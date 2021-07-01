@@ -3,9 +3,6 @@ import lldb
 
 class DisassemblyMode:
     def __init__(self, debugger, unused):
-        print("About to break")
-        breakpoint()
-        print("Back from break.")
         self.dbg = debugger
         self.interp = debugger.GetCommandInterpreter()
         self.store_state()
@@ -28,6 +25,9 @@ class DisassemblyMode:
         self.interp.HandleCommand("settings set " + setting + " " + value, result)
 
     def __call__(self, debugger, command, exe_ctx, result):
+        print("About to break")
+        breakpoint()
+        print("Back from break.")
         if self.mode_off:
             self.mode_off = False
             self.store_state()
