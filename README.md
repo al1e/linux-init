@@ -727,7 +727,8 @@ bindsym $mod+0 kill
 
 # Font  for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
+font pango: "JetBrainsMono Nerd Font 11"
+#DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -1389,7 +1390,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             border: none;
             background: rgba(28, 28, 28, 0.6);
             border-radius: 0;
-            font-family: "monospace";
+            font-family: "JetBrainsMono Nerd Font";
             font-size: 10pt;
             min-height: 0;
         }
@@ -2109,7 +2110,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org7bc62c9"></a>
+<a id="org43e01ea"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2130,7 +2131,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org7bc62c9).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org43e01ea).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2226,7 +2227,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org69c5661).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org07c5f79).
 
 ```bash
 #!/usr/bin/env bash
