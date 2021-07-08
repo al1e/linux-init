@@ -2110,7 +2110,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org43e01ea"></a>
+<a id="org74efc8c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2131,7 +2131,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org43e01ea).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org74efc8c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2227,7 +2227,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org07c5f79).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgb1307f1).
 
 ```bash
 #!/usr/bin/env bash
@@ -2317,6 +2317,15 @@ exec sway-notify "🔊$([ $volume = "off" ] && echo "Muted" || echo "$volume%")"
 #!/usr/bin/env bash
 # Maintained in linux-config.org
 sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
+```
+
+
+### sway-nvidia
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+sway --my-next-gpu-wont-be-nvidia "$@"
 ```
 
 
