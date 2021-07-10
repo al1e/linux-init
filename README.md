@@ -338,9 +338,9 @@ logger -t "startup-initfile"  ZLOGIN
     ```bash
     # Maintained in linux-config.org
     logger -t "startup-initfile"  ZPROFILE
-    if [ -f ~/.profile ]; then
-        emulate sh -c '. ~/.profile'
-    fi
+    # if [ -f ~/.profile ]; then
+    #     emulate sh -c '. ~/.profile'
+    # fi
     ```
 
 2.  etc/zsh/zprofile
@@ -422,6 +422,20 @@ Directory is [here](.oh-my-zsh/).
 ### DONE slow git prompt
 
 <https://stackoverflow.com/questions/12765344/oh-my-zsh-slow-but-only-for-certain-git-repo> <https://stackoverflow.com/a/38865693/37370>
+
+
+# Guix
+
+[GNU Guix](https://guix.gnu.org/manual/en/guix.html) is a package management tool for and distribution of the GNU system
+
+```bash
+if command -v guix; then
+    echo "GUIX initialised."
+    GUIX_PROFILE="/home/rgr/.guix-profile"
+    . "$GUIX_PROFILE/etc/profile"
+fi
+
+```
 
 
 # Path
@@ -1188,7 +1202,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "custom/weather",
             "custom/clock",
             "idle_inhibitor",
-            "custom/monitors",
+            "custom/monitors"
           ],
 
           "modules-right": [
@@ -1197,7 +1211,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "battery",
             "custom/power-draw",
             "wlr/taskbar",
-            "tray",
+            "tray"
           ],
 
           "network": {
@@ -1207,7 +1221,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format-disconnected": " ",
             "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
             "interval": 60,
-            "tooltip-format": "{ifname}  {ipaddr}",
+            "tooltip-format": "{ifname}  {ipaddr}"
           },
 
 
@@ -1245,36 +1259,35 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             //		"format-good": "", // An empty format will hide the module
             "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
             "format-icons": ["", "", "", "", ""],
-            "on-click" : "sway-htop",
+            "on-click" : "sway-htop"
           },
 
           "custom/clock": {
             "interval": 60,
             "exec": "date +'%a, %d %b: %H:%M'",
             "format": "{} ",
-            "max-length": 25,
+            "max-length": 25
           },
 
           "cpu": {
             "interval": 5,
-            "format": "<span color='#eb8a60'> {usage}% ({load})</span>", // Icon: microchip
+            "format": "<span color='#eb8a60'> {usage}% ({load})</span>",
             "states": {
               "warning": 70,
               "critical": 90
             },
-            "on-click" : "hardinfo",
+            "on-click" : "hardinfo"
           },
 
           "idle_inhibitor": {
             "format": "<span color='GOLD'>{icon}</span>",
             "format-icons": {
-              "activated": "📀🎞",
-              "deactivated": "😴🛌"
+              "activated": "📀ﰌ",
+              "deactivated": "😴"
             },
             "on-click-right": "sway-lock"
           },
           "pulseaudio": {
-            //		"scroll-step": 1, // %, can be a float
             "format": "{icon} {volume}% {format_source}",
             "format-muted": "🔇 {format_source}",
             "format-bluetooth": "{icon} {volume}% {format_source}",
@@ -1295,17 +1308,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "pulse-volume toggle",
             "on-click-right": "pavucontrol"
           },
-          /*
-            "temperature": {
-            //		"thermal-zone": 2,
-            //		"hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-            "critical-threshold": 80,
-            //		"format-critical": "{temperatureC}°C {icon}",
-            "format": "<span color='#e88939'>{icon}</span> {temperatureC}°C",
-            "format-icons": ["", "", ""],
-            "tooltip": false
-            },
-          */
 
           "tray": {
             "icon-size": 21,
@@ -1323,17 +1325,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
           "custom/uptime": {
             "format": "<span color='white'>⌛{}</span>",
             "interval": 60,
-            "exec": "uptime -p",
+            "exec": "uptime -p"
           },
 
           "custom/dropbox": {
-            "format": "🧊<span color='gold'>{}</span>",
+            "format": "<span color='gold'>{}</span>",
             "return-type" : "json",
             "interval": 5,
             "exec": "waybar-dropbox-json",
             "tooltip": "true",
             "on-click": "dropbox start && sway-notify 'Restarting Dropbox.'",
-            "on-click-right": "sway-www https://www.dropbox.com/h",
+            "on-click-right": "sway-www https://www.dropbox.com/h"
           },
           "custom/monitors": {
             "format": "<span color='gold'>{}</span>",
@@ -1341,20 +1343,20 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 10,
             "exec": "waybar-monitors",
             "tooltip": "true",
-            "on-click": "sway-screen-menu",
+            "on-click": "sway-screen-menu"
           },
           "custom/bluetooth": {
             "format": "<span color='blue'>{}</span>",
             "interval": 30,
             "exec": "waybar-bluetooth",
             "tooltip": "false",
-            "on-click": "sway-bluetooth",
+            "on-click": "sway-bluetooth"
           },
           "custom/power-draw": {
             "format": "<span color='gold'>⚡{}🔋</span>",
             "interval": 5,
             "exec": "waybar-power-draw",
-            "tooltip": "false",
+            "tooltip": "false"
           },
 
           "wlr/taskbar": {
@@ -1363,7 +1365,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "icon-theme": "Numix-Circle",
             "tooltip-format": "{title}",
             "on-click": "activate",
-            "on-click-middle": "close",
+            "on-click-middle": "close"
           },
 
           "custom/mynetwork": {
@@ -1377,8 +1379,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 60,
             "on-click-right": "sway-wifi",
             "tooltip-format": "{ssid}",
-            "tooltip": "true",
-          },
+            "tooltip": "true"
+          }
 
         }
         ```
@@ -2110,7 +2112,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge51bdb2"></a>
+<a id="orgc8e8e72"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2131,7 +2133,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge51bdb2).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc8e8e72).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2227,7 +2229,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0d1faf1).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc74a0cd).
 
 ```bash
 #!/usr/bin/env bash

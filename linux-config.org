@@ -928,9 +928,9 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 #+begin_src bash :tangle "~/.config/zsh/.zprofile"
   # Maintained in linux-config.org
   logger -t "startup-initfile"  ZPROFILE
-  if [ -f ~/.profile ]; then
-      emulate sh -c '. ~/.profile'
-  fi
+  # if [ -f ~/.profile ]; then
+  #     emulate sh -c '. ~/.profile'
+  # fi
 #+end_src
 **** etc/zsh/zprofile
 #+begin_src bash :tangle "etc/zsh/zshprofile"
@@ -1001,6 +1001,19 @@ CLOSED: [2021-06-30 Wed 15:18]
 :END:
 https://stackoverflow.com/questions/12765344/oh-my-zsh-slow-but-only-for-certain-git-repo
 https://stackoverflow.com/a/38865693/37370
+
+* Guix
+[[https://guix.gnu.org/manual/en/guix.html][GNU Guix]] is a package management tool for and distribution of the GNU system
+
+#+begin_src bash :tangle "DotFiles/.bash_profile"
+  if command -v guix; then
+      echo "GUIX initialised."
+      GUIX_PROFILE="/home/rgr/.guix-profile"
+      . "$GUIX_PROFILE/etc/profile"
+  fi
+
+#+end_src
+
 
 * Path
 **  ~/bin/add-user-paths
@@ -1856,7 +1869,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "custom/weather",
       "custom/clock",
       "idle_inhibitor",
-      "custom/monitors",
+      "custom/monitors"
     ],
 
     "modules-right": [
@@ -1865,7 +1878,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "battery",
       "custom/power-draw",
       "wlr/taskbar",
-      "tray",
+      "tray"
     ],
 
     "network": {
@@ -1875,7 +1888,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "format-disconnected": " ",
       "format-alt": "<span color='gray'>{essid}</span> <span color='green'>⬇</span>{bandwidthDownBits} <span color='green'>⬆</span>{bandwidthUpBits}",
       "interval": 60,
-      "tooltip-format": "{ifname}  {ipaddr}",
+      "tooltip-format": "{ifname}  {ipaddr}"
     },
 
 
@@ -1913,36 +1926,35 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       //		"format-good": "", // An empty format will hide the module
       "format-discharging": "<span color='yellow'>{icon}</span> {capacity}% ({time})",
       "format-icons": ["", "", "", "", ""],
-      "on-click" : "sway-htop",
+      "on-click" : "sway-htop"
     },
 
     "custom/clock": {
       "interval": 60,
       "exec": "date +'%a, %d %b: %H:%M'",
       "format": "{} ",
-      "max-length": 25,
+      "max-length": 25
     },
 
     "cpu": {
       "interval": 5,
-      "format": "<span color='#eb8a60'> {usage}% ({load})</span>", // Icon: microchip
+      "format": "<span color='#eb8a60'> {usage}% ({load})</span>",
       "states": {
         "warning": 70,
         "critical": 90
       },
-      "on-click" : "hardinfo",
+      "on-click" : "hardinfo"
     },
 
     "idle_inhibitor": {
       "format": "<span color='GOLD'>{icon}</span>",
       "format-icons": {
-        "activated": "📀🎞",
-        "deactivated": "😴🛌"
+        "activated": "📀ﰌ",
+        "deactivated": "😴"
       },
       "on-click-right": "sway-lock"
     },
     "pulseaudio": {
-      //		"scroll-step": 1, // %, can be a float
       "format": "{icon} {volume}% {format_source}",
       "format-muted": "🔇 {format_source}",
       "format-bluetooth": "{icon} {volume}% {format_source}",
@@ -1963,17 +1975,6 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "on-click": "pulse-volume toggle",
       "on-click-right": "pavucontrol"
     },
-    /*
-      "temperature": {
-      //		"thermal-zone": 2,
-      //		"hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-      "critical-threshold": 80,
-      //		"format-critical": "{temperatureC}°C {icon}",
-      "format": "<span color='#e88939'>{icon}</span> {temperatureC}°C",
-      "format-icons": ["", "", ""],
-      "tooltip": false
-      },
-    ,*/
 
     "tray": {
       "icon-size": 21,
@@ -1991,17 +1992,17 @@ https://github.com/Alexays/Waybar/wiki/Configuration
     "custom/uptime": {
       "format": "<span color='white'>⌛{}</span>",
       "interval": 60,
-      "exec": "uptime -p",
+      "exec": "uptime -p"
     },
 
     "custom/dropbox": {
-      "format": "🧊<span color='gold'>{}</span>",
+      "format": "<span color='gold'>{}</span>",
       "return-type" : "json",
       "interval": 5,
       "exec": "waybar-dropbox-json",
       "tooltip": "true",
       "on-click": "dropbox start && sway-notify 'Restarting Dropbox.'",
-      "on-click-right": "sway-www https://www.dropbox.com/h",
+      "on-click-right": "sway-www https://www.dropbox.com/h"
     },
     "custom/monitors": {
       "format": "<span color='gold'>{}</span>",
@@ -2009,20 +2010,20 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 10,
       "exec": "waybar-monitors",
       "tooltip": "true",
-      "on-click": "sway-screen-menu",
+      "on-click": "sway-screen-menu"
     },
     "custom/bluetooth": {
       "format": "<span color='blue'>{}</span>",
       "interval": 30,
       "exec": "waybar-bluetooth",
       "tooltip": "false",
-      "on-click": "sway-bluetooth",
+      "on-click": "sway-bluetooth"
     },
     "custom/power-draw": {
       "format": "<span color='gold'>⚡{}🔋</span>",
       "interval": 5,
       "exec": "waybar-power-draw",
-      "tooltip": "false",
+      "tooltip": "false"
     },
 
     "wlr/taskbar": {
@@ -2031,7 +2032,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "icon-theme": "Numix-Circle",
       "tooltip-format": "{title}",
       "on-click": "activate",
-      "on-click-middle": "close",
+      "on-click-middle": "close"
     },
 
     "custom/mynetwork": {
@@ -2045,8 +2046,8 @@ https://github.com/Alexays/Waybar/wiki/Configuration
       "interval": 60,
       "on-click-right": "sway-wifi",
       "tooltip-format": "{ssid}",
-      "tooltip": "true",
-    },
+      "tooltip": "true"
+    }
 
   }
 #+end_src

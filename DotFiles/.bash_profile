@@ -9,6 +9,12 @@ systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
 dropbox-start-once &> /dev/null  &
 
+if command -v guix; then
+    echo "GUIX initialised."
+    GUIX_PROFILE="/home/rgr/.guix-profile"
+    . "$GUIX_PROFILE/etc/profile"
+fi
+
 [ -f "${HOME}/.bash_profile.local" ] && . "${HOME}/.bash_profile.local"
 
 if [ -f "${HOME}/.START_SWAY" ]; then
