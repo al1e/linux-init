@@ -672,7 +672,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   #umask 022
 
 
-  export PRINTER="EPSON_XP-820_Series"
+  export PRINTER="Canon_TR8500_series"
 
   export PROMPT_COMMAND='history -a'
 
@@ -2892,7 +2892,7 @@ See [[id:d7ab0b28-ce54-4fa3-a318-d8b0caaced52][examples]].
   # Maintained in linux-config.org
   sway-www "https://www.accuweather.com/en/de/gr%C3%B6mitz/23743/hourly-weather-forecast/176248"
 #+end_src
-*** sway-nvidia
+*** sway-nvidia                                                 :nvidia:dgpu:
 #+begin_src bash :tangle "~/bin/sway/sway-nvidia"
   #!/usr/bin/env bash
   # Maintained in linux-config.org

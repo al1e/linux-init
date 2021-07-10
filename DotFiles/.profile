@@ -12,7 +12,7 @@ logger -t "startup-initfile"  PROFILE
 #umask 022
 
 
-export PRINTER="EPSON_XP-820_Series"
+export PRINTER="Canon_TR8500_series"
 
 export PROMPT_COMMAND='history -a'
 
