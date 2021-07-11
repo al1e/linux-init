@@ -1806,6 +1806,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
 
   bindsym $mod+g exec "goldendict \\"`xclip -o -selection clipboard`\\""
   bindsym $mod+b exec sway-lock-utils blank
+
   bindsym $mod+l exec sway-lock-utils lock
   bindsym Print exec sway-screenshot -i
   bindsym $mod+Shift+f exec sway-do-tool "Google-chrome" "sway-www"
@@ -2650,9 +2651,11 @@ Just a gathering place of locky/suspendy type things...
           ;;
       blank)
           sway-dpms off
+          [ -f "$HOME/.screen-blank.local" ] && . "$HOME/.screen-blank.local"
           ;;
       unblank)
           sway-dpms on
+          [ -f "$HOME/.screen-unblank.local" ] && . "$HOME/.screen-unblank.local"
           ;;
       ,*)
           lock
