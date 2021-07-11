@@ -1632,7 +1632,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             l=$(swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length')
             o=$(swaymsg -t get_outputs | jq  -r '. | map(.name) | join(",")')
             t=""
-            for i in `seq $l`; do t="${t}🖥️";done
+            for i in `seq $l`; do t="${t}";done
             text="{\"text\":\""$t"\",\"tooltip\":\""$o"\"}"
             echo $text
             ```
@@ -2115,7 +2115,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org09d62fb"></a>
+<a id="org5b778f5"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2136,7 +2136,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org09d62fb).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5b778f5).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2232,7 +2232,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org69e604b).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga30532b).
 
 ```bash
 #!/usr/bin/env bash
