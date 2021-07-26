@@ -118,6 +118,12 @@ logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
+if command -v guix; then
+    echo "GUIX initialised."
+    GUIX_PROFILE="/home/rgr/.guix-profile"
+    . "$GUIX_PROFILE/etc/profile"
+fi
+
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
@@ -338,9 +344,9 @@ logger -t "startup-initfile"  ZLOGIN
     ```bash
     # Maintained in linux-config.org
     logger -t "startup-initfile"  ZPROFILE
-    # if [ -f ~/.profile ]; then
-    #     emulate sh -c '. ~/.profile'
-    # fi
+    if [ -f ~/.profile ]; then
+        emulate sh -c '. ~/.profile'
+    fi
     ```
 
 2.  etc/zsh/zprofile
@@ -428,26 +434,9 @@ Directory is [here](.oh-my-zsh/).
 
 [GNU Guix](https://guix.gnu.org/manual/en/guix.html) is a package management tool for and distribution of the GNU system
 
-```bash
-if command -v guix; then
-    echo "GUIX initialised."
-    GUIX_PROFILE="/home/rgr/.guix-profile"
-    . "$GUIX_PROFILE/etc/profile"
-fi
+\#+begin\_src bash :tangle "DotFiles/.bash\_profile" if command -v guix; then echo "GUIX initialised." GUIX\_PROFILE="*home/rgr*.guix-profile" . "$GUIX\_PROFILE/etc/profile" fi
 
-```
-
-
-# Path
-
-
-## ~/bin/add-user-paths
-
-```bash
-# Maintained in linux-config.org
-logger -t "startup-initfile"  ADD_USER_PATHS
-#export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
-```
+\#+end\_src\* Path
 
 
 # Tmux     :tmux:
@@ -1787,7 +1776,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 ### autostart     :autostart:
 
 ```conf
-exec sway-lock
+# exec sway-lock
 exec sway-kanshi
 exec sway-idle
 exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -2115,7 +2104,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org5b778f5"></a>
+<a id="org72eff73"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2136,7 +2125,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5b778f5).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org72eff73).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2232,7 +2221,7 @@ fi
 
 ### ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga30532b).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7f28a27).
 
 ```bash
 #!/usr/bin/env bash
@@ -2616,6 +2605,9 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     settings set target.load-cwd-lldbinit true
     settings set interpreter.prompt-on-quit false
     settings set target.x86-disassembly-flavor intel
+
+    command alias bfl breakpoint set -f %1 -l %2
+    command alias sl source list -a $rip
 
     command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
     srcb 0

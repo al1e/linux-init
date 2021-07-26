@@ -7,6 +7,9 @@ settings set target.load-cwd-lldbinit true
 settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
 
+command alias bfl breakpoint set -f %1 -l %2
+command alias sl source list -a $rip
+
 command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
 srcb 0
 command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'

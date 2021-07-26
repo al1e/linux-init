@@ -723,6 +723,12 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
+  if command -v guix; then
+      echo "GUIX initialised."
+      GUIX_PROFILE="/home/rgr/.guix-profile"
+      . "$GUIX_PROFILE/etc/profile"
+  fi
+
   ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
   systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
 
@@ -928,9 +934,9 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 #+begin_src bash :tangle "~/.config/zsh/.zprofile"
   # Maintained in linux-config.org
   logger -t "startup-initfile"  ZPROFILE
-  # if [ -f ~/.profile ]; then
-  #     emulate sh -c '. ~/.profile'
-  # fi
+  if [ -f ~/.profile ]; then
+      emulate sh -c '. ~/.profile'
+  fi
 #+end_src
 **** etc/zsh/zprofile
 #+begin_src bash :tangle "etc/zsh/zshprofile"
@@ -1012,16 +1018,7 @@ https://stackoverflow.com/a/38865693/37370
       . "$GUIX_PROFILE/etc/profile"
   fi
 
-#+end_src
-
-
-* Path
-**  ~/bin/add-user-paths
-#+begin_src bash  :tangle "~/bin/add-user-paths"
-  # Maintained in linux-config.org
-  logger -t "startup-initfile"  ADD_USER_PATHS
-  #export PATH="${HOME}/bin:$HOME/.local/bin:${HOME}/.cargo/bin:./node_modules/.bin:$PATH"
-#+end_src
+#+end_src* Path
 * Tmux                                                                 :tmux:
 ** ~/.profile
 :PROPERTIES:
@@ -2437,7 +2434,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+end_src
 *** autostart                                                     :autostart:
 #+begin_src conf
-  exec sway-lock
+  # exec sway-lock
   exec sway-kanshi
   exec sway-idle
   exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
@@ -3140,6 +3137,9 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   settings set interpreter.prompt-on-quit false
   settings set target.x86-disassembly-flavor intel
 
+  command alias bfl breakpoint set -f %1 -l %2
+  command alias sl source list -a $rip
+
   command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
   srcb 0
   command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
@@ -3269,12 +3269,13 @@ lldb also has a built-in Python interpreter, which is accessible by the “scrip
 
 https://lldb.llvm.org/use/python.html
 
-***** TODO follow up on SE post
-SCHEDULED: <2021-07-14 Wed>
+***** TODO [#B] follow up on SE post
 :PROPERTIES:
 :DateCreated: <2021-07-01 Thu 11:13>
 :END:
 :LOGBOOK:
+- Note taken on [2021-07-13 Tue 00:49] \\
+  and again
 - Note taken on [2021-07-07 Wed 21:33] \\
   still nothing
 :END:
