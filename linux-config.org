@@ -2813,70 +2813,6 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
       sway-notify "Done! see ${DIR}/screenshot-latest.png"
   fi
 #+end_src
-*** ~/bin/pulse-volume
-pulse/pipeline volume control.
-Pass in a volume string to change the volume  (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status.
-See [[id:d7ab0b28-ce54-4fa3-a318-d8b0caaced52][examples]].
-#+begin_src bash :tangle "~/bin/pulse-volume"
-  #!/usr/bin/env bash
-  # Maintained in linux-config.org
-
-  getVolume(){
-      if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
-          echo "off"
-      else
-          SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
-          echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
-      fi
-  }
-
-  v="$1"
-
-  case "$v" in
-      "on"|"off"|"toggle")
-          pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
-          ;;
-      ,*)
-          if [ ! -z "$v" ];then
-              pactl set-sink-mute @DEFAULT_SINK@ 0
-              pactl set-sink-volume @DEFAULT_SINK@ "$v"
-              if [ "$(getVolume)" -gt 100 ]; then
-                  pactl set-sink-volume @DEFAULT_SINK@ "100%"
-              fi
-          fi
-          ;;
-  esac
-
-  echo "$(getVolume)"
-#+end_src
-**** Examples:
-:PROPERTIES:
-:ID:       d7ab0b28-ce54-4fa3-a318-d8b0caaced52
-:END:
-***** increase by 10%
-#+begin_src bash
-  pulse-volume "+10%"
-#+end_src
-***** decrease by 10%
-#+begin_src bash
-  pulse-volume "-10%"
-#+end_src
-***** set to 50%
-#+begin_src bash
-  pulse-volume "50%"
-#+end_src
-***** mute
-#+begin_src bash
-  pulse-volume "off"
-#+end_src
-***** unmute
-#+begin_src bash
-  pulse-volume "on"
-#+end_src
-***** toggle mute
-#+begin_src bash
-  pulse-volume "toggle"
-#+end_src
 *** ~/bin/sway/sway-volume-notify
 #+begin_src bash :tangle "~/bin/sway/sway-volume-notify"
   #!/usr/bin/env bash
@@ -3810,6 +3746,70 @@ strip debug info and store elsewhere
       | grep -w '\-c' \
       | jq -nR '[inputs|{directory:".", command:., file: match(" [^ ]+$").string[1:]}]' \
            > compile_commands.json
+#+end_src
+** ~/bin/pulse-volume
+pulse/pipeline volume control.
+Pass in a volume string to change the volume  (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status.
+See [[id:d7ab0b28-ce54-4fa3-a318-d8b0caaced52][examples]].
+#+begin_src bash :tangle "~/bin/pulse-volume"
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
+
+  getVolume(){
+      if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
+          echo "off"
+      else
+          SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
+          echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
+      fi
+  }
+
+  v="$1"
+
+  case "$v" in
+      "on"|"off"|"toggle")
+          pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
+          ;;
+      ,*)
+          if [ ! -z "$v" ];then
+              pactl set-sink-mute @DEFAULT_SINK@ 0
+              pactl set-sink-volume @DEFAULT_SINK@ "$v"
+              if [ "$(getVolume)" -gt 100 ]; then
+                  pactl set-sink-volume @DEFAULT_SINK@ "100%"
+              fi
+          fi
+          ;;
+  esac
+
+  echo "$(getVolume)"
+#+end_src
+*** Examples:
+:PROPERTIES:
+:ID:       d7ab0b28-ce54-4fa3-a318-d8b0caaced52
+:END:
+**** increase by 10%
+#+begin_src bash
+  pulse-volume "+10%"
+#+end_src
+**** decrease by 10%
+#+begin_src bash
+  pulse-volume "-10%"
+#+end_src
+**** set to 50%
+#+begin_src bash
+  pulse-volume "50%"
+#+end_src
+**** mute
+#+begin_src bash
+  pulse-volume "off"
+#+end_src
+**** unmute
+#+begin_src bash
+  pulse-volume "on"
+#+end_src
+**** toggle mute
+#+begin_src bash
+  pulse-volume "toggle"
 #+end_src
 ** ~/bin/pulse-restart
 restart pulseaudio

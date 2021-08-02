@@ -2104,7 +2104,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgf3943c7"></a>
+<a id="orgf102100"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2125,7 +2125,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgf3943c7).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgf102100).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2217,82 +2217,6 @@ if [ ! -z "$region" ]; then
     sway-notify "Done! see ${DIR}/screenshot-latest.png"
 fi
 ```
-
-
-### ~/bin/pulse-volume
-
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org959a9b7).
-
-```bash
-#!/usr/bin/env bash
-# Maintained in linux-config.org
-
-getVolume(){
-    if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
-        echo "off"
-    else
-        SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
-        echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
-    fi
-}
-
-v="$1"
-
-case "$v" in
-    "on"|"off"|"toggle")
-        pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
-        ;;
-    *)
-        if [ ! -z "$v" ];then
-            pactl set-sink-mute @DEFAULT_SINK@ 0
-            pactl set-sink-volume @DEFAULT_SINK@ "$v"
-            if [ "$(getVolume)" -gt 100 ]; then
-                pactl set-sink-volume @DEFAULT_SINK@ "100%"
-            fi
-        fi
-        ;;
-esac
-
-echo "$(getVolume)"
-```
-
-1.  Examples:
-
-    1.  increase by 10%
-
-        ```bash
-        pulse-volume "+10%"
-        ```
-
-    2.  decrease by 10%
-
-        ```bash
-        pulse-volume "-10%"
-        ```
-
-    3.  set to 50%
-
-        ```bash
-        pulse-volume "50%"
-        ```
-
-    4.  mute
-
-        ```bash
-        pulse-volume "off"
-        ```
-
-    5.  unmute
-
-        ```bash
-        pulse-volume "on"
-        ```
-
-    6.  toggle mute
-
-        ```bash
-        pulse-volume "toggle"
-        ```
 
 
 ### ~/bin/sway/sway-volume-notify
@@ -3399,6 +3323,85 @@ make --always-make --dry-run \
     | jq -nR '[inputs|{directory:".", command:., file: match(" [^ ]+$").string[1:]}]' \
          > compile_commands.json
 ```
+
+
+## ~/bin/pulse-volume
+
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd22eac8).
+
+```bash
+#!/usr/bin/env bash
+# Maintained in linux-config.org
+
+getVolume(){
+    if [ "$(pactl list sinks | grep Mute | awk '{print $2}')" = "yes" ]; then
+        echo "off"
+    else
+        SINK=$( pactl list short sinks | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
+        echo "$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
+    fi
+}
+
+v="$1"
+
+case "$v" in
+    "on"|"off"|"toggle")
+        pactl set-sink-mute @DEFAULT_SINK@  "$([ "$v" = "off" ] && echo "1" || ( [ "$v" = "on" ] && echo "0" || echo "toggle"))"
+        ;;
+    *)
+        if [ ! -z "$v" ];then
+            pactl set-sink-mute @DEFAULT_SINK@ 0
+            pactl set-sink-volume @DEFAULT_SINK@ "$v"
+            if [ "$(getVolume)" -gt 100 ]; then
+                pactl set-sink-volume @DEFAULT_SINK@ "100%"
+            fi
+        fi
+        ;;
+esac
+
+echo "$(getVolume)"
+```
+
+
+<a id="orgd22eac8"></a>
+
+### Examples:
+
+1.  increase by 10%
+
+    ```bash
+    pulse-volume "+10%"
+    ```
+
+2.  decrease by 10%
+
+    ```bash
+    pulse-volume "-10%"
+    ```
+
+3.  set to 50%
+
+    ```bash
+    pulse-volume "50%"
+    ```
+
+4.  mute
+
+    ```bash
+    pulse-volume "off"
+    ```
+
+5.  unmute
+
+    ```bash
+    pulse-volume "on"
+    ```
+
+6.  toggle mute
+
+    ```bash
+    pulse-volume "toggle"
+    ```
 
 
 ## ~/bin/pulse-restart
