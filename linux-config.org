@@ -723,11 +723,6 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
-  if command -v guix; then
-      echo "GUIX initialised."
-      GUIX_PROFILE="/home/rgr/.guix-profile"
-      . "$GUIX_PROFILE/etc/profile"
-  fi
 
   ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
   systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
@@ -1009,16 +1004,31 @@ https://stackoverflow.com/questions/12765344/oh-my-zsh-slow-but-only-for-certain
 https://stackoverflow.com/a/38865693/37370
 
 * Guix
-[[https://guix.gnu.org/manual/en/guix.html][GNU Guix]] is a package management tool for and distribution of the GNU system
+A package management tool for and distribution of the GNU system
+
+I've removed this for now. Hellishly complex and I have to be honest, I can't make head nor tail of the docs and really cant
+be reading reams of "freedom" propaganda that requires in a degree in GUIX to understand how to suid a GUIX installed utiliy.
 
 #+begin_src bash :tangle "DotFiles/.bash_profile"
-  if command -v guix; then
+  if [ -d "/gnu" ]; then
       echo "GUIX initialised."
       GUIX_PROFILE="/home/rgr/.guix-profile"
       . "$GUIX_PROFILE/etc/profile"
   fi
 
-#+end_src* Path
+#+end_src
+
+** remove GUIX
+#+begin_src bash :tangle "~/bin/remove-guix"
+  # Maintained in linux-config.org
+  sudo systemctl stop guix-daemon.service
+  sudo systemctl stop gnu-store.mount
+  sudo rm -rf /gnu
+  sudo rm -rf /var/guix
+  sudo rm -rf ~/.config/guix
+  sudo rm -rf /etc/guix#+end_src
+  rm -rf ~/.guix-profile
+#+end_src
 * Tmux                                                                 :tmux:
 ** ~/.profile
 :PROPERTIES:
@@ -3074,7 +3084,9 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   settings set target.x86-disassembly-flavor intel
 
   command alias bfl breakpoint set -f %1 -l %2
+  command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
   command alias sl source list -a $rip
+  command alias so thread step-out
 
   command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
   srcb 0
@@ -3083,7 +3095,8 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
 
   settings set stop-disassembly-display no-debuginfo
 
-  command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
+
+  break set -p "inspect_"
 
   #alias vtty = shell tmux-pane-tty voltron 4
 

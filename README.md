@@ -118,11 +118,6 @@ logger -t "startup-initfile"  BASH_PROFILE
 
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
-if command -v guix; then
-    echo "GUIX initialised."
-    GUIX_PROFILE="/home/rgr/.guix-profile"
-    . "$GUIX_PROFILE/etc/profile"
-fi
 
 ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
 systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
@@ -432,11 +427,32 @@ Directory is [here](.oh-my-zsh/).
 
 # Guix
 
-[GNU Guix](https://guix.gnu.org/manual/en/guix.html) is a package management tool for and distribution of the GNU system
+A package management tool for and distribution of the GNU system
 
-\#+begin\_src bash :tangle "DotFiles/.bash\_profile" if command -v guix; then echo "GUIX initialised." GUIX\_PROFILE="*home/rgr*.guix-profile" . "$GUIX\_PROFILE/etc/profile" fi
+I've removed this for now. Hellishly complex and I have to be honest, I can't make head nor tail of the docs and really cant be reading reams of "freedom" propaganda that requires in a degree in GUIX to understand how to suid a GUIX installed utiliy.
 
-\#+end\_src\* Path
+```bash
+if [ -d "/gnu" ]; then
+    echo "GUIX initialised."
+    GUIX_PROFILE="/home/rgr/.guix-profile"
+    . "$GUIX_PROFILE/etc/profile"
+fi
+
+```
+
+
+## remove GUIX
+
+```bash
+# Maintained in linux-config.org
+sudo systemctl stop guix-daemon.service
+sudo systemctl stop gnu-store.mount
+sudo rm -rf /gnu
+sudo rm -rf /var/guix
+sudo rm -rf ~/.config/guix
+sudo rm -rf /etc/guix#+end_src
+rm -rf ~/.guix-profile
+```
 
 
 # Tmux     :tmux:
@@ -2104,7 +2120,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgf102100"></a>
+<a id="orge50ff4a"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2125,7 +2141,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgf102100).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge50ff4a).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2252,8 +2268,8 @@ sway --my-next-gpu-wont-be-nvidia "$@"
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-# google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
-google-chrome  "$@" &> /dev/null &
+google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
+# google-chrome  "$@" &> /dev/null &
 sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
@@ -2531,7 +2547,9 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     settings set target.x86-disassembly-flavor intel
 
     command alias bfl breakpoint set -f %1 -l %2
+    command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
     command alias sl source list -a $rip
+    command alias so thread step-out
 
     command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
     srcb 0
@@ -2540,7 +2558,8 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
     settings set stop-disassembly-display no-debuginfo
 
-    command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
+
+    break set -p "inspect_"
 
     #alias vtty = shell tmux-pane-tty voltron 4
 
@@ -3327,7 +3346,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd22eac8).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7a8ed6f).
 
 ```bash
 #!/usr/bin/env bash
@@ -3363,7 +3382,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgd22eac8"></a>
+<a id="org7a8ed6f"></a>
 
 ### Examples:
 

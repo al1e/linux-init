@@ -8,7 +8,9 @@ settings set interpreter.prompt-on-quit false
 settings set target.x86-disassembly-flavor intel
 
 command alias bfl breakpoint set -f %1 -l %2
+command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
 command alias sl source list -a $rip
+command alias so thread step-out
 
 command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
 srcb 0
@@ -17,7 +19,8 @@ srca 0
 
 settings set stop-disassembly-display no-debuginfo
 
-command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
+
+break set -p "inspect_"
 
 #alias vtty = shell tmux-pane-tty voltron 4
 
