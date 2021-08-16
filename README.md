@@ -2120,7 +2120,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge50ff4a"></a>
+<a id="orga3f82c1"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2141,7 +2141,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge50ff4a).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga3f82c1).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2550,6 +2550,24 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
     command alias sl source list -a $rip
     command alias so thread step-out
+    #auto breaks  - annotate code with labels eg debug_inspect__var_of_interest
+    command alias b_inspect breakpoint set -p "debug_inspect_"
+    command alias b_call breakpoint set -p "debug_call_"
+
+    # regexp break points arent pending/deferred
+    #b_inspect
+    #b_call
+
+    command regex rlook 's/(.+)/image lookup -rn %1/'
+
+    #breg X will break at *X* labels
+    command regex breg 's/(.+)/breakpoint set -p "%1"/'
+    #bdeb X will break at debug*X labels
+    command regex bdeb 's/(.+)/breakpoint set -p "debug_(.+)%1"/'
+    #bcall X will break at debug_call__X labels
+    command regex bcall 's/(.+)/breakpoint set -p "debug_call__%1"/'
+    #binsp X will break at debug_inspect__X labels
+    command regex binsp 's/(.+)/breakpoint set -p "debug_inspect__%1"/'
 
     command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
     srcb 0
@@ -2558,8 +2576,6 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
     settings set stop-disassembly-display no-debuginfo
 
-
-    break set -p "inspect_"
 
     #alias vtty = shell tmux-pane-tty voltron 4
 
@@ -2605,7 +2621,7 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
             tmux splitw -v -p 30 -t "$srcPane" voltron-locals
             localsPane=$(tmux display-message -p "#{pane_id}")
 
-            tmux new-window voltron-source &> /dev/null
+            tmux new-window voltron-disassembly &> /dev/null
             sourcePane=$(tmux display-message -p "#{pane_id}")
 
             tmux splitw -v -p 30 -t "$sourcePane" voltron-locals
@@ -3346,7 +3362,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7a8ed6f).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgff97054).
 
 ```bash
 #!/usr/bin/env bash
@@ -3382,7 +3398,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org7a8ed6f"></a>
+<a id="orgff97054"></a>
 
 ### Examples:
 

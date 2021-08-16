@@ -23,7 +23,7 @@ if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
     tmux splitw -v -p 30 -t "$srcPane" voltron-locals
     localsPane=$(tmux display-message -p "#{pane_id}")
 
-    tmux new-window voltron-source &> /dev/null
+    tmux new-window voltron-disassembly &> /dev/null
     sourcePane=$(tmux display-message -p "#{pane_id}")
 
     tmux splitw -v -p 30 -t "$sourcePane" voltron-locals
