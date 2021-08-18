@@ -31,6 +31,8 @@ Bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
+exec systemctl start --user mbsync.service
+
 exec xrdb -merge ~/.Xresources
 
 for_window [title="sway-launcher"] floating enable

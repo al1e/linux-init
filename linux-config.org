@@ -724,10 +724,8 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-  ## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
-  systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
-
   dropbox-start-once &> /dev/null  &
+
 #+end_src
 ** ~/.bashrc
 #+begin_src bash :tangle "DotFiles/.bashrc"
@@ -1487,6 +1485,14 @@ X11 apps still need resource definitions when launched under XWayland.
     bindsym $mod+d exec $menu
 
 #+end_src
+*** mbsync
+I do this here because the user systemd service wont start with an encrypted HOMEDIR. Normally I'd kick this
+off in the *.profile* or something.
+
+#+begin_src conf
+exec systemctl start --user mbsync.service
+#+end_src
+
 *** xrdb integration
 :PROPERTIES:
 :header-args:conf: :tangle "~/.config/sway/config"
