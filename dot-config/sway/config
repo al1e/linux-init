@@ -122,7 +122,7 @@ bindsym $mod+Tab workspace back_and_forth
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:edit"
 set $ws2 "2:research"
-set $ws3 "3:shell"
+set $ws3 "3:IDE"
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
@@ -221,6 +221,7 @@ assign [class="discord"] $ws8
 assign [class="Steam"] $ws9
 
 for_window [class="feh"] floating enable
+for_window [class="feh"] floating enable
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [title="wifi"] floating enable
@@ -269,3 +270,7 @@ exec swaymsg workspace $ws1
 include /etc/sway/config.d/*
 
 include "$HOME/.config/sway/host-config-$(hostname)"
+
+for_window [class="STM32CubeIDE"] floating enable
+assign [class="STM32CubeIDE"] $ws3
+assign [title="STM32CubeIDE"] $ws3

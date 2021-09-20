@@ -31,11 +31,14 @@ command regex bcall 's/(.+)/breakpoint set -p "debug_call__%1"/'
 command regex binsp 's/(.+)/breakpoint set -p "debug_inspect__%1"/'
 
 command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
-srcb 0
+srcb 2
 command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
-srca 0
+srca 3
 
 settings set stop-disassembly-display no-debuginfo
+
+#step into stl
+settings set target.process.thread.step-avoid-regexp ""
 
 
 #alias vtty = shell tmux-pane-tty voltron 4

@@ -705,7 +705,6 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   # for sway waybar tray
   export XDG_CURRENT_DESKTOP=Unity
 
-
   [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
@@ -1614,7 +1613,7 @@ I want a key to create and then toggle a terminal.
   # We use variables to avoid repeating the names in multiple places.
   set $ws1 "1:edit"
   set $ws2 "2:research"
-  set $ws3 "3:shell"
+  set $ws3 "3:IDE"
   set $ws4 "4:browse"
   set $ws5 "5:dired"
   set $ws6 "6:music"
@@ -1807,6 +1806,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
 #+end_src
 *** apps default appearance
 #+begin_src conf
+  for_window [class="feh"] floating enable
   for_window [class="feh"] floating enable
   for_window [class="Conky"] floating enable
   for_window [app_id="zenity"] floating enable
@@ -2881,9 +2881,6 @@ Use mako as the notification daemon
 #+end_src
 ***** ~/.config/mako/config
 #+begin_src conf :tangle "~/.config/mako/config"
-  anchor=top-right
-  background-color=#da4f37
-  default-timeout=5000
 #+end_src
 ***** notification daemon
 #+begin_src bash
@@ -3113,11 +3110,14 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   command regex binsp 's/(.+)/breakpoint set -p "debug_inspect__%1"/'
 
   command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
-  srcb 0
+  srcb 2
   command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
-  srca 0
+  srca 3
 
   settings set stop-disassembly-display no-debuginfo
+
+  #step into stl
+  settings set target.process.thread.step-avoid-regexp ""
 
 
   #alias vtty = shell tmux-pane-tty voltron 4
@@ -3286,6 +3286,22 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 #+begin_src conf :tangle "DotFiles/.ipdb"
   # Maintained in linux-config.org
   context=5
+#+end_src
+** stm32                                                     :embedded:stm32:
+*** stm32cubeide                                               :stm32cubeide:
+:PROPERTIES:
+:ID:       63977b01-56d6-4093-b3f0-dd1498ed9bc4
+:END:
+*** sway
+#+begin_src conf :tangle ~/.config/sway/config
+  for_window [class="STM32CubeIDE"] floating enable
+  assign [class="STM32CubeIDE"] $ws3
+  assign [title="STM32CubeIDE"] $ws3
+#+end_src
+**** X11 compatability
+#+begin_src bash :tangle "~/bin/stm32cubeide"
+  # for stm32 cube ide
+  JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec ~/bin/st/stm32ide/stm32cubeide
 #+end_src
 * PGP/GNUPG/GPG
 ** ~/.gnupg/gpg.conf
