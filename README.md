@@ -102,7 +102,6 @@ fi
 # for sway waybar tray
 export XDG_CURRENT_DESKTOP=Unity
 
-
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 
@@ -119,10 +118,8 @@ logger -t "startup-initfile"  BASH_PROFILE
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-## this bit sucks. start mbsync,time manually if enrypted homedir else it doesnt work
-systemctl is-active --user mbsync.timer || systemctl --user start mbsync.timer
-
 dropbox-start-once &> /dev/null  &
+
 ```
 
 
@@ -760,6 +757,15 @@ bindsym $mod+d exec $menu
 ```
 
 
+### mbsync
+
+I do this here because the user systemd service wont start with an encrypted HOMEDIR. Normally I'd kick this off in the **.profile** or something.
+
+```conf
+exec systemctl start --user mbsync.service
+```
+
+
 ### xrdb integration
 
 ```conf
@@ -901,7 +907,7 @@ bindsym $mod+Tab workspace back_and_forth
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:edit"
 set $ws2 "2:research"
-set $ws3 "3:shell"
+set $ws3 "3:IDE"
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
@@ -1126,6 +1132,7 @@ assign [class="Steam"] $ws9
 ### apps default appearance
 
 ```conf
+for_window [class="feh"] floating enable
 for_window [class="feh"] floating enable
 for_window [class="Conky"] floating enable
 for_window [app_id="zenity"] floating enable
@@ -2120,7 +2127,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orga3f82c1"></a>
+<a id="org5ec7fcc"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2141,7 +2148,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga3f82c1).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5ec7fcc).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2301,9 +2308,7 @@ oneterminal "wifi" "nmtui"  &>/dev/null
     2.  ~/.config/mako/config
 
         ```conf
-        anchor=top-right
-        background-color=#da4f37
-        default-timeout=5000
+
         ```
 
     3.  notification daemon
@@ -2570,11 +2575,14 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     command regex binsp 's/(.+)/breakpoint set -p "debug_inspect__%1"/'
 
     command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
-    srcb 0
+    srcb 2
     command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
-    srca 0
+    srca 3
 
     settings set stop-disassembly-display no-debuginfo
+
+    #step into stl
+    settings set target.process.thread.step-avoid-regexp ""
 
 
     #alias vtty = shell tmux-pane-tty voltron 4
@@ -2779,6 +2787,27 @@ export PURE_PYTHON=1
         # Maintained in linux-config.org
         context=5
         ```
+
+
+## stm32     :embedded:stm32:
+
+
+### stm32cubeide     :stm32cubeide:
+
+1.  sway
+
+    ```conf
+    for_window [class="STM32CubeIDE"] floating enable
+    assign [class="STM32CubeIDE"] $ws3
+    assign [title="STM32CubeIDE"] $ws3
+    ```
+
+2.  X11 compatability
+
+    ```bash
+    # for stm32 cube ide
+    JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec ~/bin/st/stm32ide/stm32cubeide
+    ```
 
 
 # PGP/GNUPG/GPG
@@ -3362,7 +3391,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgff97054).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3af815f).
 
 ```bash
 #!/usr/bin/env bash
@@ -3398,7 +3427,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgff97054"></a>
+<a id="org3af815f"></a>
 
 ### Examples:
 
