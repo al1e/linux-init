@@ -3292,15 +3292,27 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 :PROPERTIES:
 :ID:       63977b01-56d6-4093-b3f0-dd1498ed9bc4
 :END:
+**** install / uninstall
+#+begin_src bash :tangle "~/bin/stm32cubeide-uninstall"
+  #!/usr/bin/env bash
+  #Maintained in linux-config.org
+  version="${1:-"1.7.0"}"
+  echo "Removing st-stm32cubeide-${version}"
+  sudo dpkg -r st-stm32cubeide-"$version"
+  sudo dpkg -r st-stlink-server
+  sudo dpkg -r st-stlink-udev-rules
+  sudo dpkg -r segger-jlink-udev-rules
+#+end_src
 **** sway
 #+begin_src conf :tangle ~/.config/sway/config
   for_window [class="STM32CubeIDE"] floating enable
   assign [class="STM32CubeIDE"] $ws3
   assign [title="STM32CubeIDE"] $ws3
 #+end_src
-**** X11 compatability
-#+begin_src bash :tangle "~/bin/stm32cube"
-  # for stm32 cube ide
+**** launcher for X11 compatability
+#+begin_src bash :tangle "~/bin/stm32cubeide"
+  #!/usr/bin/env bash
+  # Maintained in linux-config.org
   JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec ~/bin/st/stm32ide/stm32cubeide
 #+end_src
 * PGP/GNUPG/GPG
