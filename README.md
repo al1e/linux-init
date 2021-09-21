@@ -2127,7 +2127,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orge467a27"></a>
+<a id="org511e997"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2148,7 +2148,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge467a27).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org511e997).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2799,7 +2799,7 @@ export PURE_PYTHON=1
     ```bash
     #!/usr/bin/env bash
     #Maintained in linux-config.org
-    version="${1:-"1.7.0"}"
+    version="${1:-${STM32CUBEIDE_VERSION:-"1.7.0"}}"
     echo "Removing st-stm32cubeide-${version}"
     sudo dpkg -r st-stm32cubeide-"$version"
     sudo dpkg -r st-stlink-server
@@ -2820,7 +2820,7 @@ export PURE_PYTHON=1
     ```bash
     #!/usr/bin/env bash
     # Maintained in linux-config.org
-    JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec ~/bin/st/stm32ide/stm32cubeide
+    JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec "/opt/st/stm32cubeide_${STM32CUBEIDE_VERSION:-"1.7.0"}/stm32cubeide"
     ```
 
 
@@ -3405,7 +3405,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3078d53).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org423d3e8).
 
 ```bash
 #!/usr/bin/env bash
@@ -3441,7 +3441,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org3078d53"></a>
+<a id="org423d3e8"></a>
 
 ### Examples:
 
