@@ -61,6 +61,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
+# platformio integration - point to pio ide (vscode) stuff.
+export PATH="${PATH}:${HOME}/.platformio/penv/bin"
+
 export USER_STARTX_START=
 
 [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"

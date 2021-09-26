@@ -3287,12 +3287,20 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
   # Maintained in linux-config.org
   context=5
 #+end_src
+** platformio                                                    :platformio:
+#+begin_src bash :tangle "DotFiles/.profile"
+  # platformio integration - point to pio ide (vscode) stuff.
+  export PATH="${PATH}:${HOME}/.platformio/penv/bin"
+#+end_src
 ** stm32                                                     :embedded:stm32:
 *** stm32cubeide                                               :stm32cubeide:
 :PROPERTIES:
 :ID:       63977b01-56d6-4093-b3f0-dd1498ed9bc4
 :END:
 **** install / uninstall
+:PROPERTIES:
+:ID:       b9b221b0-510f-415b-8819-c96b6e00a1d9
+:END:
 #+begin_src bash :tangle "~/bin/stm32cubeide-uninstall"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
