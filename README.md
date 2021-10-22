@@ -2043,10 +2043,10 @@ case "$1" in
         swaymsg exit
         ;;
     suspend)
-        systemctl suspend && lock
+        systemctl suspend
         ;;
     hibernate)
-        systemctl hibernate && lock
+        systemctl hibernate
         ;;
     reboot)
         systemctl reboot
@@ -2127,7 +2127,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orga73fb4e"></a>
+<a id="org3b4762f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2148,7 +2148,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga73fb4e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3b4762f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2802,7 +2802,14 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
 
 ### stm32cubeide     :stm32cubeide:
 
-1.  install / uninstall
+1.  path
+
+    ```bash
+    # platformio integration - point to pio ide (vscode) stuff.
+    export PATH="${PATH}:${HOME}/bin/thirdparty/STM32CubeMX"
+    ```
+
+2.  install / uninstall
 
     ```bash
     #!/usr/bin/env bash
@@ -2815,7 +2822,15 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
     sudo dpkg -r segger-jlink-udev-rules
     ```
 
-2.  sway
+3.  STM32CubMX app
+
+    ```bash
+    #!/usr/bin/env bash
+    #Maintained in linux-config.org
+    java -jar ~/bin/thirdparty/STM32CubeMX/STM32CubeMX
+    ```
+
+4.  sway
 
     ```conf
     for_window [class="STM32CubeIDE"] floating enable
@@ -2823,7 +2838,7 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
     assign [title="STM32CubeIDE"] $ws3
     ```
 
-3.  launcher for X11 compatability
+5.  launcher for X11 compatability
 
     ```bash
     #!/usr/bin/env bash
@@ -3413,7 +3428,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org4f69aac).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0b08c39).
 
 ```bash
 #!/usr/bin/env bash
@@ -3449,7 +3464,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org4f69aac"></a>
+<a id="org0b08c39"></a>
 
 ### Examples:
 

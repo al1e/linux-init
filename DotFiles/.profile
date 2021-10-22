@@ -64,6 +64,9 @@ eval "$(pyenv init --path)"
 # platformio integration - point to pio ide (vscode) stuff.
 export PATH="${PATH}:${HOME}/.platformio/penv/bin"
 
+# platformio integration - point to pio ide (vscode) stuff.
+export PATH="${PATH}:${HOME}/bin/thirdparty/STM32CubeMX"
+
 export USER_STARTX_START=
 
 [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"

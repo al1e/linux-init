@@ -20,10 +20,10 @@ case "$1" in
         swaymsg exit
         ;;
     suspend)
-        systemctl suspend && lock
+        systemctl suspend
         ;;
     hibernate)
-        systemctl hibernate && lock
+        systemctl hibernate
         ;;
     reboot)
         systemctl reboot
