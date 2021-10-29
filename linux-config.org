@@ -707,6 +707,10 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
+  #homebrew
+  test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+
+
 
 #+end_src
 

@@ -47,6 +47,9 @@ export XDG_CURRENT_DESKTOP=Unity
 
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
+#homebrew
+test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+
 export FZF_TMUX_OPTS=1
 export FZF_TMUX_OPTS="-d 40%"
 

@@ -104,6 +104,10 @@ export XDG_CURRENT_DESKTOP=Unity
 
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
+#homebrew
+test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+
+
 
 ```
 
@@ -2127,7 +2131,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org3b4762f"></a>
+<a id="orge5ba157"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2148,7 +2152,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3b4762f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge5ba157).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3428,7 +3432,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0b08c39).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org912910a).
 
 ```bash
 #!/usr/bin/env bash
@@ -3464,7 +3468,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org0b08c39"></a>
+<a id="org912910a"></a>
 
 ### Examples:
 
