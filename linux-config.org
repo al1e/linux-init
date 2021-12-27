@@ -1189,7 +1189,7 @@ Override in .profile.local
 X11 apps still need resource definitions when launched under XWayland.
 #+begin_src conf :tangle "DotFiles/.Xresources"
   ! Use a truetype font and size.
-  ,*.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
+  *.font: -*-JetBrainsMono Nerd Font-*-*-*-*-6-*-*-*-*-*-*
   Xft.autohint: 0
   Xft.antialias: 1
   Xft.hinting: true
@@ -3626,6 +3626,15 @@ and activate them
   pidof mu &> /dev/null || mu index
 #+end_src
 * bin
+** SDR
+Software Defined Radio
+*** ~/bin/AIS
+Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher]]. Utilies [[https://github.com/jvde-github/AIS-catcher][AIS-catcher]].
+#+begin_src bash :tangle "~/bin/AIS"
+  #!/usr/bin/env bash
+  #Maintained in linux-config.org
+  AIS-catcher  -d:0 -u 127.0.0.1 2345
+#+end_src
 ** one commands
 if it exists jump to it else start it
 *** ~/bin/oneinstance
@@ -3720,8 +3729,7 @@ if it exists jump to it else start it
   else
       exit
   fi
-#+end_src
-** ~/bin/dropbox-start-once
+#+end_src** ~/bin/dropbox-start-once
 #+begin_src bash :tangle "~/bin/dropbox-start-once"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
