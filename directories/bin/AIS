@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-AIS-catcher  -d:0 -u 127.0.0.1 2345
+runAIS(){
+    AIS-catcher  -d:0 -u 127.0.0.1 2345
+}
+
+# TMUX= tmux new  -A -s "AIS" runAIS
+TMUX= tmux new  -A -s "AIS" AIS-catcher  -d:0 -u 127.0.0.1 2345
