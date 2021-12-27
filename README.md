@@ -2131,7 +2131,11 @@ notify-send -t 3000 "${@}"
 ```
 
 
+<<<<<<< HEAD
 <a id="org3774fdf"></a>
+=======
+<a id="org7f924cd"></a>
+>>>>>>> d775199107292a943092426c17a90d51476da7d4
 
 ### ~/bin/sway/sway-screen
 
@@ -2152,7 +2156,11 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
+<<<<<<< HEAD
 Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org3774fdf).
+=======
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org7f924cd).
+>>>>>>> d775199107292a943092426c17a90d51476da7d4
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3184,6 +3192,7 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
+<<<<<<< HEAD
 TMUX= tmux new  -A -s "AIS" AIScatcher
 ```
 
@@ -3196,6 +3205,14 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 #!/usr/bin/env bash
 #Maintained in linux-config.org
     AIS-catcher  -d:0 -u 127.0.0.1 2345
+=======
+runAIS(){
+    AIS-catcher  -d:0 -u 127.0.0.1 2345
+}
+
+# TMUX= tmux new  -A -s "AIS" runAIS
+TMUX= tmux new  -A -s "AIS" AIS-catcher  -d:0 -u 127.0.0.1 2345
+>>>>>>> d775199107292a943092426c17a90d51476da7d4
 ```
 
 
@@ -3455,7 +3472,11 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
+<<<<<<< HEAD
 pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orge6dcd0d).
+=======
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgf8eca47).
+>>>>>>> d775199107292a943092426c17a90d51476da7d4
 
 ```bash
 #!/usr/bin/env bash
@@ -3491,7 +3512,11 @@ echo "$(getVolume)"
 ```
 
 
+<<<<<<< HEAD
 <a id="orge6dcd0d"></a>
+=======
+<a id="orgf8eca47"></a>
+>>>>>>> d775199107292a943092426c17a90d51476da7d4
 
 ### Examples:
 
