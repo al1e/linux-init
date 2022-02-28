@@ -2131,7 +2131,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org9a4eb03"></a>
+<a id="org574dd6c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2152,7 +2152,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9a4eb03).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org574dd6c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3199,6 +3199,33 @@ AIS-catcher  -d:0 -u 127.0.0.1 2345
 ```
 
 
+### ~/bin/AIScheck
+
+```bash
+#!/usr/bin/env bash
+#Maintained in linux-config.org
+if pgrep AIS-catcher >/dev/null
+then
+    echo "AIScatcher is running."
+else
+    echo "AIScatcher is NOT running. Restarting"
+    /home/rgr/bin/AIScatcher &
+fi
+```
+
+1.  cron entry
+
+    To edit the user cron table:
+
+    ```bash
+    sudo crontab -u rgr -e
+    ```
+
+    entry to check every 15 minutes
+
+    > \*/15 \* \* \* \* /home/rgr/bin/AIScheck
+
+
 ## one commands
 
 if it exists jump to it else start it
@@ -3455,7 +3482,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8f5b2ab).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org39470e6).
 
 ```bash
 #!/usr/bin/env bash
@@ -3491,7 +3518,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org8f5b2ab"></a>
+<a id="org39470e6"></a>
 
 ### Examples:
 

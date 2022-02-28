@@ -3643,6 +3643,31 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
   #Maintained in linux-config.org
   AIS-catcher  -d:0 -u 127.0.0.1 2345
 #+end_src
+*** ~/bin/AIScheck
+#+begin_src bash :tangle "~/bin/AIScheck"
+  #!/usr/bin/env bash
+  #Maintained in linux-config.org
+  if pgrep AIS-catcher >/dev/null
+  then
+      echo "AIScatcher is running."
+  else
+      echo "AIScatcher is NOT running. Restarting"
+      /home/rgr/bin/AIScatcher &
+  fi
+#+end_src
+**** cron entry
+To edit the user cron table:
+
+#+begin_src bash
+sudo crontab -u rgr -e
+#+end_src
+
+entry to check every 15 minutes
+
+#+begin_quote
+*/15  * * * * /home/rgr/bin/AIScheck
+#+end_quote
+
 ** one commands
 if it exists jump to it else start it
 *** ~/bin/oneinstance
