@@ -1,3 +1,6 @@
+:PROPERTIES:
+:ID:       2221435b-d65e-46a7-b896-ec1e1c07ddd4
+:END:
 #+TITLE: linux init  configuration
 #+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g m x dot de
@@ -3641,18 +3644,19 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
 #+begin_src bash :tangle "~/bin/AIScatcher"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
-  AIS-catcher  -d:0 -u 127.0.0.1 2345
+  "$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 #+end_src
 *** ~/bin/AIScheck
 #+begin_src bash :tangle "~/bin/AIScheck"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
+  echo "AIS check `date`" >> "$HOME/.AISStatus"
   if pgrep AIS-catcher >/dev/null
   then
-      echo "AIScatcher is running."
+      echo "AIScheck running." >> "$HOME/.AISStatus"
   else
-      echo "AIScatcher is NOT running. Restarting"
-      /home/rgr/bin/AIScatcher &
+      echo "AIScheck not running. Restarting." >> "$HOME/.AISStatus"
+      "$HOME/bin/AIScatcher" &> /dev/null &
   fi
 #+end_src
 **** cron entry

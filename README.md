@@ -2131,7 +2131,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org574dd6c"></a>
+<a id="org81b2740"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2152,7 +2152,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org574dd6c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org81b2740).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3195,7 +3195,7 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-AIS-catcher  -d:0 -u 127.0.0.1 2345
+"$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 ```
 
 
@@ -3204,12 +3204,13 @@ AIS-catcher  -d:0 -u 127.0.0.1 2345
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
+echo "AIS check `date`" >> "$HOME/.AISStatus"
 if pgrep AIS-catcher >/dev/null
 then
-    echo "AIScatcher is running."
+    echo "AIScheck running." >> "$HOME/.AISStatus"
 else
-    echo "AIScatcher is NOT running. Restarting"
-    /home/rgr/bin/AIScatcher &
+    echo "AIScheck not running. Restarting." >> "$HOME/.AISStatus"
+    "$HOME/bin/AIScatcher" &> /dev/null &
 fi
 ```
 
@@ -3482,7 +3483,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org39470e6).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgf076fdc).
 
 ```bash
 #!/usr/bin/env bash
@@ -3518,7 +3519,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org39470e6"></a>
+<a id="orgf076fdc"></a>
 
 ### Examples:
 

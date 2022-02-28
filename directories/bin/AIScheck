@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #Maintained in linux-config.org
+echo "AIS check `date`" >> "$HOME/.AISStatus"
 if pgrep AIS-catcher >/dev/null
 then
-    echo "AIScatcher is running."
+    echo "AIScheck running." >> "$HOME/.AISStatus"
 else
-    echo "AIScatcher is NOT running. Restarting"
-    /home/rgr/bin/AIScatcher &
+    echo "AIScheck not running. Restarting." >> "$HOME/.AISStatus"
+    "$HOME/bin/AIScatcher" &> /dev/null &
 fi
