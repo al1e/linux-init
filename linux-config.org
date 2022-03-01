@@ -3652,7 +3652,7 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
   #Maintained in linux-config.org
   if ! pgrep AIS-catcher >/dev/null
   then
-      echo "`date`: AIScheck down. Restarting." >> "$HOME/.AISStatus"
+      echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
       "$HOME/bin/AIScatcher" &> /dev/null &
   fi
 #+end_src
