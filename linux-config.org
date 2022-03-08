@@ -3630,7 +3630,10 @@ and activate them
 #+end_src
 * bin
 ** SDR
-Software Defined Radio
+Software Defined Radio.
+Note that these scripts, while published to my bin directory, are
+manually copuid to /usr/bin so cron @reboot can work.
+I encrypt my homedirectory.
 *** ~/bin/AIS
 Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher]]. Utilies [[https://github.com/jvde-github/AIS-catcher][AIS-catcher]].
 #+begin_src bash :tangle "~/bin/AIS"
@@ -3644,7 +3647,7 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
 #+begin_src bash :tangle "~/bin/AIScatcher"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
-  "$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
+  AIS-catcher  -d:0 -u 127.0.0.1 2345
 #+end_src
 *** ~/bin/AIScheck
 #+begin_src bash :tangle "~/bin/AIScheck"
@@ -3652,8 +3655,8 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
   #Maintained in linux-config.org
   if ! pgrep AIS-catcher >/dev/null
   then
-      echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
-      "$HOME/bin/AIScatcher" &> /dev/null &
+      echo "`date`: AIS-catcher down. Restarting." >> "/tmp/AISStatus"
+      AIScatcher &> /dev/null &
   fi
 #+end_src
 **** cron entry
@@ -3662,12 +3665,28 @@ To edit the user cron table:
 #+begin_src bash
 sudo crontab -u rgr -e
 #+end_src
-
-entry to check every 15 minutes
-
+***** regular checks
+entry to check every 15 minutes. Using *bash -lc* uses my user path set in my profile.
 #+begin_quote
-*/15  * * * * /home/rgr/bin/AIScheck
+*/15  * * * * bash -lc AIScheck &> /dev/null
 #+end_quote
+***** reboot but no login
+Have to copy to /usr/bin as home directory is encrypted.
+#+begin_quote
+@reboot   /usr/bin/AIScheck
+#+end_quote
+***** login after reboot
+I have a *~/.bash_profile.local* file which my profile sources. Here I kill the AIS-catcher started at
+reboot and insteas run my local version.
+#+begin_src bash
+  #!/usr/bin/bash
+  #kill the one launched at reboot and use our local one - might be more up to date
+  if pgrep "AIS-catcher";then
+          killall AIS-catcher
+  fi
+  AIScheck
+#+end_src
+
 
 ** one commands
 if it exists jump to it else start it

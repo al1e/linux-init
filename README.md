@@ -2131,7 +2131,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orga5697f1"></a>
+<a id="org2c1dc6c"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2152,7 +2152,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga5697f1).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2c1dc6c).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3174,7 +3174,7 @@ pidof mu &> /dev/null || mu index
 
 ## SDR
 
-Software Defined Radio
+Software Defined Radio. Note that these scripts, while published to my bin directory, are manually copuid to /usr/bin so cron @reboot can work. I encrypt my homedirectory.
 
 
 ### ~/bin/AIS
@@ -3195,7 +3195,7 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-"$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
+AIS-catcher  -d:0 -u 127.0.0.1 2345
 ```
 
 
@@ -3206,8 +3206,8 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 #Maintained in linux-config.org
 if ! pgrep AIS-catcher >/dev/null
 then
-    echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
-    "$HOME/bin/AIScatcher" &> /dev/null &
+    echo "`date`: AIS-catcher down. Restarting." >> "/tmp/AISStatus"
+    AIScatcher &> /dev/null &
 fi
 ```
 
@@ -3219,9 +3219,30 @@ fi
     sudo crontab -u rgr -e
     ```
 
-    entry to check every 15 minutes
+    1.  regular checks
 
-    > \*/15 \* \* \* \* /home/rgr/bin/AIScheck
+        entry to check every 15 minutes. Using **bash -lc** uses my user path set in my profile.
+
+        > \*/15 \* \* \* \* bash -lc AIScheck &> /dev/null
+
+    2.  reboot but no login
+
+        Have to copy to /usr/bin as home directory is encrypted.
+
+        > @reboot /usr/bin/AIScheck
+
+    3.  login after reboot
+
+        I have a **~/.bash\_profile.local** file which my profile sources. Here I kill the AIS-catcher started at reboot and insteas run my local version.
+
+        ```bash
+        #!/usr/bin/bash
+        #kill the one launched at reboot and use our local one - might be more up to date
+        if pgrep "AIS-catcher";then
+                killall AIS-catcher
+        fi
+        AIScheck
+        ```
 
 
 ## one commands
@@ -3480,7 +3501,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org2f35ae0).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8ad1077).
 
 ```bash
 #!/usr/bin/env bash
@@ -3516,7 +3537,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org2f35ae0"></a>
+<a id="org8ad1077"></a>
 
 ### Examples:
 
