@@ -2,6 +2,6 @@
 #Maintained in linux-config.org
 if ! pgrep AIS-catcher >/dev/null
 then
-    echo "`date`: AIS-catcher down. Restarting." >> "/tmp/AISStatus"
-    AIScatcher &> /dev/null &
+    echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
+    "$HOME/bin/AIScatcher" &> /dev/null &
 fi

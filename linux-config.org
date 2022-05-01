@@ -3310,7 +3310,7 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 **** path
 #+begin_src bash :tangle "DotFiles/.profile"
   # platformio integration - point to pio ide (vscode) stuff.
-  export PATH="${PATH}:${HOME}/bin/thirdparty/STM32CubeMX"
+  export PATH="${PATH}:${HOME}/bin/thirdparty/stm32cubeide_1.9.0"
 #+end_src
 **** install / uninstall
 :PROPERTIES:
@@ -3319,18 +3319,20 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 #+begin_src bash :tangle "~/bin/stm32cubeide-uninstall"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
-  version="${1:-${STM32CUBEIDE_VERSION:-"1.7.0"}}"
+  version="${1:-${STM32CUBEIDE_VERSION:-"1.9.0"}}"
   echo "Removing st-stm32cubeide-${version}"
   sudo dpkg -r st-stm32cubeide-"$version"
   sudo dpkg -r st-stlink-server
   sudo dpkg -r st-stlink-udev-rules
   sudo dpkg -r segger-jlink-udev-rules
 #+end_src
-**** STM32CubMX app
+**** STM32CubeMX app
+This is a bit defunct now (may 2022) as they have packaged their code into exes. Also there is a wayland exe.
 :PROPERTIES:
 :ID:       b9b221b0-510f-415b-8819-c96b6e00a1d9
+:header-args:tangle: no
 :END:
-#+begin_src bash :tangle "~/bin/STM32CubeMX"
+#+begin_src bash :tangle no
   #!/usr/bin/env bash
   #Maintained in linux-config.org
   java -jar ~/bin/thirdparty/STM32CubeMX/STM32CubeMX
@@ -3342,7 +3344,11 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
   assign [title="STM32CubeIDE"] $ws3
 #+end_src
 **** launcher for X11 compatability
-#+begin_src bash :tangle "~/bin/stm32cubeide"
+:PROPERTIES:
+:header-args:tangle: no
+:END:
+pending deletion
+#+begin_src bash :tangle no
   #!/usr/bin/env bash
   # Maintained in linux-config.org
   JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 exec "/opt/st/stm32cubeide_${STM32CUBEIDE_VERSION:-"1.7.0"}/stm32cubeide"
@@ -3630,10 +3636,7 @@ and activate them
 #+end_src
 * bin
 ** SDR
-Software Defined Radio.
-Note that these scripts, while published to my bin directory, are
-manually copuid to /usr/bin so cron @reboot can work.
-I encrypt my homedirectory.
+Software Defined Radio
 *** ~/bin/AIS
 Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher]]. Utilies [[https://github.com/jvde-github/AIS-catcher][AIS-catcher]].
 #+begin_src bash :tangle "~/bin/AIS"
@@ -3647,7 +3650,7 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
 #+begin_src bash :tangle "~/bin/AIScatcher"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
-  AIS-catcher  -d:0 -u 127.0.0.1 2345
+  "$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 #+end_src
 *** ~/bin/AIScheck
 #+begin_src bash :tangle "~/bin/AIScheck"
@@ -3655,8 +3658,8 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
   #Maintained in linux-config.org
   if ! pgrep AIS-catcher >/dev/null
   then
-      echo "`date`: AIS-catcher down. Restarting." >> "/tmp/AISStatus"
-      AIScatcher &> /dev/null &
+      echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
+      "$HOME/bin/AIScatcher" &> /dev/null &
   fi
 #+end_src
 **** cron entry
@@ -3665,28 +3668,12 @@ To edit the user cron table:
 #+begin_src bash
 sudo crontab -u rgr -e
 #+end_src
-***** regular checks
-entry to check every 15 minutes. Using *bash -lc* uses my user path set in my profile.
-#+begin_quote
-*/15  * * * * bash -lc AIScheck &> /dev/null
-#+end_quote
-***** reboot but no login
-Have to copy to /usr/bin as home directory is encrypted.
-#+begin_quote
-@reboot   /usr/bin/AIScheck
-#+end_quote
-***** login after reboot
-I have a *~/.bash_profile.local* file which my profile sources. Here I kill the AIS-catcher started at
-reboot and insteas run my local version.
-#+begin_src bash
-  #!/usr/bin/bash
-  #kill the one launched at reboot and use our local one - might be more up to date
-  if pgrep "AIS-catcher";then
-          killall AIS-catcher
-  fi
-  AIScheck
-#+end_src
 
+entry to check every 15 minutes
+
+#+begin_quote
+*/15  * * * * /home/rgr/bin/AIScheck
+#+end_quote
 
 ** one commands
 if it exists jump to it else start it

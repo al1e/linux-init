@@ -2131,7 +2131,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org2c1dc6c"></a>
+<a id="orgfca0b4d"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2152,7 +2152,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2c1dc6c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfca0b4d).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2810,7 +2810,7 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
 
     ```bash
     # platformio integration - point to pio ide (vscode) stuff.
-    export PATH="${PATH}:${HOME}/bin/thirdparty/STM32CubeMX"
+    export PATH="${PATH}:${HOME}/bin/thirdparty/stm32cubeide_1.9.0"
     ```
 
 2.  install / uninstall
@@ -2818,7 +2818,7 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
     ```bash
     #!/usr/bin/env bash
     #Maintained in linux-config.org
-    version="${1:-${STM32CUBEIDE_VERSION:-"1.7.0"}}"
+    version="${1:-${STM32CUBEIDE_VERSION:-"1.9.0"}}"
     echo "Removing st-stm32cubeide-${version}"
     sudo dpkg -r st-stm32cubeide-"$version"
     sudo dpkg -r st-stlink-server
@@ -2826,7 +2826,11 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
     sudo dpkg -r segger-jlink-udev-rules
     ```
 
-3.  STM32CubMX app
+3.  STM32CubeMX app
+
+    This is a bit defunct now (may 2022) as they have packaged their code into exes. Also there is a wayland exe.
+
+    :ID: b9b221b0-510f-415b-8819-c96b6e00a1d9 :header-args:tangle: no
 
     ```bash
     #!/usr/bin/env bash
@@ -3174,7 +3178,7 @@ pidof mu &> /dev/null || mu index
 
 ## SDR
 
-Software Defined Radio. Note that these scripts, while published to my bin directory, are manually copuid to /usr/bin so cron @reboot can work. I encrypt my homedirectory.
+Software Defined Radio
 
 
 ### ~/bin/AIS
@@ -3195,7 +3199,7 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-AIS-catcher  -d:0 -u 127.0.0.1 2345
+"$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 ```
 
 
@@ -3206,8 +3210,8 @@ AIS-catcher  -d:0 -u 127.0.0.1 2345
 #Maintained in linux-config.org
 if ! pgrep AIS-catcher >/dev/null
 then
-    echo "`date`: AIS-catcher down. Restarting." >> "/tmp/AISStatus"
-    AIScatcher &> /dev/null &
+    echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
+    "$HOME/bin/AIScatcher" &> /dev/null &
 fi
 ```
 
@@ -3219,30 +3223,9 @@ fi
     sudo crontab -u rgr -e
     ```
 
-    1.  regular checks
+    entry to check every 15 minutes
 
-        entry to check every 15 minutes. Using **bash -lc** uses my user path set in my profile.
-
-        > \*/15 \* \* \* \* bash -lc AIScheck &> /dev/null
-
-    2.  reboot but no login
-
-        Have to copy to /usr/bin as home directory is encrypted.
-
-        > @reboot /usr/bin/AIScheck
-
-    3.  login after reboot
-
-        I have a **~/.bash\_profile.local** file which my profile sources. Here I kill the AIS-catcher started at reboot and insteas run my local version.
-
-        ```bash
-        #!/usr/bin/bash
-        #kill the one launched at reboot and use our local one - might be more up to date
-        if pgrep "AIS-catcher";then
-                killall AIS-catcher
-        fi
-        AIScheck
-        ```
+    > \*/15 \* \* \* \* /home/rgr/bin/AIScheck
 
 
 ## one commands
@@ -3501,7 +3484,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8ad1077).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org1422895).
 
 ```bash
 #!/usr/bin/env bash
@@ -3537,7 +3520,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org8ad1077"></a>
+<a id="org1422895"></a>
 
 ### Examples:
 
