@@ -3269,6 +3269,11 @@ https://www.gdbgui.com/
 #+begin_src conf :tangle "DotFiles/.profile"
 export PURE_PYTHON=1
 #+end_src
+** haskell
+#+begin_src bash :tangle "DotFiles/.profile"
+  # haskell
+  export PATH="${PATH}:${HOME}/.ghcup/bin"
+#+end_src
 ** python
 *** pyvenv  https://github.com/pyenv/pyenv#installation
 **** add pyenv to path

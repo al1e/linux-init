@@ -60,6 +60,9 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
 export PURE_PYTHON=1
 
+# haskell
+export PATH="${PATH}:${HOME}/.ghcup/bin"
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
