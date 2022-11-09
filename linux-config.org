@@ -4270,5 +4270,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 #+end_src
 ** Late addition to ~/.profile
 #+begin_src bash :tangle "DotFiles/.profile"
+  # fix for java apps in sway
+  export _JAVA_AWT_WM_NONREPARENTING=1
   [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
 #+end_src

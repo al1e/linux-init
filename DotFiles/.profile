@@ -75,4 +75,6 @@ export PATH="${PATH}:${HOME}/bin/thirdparty/stm32cubeide_1.9.0"
 
 export USER_STARTX_START=
 
+# fix for java apps in sway
+export _JAVA_AWT_WM_NONREPARENTING=1
 [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
