@@ -1507,6 +1507,12 @@ exec systemctl start --user mbsync.service
 #+begin_src conf
   exec xrdb -merge ~/.Xresources
 #+end_src
+
+*** mako
+#+begin_src conf
+  exec mako
+#+end_src
+
 *** launcher
 #+begin_src conf
   for_window [title="sway-launcher"] floating enable
@@ -2707,7 +2713,7 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_LOCK:-1800} 'sway-lock' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_SUSPEND:-7200} 'sway-lock-utils suspend' \
+       timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \
        lock 'sway-lock' \
        before-sleep 'sway-lock'
@@ -3272,7 +3278,7 @@ export PURE_PYTHON=1
 ** haskell
 #+begin_src bash :tangle "DotFiles/.profile"
   # haskell
-  export PATH="${PATH}:${HOME}/.ghcup/bin"
+  source "${HOME}/.ghcup/env"
 #+end_src
 ** python
 *** pyvenv  https://github.com/pyenv/pyenv#installation
