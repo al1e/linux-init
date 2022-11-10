@@ -2138,7 +2138,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org5376c7f"></a>
+<a id="org9c19c8a"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2159,7 +2159,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5376c7f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9c19c8a).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2823,9 +2823,9 @@ export PATH="${PATH}:${HOME}/.platformio/penv/bin"
 
 ```bash
 # android sdk
-export ANDROID_SDK_ROOT="${HOME}/development/Android/Sdk"
-export PATH="${PATH}:${ANDROID_SDK_ROOT}/emulator"
-export PATH="${PATH}:${ANDROID_SDK_ROOT}/platform-tools"
+export ANDROID_HOME="${HOME}/development/Android/Sdk"
+export PATH="${PATH}:${ANDROID_HOME}/emulator"
+export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
 ```
 
@@ -3531,7 +3531,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc31bde1).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgee5adca).
 
 ```bash
 #!/usr/bin/env bash
@@ -3567,7 +3567,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgc31bde1"></a>
+<a id="orgee5adca"></a>
 
 ### Examples:
 

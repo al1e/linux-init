@@ -71,9 +71,9 @@ eval "$(pyenv init --path)"
 export PATH="${PATH}:${HOME}/.platformio/penv/bin"
 
 # android sdk
-export ANDROID_SDK_ROOT="${HOME}/development/Android/Sdk"
-export PATH="${PATH}:${ANDROID_SDK_ROOT}/emulator"
-export PATH="${PATH}:${ANDROID_SDK_ROOT}/platform-tools"
+export ANDROID_HOME="${HOME}/development/Android/Sdk"
+export PATH="${PATH}:${ANDROID_HOME}/emulator"
+export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"

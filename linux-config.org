@@ -6,7 +6,7 @@
 #+EMAIL: rileyrg at g m x dot de
 
 #+LANGUAGE: en
-#+STARTUP: overview
+#+STARTUP: showall
 
 #+EXPORT_FILE_NAME: README.md
 #+OPTIONS: toc:nil
@@ -3315,15 +3315,21 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 #+end_src
 ** Android                                                          :android:
 *** Sdk                                                                 :sdk:
+:PROPERTIES:
+:ID:       449b8770-a825-498e-8b5c-d94f1c8a4b64
+:END:
 #+begin_src bash :tangle "DotFiles/.profile"
-  # android sdk
-  export ANDROID_SDK_ROOT="${HOME}/development/Android/Sdk"
-  export PATH="${PATH}:${ANDROID_SDK_ROOT}/emulator"
-  export PATH="${PATH}:${ANDROID_SDK_ROOT}/platform-tools"
+    # android sdk
+    export ANDROID_HOME="${HOME}/development/Android/Sdk"
+    export PATH="${PATH}:${ANDROID_HOME}/emulator"
+    export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
 #+end_src
 ** npm                                                                  :npm:
 *** global -g                                                        :global:
+:PROPERTIES:
+:ID:       24d2ffff-bf92-47d8-89d8-8b0e8379e4e6
+:END:
 #+begin_src bash :tangle "DotFiles/.profile"
   export NPM_PACKAGES="${HOME}/.npm-packages"
   export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"
