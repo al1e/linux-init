@@ -47,7 +47,7 @@ export GPG_TTY
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-if [ -f "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
+if [ -f "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
-    source "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh"
+    source "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh"
 fi

@@ -1,8 +1,8 @@
 # Maintained in linux-config.org
 logger -t "startup-initfile"  ZSHENV
-if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
+if [ -z "$XDG_CONFIG_HOME" ] && [ -d "${HOME}/.config" ]
 then
-    export XDG_CONFIG_HOME="$HOME/.config"
+    export XDG_CONFIG_HOME="${HOME}/.config"
 fi
 
 if [ -d "$XDG_CONFIG_HOME/zsh" ]

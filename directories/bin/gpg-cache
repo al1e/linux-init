@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #Maintained in linux-config.org
 if ! pidof gpg-agent; then
-    cachefile="${1:-"$HOME/.gnupg/auth/cache-keys"}"
+    cachefile="${1:-"${HOME}/.gnupg/auth/cache-keys"}"
     if [ -f "$cachefile" ]; then
         p=$(zenity --password --title "Password for SSH")
         if [ ! -z "$p" ]; then

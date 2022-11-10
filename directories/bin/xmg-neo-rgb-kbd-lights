@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #Maintained in linux-config.org
 
-sf="$HOME/.xmg-neo-kbd"
+sf="${HOME}/.xmg-neo-kbd"
 
 if ! command -v ite8291r3-ctl &> /dev/null;  then
     echo "xmg rgb keyboard light controller not found. install ite8291r3-ctl?"

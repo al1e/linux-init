@@ -33,11 +33,11 @@ case "$1" in
         ;;
     blank)
         sway-dpms off
-        [ -f "$HOME/.screen-blank.local" ] && . "$HOME/.screen-blank.local"
+        [ -f "${HOME}/.screen-blank.local" ] && . "${HOME}/.screen-blank.local"
         ;;
     unblank)
         sway-dpms on
-        [ -f "$HOME/.screen-unblank.local" ] && . "$HOME/.screen-unblank.local"
+        [ -f "${HOME}/.screen-unblank.local" ] && . "${HOME}/.screen-unblank.local"
         ;;
     *)
         lock

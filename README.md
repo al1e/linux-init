@@ -96,13 +96,13 @@ export USE_GPG_FOR_SSH="yes" # used in xsession
 
 if [ -z "$XDG_CONFIG_HOME" ]
 then
-    export XDG_CONFIG_HOME="$HOME/.config"
+    export XDG_CONFIG_HOME="${HOME}/.config"
 fi
 
 # for sway waybar tray
 export XDG_CURRENT_DESKTOP=Unity
 
-[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+[ -f "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"
 
 #homebrew
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
@@ -185,9 +185,9 @@ export GPG_TTY
 ### bash git prompt
 
 ```bash
-if [ -f "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
+if [ -f "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
-    source "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh"
+    source "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh"
 fi
 ```
 
@@ -329,7 +329,7 @@ chuck
 ```bash
 # Maintained in linux-config.org
 logger -t "startup-initfile"  ZLOGIN
-# [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# [ -s "${HOME}/.rvm/scripts/rvm" ] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 ```
 
 
@@ -378,14 +378,14 @@ logger -t "startup-initfile"  ZLOGIN
 
 2.  ~/.config/zsh/.zshenv
 
-    Link this into $HOME
+    Link this into ${HOME}
 
     ```bash
     # Maintained in linux-config.org
     logger -t "startup-initfile"  ZSHENV
-    if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
+    if [ -z "$XDG_CONFIG_HOME" ] && [ -d "${HOME}/.config" ]
     then
-        export XDG_CONFIG_HOME="$HOME/.config"
+        export XDG_CONFIG_HOME="${HOME}/.config"
     fi
 
     if [ -d "$XDG_CONFIG_HOME/zsh" ]
@@ -672,13 +672,13 @@ Xft.dpi:       188
 ### wayland
 
 ```bash
-mkdir -p $HOME/development/projects/wayland/clones
-export WLD=$HOME/development/projects/wayland
+mkdir -p ${HOME}/development/projects/wayland/clones
+export WLD=${HOME}/development/projects/wayland
 export LD_LIBRARY_PATH=$WLD/lib
 export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
 export PATH=$WLD/bin:$PATH
 
-cd $HOME/development/projects/wayland/clones
+cd ${HOME}/development/projects/wayland/clones
 
 git clone https://gitlab.freedesktop.org/wayland/wayland.git
 cd wayland
@@ -1608,7 +1608,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 stat="$(sed -n 1p <<< $fullstat)"
             else
                 fullstat=""
-                if [ -f "$HOME/.RESTART_DROPBOX" ];then
+                if [ -f "${HOME}/.RESTART_DROPBOX" ];then
                     stat="Restarting Dropbox.."
                     sway-notify "$stat"
                     dropbox start &> /dev/null
@@ -1813,7 +1813,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 # exec sway-lock
 exec sway-kanshi
 exec sway-idle
-exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec sleep 2 && gpg-cache
 exec blueman-applet
 exec nm-applet --indicator
@@ -1831,7 +1831,7 @@ include /etc/sway/config.d/*
 ### host specific     :scale:scaling:
 
 ```conf
-include "$HOME/.config/sway/host-config-$(hostname)"
+include "${HOME}/.config/sway/host-config-$(hostname)"
 ```
 
 1.  Thinkpad T14s
@@ -1870,7 +1870,7 @@ swaymsg -t get_outputs | jq  -r '[ .[] | select(.dpms and .active) ] | length'
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart"
+[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart"
 ```
 
 
@@ -1966,7 +1966,7 @@ Monitor control with hotplug <https://github.com/emersion/kanshi> Load a host sp
 #Maintained in linux-config.org
 # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
 killall -9 kanshi &>/dev/null
-config="$HOME/.config/kanshi/config-$(hostname)"
+config="${HOME}/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then
     echo  "kanshi -c $config"
     kanshi -c "$config"
@@ -2067,11 +2067,11 @@ case "$1" in
         ;;
     blank)
         sway-dpms off
-        [ -f "$HOME/.screen-blank.local" ] && . "$HOME/.screen-blank.local"
+        [ -f "${HOME}/.screen-blank.local" ] && . "${HOME}/.screen-blank.local"
         ;;
     unblank)
         sway-dpms on
-        [ -f "$HOME/.screen-unblank.local" ] && . "$HOME/.screen-unblank.local"
+        [ -f "${HOME}/.screen-unblank.local" ] && . "${HOME}/.screen-unblank.local"
         ;;
     *)
         lock
@@ -2106,7 +2106,7 @@ exec swayidle -w \
 
 ### ~/bin/sway/sway-laptop-id
 
-Here we look for an env `LAPTOP_ID`. In my setup that would be set in `$HOME/.profile.local`. If thats not set we assume `eDP-1` but in both cases we check if it exists in the sway tree, and, if not, set it it to the first one found.
+Here we look for an env `LAPTOP_ID`. In my setup that would be set in `${HOME}/.profile.local`. If thats not set we assume `eDP-1` but in both cases we check if it exists in the sway tree, and, if not, set it it to the first one found.
 
 ```bash
 #!/usr/bin/env bash
@@ -2138,7 +2138,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org85e1508"></a>
+<a id="org5376c7f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2159,7 +2159,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org85e1508).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5376c7f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2774,7 +2774,7 @@ source "${HOME}/.ghcup/env"
 1.  add pyenv to path
 
     ```bash
-    export PYENV_ROOT="$HOME/.pyenv"
+    export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
     ```
@@ -2813,6 +2813,36 @@ source "${HOME}/.ghcup/env"
 ```bash
 # platformio integration - point to pio ide (vscode) stuff.
 export PATH="${PATH}:${HOME}/.platformio/penv/bin"
+```
+
+
+## Android     :android:
+
+
+### Sdk     :sdk:
+
+```bash
+# android sdk
+export ANDROID_SDK_ROOT="${HOME}/development/Android/Sdk"
+export PATH="${PATH}:${ANDROID_SDK_ROOT}/emulator"
+export PATH="${PATH}:${ANDROID_SDK_ROOT}/platform-tools"
+
+```
+
+
+## npm     :npm:
+
+
+### global -g     :global:
+
+```bash
+export NPM_PACKAGES="${HOME}/.npm-packages"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"
+export PATH="$NPM_PACKAGES/bin:$PATH"
+# Unset manpath so we can inherit from /etc/manpath via the `manpath`
+# command
+unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 ```
 
 
@@ -3216,7 +3246,7 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-"$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
+"${HOME}/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 ```
 
 
@@ -3227,8 +3257,8 @@ Used in conjunction with [AIS-dispatcher](https://www.aishub.net/ais-dispatcher)
 #Maintained in linux-config.org
 if ! pgrep AIS-catcher >/dev/null
 then
-    echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
-    "$HOME/bin/AIScatcher" &> /dev/null &
+    echo "`date`: AIS-catcher down. Restarting." >> "${HOME}/.AISStatus"
+    "${HOME}/bin/AIScatcher" &> /dev/null &
 fi
 ```
 
@@ -3501,7 +3531,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org1f6adb4).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc31bde1).
 
 ```bash
 #!/usr/bin/env bash
@@ -3537,7 +3567,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org1f6adb4"></a>
+<a id="orgc31bde1"></a>
 
 ### Examples:
 
@@ -3710,7 +3740,7 @@ See [XMGNeo 15 keyboard backlight controller](https://github.com/pobrn/ite8291r3
 #!/usr/bin/env bash
 #Maintained in linux-config.org
 
-sf="$HOME/.xmg-neo-kbd"
+sf="${HOME}/.xmg-neo-kbd"
 
 if ! command -v ite8291r3-ctl &> /dev/null;  then
     echo "xmg rgb keyboard light controller not found. install ite8291r3-ctl?"
@@ -3823,7 +3853,7 @@ xmg-neo-rgb-kbd-lights set-color red
 . /usr/share/acpi-support/power-funcs
 . /usr/share/acpi-support/policy-funcs
 getState
-echo "export POWERSTATE=${STATE}"  > "$HOME"/.acpi-powerstate
+echo "export POWERSTATE=${STATE}"  > "${HOME}"/.acpi-powerstate
 export POWERSTATE=$STATE
 ```
 
@@ -3889,7 +3919,7 @@ trans -e google -s en -t de -show-original y -show-original-phonetics y -show-tr
 #!/usr/bin/env bash
 #Maintained in linux-config.org
 if ! pidof gpg-agent; then
-    cachefile="${1:-"$HOME/.gnupg/auth/cache-keys"}"
+    cachefile="${1:-"${HOME}/.gnupg/auth/cache-keys"}"
     if [ -f "$cachefile" ]; then
         p=$(zenity --password --title "Password for SSH")
         if [ ! -z "$p" ]; then
@@ -3981,5 +4011,5 @@ fi
 ```bash
 # fix for java apps in sway
 export _JAVA_AWT_WM_NONREPARENTING=1
-[ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
+[ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
 ```

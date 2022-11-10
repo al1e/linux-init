@@ -263,7 +263,7 @@ bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
 # exec sway-lock
 exec sway-kanshi
 exec sway-idle
-exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
 exec sleep 2 && gpg-cache
 exec blueman-applet
 exec nm-applet --indicator
@@ -271,7 +271,7 @@ exec swaymsg workspace $ws1
 
 include /etc/sway/config.d/*
 
-include "$HOME/.config/sway/host-config-$(hostname)"
+include "${HOME}/.config/sway/host-config-$(hostname)"
 
 for_window [class="STM32CubeIDE"] floating enable
 assign [class="STM32CubeIDE"] $ws3

@@ -1,10 +1,10 @@
-mkdir -p $HOME/development/projects/wayland/clones
-export WLD=$HOME/development/projects/wayland
+mkdir -p ${HOME}/development/projects/wayland/clones
+export WLD=${HOME}/development/projects/wayland
 export LD_LIBRARY_PATH=$WLD/lib
 export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
 export PATH=$WLD/bin:$PATH
 
-cd $HOME/development/projects/wayland/clones
+cd ${HOME}/development/projects/wayland/clones
 
 git clone https://gitlab.freedesktop.org/wayland/wayland.git
 cd wayland

@@ -2,7 +2,7 @@
 #Maintained in linux-config.org
 # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
 killall -9 kanshi &>/dev/null
-config="$HOME/.config/kanshi/config-$(hostname)"
+config="${HOME}/.config/kanshi/config-$(hostname)"
 if [ -f  "$config" ]; then
     echo  "kanshi -c $config"
     kanshi -c "$config"

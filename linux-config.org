@@ -702,13 +702,13 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 
   if [ -z "$XDG_CONFIG_HOME" ]
   then
-      export XDG_CONFIG_HOME="$HOME/.config"
+      export XDG_CONFIG_HOME="${HOME}/.config"
   fi
 
   # for sway waybar tray
   export XDG_CURRENT_DESKTOP=Unity
 
-  [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+  [ -f "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"
 
   #homebrew
   test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
@@ -787,9 +787,9 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 #+end_src
 *** bash git prompt
 #+begin_src bash :tangle "DotFiles/.bashrc"
-  if [ -f "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
+  if [ -f "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
       GIT_PROMPT_ONLY_IN_REPO=1
-      source "$HOME/bin/thirdparty/bash-git-prompt/gitprompt.sh"
+      source "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh"
   fi
 #+end_src
 * ZSH Related
@@ -926,7 +926,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 #+begin_src bash :tangle "~/.config/zsh/.zlogin"
   # Maintained in linux-config.org
   logger -t "startup-initfile"  ZLOGIN
-  # [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+  # [ -s "${HOME}/.rvm/scripts/rvm" ] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 #+end_src
 ** zprofile
 **** ~/.config/zsh/.zprofile
@@ -963,13 +963,13 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   fi
 #+end_src
 **** ~/.config/zsh/.zshenv
-Link this into $HOME
+Link this into ${HOME}
 #+begin_src bash :tangle "~/.config/zsh/.zshenv"
   # Maintained in linux-config.org
   logger -t "startup-initfile"  ZSHENV
-  if [ -z "$XDG_CONFIG_HOME" ] && [ -d "$HOME/.config" ]
+  if [ -z "$XDG_CONFIG_HOME" ] && [ -d "${HOME}/.config" ]
   then
-      export XDG_CONFIG_HOME="$HOME/.config"
+      export XDG_CONFIG_HOME="${HOME}/.config"
   fi
 
   if [ -d "$XDG_CONFIG_HOME/zsh" ]
@@ -1223,13 +1223,13 @@ X11 apps still need resource definitions when launched under XWayland.
 
 *** wayland
 #+begin_src bash :tangle ~/bin/sway/sway-make-wayland
-  mkdir -p $HOME/development/projects/wayland/clones
-  export WLD=$HOME/development/projects/wayland
+  mkdir -p ${HOME}/development/projects/wayland/clones
+  export WLD=${HOME}/development/projects/wayland
   export LD_LIBRARY_PATH=$WLD/lib
   export PKG_CONFIG_PATH=$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/
   export PATH=$WLD/bin:$PATH
 
-  cd $HOME/development/projects/wayland/clones
+  cd ${HOME}/development/projects/wayland/clones
 
   git clone https://gitlab.freedesktop.org/wayland/wayland.git
   cd wayland
@@ -2273,7 +2273,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       stat="$(sed -n 1p <<< $fullstat)"
   else
       fullstat=""
-      if [ -f "$HOME/.RESTART_DROPBOX" ];then
+      if [ -f "${HOME}/.RESTART_DROPBOX" ];then
           stat="Restarting Dropbox.."
           sway-notify "$stat"
           dropbox start &> /dev/null
@@ -2466,7 +2466,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
   # exec sway-lock
   exec sway-kanshi
   exec sway-idle
-  exec '[ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+  exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
   exec sleep 2 && gpg-cache
   exec blueman-applet
   exec nm-applet --indicator
@@ -2478,7 +2478,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+end_src
 *** host specific                                             :scale:scaling:
 #+begin_src conf
-  include "$HOME/.config/sway/host-config-$(hostname)"
+  include "${HOME}/.config/sway/host-config-$(hostname)"
 #+end_src
 **** Thinkpad T14s
 :PROPERTIES:
@@ -2510,7 +2510,7 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
 #+begin_src bash :tangle "~/bin/sway/sway-autostart"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  [ -f "$HOME/.sway-autostart" ]  && . "$HOME/.sway-autostart"
+  [ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart"
 #+end_src
 *** ~/bin/sway/sway-brightness-notify
 #+begin_src bash :tangle "~/bin/sway/sway-brightness-notify"
@@ -2588,7 +2588,7 @@ Load a host specific kanshi file if it exists
   #Maintained in linux-config.org
   # pidof kanshi && echo "kanshi process $(pidof kanshi) already running. Exiting." && exit 0
   killall -9 kanshi &>/dev/null
-  config="$HOME/.config/kanshi/config-$(hostname)"
+  config="${HOME}/.config/kanshi/config-$(hostname)"
   if [ -f  "$config" ]; then
       echo  "kanshi -c $config"
       kanshi -c "$config"
@@ -2680,11 +2680,11 @@ Just a gathering place of locky/suspendy type things...
           ;;
       blank)
           sway-dpms off
-          [ -f "$HOME/.screen-blank.local" ] && . "$HOME/.screen-blank.local"
+          [ -f "${HOME}/.screen-blank.local" ] && . "${HOME}/.screen-blank.local"
           ;;
       unblank)
           sway-dpms on
-          [ -f "$HOME/.screen-unblank.local" ] && . "$HOME/.screen-unblank.local"
+          [ -f "${HOME}/.screen-unblank.local" ] && . "${HOME}/.screen-unblank.local"
           ;;
       ,*)
           lock
@@ -2720,7 +2720,7 @@ Just a gathering place of locky/suspendy type things...
 #+end_src
 
 *** ~/bin/sway/sway-laptop-id
-Here we look for an env ~LAPTOP_ID~. In my setup that would be set in ~$HOME/.profile.local~. If thats not set we assume ~eDP-1~
+Here we look for an env ~LAPTOP_ID~. In my setup that would be set in ~${HOME}/.profile.local~. If thats not set we assume ~eDP-1~
 but in both cases we check if it exists in the sway tree, and, if not, set it it to the first one found.
 
 #+begin_src bash :tangle ~/bin/sway/sway-laptop-id
@@ -3284,7 +3284,7 @@ export PURE_PYTHON=1
 *** pyvenv  https://github.com/pyenv/pyenv#installation
 **** add pyenv to path
 #+begin_src bash :tangle "DotFiles/.profile"
-  export PYENV_ROOT="$HOME/.pyenv"
+  export PYENV_ROOT="${HOME}/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init --path)"
 #+end_src
@@ -3312,6 +3312,26 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 #+begin_src bash :tangle "DotFiles/.profile"
   # platformio integration - point to pio ide (vscode) stuff.
   export PATH="${PATH}:${HOME}/.platformio/penv/bin"
+#+end_src
+** Android                                                          :android:
+*** Sdk                                                                 :sdk:
+#+begin_src bash :tangle "DotFiles/.profile"
+  # android sdk
+  export ANDROID_SDK_ROOT="${HOME}/development/Android/Sdk"
+  export PATH="${PATH}:${ANDROID_SDK_ROOT}/emulator"
+  export PATH="${PATH}:${ANDROID_SDK_ROOT}/platform-tools"
+
+#+end_src
+** npm                                                                  :npm:
+*** global -g                                                        :global:
+#+begin_src bash :tangle "DotFiles/.profile"
+  export NPM_PACKAGES="${HOME}/.npm-packages"
+  export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"
+  export PATH="$NPM_PACKAGES/bin:$PATH"
+  # Unset manpath so we can inherit from /etc/manpath via the `manpath`
+  # command
+  unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
+  export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 #+end_src
 ** stm32                                                     :embedded:stm32:
 *** stm32cubeide                                               :stm32cubeide:
@@ -3661,7 +3681,7 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
 #+begin_src bash :tangle "~/bin/AIScatcher"
   #!/usr/bin/env bash
   #Maintained in linux-config.org
-  "$HOME/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
+  "${HOME}/bin/AIS-catcher"  -d:0 -u 127.0.0.1 2345
 #+end_src
 *** ~/bin/AIScheck
 #+begin_src bash :tangle "~/bin/AIScheck"
@@ -3669,8 +3689,8 @@ Used in conjunction with [[https://www.aishub.net/ais-dispatcher][AIS-dispatcher
   #Maintained in linux-config.org
   if ! pgrep AIS-catcher >/dev/null
   then
-      echo "`date`: AIS-catcher down. Restarting." >> "$HOME/.AISStatus"
-      "$HOME/bin/AIScatcher" &> /dev/null &
+      echo "`date`: AIS-catcher down. Restarting." >> "${HOME}/.AISStatus"
+      "${HOME}/bin/AIScatcher" &> /dev/null &
   fi
 #+end_src
 **** cron entry
@@ -4045,7 +4065,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
   #!/usr/bin/env bash
   #Maintained in linux-config.org
 
-  sf="$HOME/.xmg-neo-kbd"
+  sf="${HOME}/.xmg-neo-kbd"
 
   if ! command -v ite8291r3-ctl &> /dev/null;  then
       echo "xmg rgb keyboard light controller not found. install ite8291r3-ctl?"
@@ -4159,7 +4179,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
   . /usr/share/acpi-support/power-funcs
   . /usr/share/acpi-support/policy-funcs
   getState
-  echo "export POWERSTATE=${STATE}"  > "$HOME"/.acpi-powerstate
+  echo "export POWERSTATE=${STATE}"  > "${HOME}"/.acpi-powerstate
   export POWERSTATE=$STATE
 #+end_src
 *** NVIDIA
@@ -4204,7 +4224,7 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
   #!/usr/bin/env bash
   #Maintained in linux-config.org
   if ! pidof gpg-agent; then
-      cachefile="${1:-"$HOME/.gnupg/auth/cache-keys"}"
+      cachefile="${1:-"${HOME}/.gnupg/auth/cache-keys"}"
       if [ -f "$cachefile" ]; then
           p=$(zenity --password --title "Password for SSH")
           if [ ! -z "$p" ]; then
@@ -4272,5 +4292,5 @@ See [[https://github.com/pobrn/ite8291r3-ctl][XMGNeo 15 keyboard backlight contr
 #+begin_src bash :tangle "DotFiles/.profile"
   # fix for java apps in sway
   export _JAVA_AWT_WM_NONREPARENTING=1
-  [ -f "$HOME/.profile.local" ] && . "$HOME/.profile.local"
+  [ -f "${HOME}/.profile.local" ] && . "${HOME}/.profile.local"
 #+end_src
