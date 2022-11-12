@@ -56,6 +56,8 @@ export FZF_TMUX_OPTS="-d 40%"
 export XKB_DEFAULT_LAYOUT=de
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 
+export PATH="/usr/lib/dart/bin:$PATH"
+
 export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
 export PURE_PYTHON=1

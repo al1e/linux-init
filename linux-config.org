@@ -3085,6 +3085,12 @@ Reverse engineering packges [[https://radare.gitbooks.io/radare2book/content/fir
   e dbg.bep=main
 #+end_src
 * Programming Related                                           :programming:
+** dart                                                                :llvm:
+https://dart.dev/get-dart#install-a-debian-package
+*** path
+#+begin_src bash :tangle "DotFiles/.profile"
+  export PATH="/usr/lib/dart/bin:$PATH"
+#+end_src
 ** llvm                                                           :llvm:
 *** path
 #+begin_src bash :tangle "DotFiles/.profile"
