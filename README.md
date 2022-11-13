@@ -2138,7 +2138,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org1170100"></a>
+<a id="orgcc02180"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2159,7 +2159,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1170100).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcc02180).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2538,15 +2538,15 @@ e dbg.bep=main
 # Programming Related     :programming:
 
 
-## dart     :llvm:
+## dart/flutter     :dart:flutter:
 
-<https://dart.dev/get-dart#install-a-debian-package>
+<https://dart.dev/get-dart#install-a-debian-package> <https://docs.flutter.dev/get-started/install/linux>
 
 
 ### path
 
 ```bash
-export PATH="/usr/lib/dart/bin:$PATH"
+export PATH="${HOME}/bin/thirdparty/flutter/bin:$PATH"
 ```
 
 
@@ -3543,7 +3543,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7536ab9).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org93ded05).
 
 ```bash
 #!/usr/bin/env bash
@@ -3579,7 +3579,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org7536ab9"></a>
+<a id="org93ded05"></a>
 
 ### Examples:
 
