@@ -92,7 +92,8 @@
 !/directories/bin/llvm/
 !/directories/bin/llvm/*
 /directories/bin/llvm/build
-
+/directories/bin/thirdparty
+/directories/bin/thirdparty/*
 
 !/directories/bin/AIS*
 !/directories/bin/acpi-powerstate
