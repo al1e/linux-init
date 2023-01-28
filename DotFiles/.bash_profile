@@ -5,7 +5,7 @@ logger -t "startup-initfile"  BASH_PROFILE
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-#dropbox-start-once &> /dev/null  &
+dropbox-start-once &> /dev/null  &
 
 if [ -d "/gnu" ]; then
     echo "GUIX initialised."

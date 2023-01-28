@@ -1818,6 +1818,7 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
 #+begin_src conf
   # assign [title="dbg:"] $ws3
   assign [class="Ardour"] $ws6
+  assign [class="Code"] $ws3
   assign [class="Signal"] $ws8
   assign [class="Hexchat"] $ws8
   assign [class="discord"] $ws8
@@ -2624,6 +2625,12 @@ Load a host specific kanshi file if it exists
   output eDP-1 mode 1920x1080 position 2560,0
   output HDMI-A-1  mode 2560x1440 position 0,0
   }
+
+  {
+  output eDP-1 mode 1920x1080 position 2560,0
+  output DP-2  mode 2560x1440 position 0,0
+  }
+
 #+end_src
 **** config-thinkpadt460
 #+begin_src conf :tangle "dot-config/kanshi/config-thinkpadt460"
