@@ -379,7 +379,7 @@ logger -t "startup-initfile"  ZLOGIN
 2.  ~/.config/zsh/.zshenv
 
     Link this into ${HOME}
-
+    
     ```bash
     # Maintained in linux-config.org
     logger -t "startup-initfile"  ZSHENV
@@ -387,7 +387,7 @@ logger -t "startup-initfile"  ZLOGIN
     then
         export XDG_CONFIG_HOME="${HOME}/.config"
     fi
-
+    
     if [ -d "$XDG_CONFIG_HOME/zsh" ]
     then
         export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
@@ -413,7 +413,7 @@ Directory is [here](.oh-my-zsh/).
     ```bash
     mkc () {
         mkdir -p "$@" && cd "$@" #create full path and cd to it
-
+    
     }
     ```
 
@@ -952,6 +952,12 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+bindsym $mod+Control+Shift+Right move workspace to output right
+bindsym $mod+Control+Shift+Left move workspace to output left
+bindsym $mod+Control+Shift+Down move workspace to output down
+bindsym $mod+Control+Shift+Up move workspace to output up
+
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
 # These bindings trigger as soon as you enter the resize mode
@@ -987,16 +993,16 @@ bindsym $mod+r mode "resize"
 1.  clipman and wofi
 
     A basic [clipboard manager](https://github.com/yory8/clipman) for Wayland, with support for persisting copy buffers after an application exits.
-
+    
     ```conf
     set $clipboard "~/.local/share/clipman.json"
     exec wl-paste -t text --watch clipman store --max-items 1024
     bindsym $mod+y exec sway-clipboard-history-select
     bindsym $mod+Control+y exec sway-clipboard-history-clear
     ```
-
+    
     1.  sway-clipboard-history-select
-
+    
         ```bash
         #!/usr/bin/env bash
         # Maintained in linux-config.org
@@ -1007,31 +1013,31 @@ bindsym $mod+r mode "resize"
             exit 0
         fi
         ```
-
+    
     2.  sway-clipboard-history-clear
-
+    
         ```bash
         #!/usr/bin/env bash
         # Maintained in linux-config.org
         clipman clear -a
         sway-notify "Clipboard history cleared."
         ```
-
+    
     3.  Wofi Config
-
+    
     4.  ~/.config/wofi/config
-
+    
         [Configuration](http://manpages.ubuntu.com/manpages/impish/man5/wofi.5.html) file
-
+        
         ```conf
         # Maintained in linux-config.org
         dynamic_lines=true
         gtk_dark=true
         terminal=alacritty
         ```
-
+    
     5.  ~/.config/wofi/style.css
-
+    
         ```css
         /* Maintained in linux-config.org */
         window {
@@ -1039,37 +1045,37 @@ bindsym $mod+r mode "resize"
             border: 1px solid #c0c0c0;
             background-color: #282a36;
         }
-
+        
         #input {
             margin: 2 px;
             border: none;
             color: #222222;
             background-color: #eeeeee;
         }
-
+        
         #inner-box {
             margin: 2px;
             border: none;
             background-color: #282a36;
         }
-
+        
         #outer-box {
             margin: 2px;
             border: none;
             background-color: #282a36;
         }
-
+        
         #scroll {
             margin: 0px;
             border: none;
         }
-
+        
         #text {
             margin: 2px;
             border: none;
             color: #f8f8f2;
         }
-
+        
         #entry:selected {
             background-color: #44475a;
         }
@@ -1196,24 +1202,24 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
 1.  waybar     :waybar:
 
     <https://github.com/Alexays/Waybar/wiki/Configuration>
-
+    
     ```conf
     bar {
     swaybar_command waybar
     }
     bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
-
+    
     ```
-
+    
     1.  ~/.config/waybar/config
-
+    
         ```json
         {
           "layer": "top",
           "position": "bottom",
           "height": 30,
           "width": 1280,
-
+        
           "modules-left": [
             "sway/workspaces",
             "cpu",
@@ -1221,14 +1227,14 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "memory",
             "custom/dropbox"
           ],
-
+        
           "modules-center": [
             "custom/weather",
             "custom/clock",
             "idle_inhibitor",
             "custom/monitors"
           ],
-
+        
           "modules-right": [
             "pulseaudio",
             "backlight",
@@ -1237,7 +1243,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "wlr/taskbar",
             "tray"
           ],
-
+        
           "network": {
             "format-wifi": "<span color='#589df6'></span> <span color='gray'>{signalStrength}%</span>" ,
             "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
@@ -1247,8 +1253,8 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "interval": 60,
             "tooltip-format": "{ifname}  {ipaddr}"
           },
-
-
+        
+        
           "sway/workspaces": {
             "disable-scroll": true,
             "all-outputs": true,
@@ -1259,17 +1265,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
               "default": "<span color='#b8b8b8'></span>"
             }
           },
-
+        
           "sway/mode": {
             "format": "{}"
           },
-
+        
           "backlight": {
             //		"device": "acpi_video1",
             "format": "{icon} {percent}%",
             "format-icons": ["🔅", "🔆"]
           },
-
+        
           "battery": {
             "states": {
               // "good": 95,
@@ -1277,7 +1283,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
               "critical": 10
             },
             "format": "<span color='gold'>{icon}</span> {capacity}%",
-
+        
             "format-charging": "<span color='gold'> </span> {capacity}% ({time})",
             "format-plugged":  "<span color='gold'>{icon}  </span> {capacity}%",
             //		"format-good": "", // An empty format will hide the module
@@ -1285,14 +1291,14 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format-icons": ["", "", "", "", ""],
             "on-click" : "sway-htop"
           },
-
+        
           "custom/clock": {
             "interval": 60,
             "exec": "date +'%a, %d %b: %H:%M'",
             "format": "{} ",
             "max-length": 25
           },
-
+        
           "cpu": {
             "interval": 5,
             "format": "<span color='#eb8a60'> {usage}% ({load})</span>",
@@ -1302,7 +1308,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             },
             "on-click" : "hardinfo"
           },
-
+        
           "idle_inhibitor": {
             "format": "<span color='GOLD'>{icon}</span>",
             "format-icons": {
@@ -1316,10 +1322,10 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "format-muted": "🔇 {format_source}",
             "format-bluetooth": "{icon} {volume}% {format_source}",
             "format-bluetooth-muted": "🔇 {format_source}",
-
+        
             "format-source": " {volume}%",
             "format-source-muted": "",
-
+        
             "format-icons": {
               "headphones": "",
               "handsfree": "",
@@ -1332,12 +1338,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "pulse-volume toggle",
             "on-click-right": "pavucontrol"
           },
-
+        
           "tray": {
             "icon-size": 21,
             "spacing": 5
           },
-
+        
           "custom/weather": {
             "format": "{} ",
             "tooltip": true,
@@ -1345,13 +1351,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "exec": "waybar-weather-json",
             "return-type": "json"
           },
-
+        
           "custom/uptime": {
             "format": "<span color='white'>⌛{}</span>",
             "interval": 60,
             "exec": "uptime -p"
           },
-
+        
           "custom/dropbox": {
             "format": "<span color='gold'>{}</span>",
             "return-type" : "json",
@@ -1382,7 +1388,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "exec": "waybar-power-draw",
             "tooltip": "false"
           },
-
+        
           "wlr/taskbar": {
             "format": "{icon}",
             "icon-size": 14,
@@ -1391,7 +1397,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "on-click": "activate",
             "on-click-middle": "close"
           },
-
+        
           "custom/mynetwork": {
             "format":  "{}",
             "format-wifi":  "📶{ssid}",
@@ -1405,12 +1411,12 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             "tooltip-format": "{ssid}",
             "tooltip": "true"
           }
-
+        
         }
         ```
-
+    
     2.  ~/.config/waybar/style.css
-
+    
         ```css
         * {
             border: none;
@@ -1420,17 +1426,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             font-size: 10pt;
             min-height: 0;
         }
-
+        
         #waybar {
             background: rgba(28, 28, 28, 0.6);
             color: #e4e4e4;
         }
-
+        
         #window {
             color: #e4e4e4;
             font-weight: bold;
         }
-
+        
         #workspaces {
             font-size: 8px;
             /*	padding: 0 2px;*/
@@ -1444,7 +1450,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             border-bottom-right-radius: 10px;
             background: rgba(28, 28, 28, 0.6);
         }
-
+        
         #workspaces button {
             padding: 0 5px;
             /*	background: rgba(28, 28, 28, 0.9);*/
@@ -1454,9 +1460,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         #workspaces button:hover {
             box-shadow: inherit;
             text-shadow: inherit;
-
+        
         }
-
+        
         #workspaces button.focused {
             padding: 0 5px;
             border-radius: 10px;
@@ -1464,35 +1470,35 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             color: #8af0f0;
             margin: 0 0px;
         }
-
+        
         #workspaces button.urgent {
             background: #af005f;
             color: #1b1d1e;
         }
-
+        
         #mode {
             background: #af005f;
         }
-
+        
         #custom-bluetooth,#custom-power-draw,#custom-dropbox,#clock, #temperature, #cpu, #memory, #network, #backlight, #pulseaudio, #battery, #tray, #idle_inhibitor {
             padding: 0 3px;
         }
-
+        
         #idle_inhibitor{
             font-size:16px
         }
-
+        
         #clock {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
         }
-
+        
         @keyframes blink {
             to {
                 background-color: darkred;
             }
         }
-
+        
         #battery.warning:not(.charging) {
             background-color: #ff8700;
             color: #1b1d1e;
@@ -1508,46 +1514,46 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         #battery,#battery_icon,#battery.charging {
             color:gold
         }
-
-
+        
+        
         #cpu {
         }
-
+        
         #memory {
         }
-
+        
         #network {
         }
-
+        
         #network.disconnected {
             background: #f53c3c;
         }
-
+        
         #pulseaudio {
         }
-
+        
         #pulseaudio.muted {
         }
-
+        
         #custom-weather {
             font-size:12px;
         }
-
+        
         #tray {
             margin-left: 1px;
         }
         ```
-
+    
     3.  scripts
-
+    
         1.  ~/bin/sway/waybar-bluetooth
-
+        
             Thank you <https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/bluetooth>
-
+            
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
-
+            
             get_from_file() {
                 dev=$1
                 name=
@@ -1564,13 +1570,13 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 done
                 echo "${name}"
             }
-
+            
             store_file() {
                 dev=$1
                 name="${2}"
                 echo "$dev::${name}" >> /tmp/bt-devices.txt
             }
-
+            
             connections=`hcitool con | sed -n 2p`
             if [ ! -z "$connections" ]; then
                 # We have a connection, we want to get the name from a file if we've had
@@ -1589,17 +1595,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 echo "🔌"
             fi
             ```
-
+        
         2.  ~/bin/sway/waybar-power-draw
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
             ```
-
+        
         3.  ~/bin/sway/waybar-dropbox-json
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
@@ -1616,16 +1622,16 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                     stat="click to restart DB"
                 fi
             fi
-
+            
             jq --unbuffered --compact-output -n \
                --arg text "$stat" \
                --arg tooltip "$fullstat" \
                --arg class "dropbox-status" \
                '{text: $text, tooltip: $tooltip, class: $class}'
             ```
-
+        
         4.  ~/bin/sway/waybar-ip-info-json
-
+        
             ```bash
             ifname="${1:-$(printf '%s' /sys/class/net/*/wireless | cut -d/ -f5)}"
             [ -z "$ifname" ] && exit 1
@@ -1646,9 +1652,9 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                --arg ippadr "$lip" \
                '{text: $text, alt: $alt, tooltip: $tooltip, class: $class, percentage: $percentage, ifname: $ifname, ssid: $ssid, public_ip: $public_ip, ipaddr: $ippadr}'
             ```
-
+        
         5.  ~/bin/sway/waybar-monitors
-
+        
             ```bash
             #!/usr/bin/env bash
             #Maintained in linux-config.org
@@ -1659,18 +1665,18 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             text="{\"text\":\""$t"\",\"tooltip\":\""$o"\"}"
             echo $text
             ```
-
+        
         6.  ~/bin/sway/waybar-wttr
-
+        
             ```python
             #!/usr/bin/env python
             # Maintained in linux-config.org
-
+            
             import json
             import os
             import requests
             from datetime import datetime
-
+            
             WEATHER_CODES = {
                 '113': '☀️',
                 '116': '⛅️',
@@ -1721,20 +1727,20 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                 '392': '⛈',
                 '395': '❄️'
             }
-
+            
             data = {}
             location = os.getenv('WTTR_LOCATION',"")
-
+            
             weather = requests.get("https://wttr.in/" + location + "?format=j1").json()
-
+            
             def format_time(time):
                 return time.replace("00", "").zfill(2)
-
-
+            
+            
             def format_temp(temp):
                 return (hour['FeelsLikeC']+"°").ljust(3)
-
-
+            
+            
             def format_chances(hour):
                 chances = {
                     "chanceoffog": "Fog",
@@ -1746,17 +1752,17 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                     "chanceofthunder": "Thunder",
                     "chanceofwindy": "Wind"
                 }
-
+            
                 conditions = []
                 for event in chances.keys():
                     if int(hour[event]) > 0:
                         conditions.append(chances[event]+" "+hour[event]+"%")
                 return ", ".join(conditions)
-
-
+            
+            
             data['text'] = location+":"+WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
                 " "+weather['current_condition'][0]['FeelsLikeC']+"°"
-
+            
             data['tooltip'] = f"<b>{location}</b>\n"
             data['tooltip'] += f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
             data['tooltip'] += f"Feels like: {weather['current_condition'][0]['FeelsLikeC']}°\n"
@@ -1776,22 +1782,22 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
                         if int(format_time(hour['time'])) < datetime.now().hour-2:
                             continue
                     data['tooltip'] += f"{format_time(hour['time'])} {WEATHER_CODES[hour['weatherCode']]} {format_temp(hour['FeelsLikeC'])} {hour['weatherDesc'][0]['value']}, {format_chances(hour)}\n"
-
-
+            
+            
             print(json.dumps(data))
             ```
-
+        
         7.  ~/bin/sway/waybar-weather-json
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             sleep 5
             WTTR_LOCATION="${1:-"Grömitz,DE"}"  waybar-wttr
             ```
-
+        
         8.  ~/bin/sway/waybar-dropbox-status
-
+        
             ```bash
             #!/usr/bin/env bash
             #Maintained in linux-config.org
@@ -1837,7 +1843,7 @@ include "${HOME}/.config/sway/host-config-$(hostname)"
 1.  Thinkpad T14s
 
     1.  scaling
-
+    
         ```conf
         #Maintained in linux-config.org
         output eDP-1 mode 1920x1080@60hz scale 1.0
@@ -1846,7 +1852,7 @@ include "${HOME}/.config/sway/host-config-$(hostname)"
 2.  XMG Neo
 
     1.  scaling
-
+    
         ```conf
         #Maintained in linux-config.org
         output eDP-1 mode 2560x1440@165hz scale 1.15
@@ -1990,10 +1996,15 @@ fi
     {
     output eDP-1 enable mode 1920x1080  position 0,0
     }
-
+    
     {
     output eDP-1 mode 1920x1080 position 1920,0
     output DP-4 mode 1920x1080 position 0,0
+    }
+    
+    {
+    output eDP-1 mode 1920x1080 position 2560,0
+    output HDMI-A-1  mode 2560x1440 position 0,0
     }
     ```
 
@@ -2003,7 +2014,7 @@ fi
     {
     output eDP-1 enable mode 1366×768   position 0,0
     }
-
+    
     {
     output eDP-1 mode 1366×768  position 1920,0
     output DP-4 mode 1920x1080 position 0,0
@@ -2016,14 +2027,14 @@ fi
     {
     output eDP-1 enable mode 1920x1080  position 0,0
     }
-
+    
     {
     output DP-4 mode 1920x1080 position 0,0
     output eDP-1 disable
     }
-
+    
     ```
-
+    
     ******\*******
 
 
@@ -2138,7 +2149,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org6768cb9"></a>
+<a id="org8160fb6"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2159,7 +2170,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org6768cb9).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org8160fb6).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2309,27 +2320,27 @@ oneterminal "wifi" "nmtui"  &>/dev/null
 1.  mako
 
     Use mako as the notification daemon
-
+    
     1.  install
-
+    
         ```bash
         sudo apt install mako-notifier
         ```
-
+    
     2.  ~/.config/mako/config
-
+    
         ```conf
-
+        
         ```
-
+    
     3.  notification daemon
-
+    
         ```bash
         sudo apt install notification-daemon libnotifier-bin
         ```
-
+        
         Enable it as a dbus service <https://wiki.archlinux.org/title/Desktop_notifications> $XDG\_DATA\_HOME/dbus-1/services/org.freedesktop.Notifications.service
-
+        
         ```conf
         [D-BUS Service]
         Name=org.freedesktop.Notifications
@@ -2566,14 +2577,14 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
 
     ```conf
     # Maintained in linux-config.org
-
+    
     #settings write -f .lldb-settings-local-start
     #settings read  -f .lldb-settings-local
-
+    
     settings set target.load-cwd-lldbinit true
     settings set interpreter.prompt-on-quit false
     settings set target.x86-disassembly-flavor intel
-
+    
     command alias bfl breakpoint set -f %1 -l %2
     command alias lv command script import "/home/rgr/.local/lib/python3.9/site-packages/voltron/entry.py"
     command alias sl source list -a $rip
@@ -2581,13 +2592,13 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     #auto breaks  - annotate code with labels eg debug_inspect__var_of_interest
     command alias b_inspect breakpoint set -p "debug_inspect_"
     command alias b_call breakpoint set -p "debug_call_"
-
+    
     # regexp break points arent pending/deferred
     #b_inspect
     #b_call
-
+    
     command regex rlook 's/(.+)/image lookup -rn %1/'
-
+    
     #breg X will break at *X* labels
     command regex breg 's/(.+)/breakpoint set -p "%1"/'
     #bdeb X will break at debug*X labels
@@ -2596,40 +2607,40 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
     command regex bcall 's/(.+)/breakpoint set -p "debug_call__%1"/'
     #binsp X will break at debug_inspect__X labels
     command regex binsp 's/(.+)/breakpoint set -p "debug_inspect__%1"/'
-
+    
     command regex srcb 's/([0-9]+)/settings set stop-line-count-before %1/'
     srcb 2
     command regex srca 's/([0-9]+)/settings set stop-line-count-after %1/'
     srca 3
-
+    
     settings set stop-disassembly-display no-debuginfo
-
+    
     #step into stl
     settings set target.process.thread.step-avoid-regexp ""
-
-
+    
+    
     #alias vtty = shell tmux-pane-tty voltron 4
-
+    
     #define voltron-source-tty
     #shell tmux-pane-tty
     #end
-
+    
     ```
 
 2.  scripts
 
     1.  ~/bin/llvm/disassembly\_mode.py
-
+    
         [disassembly\_mode.py](directories/bin/lldb/disassembly_mode.py)
-
+    
     2.  ~/bin/llvm/lldb-ui-session
-
+    
         Create a session but let someone else do the attach
-
+        
         ```bash
         #!/usr/bin/env bash
         # Maintained in linux-config.org
-
+        
         # create a lldb debug session unless it already exists.
         # the -d to new session says "dont attach to current terminal"
         # there is a bug where the splt panes split that of a tmux session in the terminal
@@ -2638,41 +2649,41 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
         directory="${1:-`pwd`}"
         session="${2:-"voltron-$(basename "$directory")"}"
         if ! TMUX= tmux has-session -t "$session" &> /dev/null; then
-
+        
             tmux new-session -d -c "$directory" -s "$session" 'voltron-source 32'
             firstPane=$(tmux display-message -p "#{pane_id}")
             firstWindow=$(tmux display-message -p "#{window_id}")
-
+        
             srcPane="$firstPane"
-
+        
             tmux splitw -h -p 70 -t "$srcPane" voltron-disassembly-mixed
             disassPane=$(tmux display-message -p "#{pane_id}")
-
-
+        
+        
             tmux splitw -v -p 30 -t "$srcPane" voltron-locals
             localsPane=$(tmux display-message -p "#{pane_id}")
-
+        
             tmux new-window voltron-disassembly &> /dev/null
             sourcePane=$(tmux display-message -p "#{pane_id}")
-
+        
             tmux splitw -v -p 30 -t "$sourcePane" voltron-locals
             localsPane=$(tmux display-message -p "#{pane_id}")
-
+        
             tmux splitw -h -p 70 -t "$sourcePane" voltron-registers
             registersPane=$(tmux display-message -p "#{pane_id}")
-
+        
             tmux splitw -h -p 70 -t "$localsPane" voltron-backtrace
             backTracePane=$(tmux display-message -p "#{pane_id}")
-
+        
             tmux select-window -t "$firstWindow"
             tmux select-pane -t "$firstPane"
-
+        
         fi
         echo "$session"
         ```
-
+    
     3.  ~/bin/llvm/lldb-ui
-
+    
         ```bash
         #!/usr/bin/env bash
         # Maintained in linux-config.org
@@ -2680,81 +2691,81 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
         session="$(lldb-ui-session "${directory}" "$2")"
         ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
         ```
-
+    
     4.  lldb voltron scripts
-
+    
         1.  ~/bin/llvm/voltron-backtrace
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'thread backtrace'
             ```
-
+        
         2.  ~/bin/llvm/voltron-breakpoints
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'breakpoint list'
             ```
-
+        
         3.  ~/bin/llvm/voltron-disassembly
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'disassemble --pc --context '"${1:-4}"' --count '"${2:-4}"''
             ```
-
+        
         4.  ~/bin/llvm/voltron-disassembly-mixed
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'disassemble --mixed --pc --context '"${1:-1}"' --count '"${2:-32}"''
             ```
-
+        
         5.  ~/bin/llvm/voltron-locals
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'frame variable' --lexer c
             ```
-
+        
         6.  ~/bin/llvm/voltron-registers
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v registers
             ```
-
+        
         7.  ~/bin/llvm/voltron-source
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v c 'source list -a $rip -c '"${1:-32}"''
             ```
-
+        
         8.  ~/bin/llvm/voltron-stack
-
+        
             ```bash
             #!/usr/bin/env bash
             # Maintained in linux-config.org
             voltron v stack
             ```
-
+    
     5.  lldb python scripting     :python:
-
+    
         lldb also has a built-in Python interpreter, which is accessible by the “script” command. All the functionality of the debugger is available as classes in the Python interpreter, so the more complex commands that in gdb you would introduce with the “define” command can be done by writing Python functions using the lldb-Python library, then loading the scripts into your running session and accessing them with the “script” command.
-
+        
         <https://lldb.llvm.org/use/python.html>
-
+        
         1.  TODO follow up on SE post
-
+        
             <https://stackoverflow.com/questions/68207020/trying-to-run-pdb-in-an-imported-lldb-python-script-results-in-error-attributeer>
 
 
@@ -2801,19 +2812,19 @@ source "${HOME}/.ghcup/env"
 2.  ipdb     :ipdb:
 
     <https://pypi.org/project/ipdb/>
-
+    
     1.  installing
-
+    
         ```bash
         pip install ipdb
         ```
-
+    
     2.  Better Python Debugging
-
+    
         <https://hasil-sharma.github.io/2017-05-13-python-ipdb/>
-
+    
     3.  ~/.ipdb
-
+    
         ```conf
         # Maintained in linux-config.org
         context=5
@@ -2886,9 +2897,9 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 3.  STM32CubeMX app
 
     This is a bit defunct now (may 2022) as they have packaged their code into exes. Also there is a wayland exe.
-
+    
     :ID: b9b221b0-510f-415b-8819-c96b6e00a1d9 :header-args:tangle: no
-
+    
     ```bash
     #!/usr/bin/env bash
     #Maintained in linux-config.org
@@ -2906,7 +2917,7 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 5.  launcher for X11 compatability
 
     pending deletion
-
+    
     ```bash
     #!/usr/bin/env bash
     # Maintained in linux-config.org
@@ -3014,11 +3025,11 @@ You must copy these into [/etc/acpi/actions](file:///etc/acpi/actions) if you ha
     . /usr/share/acpi-support/policy-funcs
     getState
     echo $( [ $STATE ="AC" ] && echo 0 || echo 1 ) > /sys/class/leds/qc71_laptop::lightbar/brightness
-
+    
     ```
-
+    
     remembering to restart acpid :
-
+    
     ```bash
     sudo systemctl restart acpid
     ```
@@ -3188,12 +3199,12 @@ mu index
     ```conf
     [Unit]
     Description=Mailbox synchronization timer
-
+    
     [Timer]
     OnBootSec=15m
     OnUnitActiveSec=60m
     Unit=mbsync.service
-
+    
     [Install]
     WantedBy=timers.target
     ```
@@ -3203,14 +3214,14 @@ mu index
     ```conf
     [Unit]
     Description=Mailbox synchronization service
-
+    
     [Service]
     Type=oneshot
     ExecStart=/home/rgr/bin/getmails
     ```
-
+    
     and activate them
-
+    
     ```bash
     systemctl --user enable mbsync.timer
     systemctl --user start mbsync.timer
@@ -3277,13 +3288,13 @@ fi
 1.  cron entry
 
     To edit the user cron table:
-
+    
     ```bash
     sudo crontab -u rgr -e
     ```
-
+    
     entry to check every 15 minutes
-
+    
     > \*/15 \* \* \* \* /home/rgr/bin/AIScheck
 
 
@@ -3543,7 +3554,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org04e11b2).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgb945352).
 
 ```bash
 #!/usr/bin/env bash
@@ -3579,7 +3590,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org04e11b2"></a>
+<a id="orgb945352"></a>
 
 ### Examples:
 
@@ -3881,7 +3892,7 @@ export POWERSTATE=$STATE
     do
         sleep ${2:-1} && echo "$(date +"%Y-%m-%d %H:%M:%S"):$(nvidia-smi -q -d POWER | grep Draw | sed 's/  */ /g')"
     done
-
+    
     ```
 
 
