@@ -129,6 +129,7 @@
 !/directories/bin/remove-broken-symlinks
 !/directories/bin/remove-conflicted-copies
 !/directories/bin/rgr-logger
+!/directories/bin/rsnapshot-if-mounted
 !/directories/bin/rnv
 !/directories/bin/securelock
 !/directories/bin/sharemouse

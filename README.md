@@ -1139,6 +1139,7 @@ bindsym $mod+Control+q mode "$mode_system"
 ```conf
 # assign [title="dbg:"] $ws3
 assign [class="Ardour"] $ws6
+assign [class="Code"] $ws3
 assign [class="Signal"] $ws8
 assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
@@ -2006,6 +2007,12 @@ fi
     output eDP-1 mode 1920x1080 position 2560,0
     output HDMI-A-1  mode 2560x1440 position 0,0
     }
+    
+    {
+    output eDP-1 mode 1920x1080 position 2560,0
+    output DP-2  mode 2560x1440 position 0,0
+    }
+    
     ```
 
 3.  config-thinkpadt460
@@ -2149,7 +2156,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org8160fb6"></a>
+<a id="org4c71ccb"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2170,7 +2177,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org8160fb6).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org4c71ccb).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3554,7 +3561,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgb945352).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7401f7a).
 
 ```bash
 #!/usr/bin/env bash
@@ -3590,7 +3597,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgb945352"></a>
+<a id="org7401f7a"></a>
 
 ### Examples:
 
@@ -3715,13 +3722,25 @@ fi
 ```
 
 
-## ~/bin/sharemouse
+## ~/bin/rsnapshot-if-mounted
 
 ```bash
 #!/usr/bin/env bash
 #Maintained in linux-config.org
-exec ssh -X ${1-192.168.2.100} x2x -east -to :0
+mountpoint=${1:-"/media/rsnapshot"};
+rsnapshottype=${2:-"alpha"};
+if $(/usr/bin/mountpoint -q $mountpoint); then
+    echo "$mountpoint is mounted";
+    /usr/bin/rsnapshot -v "$rsnapshottype";
+else
+    echo "$mountpoint not mounted";
+fi;
 ```
+
+
+## ~/bin/sharemouse
+
+,#+begin\_src bash :tangle "~/bin/sharemouse" #!/usr/bin/env bash #Maintained in linux-config.org exec ssh -X ${1-192.168.2.100} x2x -east -to :0 \#+end\_src
 
 
 ## ~/bin/wifi-toggle
