@@ -287,7 +287,6 @@ plugins=(
     tmux
     safe-paste
     colored-man-pages
-    git
     zsh-syntax-highlighting
 )
 HISTFILE=${XDG_CONFIG_HOME}/zsh/.zsh_history_$HOST
@@ -2156,7 +2155,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="org4c71ccb"></a>
+<a id="orgcc7535e"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2177,7 +2176,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org4c71ccb).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcc7535e).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3561,7 +3560,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org7401f7a).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgf1bde52).
 
 ```bash
 #!/usr/bin/env bash
@@ -3597,7 +3596,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org7401f7a"></a>
+<a id="orgf1bde52"></a>
 
 ### Examples:
 

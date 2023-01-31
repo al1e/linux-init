@@ -87,7 +87,6 @@ plugins=(
     tmux
     safe-paste
     colored-man-pages
-    git
     zsh-syntax-highlighting
 )
 HISTFILE=${XDG_CONFIG_HOME}/zsh/.zsh_history_$HOST
