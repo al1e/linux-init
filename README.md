@@ -319,6 +319,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 # DEFAULT_USER means we dont show user and host in normal shell prompt
 DEFAULT_USER=$USER
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 chuck
 ```
 
@@ -2110,9 +2111,9 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout 10 'pidof swaylock && sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_BLANK:-900} 'sway-lock-utils blank' \
+     timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-1800} 'sway-lock' \
+     timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock' \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \
@@ -2155,7 +2156,7 @@ notify-send -t 3000 "${@}"
 ```
 
 
-<a id="orgcc7535e"></a>
+<a id="orgbe0db8e"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2176,7 +2177,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgcc7535e).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgbe0db8e).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3560,7 +3561,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgf1bde52).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org177a6a3).
 
 ```bash
 #!/usr/bin/env bash
@@ -3596,7 +3597,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgf1bde52"></a>
+<a id="org177a6a3"></a>
 
 ### Examples:
 

@@ -787,10 +787,10 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
 #+end_src
 *** bash git prompt
 #+begin_src bash :tangle "DotFiles/.bashrc"
-  if [ -f "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
-      GIT_PROMPT_ONLY_IN_REPO=1
-      source "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh"
-  fi
+    if [ -f "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh" ]; then
+        GIT_PROMPT_ONLY_IN_REPO=1
+        source "${HOME}/bin/thirdparty/bash-git-prompt/gitprompt.sh"
+    fi
 #+end_src
 * ZSH Related
 ** ~/.config/zsh/.zshrc
@@ -916,6 +916,7 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   # DEFAULT_USER means we dont show user and host in normal shell prompt
   DEFAULT_USER=$USER
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
   chuck
 #+end_src
 
@@ -2726,9 +2727,9 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout 10 'pidof swaylock && sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_BLANK:-900} 'sway-lock-utils blank' \
+       timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-1800} 'sway-lock' \
+       timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \
