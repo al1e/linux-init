@@ -8,7 +8,7 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock' \
+     timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock-utils lock' \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \

@@ -1510,7 +1510,7 @@ exec systemctl start --user mbsync.service
 
 *** mako
 #+begin_src conf
-  exec mako
+  # exec mako
 #+end_src
 
 *** launcher
@@ -2729,7 +2729,7 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock' \
+       timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock-utils lock' \
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \
@@ -2915,6 +2915,7 @@ Use mako as the notification daemon
 #+end_src
 ***** ~/.config/mako/config
 #+begin_src conf :tangle "~/.config/mako/config"
+default-timeout=10000
 #+end_src
 ***** notification daemon
 #+begin_src bash
