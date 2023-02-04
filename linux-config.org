@@ -2639,8 +2639,13 @@ Load a host specific kanshi file if it exists
   }
 
   {
-  output eDP-1 mode 1920x1080 position 2560,0
+  output eDP-1 mode 2560x1440 position 2560,0
   output HDMI-A-1  mode 2560x1440 position 0,0
+  }
+
+  {
+  output eDP-1 mode 2560x1440 position 2560,0
+  output DP-1  mode 2560x1440 position 0,0
   }
 
 #+end_src
