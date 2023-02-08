@@ -890,6 +890,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+t inhibit_fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -1177,7 +1178,7 @@ bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
 bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
-bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
+bindsym $mod+Control+f exec command -v thunar && thunar || nautilus
 bindsym $mod+Control+e exec lldb-ui "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
 bindsym $mod+Control+u exec lldb-ui "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
@@ -1991,7 +1992,16 @@ fi
     }
     ```
 
-2.  config-thinkpadt14s
+2.  config-um690
+
+    ```conf
+    {
+    output HDMI-A-1  mode 2560x1440 position 0,0
+    output HDMI-A-2  mode 1920x1080 position 2560,0
+    }
+    ```
+
+3.  config-thinkpadt14s
 
     ```conf
     {
@@ -2018,15 +2028,6 @@ fi
     output DP-4 mode 1920x1080 position 0,0
     }
     
-    ```
-
-3.  config-um690
-
-    ```conf
-    {
-    output HDMI-A-1  mode 2560x1440 position 0,0
-    output HDMI-A-2  mode 1920x1080 position 25660,0
-    }
     ```
 
 4.  config-xmgneo
@@ -2189,7 +2190,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="orgb4e6313"></a>
+<a id="orgc96efe9"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2210,7 +2211,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgb4e6313).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgc96efe9).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3594,7 +3595,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org1351e2e).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgac26095).
 
 ```bash
 #!/usr/bin/env bash
@@ -3630,7 +3631,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org1351e2e"></a>
+<a id="orgac26095"></a>
 
 ### Examples:
 

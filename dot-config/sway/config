@@ -96,6 +96,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+t inhibit_fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -250,7 +251,7 @@ bindsym $mod+Control+Shift+s exec sway-do-tool "Steam" "steam"
 bindsym $mod+Control+i exec emacsclient -c -eval '(progn (rgr/erc-start))'
 bindsym $mod+Control+d exec emacsclient -c -eval '(dired "~")'
 bindsym $mod+Control+Shift+d exec sway-screen-menu
-bindsym $mod+Control+f exec command -v thunar && thumar || nautilus
+bindsym $mod+Control+f exec command -v thunar && thunar || nautilus
 bindsym $mod+Control+e exec lldb-ui "/home/rgr/development/projects/emacs/emacs/src" "emacs"; workspace $ws3
 bindsym $mod+Control+u exec lldb-ui "/home/rgr/development/education/Udemy/UdemyCpp/Computerspiel1/" "udemy"; workspace $ws3
 bindsym $mod+Control+g exec oneterminal "lldb"
