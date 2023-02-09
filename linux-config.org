@@ -1890,6 +1890,7 @@ https://github.com/Alexays/Waybar/wiki/Configuration
   {
     "layer": "top",
     "position": "bottom",
+    "output": "HDMI-A-1",
     "height": 30,
     "width": 1280,
 

@@ -1220,6 +1220,7 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
         {
           "layer": "top",
           "position": "bottom",
+          "output": "HDMI-A-1",
           "height": 30,
           "width": 1280,
         
@@ -2191,7 +2192,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org592b148"></a>
+<a id="org4f2b641"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2212,7 +2213,7 @@ swaymsg "output ${m} ${c}"
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org592b148).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org4f2b641).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3596,7 +3597,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga0258a9).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org724714f).
 
 ```bash
 #!/usr/bin/env bash
@@ -3632,7 +3633,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orga0258a9"></a>
+<a id="org724714f"></a>
 
 ### Examples:
 
