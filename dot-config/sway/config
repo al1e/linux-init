@@ -31,6 +31,18 @@ Bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec $editor
 bindsym $mod+d exec $menu
 
+# exec sway-lock
+exec sway-kanshi
+exec sway-idle
+exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+exec sleep 2 && gpg-cache
+exec blueman-applet
+exec nm-applet --indicator
+
+include /etc/sway/config.d/*
+
+include "${HOME}/.config/sway/host-config-$(hostname)"
+
 exec systemctl start --user mbsync.service
 
 exec xrdb -merge ~/.Xresources
@@ -123,16 +135,39 @@ bindsym $mod+Tab workspace back_and_forth
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
+
+exec sway-screen-naming
+set $leftOutput  "HDMI-A-1"
+set $rightOutput "HDMI-A-2"
+# set $leftOutput  $$leftOutput
+# set $rightOutput $$rightOutput
+
 set $ws1 "1:edit"
+workspace $ws1  output $leftOutput
+
 set $ws2 "2:research"
+workspace $ws2  output $leftOutput
+
 set $ws3 "3:IDE"
+workspace $ws3  output $leftOutput
+
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
+workspace $ws6  output $rightOutput
+
 set $ws7 "7:video"
+workspace $ws7  output $rightOutput
+
 set $ws8 "8:irc"
+workspace $ws8  output $rightOutput
+
 set $ws9 "9:steam"
+workspace 9  output $rightOutput
+
+
 set $ws10 "10"
+workspace 1
 
 
 # switch to workspace
@@ -226,6 +261,8 @@ bindsym $mod+Control+q mode "$mode_system"
 assign [class="Ardour"] $ws6
 assign [class="Code"] $ws3
 assign [class="Signal"] $ws8
+assign [class="jetbrains-studio"] $ws3
+assign [app_id="emacs"] $ws1
 assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
 assign [class="Steam"] $ws9
@@ -268,19 +305,6 @@ bar {
 swaybar_command waybar
 }
 bindsym $mod+Alt+b exec killall -SIGUSR1 waybar
-
-# exec sway-lock
-exec sway-kanshi
-exec sway-idle
-exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec sleep 2 && gpg-cache
-exec blueman-applet
-exec nm-applet --indicator
-exec swaymsg workspace $ws1
-
-include /etc/sway/config.d/*
-
-include "${HOME}/.config/sway/host-config-$(hostname)"
 
 for_window [class="STM32CubeIDE"] floating enable
 assign [class="STM32CubeIDE"] $ws3

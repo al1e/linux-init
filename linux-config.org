@@ -1491,6 +1491,45 @@ X11 apps still need resource definitions when launched under XWayland.
     bindsym $mod+d exec $menu
 
 #+end_src
+
+*** autostart                                                     :autostart:
+#+begin_src conf
+  # exec sway-lock
+  exec sway-kanshi
+  exec sway-idle
+  exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+  exec sleep 2 && gpg-cache
+  exec blueman-applet
+  exec nm-applet --indicator
+#+end_src
+*** library include
+#+begin_src conf
+  include /etc/sway/config.d/*
+#+end_src
+*** host specific                                             :scale:scaling:
+#+begin_src conf
+  include "${HOME}/.config/sway/host-config-$(hostname)"
+#+end_src
+**** Thinkpad T14s
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/host-config-thinkpadt14s"
+:END:
+***** scaling
+#+begin_src conf
+  #Maintained in linux-config.org
+  output eDP-1 mode 1920x1080@60hz scale 1.0
+#+end_src
+
+**** XMG Neo
+:PROPERTIES:
+:header-args:conf: :tangle "~/.config/sway/host-config-xmgneo"
+:END:
+***** scaling
+#+begin_src conf
+  #Maintained in linux-config.org
+  output eDP-1 mode 2560x1440@165hz scale 1.15
+#+end_src
+
 *** mbsync
 I do this here because the user systemd service wont start with an encrypted HOMEDIR. Normally I'd kick this
 off in the *.profile* or something.
@@ -1625,16 +1664,39 @@ I want a key to create and then toggle a terminal.
 
   # Define names for default workspaces for which we configure key bindings later on.
   # We use variables to avoid repeating the names in multiple places.
+
+  exec sway-screen-naming
+  set $leftOutput  "HDMI-A-1"
+  set $rightOutput "HDMI-A-2"
+  # set $leftOutput  $$leftOutput
+  # set $rightOutput $$rightOutput
+
   set $ws1 "1:edit"
+  workspace $ws1  output $leftOutput
+
   set $ws2 "2:research"
+  workspace $ws2  output $leftOutput
+
   set $ws3 "3:IDE"
+  workspace $ws3  output $leftOutput
+
   set $ws4 "4:browse"
   set $ws5 "5:dired"
   set $ws6 "6:music"
+  workspace $ws6  output $rightOutput
+
   set $ws7 "7:video"
+  workspace $ws7  output $rightOutput
+
   set $ws8 "8:irc"
+  workspace $ws8  output $rightOutput
+
   set $ws9 "9:steam"
+  workspace 9  output $rightOutput
+
+
   set $ws10 "10"
+  workspace 1
 
 
   # switch to workspace
@@ -1821,6 +1883,8 @@ A basic [[https://github.com/yory8/clipman][clipboard manager]] for Wayland, wit
   assign [class="Ardour"] $ws6
   assign [class="Code"] $ws3
   assign [class="Signal"] $ws8
+  assign [class="jetbrains-studio"] $ws3
+  assign [app_id="emacs"] $ws1
   assign [class="Hexchat"] $ws8
   assign [class="discord"] $ws8
   assign [class="Steam"] $ws9
@@ -2471,44 +2535,6 @@ Thank you https://github.com/deanproxy/dotfiles/blob/master/linux/i3/scripts/blu
       fi
   fi
 #+end_src
-*** autostart                                                     :autostart:
-#+begin_src conf
-  # exec sway-lock
-  exec sway-kanshi
-  exec sway-idle
-  exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-  exec sleep 2 && gpg-cache
-  exec blueman-applet
-  exec nm-applet --indicator
-  exec swaymsg workspace $ws1
-#+end_src
-*** library include
-#+begin_src conf
-  include /etc/sway/config.d/*
-#+end_src
-*** host specific                                             :scale:scaling:
-#+begin_src conf
-  include "${HOME}/.config/sway/host-config-$(hostname)"
-#+end_src
-**** Thinkpad T14s
-:PROPERTIES:
-:header-args:conf: :tangle "~/.config/sway/host-config-thinkpadt14s"
-:END:
-***** scaling
-#+begin_src conf
-  #Maintained in linux-config.org
-  output eDP-1 mode 1920x1080@60hz scale 1.0
-#+end_src
-
-**** XMG Neo
-:PROPERTIES:
-:header-args:conf: :tangle "~/.config/sway/host-config-xmgneo"
-:END:
-***** scaling
-#+begin_src conf
-  #Maintained in linux-config.org
-  output eDP-1 mode 2560x1440@165hz scale 1.15
-#+end_src
 ** bin,scripts                                                 :sway:wayland:
 *** ~/bin/sway-sway-active-monitors-count
 #+begin_src bash :tangle ~/bin/sway/sway-active-monitors-count
@@ -2820,6 +2846,23 @@ but in both cases we check if it exists in the sway tree, and, if not, set it it
   swaymsg "output ${m} ${c}"
   (sleep 2 && sway-notify "${m}:${c}") &
 #+end_src
+
+*** ~/bin/sway/sway-screen-naming
+See https://www.reddit.com/r/swaywm/comments/10ys0oy/comment/j80lu88/?context=3
+#+begin_src bash :tangle "~/bin/sway/sway-screen-naming"
+  #!/usr/bin/env bash
+
+
+  outputs=(
+      $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
+  )
+
+  export leftOutput=${outputs[0]}
+  export rightOutput=${outputs[1]}
+
+  swaymsg "set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";"
+#+end_src
+
 *** ~/bin/sway/sway-screen-menu
 Gui to select a display and enable/disable it. Calls down to [[id:539e9065-2df6-44ac-9ce8-530f9fd9e3c4][~/bin/sway/sway-screen]].
 :PROPERTIES:

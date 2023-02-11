@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+
+outputs=(
+    $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
+)
+
+export leftOutput=${outputs[0]}
+export rightOutput=${outputs[1]}
+
+swaymsg "set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";"

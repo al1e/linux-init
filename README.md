@@ -761,6 +761,51 @@ bindsym $mod+d exec $menu
 ```
 
 
+### autostart     :autostart:
+
+```conf
+# exec sway-lock
+exec sway-kanshi
+exec sway-idle
+exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
+exec sleep 2 && gpg-cache
+exec blueman-applet
+exec nm-applet --indicator
+```
+
+
+### library include
+
+```conf
+include /etc/sway/config.d/*
+```
+
+
+### host specific     :scale:scaling:
+
+```conf
+include "${HOME}/.config/sway/host-config-$(hostname)"
+```
+
+1.  Thinkpad T14s
+
+    1.  scaling
+    
+        ```conf
+        #Maintained in linux-config.org
+        output eDP-1 mode 1920x1080@60hz scale 1.0
+        ```
+
+2.  XMG Neo
+
+    1.  scaling
+    
+        ```conf
+        #Maintained in linux-config.org
+        output eDP-1 mode 2560x1440@165hz scale 1.15
+        ```
+
+
 ### mbsync
 
 I do this here because the user systemd service wont start with an encrypted HOMEDIR. Normally I'd kick this off in the **.profile** or something.
@@ -917,16 +962,39 @@ bindsym $mod+Tab workspace back_and_forth
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
+
+exec sway-screen-naming
+set $leftOutput  "HDMI-A-1"
+set $rightOutput "HDMI-A-2"
+# set $leftOutput  $$leftOutput
+# set $rightOutput $$rightOutput
+
 set $ws1 "1:edit"
+workspace $ws1  output $leftOutput
+
 set $ws2 "2:research"
+workspace $ws2  output $leftOutput
+
 set $ws3 "3:IDE"
+workspace $ws3  output $leftOutput
+
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
+workspace $ws6  output $rightOutput
+
 set $ws7 "7:video"
+workspace $ws7  output $rightOutput
+
 set $ws8 "8:irc"
+workspace $ws8  output $rightOutput
+
 set $ws9 "9:steam"
+workspace 9  output $rightOutput
+
+
 set $ws10 "10"
+workspace 1
 
 
 # switch to workspace
@@ -1142,6 +1210,8 @@ bindsym $mod+Control+q mode "$mode_system"
 assign [class="Ardour"] $ws6
 assign [class="Code"] $ws3
 assign [class="Signal"] $ws8
+assign [class="jetbrains-studio"] $ws3
+assign [app_id="emacs"] $ws1
 assign [class="Hexchat"] $ws8
 assign [class="discord"] $ws8
 assign [class="Steam"] $ws9
@@ -1817,52 +1887,6 @@ bindsym $mod+Control+t exec sway-notify "Opening NEW terminal instance" && alacr
             ```
 
 
-### autostart     :autostart:
-
-```conf
-# exec sway-lock
-exec sway-kanshi
-exec sway-idle
-exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep 1 && sway-notify "~/.sway-autostart processed")'
-exec sleep 2 && gpg-cache
-exec blueman-applet
-exec nm-applet --indicator
-exec swaymsg workspace $ws1
-```
-
-
-### library include
-
-```conf
-include /etc/sway/config.d/*
-```
-
-
-### host specific     :scale:scaling:
-
-```conf
-include "${HOME}/.config/sway/host-config-$(hostname)"
-```
-
-1.  Thinkpad T14s
-
-    1.  scaling
-    
-        ```conf
-        #Maintained in linux-config.org
-        output eDP-1 mode 1920x1080@60hz scale 1.0
-        ```
-
-2.  XMG Neo
-
-    1.  scaling
-    
-        ```conf
-        #Maintained in linux-config.org
-        output eDP-1 mode 2560x1440@165hz scale 1.15
-        ```
-
-
 ## bin,scripts     :sway:wayland:
 
 
@@ -2192,7 +2216,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org4f2b641"></a>
+<a id="orgec8e351"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2211,9 +2235,28 @@ swaymsg "output ${m} ${c}"
 ```
 
 
+### ~/bin/sway/sway-screen-naming
+
+See <https://www.reddit.com/r/swaywm/comments/10ys0oy/comment/j80lu88/?context=3>
+
+```bash
+#!/usr/bin/env bash
+
+
+outputs=(
+    $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
+)
+
+export leftOutput=${outputs[0]}
+export rightOutput=${outputs[1]}
+
+swaymsg "set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";"
+```
+
+
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org4f2b641).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgec8e351).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3597,7 +3640,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org724714f).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3ca1fb8).
 
 ```bash
 #!/usr/bin/env bash
@@ -3633,7 +3676,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org724714f"></a>
+<a id="org3ca1fb8"></a>
 
 ### Examples:
 
