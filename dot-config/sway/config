@@ -136,38 +136,19 @@ bindsym $mod+Tab workspace back_and_forth
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 
-exec sway-screen-naming
-set $leftOutput  "HDMI-A-1"
-set $rightOutput "HDMI-A-2"
-# set $leftOutput  $$leftOutput
-# set $rightOutput $$rightOutput
-
 set $ws1 "1:edit"
-workspace $ws1  output $leftOutput
-
 set $ws2 "2:research"
-workspace $ws2  output $leftOutput
-
 set $ws3 "3:IDE"
-workspace $ws3  output $leftOutput
-
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
-workspace $ws6  output $rightOutput
-
 set $ws7 "7:video"
-workspace $ws7  output $rightOutput
-
 set $ws8 "8:irc"
-workspace $ws8  output $rightOutput
-
 set $ws9 "9:steam"
-workspace 9  output $rightOutput
-
-
 set $ws10 "10"
-workspace 1
+
+exec sway-screen-naming
+bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
 # switch to workspace

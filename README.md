@@ -963,38 +963,19 @@ bindsym $mod+Tab workspace back_and_forth
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 
-exec sway-screen-naming
-set $leftOutput  "HDMI-A-1"
-set $rightOutput "HDMI-A-2"
-# set $leftOutput  $$leftOutput
-# set $rightOutput $$rightOutput
-
 set $ws1 "1:edit"
-workspace $ws1  output $leftOutput
-
 set $ws2 "2:research"
-workspace $ws2  output $leftOutput
-
 set $ws3 "3:IDE"
-workspace $ws3  output $leftOutput
-
 set $ws4 "4:browse"
 set $ws5 "5:dired"
 set $ws6 "6:music"
-workspace $ws6  output $rightOutput
-
 set $ws7 "7:video"
-workspace $ws7  output $rightOutput
-
 set $ws8 "8:irc"
-workspace $ws8  output $rightOutput
-
 set $ws9 "9:steam"
-workspace 9  output $rightOutput
-
-
 set $ws10 "10"
-workspace 1
+
+exec sway-screen-naming
+bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
 # switch to workspace
@@ -2216,7 +2197,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="orgec8e351"></a>
+<a id="orga4583ff"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2242,7 +2223,6 @@ See <https://www.reddit.com/r/swaywm/comments/10ys0oy/comment/j80lu88/?context=3
 ```bash
 #!/usr/bin/env bash
 
-
 outputs=(
     $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
 )
@@ -2250,13 +2230,27 @@ outputs=(
 export leftOutput=${outputs[0]}
 export rightOutput=${outputs[1]}
 
-swaymsg "set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";"
+swaymsg "
+  set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";
+  workspace \$ws1  output \"$leftOutput\";
+  workspace \$ws2  output \"$leftOutput\";
+  workspace \$ws3  output \"$leftOutput\";
+  workspace \$ws6  output \"$rightOutput\";
+  workspace \$ws7  output \"$rightOutput\";
+  workspace \$ws8  output \"$rightOutput\";
+  workspace \$ws9  output \"$rightOutput\";
+"
+
+echo $leftOutput
+echo $rightOutput
+
+exit 0
 ```
 
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgec8e351).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga4583ff).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3640,7 +3634,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3ca1fb8).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd813ed5).
 
 ```bash
 #!/usr/bin/env bash
@@ -3676,7 +3670,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org3ca1fb8"></a>
+<a id="orgd813ed5"></a>
 
 ### Examples:
 
