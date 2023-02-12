@@ -17,8 +17,3 @@ swaymsg "
   workspace \$ws8  output \"$rightOutput\";
   workspace \$ws9  output \"$rightOutput\";
 "
-
-echo $leftOutput
-echo $rightOutput
-
-exit 0

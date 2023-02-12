@@ -2850,11 +2850,6 @@ See https://www.reddit.com/r/swaywm/comments/10ys0oy/comment/j80lu88/?context=3
     workspace \$ws8  output \"$rightOutput\";
     workspace \$ws9  output \"$rightOutput\";
   "
-
-  echo $leftOutput
-  echo $rightOutput
-
-  exit 0
 #+end_src
 
 *** ~/bin/sway/sway-screen-menu
