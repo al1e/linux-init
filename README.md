@@ -963,18 +963,18 @@ bindsym $mod+Tab workspace back_and_forth
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 
-set $ws1 "1:edit"
-set $ws2 "2:research"
-set $ws3 "3:IDE"
-set $ws4 "4:browse"
-set $ws5 "5:dired"
-set $ws6 "6:music"
-set $ws7 "7:video"
-set $ws8 "8:irc"
-set $ws9 "9:steam"
+set $ws1 1:edit
+set $ws2 2:research
+set $ws3 3:IDE
+set $ws4 4:browse
+set $ws5 5:dired
+set $ws6 6:music
+set $ws7 7:video
+set $ws8 8:irc
+set $ws9 9:steam
 set $ws10 "10"
 
-exec sway-screen-naming
+exec_always sway-screen-naming
 bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
@@ -2197,7 +2197,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="orga4583ff"></a>
+<a id="orga70b30b"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2250,7 +2250,7 @@ exit 0
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga4583ff).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga70b30b).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3634,7 +3634,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgd813ed5).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgc98dc9f).
 
 ```bash
 #!/usr/bin/env bash
@@ -3670,7 +3670,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgd813ed5"></a>
+<a id="orgc98dc9f"></a>
 
 ### Examples:
 
