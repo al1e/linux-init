@@ -2834,25 +2834,27 @@ but in both cases we check if it exists in the sway tree, and, if not, set it it
 *** ~/bin/sway/sway-screen-naming
 See https://www.reddit.com/r/swaywm/comments/10ys0oy/comment/j80lu88/?context=3
 #+begin_src bash :tangle "~/bin/sway/sway-screen-naming"
-  #!/usr/bin/env bash
+    #!/usr/bin/env bash
 
-  outputs=(
-      $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
-  )
+    outputs=(
+        $(swaymsg -t get_outputs | jq -r 'sort_by(.rect.x) | .[].name')
+    )
 
-  export leftOutput=${outputs[0]}
-  export rightOutput=${outputs[1]}
+    export leftOutput=${outputs[0]}
+    export rightOutput=${outputs[1]}
 
-  swaymsg "
-    set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";
-    workspace \$ws1  output \"$leftOutput\";
-    workspace \$ws2  output \"$leftOutput\";
-    workspace \$ws3  output \"$leftOutput\";
-    workspace \$ws6  output \"$rightOutput\";
-    workspace \$ws7  output \"$rightOutput\";
-    workspace \$ws8  output \"$rightOutput\";
-    workspace \$ws9  output \"$rightOutput\";
-  "
+    swaymsg "
+      set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";
+      workspace \$ws1; move workspace to output \"$leftOutput\";
+      workspace \$ws6; move workspace to output \"$rightOutput\";
+      workspace \$ws1  output \"$leftOutput\";
+      workspace \$ws2  output \"$leftOutput\";
+      workspace \$ws3  output \"$leftOutput\";
+      workspace \$ws6  output \"$rightOutput\";
+      workspace \$ws7  output \"$rightOutput\";
+      workspace \$ws8  output \"$rightOutput\";
+      workspace \$ws9  output \"$rightOutput\";
+    "
 #+end_src
 
 *** ~/bin/sway/sway-screen-menu
