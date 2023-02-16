@@ -2198,7 +2198,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org9f8f88c"></a>
+<a id="org192c4b4"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2233,6 +2233,8 @@ export rightOutput=${outputs[1]}
 
 swaymsg "
   set \$leftOutput \"$leftOutput\"; set \$rightOutput \"$rightOutput\";
+  workspace \$ws1; move workspace to output \"$leftOutput\";
+  workspace \$ws6; move workspace to output \"$rightOutput\";
   workspace \$ws1  output \"$leftOutput\";
   workspace \$ws2  output \"$leftOutput\";
   workspace \$ws3  output \"$leftOutput\";
@@ -2246,7 +2248,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org9f8f88c).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org192c4b4).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3630,7 +3632,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org50a6a32).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0e966c3).
 
 ```bash
 #!/usr/bin/env bash
@@ -3666,7 +3668,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org50a6a32"></a>
+<a id="org0e966c3"></a>
 
 ### Examples:
 
