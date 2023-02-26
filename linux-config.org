@@ -730,8 +730,6 @@ see [[file:/usr/share/doc/gnupg/examples][/usr/share/doc/gnupg/examples]]
   [ -f ~/.profile ] && . ~/.profile || true
   [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-  dropbox-start-once &> /dev/null  &
-
 #+end_src
 ** ~/.bashrc
 #+begin_src bash :tangle "DotFiles/.bashrc"
@@ -1501,6 +1499,8 @@ X11 apps still need resource definitions when launched under XWayland.
   exec sleep 2 && gpg-cache
   exec blueman-applet
   exec nm-applet --indicator
+  exec dropbox-start-once
+
 #+end_src
 *** library include
 #+begin_src conf
@@ -1548,6 +1548,7 @@ exec systemctl start --user mbsync.service
 #+end_src
 
 *** mako
+done by linux systemd
 #+begin_src conf
   # exec mako
 #+end_src
@@ -2628,7 +2629,7 @@ Load a host specific kanshi file if it exists
 #+begin_src conf :tangle "dot-config/kanshi/config-um690"
 {
 output HDMI-A-1  mode 2560x1440 position 0,0
-output HDMI-A-2  mode 1920x1080 position 2560,0
+output HDMI-A-2  mode 1920x1080 position 2560,116
 }
 #+end_src
 
@@ -2777,8 +2778,9 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \
-       lock 'sway-lock' \
-       before-sleep 'sway-lock'
+       lock 'sway-lock-utils lock' \
+       unlock 'sway-lock-utils unblank' \
+       before-sleep 'sway-lock-utils lock'
 #+end_src
 
 *** ~/bin/sway/sway-laptop-id
@@ -2963,8 +2965,8 @@ Thanks: https://www.reddit.com/r/linuxmasterrace/comments/k1bjkp/i_wrote_a_trivi
 #+begin_src bash :tangle "~/bin/sway/sway-www"
   #!/usr/bin/env bash
   # Maintained in linux-config.org
-  google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
-  # google-chrome  "$@" &> /dev/null &
+  google-chrome   "$@" &> /dev/null &
+  # -google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
   sleep 0.5 && sway-do-tool "Google-chrome"
 #+end_src
 *** ~/bin/sway/sway-wifi

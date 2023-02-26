@@ -122,8 +122,6 @@ logger -t "startup-initfile"  BASH_PROFILE
 [ -f ~/.profile ] && . ~/.profile || true
 [ -f ~/.bashrc ] && . ~/.bashrc || true
 
-dropbox-start-once &> /dev/null  &
-
 ```
 
 
@@ -771,6 +769,8 @@ exec '[ -f "${HOME}/.sway-autostart" ]  && . "${HOME}/.sway-autostart" && (sleep
 exec sleep 2 && gpg-cache
 exec blueman-applet
 exec nm-applet --indicator
+exec dropbox-start-once
+
 ```
 
 
@@ -823,6 +823,8 @@ exec xrdb -merge ~/.Xresources
 
 
 ### mako
+
+done by linux systemd
 
 ```conf
 # exec mako
@@ -2005,7 +2007,7 @@ fi
     ```conf
     {
     output HDMI-A-1  mode 2560x1440 position 0,0
-    output HDMI-A-2  mode 1920x1080 position 2560,0
+    output HDMI-A-2  mode 1920x1080 position 2560,116
     }
     ```
 
@@ -2159,8 +2161,9 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \
-     lock 'sway-lock' \
-     before-sleep 'sway-lock'
+     lock 'sway-lock-utils lock' \
+     unlock 'sway-lock-utils unblank' \
+     before-sleep 'sway-lock-utils lock'
 ```
 
 
@@ -2198,7 +2201,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org192c4b4"></a>
+<a id="orge246372"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2248,7 +2251,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org192c4b4).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge246372).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2375,8 +2378,8 @@ sway --my-next-gpu-wont-be-nvidia "$@"
 ```bash
 #!/usr/bin/env bash
 # Maintained in linux-config.org
-google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
-# google-chrome  "$@" &> /dev/null &
+google-chrome   "$@" &> /dev/null &
+# -google-chrome  -enable-features=UseOzonePlatform -ozone-platform=wayland "$@" &> /dev/null &
 sleep 0.5 && sway-do-tool "Google-chrome"
 ```
 
@@ -3632,7 +3635,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0e966c3).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org797bae5).
 
 ```bash
 #!/usr/bin/env bash
@@ -3668,7 +3671,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org0e966c3"></a>
+<a id="org797bae5"></a>
 
 ### Examples:
 
