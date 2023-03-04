@@ -1678,7 +1678,7 @@ I want a key to create and then toggle a terminal.
   set $ws10 "10"
 
   exec_always sway-screen-naming
-  bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
+  # Bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
   # switch to workspace

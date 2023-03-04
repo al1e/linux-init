@@ -149,7 +149,7 @@ set $ws9 9:steam
 set $ws10 "10"
 
 exec_always sway-screen-naming
-bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
+# bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
 # switch to workspace

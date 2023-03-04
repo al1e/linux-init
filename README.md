@@ -977,7 +977,7 @@ set $ws9 9:steam
 set $ws10 "10"
 
 exec_always sway-screen-naming
-bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
+# Bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
 # switch to workspace
@@ -2202,7 +2202,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org7eae0b3"></a>
+<a id="org5937d23"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2252,7 +2252,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org7eae0b3).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org5937d23).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3636,7 +3636,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3724be4).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga1d6348).
 
 ```bash
 #!/usr/bin/env bash
@@ -3672,7 +3672,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org3724be4"></a>
+<a id="orga1d6348"></a>
 
 ### Examples:
 
