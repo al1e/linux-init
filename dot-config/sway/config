@@ -149,7 +149,7 @@ set $ws9 9:steam
 set $ws10 "10"
 
 exec_always sway-screen-naming
-# bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
+# Bindsym F12 exec sway-notify "left:$$leftOutput, right:$$rightOutput"
 
 
 # switch to workspace
@@ -240,7 +240,7 @@ bindsym Escape mode "default"
 bindsym $mod+Control+q mode "$mode_system"
 
 # assign [title="dbg:"] $ws3
-assign [app_id="Alacritty"] $ws1
+#assign [app_id="Alacritty"] $ws1
 assign [class="Ardour"] $ws6
 assign [class="Code"] $ws3
 assign [class="Signal"] $ws8
