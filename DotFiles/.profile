@@ -77,6 +77,9 @@ export ANDROID_HOME="${HOME}/development/Android/Sdk"
 export PATH="${PATH}:${ANDROID_HOME}/emulator"
 export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
+export ANDROID_STUDIO_HOME="${HOME}/bin/thirdparty/android-studio"
+export PATH="${PATH}:${ANDROID_STUDIO_HOME}/bin"
+
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"
 export PATH="$NPM_PACKAGES/bin:$PATH"

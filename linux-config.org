@@ -3425,10 +3425,13 @@ https://hasil-sharma.github.io/2017-05-13-python-ipdb/
 :ID:       449b8770-a825-498e-8b5c-d94f1c8a4b64
 :END:
 #+begin_src bash :tangle "DotFiles/.profile"
-    # android sdk
-    export ANDROID_HOME="${HOME}/development/Android/Sdk"
-    export PATH="${PATH}:${ANDROID_HOME}/emulator"
-    export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
+  # android sdk
+  export ANDROID_HOME="${HOME}/development/Android/Sdk"
+  export PATH="${PATH}:${ANDROID_HOME}/emulator"
+  export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
+
+  export ANDROID_STUDIO_HOME="${HOME}/bin/thirdparty/android-studio"
+  export PATH="${PATH}:${ANDROID_STUDIO_HOME}/bin"
 
 #+end_src
 ** npm                                                                  :npm:
