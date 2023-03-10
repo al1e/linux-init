@@ -1144,10 +1144,16 @@ bindsym $mod+r mode "resize"
 1.  volume     :volume:
 
     ```conf
-    bindsym XF86AudioRaiseVolume exec pulse-volume "+5%" && sway-volume-notify
-    bindsym XF86AudioLowerVolume exec pulse-volume "-5%" && sway-volume-notify
-    bindsym XF86AudioMute exec pulse-volume "toggle" && sway-volume-notify
+    
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && sway-notify "Toggle Mute"
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && sway-volume-notify
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && sway-volume-notify
+    
+    # bindsym XF86AudioRaiseVolume exec pulse-volume "+5%" && sway-volume-notify
+    # bindsym XF86AudioLowerVolume exec pulse-volume "-5%" && sway-volume-notify
+    # bindsym XF86AudioMute exec pulse-volume "toggle" && sway-volume-notify
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && sway-volume-notify
+    
     ```
 
 2.  pavucontrol
@@ -2202,7 +2208,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org2e17c08"></a>
+<a id="orgfbdfb53"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2252,7 +2258,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org2e17c08).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orgfbdfb53).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3636,7 +3642,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org0d6e0b1).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org8edaab5).
 
 ```bash
 #!/usr/bin/env bash
@@ -3672,7 +3678,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org0d6e0b1"></a>
+<a id="org8edaab5"></a>
 
 ### Examples:
 
