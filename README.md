@@ -2208,7 +2208,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="orge4c77d5"></a>
+<a id="orga51aff8"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2258,7 +2258,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge4c77d5).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga51aff8).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2525,9 +2525,17 @@ cache
 --smart-case
 
 #ignore .gitignore
---no-ignore-vcs
+# --no-ignore-vcs
 
 
+```
+
+
+## ~/development/projects/.gitignore
+
+```conf
+# Maintained in linux-config.org
+!*
 ```
 
 
@@ -3650,7 +3658,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3fee142).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgced991c).
 
 ```bash
 #!/usr/bin/env bash
@@ -3686,7 +3694,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org3fee142"></a>
+<a id="orgced991c"></a>
 
 ### Examples:
 

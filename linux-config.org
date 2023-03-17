@@ -3086,9 +3086,15 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
   --smart-case
 
   #ignore .gitignore
-  --no-ignore-vcs
+  # --no-ignore-vcs
 
 
+#+end_src
+
+** ~/development/projects/.gitignore
+#+begin_src conf :tangle "directories/development/projects/.gitignore"
+  # Maintained in linux-config.org
+  !*
 #+end_src
 
 * Conky

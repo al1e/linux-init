@@ -11,4 +11,4 @@
 --smart-case
 
 #ignore .gitignore
---no-ignore-vcs
+# --no-ignore-vcs
