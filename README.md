@@ -2164,9 +2164,9 @@ exec swayidle -w \
      resume 'sway-lock-utils unblank' \
      timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock-utils lock' \
+     timeout ${XIDLEHOOK_LOCK:-14400} 'sway-lock-utils lock' \
      resume 'sway-lock-utils unblank' \
-     timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
+     timeout ${XIDLEHOOK_SUSPEND:-43200} 'sway-lock-utils suspend' \
      resume 'sway-lock-utils unblank' \
      lock 'sway-lock-utils lock' \
      unlock 'sway-lock-utils unblank' \
@@ -2208,7 +2208,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org11c5430"></a>
+<a id="orge4c77d5"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2258,7 +2258,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org11c5430).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orge4c77d5).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2523,6 +2523,11 @@ cache
 
 # Because who cares about case!?
 --smart-case
+
+#ignore .gitignore
+--no-ignore-vcs
+
+
 ```
 
 
@@ -3645,7 +3650,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org97d007f).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org3fee142).
 
 ```bash
 #!/usr/bin/env bash
@@ -3681,7 +3686,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="org97d007f"></a>
+<a id="org3fee142"></a>
 
 ### Examples:
 

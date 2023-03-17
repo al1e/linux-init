@@ -2781,9 +2781,9 @@ Just a gathering place of locky/suspendy type things...
        resume 'sway-lock-utils unblank' \
        timeout ${XIDLEHOOK_BLANK:-3600} 'sway-lock-utils blank' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_LOCK:-3600} 'sway-lock-utils lock' \
+       timeout ${XIDLEHOOK_LOCK:-14400} 'sway-lock-utils lock' \
        resume 'sway-lock-utils unblank' \
-       timeout ${XIDLEHOOK_SUSPEND:-14400} 'sway-lock-utils suspend' \
+       timeout ${XIDLEHOOK_SUSPEND:-43200} 'sway-lock-utils suspend' \
        resume 'sway-lock-utils unblank' \
        lock 'sway-lock-utils lock' \
        unlock 'sway-lock-utils unblank' \
@@ -3084,6 +3084,11 @@ $XDG_DATA_HOME/dbus-1/services/org.freedesktop.Notifications.service
 
   # Because who cares about case!?
   --smart-case
+
+  #ignore .gitignore
+  --no-ignore-vcs
+
+
 #+end_src
 
 * Conky

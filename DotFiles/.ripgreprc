@@ -9,3 +9,6 @@
 
 # Because who cares about case!?
 --smart-case
+
+#ignore .gitignore
+--no-ignore-vcs
