@@ -878,6 +878,14 @@ for_window [title="sway-launcher"] floating enable
     gaps outer  0
     ```
 
+6.  all apps
+
+    Borrowed from: <https://github.com/swaywm/sway/issues/4121>
+    
+    ```conf
+    bindsym $mod+a exec swaymsg \[con_id=$(swaymsg -t get_tree | jq -r '.nodes | .[] | .nodes | . [] | select(.nodes != null) | .nodes | .[] | select(.name != null) | "\(.id?) \(.name?)"' | rofi -dmenu -i | awk '{print $1}')] focus
+    ```
+
 
 ### scratchpad terminal
 
@@ -951,7 +959,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+p focus parent
 
 bindsym $mod+Shift+s sticky toggle
 
@@ -2208,7 +2216,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="orga51aff8"></a>
+<a id="org1f49b0f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2258,7 +2266,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#orga51aff8).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1f49b0f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -3658,7 +3666,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgced991c).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga81e7dd).
 
 ```bash
 #!/usr/bin/env bash
@@ -3694,7 +3702,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgced991c"></a>
+<a id="orga81e7dd"></a>
 
 ### Examples:
 

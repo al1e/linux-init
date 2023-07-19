@@ -1586,7 +1586,11 @@ done by linux systemd
   gaps inner  1
   gaps outer  0
 #+end_src
-
+**** all apps
+Borrowed from: https://github.com/swaywm/sway/issues/4121
+#+begin_src conf
+  bindsym $mod+a exec swaymsg \[con_id=$(swaymsg -t get_tree | jq -r '.nodes | .[] | .nodes | . [] | select(.nodes != null) | .nodes | .[] | select(.name != null) | "\(.id?) \(.name?)"' | rofi -dmenu -i | awk '{print $1}')] focus
+#+end_src
 *** scratchpad terminal
 I want a key to create and then toggle a terminal.
 #+begin_src conf
@@ -1652,7 +1656,7 @@ I want a key to create and then toggle a terminal.
   bindsym $mod+space focus mode_toggle
 
   # focus the parent container
-  bindsym $mod+a focus parent
+  bindsym $mod+p focus parent
 
   bindsym $mod+Shift+s sticky toggle
 
