@@ -89,7 +89,7 @@ export RIPGREP_CONFIG_PATH="${HOME}"/.ripgreprc
 
 #alias man=eman
 
-export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"./node_modules/.bin":"${PATH}"
+export PATH="${HOME}/bin":"${HOME}/bin/sway":"${HOME}/.local/bin":"${HOME}/.emacs.d/bin":"${HOME}/.emacs.d/bin/bin":"./node_modules/.bin":"${PATH}"
 
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export USE_GPG_FOR_SSH="yes" # used in xsession
@@ -2216,7 +2216,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org1f49b0f"></a>
+<a id="org019b34f"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2266,7 +2266,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org1f49b0f).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org019b34f).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2801,7 +2801,21 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
         ONETERM_TITLE="dbg:lldb-$session"  oneterminal "$session"
         ```
     
-    4.  lldb voltron scripts
+    4.  emacs
+    
+        1.  build-emacs
+        
+            build and install in own bin directory
+            
+            ```bash
+            #!/usr/bin/env bash
+            # Maintained in linux-config.org
+            cd ~/development/projects/emacs/emacs || return
+            ./configure --prefix=/home/rgr/.emacs.d/bin
+            make -j"$(nproc)" && make install
+            ```
+    
+    5.  lldb voltron scripts
     
         1.  ~/bin/llvm/voltron-backtrace
         
@@ -2867,7 +2881,7 @@ export PATH="${HOME}"/bin/llvm:"${HOME}"/bin/llvm/build/bin:"$PATH"
             voltron v stack
             ```
     
-    5.  lldb python scripting     :python:
+    6.  lldb python scripting     :python:
     
         lldb also has a built-in Python interpreter, which is accessible by the “script” command. All the functionality of the debugger is available as classes in the Python interpreter, so the more complex commands that in gdb you would introduce with the “define” command can be done by writing Python functions using the lldb-Python library, then loading the scripts into your running session and accessing them with the “script” command.
         
@@ -3666,7 +3680,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orga81e7dd).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org6289587).
 
 ```bash
 #!/usr/bin/env bash
@@ -3702,7 +3716,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orga81e7dd"></a>
+<a id="org6289587"></a>
 
 ### Examples:
 
