@@ -2216,7 +2216,7 @@ notify-send -t 3000 "${@}" || true
 ```
 
 
-<a id="org0e1d492"></a>
+<a id="org22a75a7"></a>
 
 ### ~/bin/sway/sway-screen
 
@@ -2266,7 +2266,7 @@ swaymsg "
 
 ### ~/bin/sway/sway-screen-menu
 
-Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org0e1d492).
+Gui to select a display and enable/disable it. Calls down to [~/bin/sway/sway-screen](#org22a75a7).
 
 :ID: 82455cae-1c48-48b2-a8b3-cb5d44eeaee9
 
@@ -2301,7 +2301,7 @@ export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -x sway).sock
 #!/usr/bin/env bash
 # Maintained in linux-config.org
 
-DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+DISPLAY_CONFIG=($(swaymsg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
 
 for ROW in "${DISPLAY_CONFIG[@]}"
 do
@@ -2309,8 +2309,8 @@ do
     read -ra CONFIG <<< "${ROW}"
     if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
         echo "moving ${CONFIG[1]} right..."
-        sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-        sway-msg -- move workspace to output right
+        swaymsg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+        swaymsg -- move workspace to output right
     fi
 done
 ```
@@ -3680,7 +3680,7 @@ make --always-make --dry-run \
 
 ## ~/bin/pulse-volume
 
-pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#orgb6a2258).
+pulse/pipeline volume control. Pass in a volume string to change the volume (man pactl) or on/off/toggle. It wont allow larger than 100% volume. Always returns the current volume volume/status. See [examples](#org2f521a5).
 
 ```bash
 #!/usr/bin/env bash
@@ -3716,7 +3716,7 @@ echo "$(getVolume)"
 ```
 
 
-<a id="orgb6a2258"></a>
+<a id="org2f521a5"></a>
 
 ### Examples:
 

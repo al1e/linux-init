@@ -2899,7 +2899,7 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
   #!/usr/bin/env bash
   # Maintained in linux-config.org
 
-  DISPLAY_CONFIG=($(sway-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+  DISPLAY_CONFIG=($(swaymsg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
 
   for ROW in "${DISPLAY_CONFIG[@]}"
   do
@@ -2907,8 +2907,8 @@ https://i3wm.org/docs/user-contributed/swapping-workspaces.html
       read -ra CONFIG <<< "${ROW}"
       if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
           echo "moving ${CONFIG[1]} right..."
-          sway-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
-          sway-msg -- move workspace to output right
+          swaymsg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+          swaymsg -- move workspace to output right
       fi
   done
 #+end_src
