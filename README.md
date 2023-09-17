@@ -15,12 +15,12 @@ global git settings NB - NOT Exported as lots of things want to update it
 
 ```gitconfig
 [user]
-        name = rileyrg
-        email = rileyrg@gmx.de
+        name = 
+        email = 
 [push]
         default = current
 [github]
-        user = rileyrg
+        user = 
 [pull]
         rebase = false
 ```
